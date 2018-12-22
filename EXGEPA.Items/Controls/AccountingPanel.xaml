@@ -1,0 +1,121 @@
+﻿<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
+              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+             xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+             xmlns:local="clr-namespace:EXGEPA.Items.Controls" xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" xmlns:Serialization="clr-namespace:DevExpress.Xpf.LayoutControl.Serialization;assembly=DevExpress.Xpf.LayoutControl.v18.2" x:Class="EXGEPA.Items.Controls.AccountingPanel"
+             >
+
+    <dxlc:LayoutControl Orientation="Vertical" Margin="-13" IsEnabled="{Binding IsAccountingPanelLocked}">
+        <dxlc:LayoutItem Label="Valeur d'acquisition">
+            <dxe:TextEdit CharacterCasing="Upper" MaskBeepOnError="True" Mask="n2" MaskType="Numeric" MaskUseAsDisplayFormat="True" EditValue="{Binding Amount, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="{Binding IsAccountingInformationLocked}" />
+        </dxlc:LayoutItem>
+        <dxlc:LayoutGroup dx:ScrollViewerTouchBehavior.IsEnabled="True" Serialization:SerializableItem.TypeName="LayoutGroup">
+            <dxlc:LayoutItem Label="T.V.A">
+                <dxg:LookUpEdit ToolTip="{Binding ConcernedItem.Tva.Caption}" Mask="P" PopupHeight="300" PopupWidth="500" ItemsSource="{Binding RepositoryDataProvider.ListOfTva}" InvalidValueBehavior="WaitForValidValue" SelectedItem="{Binding Tva}" DisplayMember="Rate" AutoComplete="True" AutoPopulateColumns="False" 
+                                AssignNullValueOnClearingEditText="True" IsReadOnly="{Binding IsAccountingInformationLocked}">
+                    <dxg:LookUpEdit.PopupContentTemplate>
+                        <ControlTemplate>
+                            <dxg:GridControl x:Name="PART_GridControl">
+                                <dxg:GridControl.View>
+                                    <dxg:TableView ShowAutoFilterRow="True" AutoWidth="True" AllowFilterEditor="True" />
+                                </dxg:GridControl.View>
+                                <dxg:GridColumn Visible="False" VisibleIndex="0" Header="Sys Id" FieldName="Id" AllowEditing="False" />
+                                <dxg:GridColumn Width="120" Visible="True" VisibleIndex="1" Header="Libelle" FieldName="Key" AllowEditing="False" />
+                                <dxg:GridColumn Visible="True" VisibleIndex="2" Header="Taux" FieldName="Rate" AllowEditing="False">
+                                    <dxg:GridColumn.EditSettings>
+                                        <dxe:TextEditSettings MaskBeepOnError="True" Mask="P" MaskType="Numeric" MaskUseAsDisplayFormat="True" />
+                                    </dxg:GridColumn.EditSettings>
+                                </dxg:GridColumn>
+                            </dxg:GridControl>
+                        </ControlTemplate>
+                    </dxg:LookUpEdit.PopupContentTemplate>
+                </dxg:LookUpEdit>
+            </dxlc:LayoutItem>
+            <dxlc:LayoutItem Label="TVA Amort">
+                <dxe:CheckEdit EditValue="{Binding IsTvaDepreciatible, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" IsChecked="True" IsReadOnly="{Binding IsAccountingInformationLocked}" />
+            </dxlc:LayoutItem>
+        </dxlc:LayoutGroup>
+        <dxlc:LayoutItem Label="Montant TVA">
+            <dxe:TextEdit CharacterCasing="Upper" Mask="n2" MaskType="Numeric" MaskUseAsDisplayFormat="True" IsReadOnly="True" EditValue="{Binding TvaAmount}" />
+        </dxlc:LayoutItem>
+        <dxlc:LayoutItem Label="Taux amort">
+            <dxe:TextEdit EditValue="{Binding FiscaleRate}" Mask="P" MaskUseAsDisplayFormat="True" MaskType="Numeric" IsReadOnly="{Binding IsAccountingInformationLocked}" />
+        </dxlc:LayoutItem>
+        <dxlc:LayoutItem Label="Amort anterieur">
+            <dxe:SpinEdit EditValue="{Binding PreviousDepreciation, UpdateSourceTrigger=PropertyChanged}" Mask="n2" MaskType="Numeric" MaskUseAsDisplayFormat="True" ShowEditorButtons="False" MinValue="0" MaxValue="{Binding Amount}" HorizontalContentAlignment="Left" Increment="0" IsReadOnly="{Binding IsAccountingInformationLocked}" />
+        </dxlc:LayoutItem>
+        <dxlc:LayoutItem Label="Base amortissement">
+            <dxe:SpinEdit EditValue="{Binding DepreciationBase, UpdateSourceTrigger=PropertyChanged}" CharacterCasing="Upper" MaskBeepOnError="True" Mask="n2" MaskType="Numeric" MaskUseAsDisplayFormat="True" ShowEditorButtons="False" MinValue="0" MaxValue="{Binding Amount}" HorizontalContentAlignment="Left" Increment="0" IsReadOnly="{Binding IsAccountingInformationLocked}" />
+        </dxlc:LayoutItem>
+        <dxlc:LayoutItem Label="Date fin de vie">
+            <dxe:TextEdit Text="{Binding LimiteDate}" IsReadOnly="True" Mask="d" MaskType="DateTime" MaskUseAsDisplayFormat="True" />
+        </dxlc:LayoutItem>
+        <dxlc:LayoutGroup Header="Compte general" View="GroupBox" Orientation="Vertical">
+            <dxlc:LayoutItem Label="Compte">
+                <dxg:LookUpEdit x:Name="GeneralAccountLookUpEdit" SelectedItem="{Binding GeneralAccount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PopupHeight="300" PopupWidth="600" ItemsSource="{Binding ListOfGeneralAccount}" DisplayMember="Key" AutoPopulateColumns="False" 
+                                IsReadOnly="{Binding IsAccountingInformationLocked}">
+                    <dxg:LookUpEdit.PopupContentTemplate>
+                        <ControlTemplate>
+                            <dxg:GridControl x:Name="PART_GridControl">
+                                <dxg:GridControl.View>
+                                    <dxg:TableView ShowAutoFilterRow="True" ShowTotalSummary="False" PrintAutoWidth="False" x:Name="mainTableView" AllowPerPixelScrolling="True" AlternateRowBackground="#E3E6E8" AutoWidth="True" />
+                                </dxg:GridControl.View>
+                                <dxg:GridColumn Visible="True" VisibleIndex="1" Header="Compte" FieldName="Key" AllowEditing="False" />
+                                <dxg:GridColumn Visible="True" VisibleIndex="2" Header="Libelle" FieldName="Caption" AllowEditing="False" />
+                                <dxg:GridColumn Visible="True" VisibleIndex="3" Header="Type" FieldName="GeneralAccountType.Key" AllowEditing="False" />
+                                <dxg:GridColumn Visible="True" VisibleIndex="4" Header="Taux" FieldName="Rate" AllowEditing="False">
+                                    <dxg:GridColumn.EditSettings>
+                                        <dxe:TextEditSettings MaskBeepOnError="True" Mask="P" MaskType="Numeric" MaskUseAsDisplayFormat="True" />
+                                    </dxg:GridColumn.EditSettings>
+                                </dxg:GridColumn>
+                            </dxg:GridControl>
+                        </ControlTemplate>
+                    </dxg:LookUpEdit.PopupContentTemplate>
+                </dxg:LookUpEdit>
+            </dxlc:LayoutItem>
+            <dxlc:LayoutItem Label="Libellé">
+                <dxe:TextEdit CharacterCasing="Upper" Text="{Binding GeneralAccount.Caption}" IsReadOnly="True" />
+            </dxlc:LayoutItem>
+        </dxlc:LayoutGroup>
+        <dxlc:LayoutGroup Header="Compte d'amortissement et de dotation" View="GroupBox" Orientation="Vertical">
+            <dxlc:LayoutGroup>
+                <dxlc:LayoutItem Label="Cpt amort">
+                    <dxe:TextEdit CharacterCasing="Upper" Text="{Binding GeneralAccount.Children.Key}" IsReadOnly="True" Focusable="True" />
+                </dxlc:LayoutItem>
+                <dxlc:LayoutItem Label="Cpt Dotation">
+                    <dxe:TextEdit CharacterCasing="Upper" Text="{Binding GeneralAccount.Children.Children.Key}" IsReadOnly="True" Focusable="True" />
+                </dxlc:LayoutItem>
+            </dxlc:LayoutGroup>
+            <dxlc:LayoutItem Label="Lib amort">
+                <dxe:TextEdit CharacterCasing="Upper" Text="{Binding GeneralAccount.Children.Caption}" IsReadOnly="True" Focusable="True" />
+            </dxlc:LayoutItem>
+            <dxlc:LayoutItem Label="Lib Dotation">
+                <dxe:TextEdit CharacterCasing="Upper" Text="{Binding GeneralAccount.Children.Children.Caption}" IsReadOnly="True" Focusable="True" />
+            </dxlc:LayoutItem>
+        </dxlc:LayoutGroup>
+        <dxlc:LayoutGroup View="GroupBox" Orientation="Vertical">
+            <dxlc:LayoutItem Label="Code Parent">
+                <dxg:LookUpEdit SelectedItem="{Binding Owner, UpdateSourceTrigger=PropertyChanged}" AssignNullValueOnClearingEditText="True" PopupHeight="300" PopupWidth="500" ItemsSource="{Binding ListOfItems}" DisplayMember="Key" AutoPopulateColumns="False" 
+                                IsReadOnly="{Binding IsAccountingInformationLocked}">
+                    <dxg:LookUpEdit.PopupContentTemplate>
+                        <ControlTemplate>
+                            <dxg:GridControl x:Name="PART_GridControl">
+                                <dxg:GridControl.View>
+                                    <dxg:TableView ShowAutoFilterRow="True" ShowTotalSummary="False" PrintAutoWidth="False" x:Name="mainTableView" AllowPerPixelScrolling="True" AlternateRowBackground="#E3E6E8" AutoWidth="True" />
+                                </dxg:GridControl.View>
+                                <dxg:GridColumn VisibleIndex="1" Header="Code" FieldName="Key" AllowEditing="False" />
+                                <dxg:GridColumn VisibleIndex="2" Header="Description" FieldName="Description" AllowEditing="False" />
+                            </dxg:GridControl>
+                        </ControlTemplate>
+                    </dxg:LookUpEdit.PopupContentTemplate>
+                </dxg:LookUpEdit>
+            </dxlc:LayoutItem>
+            <dxlc:LayoutItem Label="Description">
+                <dxe:TextEdit Text="{Binding Owner.Description}" IsReadOnly="True" />
+            </dxlc:LayoutItem>
+        </dxlc:LayoutGroup>
+    </dxlc:LayoutControl>
+</UserControl>

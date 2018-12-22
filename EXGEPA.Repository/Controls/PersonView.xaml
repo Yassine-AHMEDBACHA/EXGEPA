@@ -1,0 +1,108 @@
+﻿<CORESI:ExportableView xmlns:CORESI="clr-namespace:CORESI.WPF.Controls;assembly=CORESI.WPF.Controls"
+                       x:Class="EXGEPA.Repository.Controls.PersonView"
+           xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"  
+             xmlns:dxprg="http://schemas.devexpress.com/winfx/2008/xaml/propertygrid" 
+             xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"  
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
+             xmlns:ViewModels="clr-namespace:EXGEPA.Repository.Controls"
+             mc:Ignorable="d"
+             xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
+             d:DesignHeight="400" d:DesignWidth="600">
+
+    <Grid Name="mainGrid">
+        <dxg:GridControl x:Name="grid" x:FieldModifier="public" ItemsSource="{Binding ListOfRows}" ShowLoadingPanel="{Binding ShowLoadingPanel}">
+            <dxg:GridControl.Columns>
+                <dxg:GridColumn FieldName="Key" Header="Identifiant"  AllowEditing="False" Visible="True" VisibleIndex="1"/>
+                <dxg:GridColumn FieldName="Name" Header="Nom"  AllowEditing="False" Visible="True" VisibleIndex="1"/>
+                <dxg:GridColumn FieldName="FirstName" Header="Prénom"  AllowEditing="False" Visible="True" VisibleIndex="2"  />
+                <dxg:GridColumn FieldName="BirthDate" Header="Date de naissance"  AllowEditing="False" Visible="True" VisibleIndex="3" />
+                <dxg:GridColumn FieldName="BirthPlace" Header="Lieu de naissance"  AllowEditing="False" Visible="True" VisibleIndex="4" />
+                <dxg:GridColumn FieldName="Function" Header="Fonction"  AllowEditing="False" Visible="True" VisibleIndex="5"  />
+                <dxg:GridColumn FieldName="Id" Header="Sys Id" AllowEditing="False"  Visible="{Binding ShowSysIdColumn}" Fixed="Left" Width="55" />
+            </dxg:GridControl.Columns>
+            <dxg:GridControl.View>
+                <dxg:TableView Name="mainTableView"  NavigationStyle="Row"
+                               ShowGroupPanel="{Binding ShowGroupPanel}" 
+                               ShowAutoFilterRow="{Binding ShowColumnFilter}" 
+                               AllowConditionalFormattingManager="True"
+                               ShowTotalSummary="False"   
+                                WaitIndicatorType="Panel"
+                               PrintAutoWidth="False"   
+                               AllowPerPixelScrolling="False"  
+                               AutoWidth="{Binding AutoWidth}"  
+                               SelectedRowsSource="{Binding Selection}"  
+                               UseEvenRowBackground="True">
+                    <dxmvvm:Interaction.Behaviors>
+                        <dxmvvm:EventToCommand EventName="RowDoubleClick" Command="{Binding RowDoubleClickCommand}" />
+                    </dxmvvm:Interaction.Behaviors>
+                </dxg:TableView>
+            </dxg:GridControl.View>
+        </dxg:GridControl>
+        <Grid>
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding DisplayDetail}" Value="false">
+                            <Setter Property="Visibility" Value="Hidden"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding DisplayDetail}" Value="true">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+
+            <dx:DXExpander Grid.Row="1" Grid.Column="1" HorizontalExpand="None" VerticalExpand="FromTopToBottom" IsExpanded="{Binding DisplayDetail}" Panel.ZIndex="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Grid Background="WhiteSmoke"  >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="5"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="300"/>
+                        <ColumnDefinition Width="20"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Text="Identifiant" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1"/>
+                    <dxe:TextEdit  CharacterCasing="Upper" VerticalContentAlignment="Center" Text="{Binding ConcernedRow.Key}" Grid.Column="2" Grid.Row="1" Margin="5,2"/>
+
+
+                    <TextBlock Text="Nom" VerticalAlignment="Center" Grid.Row="2" Grid.Column="1"/>
+                    <dxe:TextEdit  CharacterCasing="Upper" VerticalContentAlignment="Center" Text="{Binding ConcernedRow.Name}" Grid.Column="2" Grid.Row="2" Margin="5,2"/>
+
+                    <TextBlock Text="Prénom" VerticalAlignment="Center" Grid.Row="3" Grid.Column="1"/>
+                    <dxe:TextEdit  CharacterCasing="Upper"  VerticalContentAlignment="Center"  Text="{Binding ConcernedRow.FirstName}" Grid.Row="3" Grid.Column="2"  Margin="5,2"/>
+
+                    <TextBlock Text="Date de naissance" VerticalAlignment="Center" Grid.Row="4" Grid.Column="1"/>
+                    <dxe:DateEdit  VerticalContentAlignment="Center"  EditValue="{Binding ConcernedRow.BirthDate}" Grid.Row="4" Grid.Column="2" Margin="5,2" />
+
+                    <TextBlock Text="Lieu de naissance" VerticalAlignment="Center" Grid.Row="5" Grid.Column="1"/>
+                    <dxe:TextEdit  CharacterCasing="Upper"  VerticalContentAlignment="Center"  Text="{Binding ConcernedRow.BirthPlace}" Grid.Row="5" Grid.Column="2"  Margin="5,2"/>
+
+                    <TextBlock Text="Fonction" VerticalAlignment="Center" Grid.Row="6" Grid.Column="1"/>
+                    <dxe:TextEdit  CharacterCasing="Upper"  VerticalContentAlignment="Center"  Text="{Binding ConcernedRow.Function}" Grid.Row="6" Grid.Column="2"  Margin="5,2"/>
+
+                    <Button Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="4" Margin="80,5" Width="80" HorizontalAlignment="Left" Content="Valider" Command="{Binding ValidateCommand}"/>
+                    <Button Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="4" Margin="80,5" Width="80" HorizontalAlignment="Right" Content="Annuler" Command="{Binding CancelCommand}"/>
+
+                </Grid>
+            </dx:DXExpander>
+            <Grid Opacity="0.7"  Background="Black" Panel.ZIndex="0"/>
+        </Grid>
+    </Grid>
+</CORESI:ExportableView>

@@ -1,0 +1,18 @@
+﻿<UserControl xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"  
+             xmlns:dxp="http://schemas.devexpress.com/winfx/2008/xaml/printing"  x:Class="CORESI.Report.Controls.ReportView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
+             mc:Ignorable="d"
+             d:DesignHeight="650" d:DesignWidth="1300">
+    <Grid>
+        <dxp:DocumentPreviewControl CommandBarStyle="None"  
+                                    Background="Red"                          
+                                    DocumentSource="{Binding DocumentSource}" 
+                                    Name="documentViewer" 
+                                    DocumentChanged="documentViewer_DocumentChanged" 
+                                    ZoomMode="PageLevel"/>
+    </Grid>
+</UserControl>

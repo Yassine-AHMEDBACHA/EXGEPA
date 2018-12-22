@@ -1,0 +1,75 @@
+<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
+             xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
+    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
+    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
+    xmlns:coresi="clr-namespace:CORESI.WPF.Controls;assembly=CORESI.WPF.Controls"
+    
+    x:Class="EXGEPA.Settings.Controls.SettingView"
+             mc:Ignorable="d"
+             d:DesignHeight="600" d:DesignWidth="1300">
+
+    <Grid>
+        <dxlc:LayoutControl Header="Header" UseLayoutRounding="True">
+            <dxlc:LayoutGroup Orientation="Vertical">
+                <dxlc:LayoutGroup Header="General" View="GroupBox" Orientation="Vertical">
+                    <dxlc:LayoutItem Label="Raison sociale">
+                        <dxe:TextEdit CharacterCasing="Upper" Text="{Binding CompanyName, UpdateSourceTrigger=PropertyChanged}"/>
+                    </dxlc:LayoutItem>
+                    <dxlc:LayoutItem Label="Departement">
+                        <dxe:TextEdit CharacterCasing="Upper" Text="{Binding DepartmentName, UpdateSourceTrigger=PropertyChanged}"/>
+                    </dxlc:LayoutItem>
+                    <dxlc:LayoutItem Label="Direction">
+                        <dxe:TextEdit CharacterCasing="Upper" Text="{Binding DirectionName, UpdateSourceTrigger=PropertyChanged}"/>
+                    </dxlc:LayoutItem>
+                    <dxlc:LayoutItem Label="Type d'etiquette">
+                        <dxe:TextEdit/>
+                    </dxlc:LayoutItem>
+                    <dxlc:LayoutItem Label="Theme">
+                        <dxe:ComboBoxEdit ItemsSource="{Binding AvaibleTheme}" SelectedItem="{Binding Theme}" AllowNullInput="False" />
+                    </dxlc:LayoutItem>
+                    <dxlc:LayoutItem Label="Dossier d'image">
+                        <dxe:TextEdit EditValue="{Binding PicturesDirectory, UpdateSourceTrigger=PropertyChanged}" />
+                    </dxlc:LayoutItem>
+                </dxlc:LayoutGroup>
+               
+            
+            <dxlc:LayoutGroup Header="Logo" View="GroupBox">
+                    <Grid>
+                        <coresi:ImageEdit ImagePath="{Binding ImagePath,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" ShowMenu="True" />
+                        <!--<Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                        </Grid>-->
+                    </Grid>
+                </dxlc:LayoutGroup>
+            </dxlc:LayoutGroup>
+            <dxlc:LayoutGroup dx:ScrollViewerTouchBehavior.IsEnabled="True" Orientation="Vertical" >
+                <dxlc:LayoutGroup Header="LayoutGroup" View="GroupBox">
+                    <dxlc:LayoutItem Label="LayoutItem">
+                        <dxe:TextEdit/>
+                    </dxlc:LayoutItem>
+                </dxlc:LayoutGroup>
+                <dxlc:LayoutGroup Header="LayoutGroup" View="GroupBox">
+                    <dxlc:LayoutGroup Orientation="Vertical">
+                        <dxg:GridControl ItemsSource="{Binding ListOfAccountingPeriod}" AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True" >
+                            <dxg:GridControl.View>
+                                <dxg:TableView AllowPerPixelScrolling="True" ShowTotalSummary="True"/>
+                            </dxg:GridControl.View>
+                        </dxg:GridControl>
+                        <dxlc:LayoutItem Label="LayoutItem">
+                            <dxe:TextEdit/>
+                        </dxlc:LayoutItem>
+                    </dxlc:LayoutGroup>
+                </dxlc:LayoutGroup>
+            </dxlc:LayoutGroup>
+        </dxlc:LayoutControl>
+    </Grid>
+</UserControl>

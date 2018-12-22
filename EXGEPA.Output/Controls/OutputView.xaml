@@ -1,0 +1,61 @@
+﻿<CORESI:ExportableView xmlns:Controls="clr-namespace:EXGEPA.Output.Controls"  xmlns:CORESI="clr-namespace:CORESI.WPF.Controls;assembly=CORESI.WPF.Controls"
+    x:Class="EXGEPA.Output.Controls.OutputView"
+             xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"  
+             xmlns:dxprg="http://schemas.devexpress.com/winfx/2008/xaml/propertygrid" 
+             xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"  
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
+             mc:Ignorable="d"
+             xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
+             d:DesignHeight="400" d:DesignWidth="600">
+
+    <Grid Name="mainGrid">
+        <dxg:GridControl x:Name="grid" x:FieldModifier="public" ItemsSource="{Binding ListOfRows}" ShowLoadingPanel="{Binding ShowLoadingPanel}">
+            <dxg:GridControl.Columns>
+                  <dxg:GridColumn FieldName="Key" Header="Code"  AllowEditing="False" Visible="True" VisibleIndex="1"/>
+                <dxg:GridColumn FieldName="Date" Header="Date"  AllowEditing="False" Visible="True" VisibleIndex="2" />
+                <dxg:GridColumn FieldName="Id" Header="Sys Id" AllowEditing="False"  Visible="{Binding ShowSysIdColumn}" Fixed="Left" Width="55" />
+            </dxg:GridControl.Columns>
+            <dxg:GridControl.View>
+                <dxg:TableView Name="mainTableView"  NavigationStyle="Row"
+                               ShowGroupPanel="{Binding ShowGroupPanel}" 
+                               ShowAutoFilterRow="{Binding ShowColumnFilter}" 
+                               AllowConditionalFormattingManager="True"
+                               ShowTotalSummary="False"   
+                                WaitIndicatorType="Panel"
+                               PrintAutoWidth="False"   
+                               AllowPerPixelScrolling="False"  
+                               AutoWidth="{Binding AutoWidth}"  
+                               SelectedRowsSource="{Binding Selection}"  
+                               UseEvenRowBackground="True">
+                    <dxmvvm:Interaction.Behaviors>
+                        <dxmvvm:EventToCommand EventName="RowDoubleClick" Command="{Binding RowDoubleClickCommand}" />
+                    </dxmvvm:Interaction.Behaviors>
+                </dxg:TableView>
+            </dxg:GridControl.View>
+        </dxg:GridControl>
+        <Grid>
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding DisplayDetail}" Value="false">
+                            <Setter Property="Visibility" Value="Hidden"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding DisplayDetail}" Value="true">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+
+            <dx:DXExpander Grid.Row="1" Grid.Column="1" HorizontalExpand="None" VerticalExpand="FromTopToBottom" IsExpanded="{Binding DisplayDetail}" Panel.ZIndex="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+               <Controls:OutputEditionPanel DataContext="{Binding}"/>
+            </dx:DXExpander>
+            <Grid Opacity="0.7"  Background="Black" Panel.ZIndex="0"/>
+        </Grid>
+    </Grid>
+</CORESI:ExportableView>

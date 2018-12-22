@@ -1,0 +1,49 @@
+﻿<CORESI:ExportableView xmlns:Controls="clr-namespace:EXGEPA.Security.Controls"  
+                  xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"  xmlns:CORESI="clr-namespace:CORESI.WPF.Controls;assembly=CORESI.WPF.Controls"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+             xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+    x:Class="EXGEPA.Security.Controls.RoleView"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <Grid>
+            <dxlc:LayoutGroup >
+                <dxg:GridControl ItemsSource="{Binding ListOfRows}" x:Name="roleGrid">
+                    <dxg:GridControl.View>
+                        <dxg:TableView ShowGroupPanel="False"
+                                       AutoWidth="True"
+                                   NavigationStyle="Row"
+                                   SelectedRowsSource="{Binding Selection}"  
+                                   UseEvenRowBackground="True"/>
+                    </dxg:GridControl.View>
+                    <dxg:GridColumn FieldName="Key" Header="Role" AllowBestFit="True" ReadOnly="True" Visible="True" VisibleIndex="0"/>
+                </dxg:GridControl>
+            </dxlc:LayoutGroup>
+        </Grid>
+        <Grid >
+            <Grid.Style>
+                <Style TargetType="{x:Type Grid}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding DisplayDetail}" Value="false">
+                            <Setter Property="Visibility" Value="Hidden"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding DisplayDetail}" Value="true">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+            <dx:DXExpander Grid.Row="1" Grid.Column="1" HorizontalExpand="None" VerticalExpand="FromTopToBottom" IsExpanded="{Binding DisplayDetail}" Panel.ZIndex="1" VerticalAlignment="Center" HorizontalAlignment="Center" >
+                <Grid Margin="0,10" >
+                    <Controls:RoleEditorPanel />
+                </Grid>
+            </dx:DXExpander>
+            <Grid Opacity="0.7"  Background="Black" Panel.ZIndex="0"/>
+        </Grid>
+    </Grid>
+</CORESI:ExportableView>

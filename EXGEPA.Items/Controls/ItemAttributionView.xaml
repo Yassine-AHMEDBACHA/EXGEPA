@@ -1,0 +1,201 @@
+﻿<CORESI:ExportableView xmlns:CORESI="clr-namespace:CORESI.WPF.Controls;assembly=CORESI.WPF.Controls"
+    x:Class="EXGEPA.Items.Controls.ItemAttributionView"
+             xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
+      xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+             xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
+             mc:Ignorable="d"
+             d:DesignHeight="500" d:DesignWidth="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="1" Grid.Row="1">
+            <Button Content="&gt;" Margin="2" Command="{Binding SetCommand}" Height="40"/>
+            <Button Content="&gt;&gt;" Margin="2" Visibility="Hidden" />
+            <Button Content="&lt;"  Margin="2" Command="{Binding ResetCommand}" Height="40"/>
+            <Button Content="&lt;&lt;"  Margin="2" Visibility="Visible"  Command="{Binding ResetAllCommand}" Height="40"/>
+        </StackPanel>
+
+        <dx:DXExpander IsExpanded="{Binding ShowSourcePanel}" Grid.RowSpan="3"  Grid.Column="0" >
+            <dxlc:LayoutGroup Header="{Binding Options.LeftPanelCaption}" View="GroupBox" Margin="1">
+                <dxg:GridControl ItemsSource="{Binding ListOfRows}" ShowLoadingPanel="{Binding ShowLoadingPanel}" AllowDrop="True" >
+                    <dxg:GridControl.Columns>
+                        <dxg:GridColumn FieldName="Key" Header="Code" AllowBestFit="True" AllowEditing="False" Visible="True" Fixed="Left"/>
+                        <dxg:GridColumn FieldName="Reference.Key" Header="Reference" AllowEditing="False"  />
+                        <dxg:GridColumn FieldName="Reference.Caption" Header="Designation reference"  AllowEditing="False" Visible="False"/>
+                        <dxg:GridColumn FieldName="Description" Header="Designation"  AllowEditing="False" />
+                        <dxg:GridColumn FieldName="Brand" Header="Marque"  AllowEditing="False"  Visible="False"/>
+                        <dxg:GridColumn FieldName="Model" Header="Model"  AllowEditing="False"  Visible="False"/>
+                        <dxg:GridColumn FieldName="SerialNumber" Header="N° Serie"  AllowEditing="False"  Visible="False"/>
+                        <dxg:GridColumn FieldName="ElementCount" Header="Nbr"  AllowEditing="False"  Visible="False"/>
+                        <dxg:GridColumn FieldName="Amount" Header="Montant" AllowBestFit="True" AllowEditing="False" Visible="True" BestFitArea="All" >
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:TextEditSettings Mask="n2" MaskType="Numeric" MaskUseAsDisplayFormat="True"/>
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn FieldName="AquisitionDate" Header="Date aquisition"  AllowEditing="False" />
+                        <dxg:GridColumn FieldName="SmallDescription" Header="Designation reduite"  AllowEditing="False" />
+                        <dxg:GridColumn FieldName="ItemState.Key" Header="Etat"  AllowEditing="False" />
+                        <dxg:GridColumn FieldName="ProposeToReformCertificate.Key" Header="PV de Proposition à la reforme"  AllowEditing="False" Width="70" Visible="False"/>
+                        <dxg:GridColumn FieldName="ProposeToReformCertificate.Date" Header="Date de PV de proposition à la reforme"  AllowEditing="False" Width="80"  Visible="False"/>
+                        <dxg:GridColumn FieldName="Office.Key" Header="Localisation"  AllowEditing="False" />
+                        <dxg:GridColumn FieldName="Office.Level.Building.Site.Region.Caption" Header="Region"  AllowEditing="False" Visible="False"/>
+                        <dxg:GridColumn FieldName="Office.Level.Building.Site.Code" Header="Site"  AllowEditing="False"  Visible="False"/>
+                        <dxg:GridColumn FieldName="Office.Level.Building.Code" Header="Batiment"  AllowEditing="False"  Visible="False"/>
+                        <dxg:GridColumn FieldName="Office.Level.Code" Header="Niveau"  AllowEditing="False"  Visible="False"/>
+                        <dxg:GridColumn FieldName="Office.Code" Header="local"  AllowEditing="False"  Visible="False"/>
+                        <dxg:GridColumn FieldName="Office.Caption" Header="Libelle Local"  AllowEditing="False" />
+                        <dxg:GridColumn FieldName="InvestmentAccount.Key" Header="Compte investissementAccount" AllowEditing="False"  />
+                        <dxg:GridColumn FieldName="InvestmentAccount.Caption" Header="Libelle compte investissementAccount"  AllowEditing="False"  Visible="False"/>
+                        <dxg:GridColumn FieldName="ChargeAccount.Key" Header="Compte charge" AllowEditing="False"  />
+                        <dxg:GridColumn FieldName="ChargeAccount.Caption" Header="Libelle compte charge"  AllowEditing="False"  Visible="False"/>
+                        <dxg:GridColumn FieldName="DepreciationAccount.Key" Header="Compte depreciation" AllowEditing="False"  />
+                        <dxg:GridColumn FieldName="DepreciationAccount.Caption" Header="libellé compte depreciation"  AllowEditing="False"  Visible="False"/>
+                        <dxg:GridColumn FieldName="AnalyticalAccount.Key" Header="Compte analytique" AllowEditing="False"  />
+                        <dxg:GridColumn FieldName="AnalyticalAccount.Caption" Header="libelle compte analytique"  AllowEditing="False"  Visible="False"/>
+                        <dxg:GridColumn FieldName="Invoice.Key" Header="N° de Facture" AllowBestFit="True" AllowEditing="False"   />
+                        <dxg:GridColumn FieldName="TransferOrder.Key" Header="N° Bon de Transfert" AllowBestFit="True" AllowEditing="False"   />
+                        <dxg:GridColumn FieldName="TransferOrder.Caption" Header="Povenance" AllowBestFit="True" AllowEditing="False"    Visible="False"/>
+                        <dxg:GridColumn FieldName="Provider.Key" Header="Code Fournisseur" AllowBestFit="True" AllowEditing="False"  Visible="False"/>
+                        <dxg:GridColumn FieldName="Provider.Caption" Header="Fournisseur" AllowBestFit="True" AllowEditing="False" />
+                        <dxg:GridColumn FieldName="InputSheet.Key" Header="Fiche d'entree" AllowBestFit="True" AllowEditing="False"   />
+                        <dxg:GridColumn FieldName="Comment" Header="Commentaire" AllowBestFit="True" AllowEditing="False" Visible="True" />
+                        <dxg:GridColumn FieldName="Person.Key" Header="Identifiant Utilisateur"  AllowEditing="False" Visible="False"/>
+                        <dxg:GridColumn FieldName="Person.Name" Header="Nom"  AllowEditing="False" Visible="False" />
+                        <dxg:GridColumn FieldName="Person.FirstName" Header="Prénom"  AllowEditing="False" Visible="False"  />
+                        <dxg:GridColumn FieldName="Person.BirthDate" Header="Date de naissance"  AllowEditing="False" Visible="False"  />
+                        <dxg:GridColumn FieldName="Person.BirthPlace" Header="Lieu de naissance"  AllowEditing="False" Visible="False" />
+                        <dxg:GridColumn FieldName="Person.Function" Header="Fonction"  AllowEditing="False" Visible="False" />
+                        <dxg:GridColumn FieldName="ReformeCertificate.Key" Header="Pv de reforme"  AllowEditing="False" Visible="True" />
+                        <dxg:GridColumn FieldName="ReformeCertificate.Date" Header="Date de reforme"  AllowEditing="False" Visible="False" />
+                        <dxg:GridColumn FieldName="OutputCertificate.Key"  Header="Pv de sortie"  AllowEditing="False" Visible="True" />
+                        <dxg:GridColumn FieldName="OutputCertificate.OutputType" Header="Type de sortie"  AllowEditing="False" Visible="True" />
+                        <dxg:GridColumn FieldName="OutputCertificate.Date" Header="Date de sortie"  AllowEditing="False" Visible="False" />
+                        <dxg:GridColumn FieldName="Comment" Header="Observation"  AllowEditing="False"  Visible="False"/>
+                        <dxg:GridColumn FieldName="Id" Header="Sys Id" AllowEditing="False"  Visible="{Binding ShowSysIdColumn}" Fixed="Left" Width="55" />
+                    </dxg:GridControl.Columns>
+                    <dxg:GridControl.View>
+                        <dxg:TableView
+                               ShowGroupPanel="{Binding ShowGroupPanel}" 
+                               ShowAutoFilterRow="{Binding ShowColumnFilter}" 
+                               AllowConditionalFormattingManager="True"
+                               ShowTotalSummary="{Binding ShowTotalSummary}"   
+                                WaitIndicatorType="Panel"
+                               PrintAutoWidth="False"   
+                               AllowPerPixelScrolling="False"  
+                               NavigationStyle="Row" 
+                               MultiSelectMode="Row"  
+                               AutoWidth="{Binding AutoWidth}"  
+                               UseEvenRowBackground="True"
+                               SelectedRowsSource="{Binding Selection}"                             >
+                            <dxmvvm:Interaction.Behaviors>
+                                <dxmvvm:EventToCommand EventName="RowDoubleClick" Command="{Binding RowDoubleClickCommand}" />
+                            </dxmvvm:Interaction.Behaviors>
+                        </dxg:TableView>
+                    </dxg:GridControl.View>
+                    <dxg:GridControl.TotalSummary>
+                        <dxg:GridSummaryItem FieldName="Key" SummaryType="Count" DisplayFormat=" {0:n0}"/>
+                        <dxg:GridSummaryItem FieldName="Amount" SummaryType="Sum" DisplayFormat=" {0:n2}"/>
+                    </dxg:GridControl.TotalSummary>
+
+                </dxg:GridControl>
+            </dxlc:LayoutGroup>
+        </dx:DXExpander>
+        <dxlc:LayoutGroup Header="{Binding Options.RightPanelCaption}" Grid.RowSpan="3" Grid.Column="2" View="GroupBox" Margin="1">
+            <dxg:GridControl  ItemsSource="{Binding AffectedRows}" ShowLoadingPanel="{Binding ShowLoadingPanel}" AllowDrop="True" >
+                <dxg:GridControl.Columns>
+                    <dxg:GridColumn FieldName="Key" Header="Code" AllowBestFit="True" AllowEditing="False" Visible="True" Fixed="Left"/>
+                    <dxg:GridColumn FieldName="Reference.Key" Header="Reference" AllowEditing="False"  />
+                    <dxg:GridColumn FieldName="Reference.Caption" Header="Designation reference"  AllowEditing="False" Visible="False"/>
+                    <dxg:GridColumn FieldName="Description" Header="Designation"  AllowEditing="False" />
+                    <dxg:GridColumn FieldName="Brand" Header="Marque"  AllowEditing="False"  Visible="False"/>
+                    <dxg:GridColumn FieldName="Model" Header="Model"  AllowEditing="False"  Visible="False"/>
+                    <dxg:GridColumn FieldName="SerialNumber" Header="N° Serie"  AllowEditing="False"  Visible="False"/>
+                    <dxg:GridColumn FieldName="ElementCount" Header="Nbr"  AllowEditing="False"  Visible="False"/>
+                    <dxg:GridColumn FieldName="Amount" Header="Montant" AllowBestFit="True" AllowEditing="False" Visible="True" BestFitArea="All" >
+                        <dxg:GridColumn.EditSettings>
+                            <dxe:TextEditSettings Mask="n2" MaskType="Numeric" MaskUseAsDisplayFormat="True"/>
+                        </dxg:GridColumn.EditSettings>
+                    </dxg:GridColumn>
+                    <dxg:GridColumn FieldName="AquisitionDate" Header="Date aquisition"  AllowEditing="False" />
+                    <dxg:GridColumn FieldName="SmallDescription" Header="Designation reduite"  AllowEditing="False" />
+                    <dxg:GridColumn FieldName="ItemState.Key" Header="Etat"  AllowEditing="False" />
+                    <dxg:GridColumn FieldName="ProposeToReformCertificate.Key" Header="PV de Proposition à la reforme"  AllowEditing="False" Width="70" Visible="False"/>
+                    <dxg:GridColumn FieldName="ProposeToReformCertificate.Date" Header="Date de PV de proposition à la reforme"  AllowEditing="False" Width="80"  Visible="False"/>
+                    <dxg:GridColumn FieldName="Office.Key" Header="Localisation"  AllowEditing="False" />
+                    <dxg:GridColumn FieldName="Office.Level.Building.Site.Region.Caption" Header="Region"  AllowEditing="False" Visible="False"/>
+                    <dxg:GridColumn FieldName="Office.Level.Building.Site.Code" Header="Site"  AllowEditing="False"  Visible="False"/>
+                    <dxg:GridColumn FieldName="Office.Level.Building.Code" Header="Batiment"  AllowEditing="False"  Visible="False"/>
+                    <dxg:GridColumn FieldName="Office.Level.Code" Header="Niveau"  AllowEditing="False"  Visible="False"/>
+                    <dxg:GridColumn FieldName="Office.Code" Header="local"  AllowEditing="False"  Visible="False"/>
+                    <dxg:GridColumn FieldName="Office.Caption" Header="Libelle Local"  AllowEditing="False" />
+                    <dxg:GridColumn FieldName="InvestmentAccount.Key" Header="Compte investissement" AllowEditing="False"  />
+                    <dxg:GridColumn FieldName="InvestmentAccount.Caption" Header="Libelle compte investissement"  AllowEditing="False"  Visible="False"/>
+                    <dxg:GridColumn FieldName="ChargeAccount.Key" Header="Compte charge" AllowEditing="False"  />
+                    <dxg:GridColumn FieldName="ChargeAccount.Caption" Header="Libelle compte charge"  AllowEditing="False"  Visible="False"/>
+                    <dxg:GridColumn FieldName="DepreciationAccount.Key" Header="Compte depreciation" AllowEditing="False"  />
+                    <dxg:GridColumn FieldName="DepreciationAccount.Caption" Header="libellé compte depreciation"  AllowEditing="False"  Visible="False"/>
+                    <dxg:GridColumn FieldName="AnalyticalAccount.Key" Header="Compte analytique" AllowEditing="False"  />
+                    <dxg:GridColumn FieldName="AnalyticalAccount.Caption" Header="libelle compte analytique"  AllowEditing="False"  Visible="False"/>
+                    <dxg:GridColumn FieldName="Invoice.Key" Header="N° de Facture" AllowBestFit="True" AllowEditing="False"   />
+                    <dxg:GridColumn FieldName="TransferOrder.Key" Header="N° Bon de Transfert" AllowBestFit="True" AllowEditing="False"   />
+                    <dxg:GridColumn FieldName="TransferOrder.Caption" Header="Povenance" AllowBestFit="True" AllowEditing="False"    Visible="False"/>
+                    <dxg:GridColumn FieldName="Provider.Key" Header="Code Fournisseur" AllowBestFit="True" AllowEditing="False"  Visible="False"/>
+                    <dxg:GridColumn FieldName="Provider.Caption" Header="Fournisseur" AllowBestFit="True" AllowEditing="False" />
+                    <dxg:GridColumn FieldName="InputSheet.Key" Header="Fiche d'entree" AllowBestFit="True" AllowEditing="False"   />
+                    <dxg:GridColumn FieldName="Comment" Header="Commentaire" AllowBestFit="True" AllowEditing="False" Visible="True" />
+                    <dxg:GridColumn FieldName="Person.Key" Header="Identifiant Utilisateur"  AllowEditing="False" Visible="False"/>
+                    <dxg:GridColumn FieldName="Person.Name" Header="Nom"  AllowEditing="False" Visible="False" />
+                    <dxg:GridColumn FieldName="Person.FirstName" Header="Prénom"  AllowEditing="False" Visible="False"  />
+                    <dxg:GridColumn FieldName="Person.BirthDate" Header="Date de naissance"  AllowEditing="False" Visible="False"  />
+                    <dxg:GridColumn FieldName="Person.BirthPlace" Header="Lieu de naissance"  AllowEditing="False" Visible="False" />
+                    <dxg:GridColumn FieldName="Person.Function" Header="Fonction"  AllowEditing="False" Visible="False" />
+                    <dxg:GridColumn FieldName="ReformeCertificate.Key" Header="Pv de reforme"  AllowEditing="False" Visible="True" />
+                    <dxg:GridColumn FieldName="ReformeCertificate.Date" Header="Date de reforme"  AllowEditing="False" Visible="False" />
+                    <dxg:GridColumn FieldName="OutputCertificate.Key"  Header="Pv de sortie"  AllowEditing="False" Visible="True" />
+                    <dxg:GridColumn FieldName="OutputCertificate.OutputType" Header="Type de sortie"  AllowEditing="False" Visible="True" />
+                    <dxg:GridColumn FieldName="OutputCertificate.Date" Header="Date de sortie"  AllowEditing="False" Visible="False" />
+                    <dxg:GridColumn FieldName="Comment" Header="Observation"  AllowEditing="False"  Visible="False"/>
+                    <dxg:GridColumn FieldName="Id" Header="Sys Id" AllowEditing="False"  Visible="{Binding ShowSysIdColumn}" Fixed="Left" Width="55" />
+                </dxg:GridControl.Columns>
+                <dxg:GridControl.View>
+                    <dxg:TableView  Name="mainTableView"   
+                               ShowGroupPanel="{Binding ShowGroupPanel}" 
+                               ShowAutoFilterRow="{Binding ShowColumnFilter}" 
+                               AllowConditionalFormattingManager="True"
+                               ShowTotalSummary="{Binding ShowTotalSummary}"   
+                                WaitIndicatorType="Panel"
+                               PrintAutoWidth="False"   
+                               AllowPerPixelScrolling="False"  
+                               NavigationStyle="Row" 
+                               MultiSelectMode="Row"  
+                               AutoWidth="{Binding AutoWidth}"  
+                               UseEvenRowBackground="True"
+                               SelectedRowsSource="{Binding AffectedRowsSelection}"  >
+                        <dxmvvm:Interaction.Behaviors>
+                            <dxmvvm:EventToCommand EventName="RowDoubleClick" Command="{Binding RowDoubleClickCommand}" />
+                        </dxmvvm:Interaction.Behaviors>
+                    </dxg:TableView>
+                </dxg:GridControl.View>
+                <dxg:GridControl.TotalSummary>
+                    <dxg:GridSummaryItem FieldName="Key" SummaryType="Count" DisplayFormat=" {0:n0}"/>
+                    <dxg:GridSummaryItem FieldName="Amount" SummaryType="Sum" DisplayFormat=" {0:n2}"/>
+                </dxg:GridControl.TotalSummary>
+
+            </dxg:GridControl>
+        </dxlc:LayoutGroup>
+    </Grid>
+</CORESI:ExportableView>

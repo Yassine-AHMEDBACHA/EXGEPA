@@ -1,0 +1,25 @@
+﻿<Window xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EXGEPA.Inventory.Controls"
+        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"  x:Class="EXGEPA.Inventory.Controls.Window1"
+        mc:Ignorable="d"
+        Title="Archive d'inventaire" SizeToContent="WidthAndHeight"  ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="ToolWindow" d:DesignWidth="380.194" d:DesignHeight="112.929">
+    <Grid>
+        <dxlc:LayoutControl Width="350" Height="100">
+            <dxlc:LayoutGroup Orientation="Vertical">
+                <dxlc:LayoutItem Label="Commentaire">
+                    <dxe:TextEdit Text="{Binding Comment}"/>
+                </dxlc:LayoutItem>
+
+
+                <Button Content="Valider" Height="24" Click="Button_Click"></Button>
+
+            </dxlc:LayoutGroup>
+
+        </dxlc:LayoutControl>
+
+    </Grid>
+</Window>

@@ -1,0 +1,43 @@
+﻿<UserControl x:Class="EXGEPA.Items.Controls.DepreciationPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+             xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol">
+    <dxlc:LayoutGroup View="Tabs" >
+        <dxlc:LayoutGroup Header="Mensuel"  >
+            <dxg:GridControl  ItemsSource="{Binding ListOfMonthelyDepreciation}" Margin="-12">
+                <dxg:GridControl.Columns>
+                    <dxg:GridColumn FieldName="StartDate" Visible="False" Header="Date Debut"/>
+                    <dxg:GridColumn FieldName="EndDate" Visible="False" Header="Date Fin"/>
+                    <dxg:GridColumn FieldName="AccountingPeriod.Key" Header="Exercice" />
+                    <dxg:GridColumn FieldName="Rate" Visible="False"/>
+                    <dxg:GridColumn FieldName="Annuity" Header="Dotation" />
+                    <dxg:GridColumn FieldName="AccumulatedDepreciation" Header="VNC"  Visible="False"/>
+                    <dxg:GridColumn FieldName="AccountingNetValue" />
+                </dxg:GridControl.Columns>
+                <dxg:GridControl.View>
+                    <dxg:TableView ShowAutoFilterRow="True"  AllowEditing="False" AutoWidth="True" ShowGroupPanel="False"/>
+                </dxg:GridControl.View>
+            </dxg:GridControl>
+        </dxlc:LayoutGroup>
+
+        <dxlc:LayoutGroup Header="Journalier"  >
+            <dxg:GridControl  ItemsSource="{Binding ListOfDailyDepreciation}" Margin="-12">
+                <dxg:GridControl.Columns>
+                    <dxg:GridColumn FieldName="StartDate" Visible="False" Header="Date Debut"/>
+                    <dxg:GridColumn FieldName="EndDate" Visible="False" Header="Date Fin"/>
+                    <dxg:GridColumn FieldName="AccountingPeriod.Key" Header="Exercice" />
+                    <dxg:GridColumn FieldName="Rate" Visible="False"/>
+                    <dxg:GridColumn FieldName="Annuity" Header="Dotation" />
+                    <dxg:GridColumn FieldName="AccumulatedDepreciation" Header="VNC"  Visible="False"/>
+                    <dxg:GridColumn FieldName="AccountingNetValue" />
+                </dxg:GridControl.Columns>
+                <dxg:GridControl.View>
+                    <dxg:TableView ShowAutoFilterRow="True"  AllowEditing="False" AutoWidth="True" ShowGroupPanel="False"/>
+                </dxg:GridControl.View>
+            </dxg:GridControl>
+        </dxlc:LayoutGroup>
+    </dxlc:LayoutGroup>
+</UserControl>

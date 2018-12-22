@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9AABD86C-2ED8-4229-932C-A7958C80B16D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EXGEPA.Transfert.Core</RootNamespace>
+    <AssemblyName>EXGEPA.Transfert.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\Bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\Bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.5\lib\net40-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="RepositoryHelper\CurrencyLoader.cs" />
+    <Compile Include="DataBaseTransfertEngin.cs" />
+    <Compile Include="IDataBaseTransfertEngin.cs" />
+    <Compile Include="Loader.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TransfertManager.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CORESI.DataAccess.Core\CORESI.DataAccess.Core.csproj">
+      <Project>{C06E3B51-B410-497B-A5F6-264C281F8F40}</Project>
+      <Name>CORESI.DataAccess.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CORESI.Data\CORESI.Data.csproj">
+      <Project>{B9E918C1-3125-4D0E-993D-2D922912A49C}</Project>
+      <Name>CORESI.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CORESI.IoC\CORESI.IoC.csproj">
+      <Project>{4542EE4D-6382-4318-B47F-B3ADC47EF8AA}</Project>
+      <Name>CORESI.IoC</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EXGEPA.Core\EXGEPA.Core.csproj">
+      <Project>{46BC067B-F010-4D0D-801B-959DBDE9A7E3}</Project>
+      <Name>EXGEPA.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EXGEPA.Depreciations.Core\EXGEPA.Depreciations.Core.csproj">
+      <Project>{B9485348-2275-41DA-87E9-F504C4154650}</Project>
+      <Name>EXGEPA.Depreciations.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EXGEPA.Model\EXGEPA.Model.csproj">
+      <Project>{3F0D2C86-6076-44CA-B9A1-6949CBAF6C36}</Project>
+      <Name>EXGEPA.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

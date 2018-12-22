@@ -1,0 +1,368 @@
+﻿<UserControl xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" 
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
+             xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+             xmlns:local="clr-namespace:EXGEPA.Localization.Controls"
+             xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+             xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" x:Class="EXGEPA.Localization.Controls.LocalizationControl"
+             mc:Ignorable="d" 
+             d:DesignHeight="400" d:DesignWidth="1000">
+    <Grid>
+        <dxb:BarManager >
+            <dxb:BarManager.Items>
+                <dxb:BarButtonItem Name="sendToStar" Content="SendToStar" IsEnabled="{Binding Path=(dxg:GridPopupMenu.GridMenuInfo).TargetElement.RowData.Row.AllowEditing, RelativeSource={RelativeSource Mode=Self}}" />
+                <dxb:BarLinkContainerItem Name="dynamicItems" ItemLinksSource="{Binding ContextMenuItems}">
+                    <dxb:BarLinkContainerItem.ItemTemplate>
+                        <DataTemplate>
+                            <ContentControl>
+                                <dxb:BarButtonItem  Content="{Binding Caption}" IsEnabled="{Binding IsEnabled}" Command="{Binding CommandAction}" />
+                            </ContentControl>
+                        </DataTemplate>
+                    </dxb:BarLinkContainerItem.ItemTemplate>
+                </dxb:BarLinkContainerItem>
+            </dxb:BarManager.Items>
+
+            <dxlc:LayoutControl Orientation="Vertical">
+                <dxlc:LayoutGroup>
+                    <dxlc:LayoutGroup View="GroupBox" Header="Site" Orientation="Vertical">
+                        <!--<dxe:ButtonEdit x:Name="editor3" ShowText="False" AllowDefaultButton="false" Height="24" Margin="-4,-9,-4,10" Visibility="Hidden">
+                            <dxe:ButtonInfo x:Name="add" GlyphKind="Plus" ToolTipService.ToolTip="Ajouter" Command="{Binding SiteAddNewRibbonButton.CommandAction}" />
+                            <dxe:ButtonInfo x:Name="edit" GlyphKind="Edit" ToolTipService.ToolTip="Modifier"  Command="{Binding SiteEditRibbonButton.CommandAction}" />
+                            <dxe:ButtonInfo x:Name="remove" GlyphKind="Cancel" ToolTipService.ToolTip="Supprimer" Command="{Binding SiteDeleteRibbonButton.CommandAction}" />
+                        </dxe:ButtonEdit>-->
+                        <dxg:GridControl Name="siteGrid"  
+                                         ShowLoadingPanel="{Binding ShowLoadingPanel}"
+                                         SelectedItem="{Binding ConecernedSite,Mode=TwoWay}"  
+                                         ItemsSource="{Binding ListOfRows}" 
+                                         SelectionMode="Row" 
+                                         Margin="-12" 
+                                         MaxHeight="1800" >
+                            <dxg:GridControl.Columns>
+                                <dxg:GridColumn FieldName="Region.Caption" Header="Region" />
+                                <dxg:GridColumn FieldName="Code" Header="Code" />
+                                <dxg:GridColumn FieldName="Caption" Header="Site" />
+                            </dxg:GridControl.Columns>
+                            <dxg:GridControl.View>
+                                <dxg:TableView AllowEditing="False"  AutoWidth="True" ShowGroupPanel="False"  UseEvenRowBackground="True">
+                                    <dxmvvm:Interaction.Behaviors>
+                                        <dxmvvm:EventToCommand EventName="RowDoubleClick" Command="{Binding SiteEditRibbonButton.CommandAction}" />
+                                    </dxmvvm:Interaction.Behaviors>
+                                </dxg:TableView>
+                            </dxg:GridControl.View>
+                        </dxg:GridControl>
+                    </dxlc:LayoutGroup>
+                    <dxlc:LayoutGroup View="GroupBox" Orientation="Vertical" Header="Batiment">
+                        <!--<dxe:ButtonEdit ShowText="False" AllowDefaultButton="false" Height="24" Margin="-4,-9,-4,10" Visibility="Hidden">
+                            <dxe:ButtonInfo  GlyphKind="Plus" ToolTipService.ToolTip="Ajouter" Command="{Binding BuildingAddNewRibbonButton.CommandAction}"/>
+                            <dxe:ButtonInfo  GlyphKind="Edit" ToolTipService.ToolTip="Search" />
+                            <dxe:ButtonInfo  GlyphKind="Cancel" ToolTipService.ToolTip="Search" />
+                        </dxe:ButtonEdit>-->
+                        <dxg:GridControl Name="buildingGrid" 
+                                         ShowLoadingPanel="{Binding ShowLoadingPanel}"
+                                         SelectedItem="{Binding ConecernedBuilding,Mode=TwoWay}"  
+                                         ItemsSource="{Binding ConecernedSite.Buildings,Mode=OneWay}"  
+                                         SelectionMode="Row" 
+                                         Margin="-12" 
+                                         MaxHeight="1800" >
+                            <dxg:GridControl.Columns>
+                                <dxg:GridColumn FieldName="Id" Header="Sys ID" Visible="False"/>
+                                <dxg:GridColumn FieldName="Code" Header="Code" />
+                                <dxg:GridColumn FieldName="Caption" Header="Batiment" />
+                            </dxg:GridControl.Columns>
+                            <dxg:GridControl.View>
+                                <dxg:TableView AllowEditing="False"  AutoWidth="True" ShowGroupPanel="False"  UseEvenRowBackground="True">
+                                    <dxmvvm:Interaction.Behaviors>
+                                        <dxmvvm:EventToCommand EventName="RowDoubleClick" Command="{Binding BuildingEditRibbonButton.CommandAction}" />
+                                    </dxmvvm:Interaction.Behaviors>
+                                </dxg:TableView>
+                            </dxg:GridControl.View>
+                        </dxg:GridControl>
+                    </dxlc:LayoutGroup>
+                    <dxlc:LayoutGroup View="GroupBox" Orientation="Vertical" Header="Niveau">
+                        <!--<dxe:ButtonEdit ShowText="False" AllowDefaultButton="false" Height="24" Margin="-4,-9,-4,10" Visibility="Hidden">
+                            <dxe:ButtonInfo  GlyphKind="Plus" ToolTipService.ToolTip="Ajouter" Command="{Binding LevelAddNewRibbonButton.CommandAction}"/>
+                            <dxe:ButtonInfo  GlyphKind="Edit" ToolTipService.ToolTip="Search" />
+                            <dxe:ButtonInfo  GlyphKind="Cancel" ToolTipService.ToolTip="Search" />
+                        </dxe:ButtonEdit>-->
+                        <dxg:GridControl Name="levelGrid"
+                                         ShowLoadingPanel="{Binding ShowLoadingPanel}"
+                                         SelectedItem="{Binding ConecernedLevel,Mode=TwoWay}"
+                                         ItemsSource="{Binding ConecernedBuilding.Levels,Mode=OneWay}"
+                                         SelectionMode="Row"  
+                                         Margin="-12"
+                                         MaxHeight="1800">
+                            <dxg:GridControl.Columns>
+                                <dxg:GridColumn FieldName="Id" Header="Sys ID" Visible="False"/>
+                                <dxg:GridColumn FieldName="Code" Header="Code" />
+                                <dxg:GridColumn FieldName="Caption" Header="Niveau" />
+                            </dxg:GridControl.Columns>
+                            <dxg:GridControl.View>
+                                <dxg:TableView AllowEditing="False"  AutoWidth="True" ShowGroupPanel="False"  UseEvenRowBackground="True">
+                                    <dxmvvm:Interaction.Behaviors>
+                                        <dxmvvm:EventToCommand EventName="RowDoubleClick" Command="{Binding LevelEditRibbonButton.CommandAction}" />
+                                    </dxmvvm:Interaction.Behaviors>
+                                </dxg:TableView>
+                            </dxg:GridControl.View>
+                        </dxg:GridControl>
+                    </dxlc:LayoutGroup>
+                </dxlc:LayoutGroup>
+                <dxlc:LayoutGroup View="GroupBox" Orientation="Vertical"  Header="Locaux">
+                    <!--<dxe:ButtonEdit ShowText="False" AllowDefaultButton="false" Height="24" Margin="-4,-9,-4,10" MaxWidth="400" Visibility="Collapsed">
+                        <dxe:ButtonInfo  GlyphKind="Plus" ToolTipService.ToolTip="Ajouter" Command="{Binding OfficeAddNewRibbonButton.CommandAction}"/>
+                        <dxe:ButtonInfo  GlyphKind="Edit" ToolTipService.ToolTip="Search" />
+                        <dxe:ButtonInfo  GlyphKind="Cancel" ToolTipService.ToolTip="Search" />
+                    </dxe:ButtonEdit>-->
+                    <dxg:GridControl  MaxHeight="1800" SelectedItem="{Binding ConecernedOffice, Mode=OneWayToSource}"    ItemsSource="{Binding ConecernedLevel.Offices}" SelectionMode="Row" Margin="-12" ShowLoadingPanel="{Binding ShowLoadingPanel}">
+                        <dxg:GridControl.Columns>
+                            <dxg:GridColumn FieldName="Id" Header="Sys ID" Visible="False"/>
+                            <dxg:GridColumn FieldName="Key" Header="Localisation" />
+                            <dxg:GridColumn FieldName="Level.Building.Site.Region.Caption" Header="Region" />
+                            <dxg:GridColumn FieldName="Level.Building.Site.Code" Header="Site" />
+                            <dxg:GridColumn FieldName="Level.Building.Code" Header="Batiment" />
+                            <dxg:GridColumn FieldName="Level.Code" Header="Niveau" />
+                            <dxg:GridColumn FieldName="Code" Header="Local" />
+                            <dxg:GridColumn FieldName="Caption" Header="Libelle Local" />
+                            <dxg:GridColumn FieldName="AnalyticalAccount.Key" Header="Compte analytique" />
+                            <dxg:GridColumn FieldName="AnalyticalAccount.Caption" Header="Libelle compte analytique" />
+                        </dxg:GridControl.Columns>
+                        <dxg:GridControl.View>
+                            <dxg:TableView AllowEditing="False"  AutoWidth="True" ShowGroupPanel="False"  UseEvenRowBackground="True" SelectedRowsSource="{Binding SelectedOffices}">
+                                <dxg:TableView.RowCellMenuCustomizations>
+                                    <dxb:BarLinkContainerItemLink BarItemName="dynamicItems"/>
+                                </dxg:TableView.RowCellMenuCustomizations>
+                                <dxmvvm:Interaction.Behaviors>
+                                    <dxmvvm:EventToCommand EventName="RowDoubleClick" Command="{Binding OfficeEditRibbonButton.CommandAction}" />
+                                </dxmvvm:Interaction.Behaviors>
+                            </dxg:TableView>
+                        </dxg:GridControl.View>
+                    </dxg:GridControl>
+                </dxlc:LayoutGroup>
+            </dxlc:LayoutControl>
+
+        </dxb:BarManager>
+
+        <Grid  x:Name="SiteEditorGrid">
+            <Grid.Style>
+                <Style TargetType="{x:Type Grid}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding DisplaySiteDetail}" Value="false">
+                            <Setter Property="Visibility" Value="Hidden"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding DisplaySiteDetail}" Value="true">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+
+            <dx:DXExpander VerticalAlignment="Center" HorizontalAlignment="Center" HorizontalExpand="None" VerticalExpand="FromTopToBottom" IsExpanded="{Binding DisplaySiteDetail}" Panel.ZIndex="1">
+                <Grid Background="LightGray">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="5"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="300"/>
+                        <ColumnDefinition Width="20"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center"><Run Text="Region : "/><Run Text=" "/><Run Text="{Binding ConecernedSite.Region.Caption}"/></TextBlock>
+
+                    <TextBlock Text="Code Site : " VerticalAlignment="Center" Grid.Row="2" Grid.Column="1"/>
+                    <dxe:TextEdit CharacterCasing="Upper"  VerticalContentAlignment="Center"  Text="{Binding ConecernedSite.Code}" Grid.Row="2" Grid.Column="2"  Margin="5,2" MaxLength="2"/>
+
+
+                    <TextBlock Text="Libelle Site : " VerticalAlignment="Center" Grid.Row="3" Grid.Column="1"/>
+                    <dxe:TextEdit CharacterCasing="Upper"  VerticalContentAlignment="Center"  Text="{Binding ConecernedSite.Caption}" Grid.Row="3" Grid.Column="2"  Margin="5,2"/>
+
+                    <Button Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="4" Margin="80,5" Width="80" HorizontalAlignment="Left" Content="Valider" Command="{Binding ValidateSiteCommand}"/>
+                    <Button Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="4" Margin="80,5" Width="80" HorizontalAlignment="Right" Content="Annuler" Command="{Binding CancelSiteCommand}"/>
+                </Grid>
+            </dx:DXExpander>
+            <Grid Opacity="0.7"  Background="Black" Panel.ZIndex="0"/>
+
+
+        </Grid>
+
+        <Grid x:Name="buildingEditorGrid">
+            <Grid.Style>
+                <Style TargetType="{x:Type Grid}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding DisplayBuildingDetail}" Value="false">
+                            <Setter Property="Visibility" Value="Hidden"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding DisplayBuildingDetail}" Value="true">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+
+            <dx:DXExpander VerticalAlignment="Center" HorizontalAlignment="Center" HorizontalExpand="None" VerticalExpand="FromTopToBottom" IsExpanded="{Binding DisplayBuildingDetail}"  Panel.ZIndex="1" >
+
+                <Grid Background="LightGray" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="5"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="300"/>
+                        <ColumnDefinition Width="20"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" ><Run Text="Region : "/><Run Text=" "/><Run Text="{Binding ConecernedBuilding.Site.Region.Caption}"/><Run Text=" "/><Run Text=", "/><Run Text=" "/><Run Text="Site : "/><Run Text=" "/><Run Text="{Binding ConecernedBuilding.Site.Caption}"/></TextBlock>
+
+                    <TextBlock Text="Code Batiment : " VerticalAlignment="Center" Grid.Row="2" Grid.Column="1"/>
+                    <dxe:TextEdit CharacterCasing="Upper"  VerticalContentAlignment="Center"  Text="{Binding ConecernedBuilding.Code}" Grid.Row="2" Grid.Column="2"  Margin="5,2" MaxLength="2"/>
+
+                    <TextBlock Text="Libelle Batiment : " VerticalAlignment="Center" Grid.Row="3" Grid.Column="1"/>
+                    <dxe:TextEdit CharacterCasing="Upper"  VerticalContentAlignment="Center"  Text="{Binding ConecernedBuilding.Caption}" Grid.Row="3" Grid.Column="2"  Margin="5,2"/>
+
+                    <Button Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="4" Margin="80,5" Width="80" HorizontalAlignment="Left" Content="Valider" Command="{Binding ValidateBuildingCommand}"/>
+                    <Button Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="4" Margin="80,5" Width="80" HorizontalAlignment="Right" Content="Annuler" Command="{Binding CancelBuildingCommand}"/>
+                </Grid>
+
+            </dx:DXExpander>
+            <Grid Opacity="0.5"  Background="Black" Panel.ZIndex="0"/>
+        </Grid>
+
+        <Grid x:Name="LevelEditorGrid">
+            <Grid.Style>
+                <Style TargetType="{x:Type Grid}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding DisplayLevelDetail}" Value="false">
+                            <Setter Property="Visibility" Value="Hidden"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding DisplayLevelDetail}" Value="true">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+
+            <dx:DXExpander VerticalAlignment="Center" HorizontalAlignment="Center" HorizontalExpand="None" VerticalExpand="FromTopToBottom" IsExpanded="{Binding DisplayLevelDetail}"  Panel.ZIndex="1">
+                <Grid Background="LightGray">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="5"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="300"/>
+                        <ColumnDefinition Width="20"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center">
+                        <Run Text="Region : "/>
+                        <Run Text=" "/>
+                        <Run Text="{Binding ConecernedLevel.Building.Site.Region.Caption}"/>
+                        <Run Text=" "/><Run Text=", "/><Run Text=" "/><Run Text="Site : "/>
+                        <Run Text=" "/><Run Text="{Binding ConecernedLevel.Building.Site.Caption}"/>
+                        <Run Text=" "/><Run Text=", "/>
+                        <Run Text=" "/>
+                        <Run Text="Batiment : "/><Run Text=" "/><Run Text="{Binding ConecernedLevel.Building.Caption}"/></TextBlock>
+
+                    <TextBlock Text="Code" VerticalAlignment="Center" Grid.Row="2" Grid.Column="1"/>
+                    <dxe:TextEdit CharacterCasing="Upper"  VerticalContentAlignment="Center" Text="{Binding ConecernedLevel.Code}" Grid.Row="2" Grid.Column="2"  Margin="5,2"  MaxLength="2"/>
+
+                    <TextBlock Text="Libelle Niveau" VerticalAlignment="Center" Grid.Row="3" Grid.Column="1"/>
+                    <dxe:TextEdit CharacterCasing="Upper"  VerticalContentAlignment="Center"  Text="{Binding ConecernedLevel.Caption}" Grid.Row="3" Grid.Column="2"  Margin="5,2" Mask="N0" MaskUseAsDisplayFormat="True" />
+
+                    <Button Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="4" Margin="80,5" Width="80" HorizontalAlignment="Left" Content="Valider" Command="{Binding ValidateLevelCommand}"/>
+                    <Button Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="4" Margin="80,5" Width="80" HorizontalAlignment="Right" Content="Annuler" Command="{Binding CancelLevelCommand}"/>
+                </Grid>
+            </dx:DXExpander>
+            <Grid Opacity="0.7"  Background="Black" Panel.ZIndex="0"/>
+        </Grid>
+
+        <Grid x:Name="OfficeEditorGrid" >
+            <Grid.Style>
+                <Style TargetType="{x:Type Grid}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding DisplayOfficeDetail}" Value="false">
+                            <Setter Property="Visibility" Value="Hidden"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding DisplayOfficeDetail}" Value="true">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+
+            <dx:DXExpander VerticalAlignment="Center" HorizontalAlignment="Center" HorizontalExpand="None" VerticalExpand="FromTopToBottom" IsExpanded="{Binding DisplayOfficeDetail}"  Panel.ZIndex="1">
+                <Grid Background="LightGray" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="5"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="300"/>
+                        <ColumnDefinition Width="20"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center"><Run Text="Region : "/><Run Text=" "/><Run Text="{Binding ConecernedOffice.Level.Building.Site.Region.Caption}"/><Run Text=" "/><Run Text=", "/><Run Text=" "/><Run Text="Site : "/><Run Text=" "/><Run Text="{Binding ConecernedOffice.Level.Building.Site.Caption}"/><Run Text=" "/><Run Text=", "/><Run Text=" "/><Run Text="Batiment : "/><Run Text=" "/><Run Text="{Binding ConecernedOffice.Level.Building.Caption}"/><Run Text=" "/><Run Text=", "/><Run Text=" "/><Run Text="Niveau : "/><Run Text=" "/><Run Text="{Binding ConecernedOffice.Level.Caption}"/></TextBlock>
+
+
+                    <TextBlock Text="Code : " VerticalAlignment="Center" Grid.Row="2" Grid.Column="1"/>
+                    <dxe:TextEdit CharacterCasing="Upper"  VerticalContentAlignment="Center"  Text="{Binding ConecernedOffice.Code}" Grid.Row="2" Grid.Column="2"  Margin="5,2" MaxLength="4"/>
+
+                    <TextBlock Text="Libelle" VerticalAlignment="Center" Grid.Row="3" Grid.Column="1"/>
+                    <dxe:TextEdit CharacterCasing="Upper"  VerticalContentAlignment="Center"  Text="{Binding ConecernedOffice.Caption}" Grid.Row="3" Grid.Column="2"  Margin="5,2"/>
+
+                    <TextBlock Text="Compte analytique" VerticalAlignment="Center" Grid.Row="4" Grid.Column="1"/>
+
+                    <dxg:LookUpEdit ItemsSource="{Binding ListOfAnalyticalAccount}" DisplayMember="Key" EditValue="{Binding ConecernedOffice.AnalyticalAccount}" PopupWidth="500" PopupHeight="300" Grid.Row="4" Grid.Column="2" Margin="5,2"  AutoComplete="True" AutoPopulateColumns="False" AssignNullValueOnClearingEditText="True">
+                        <dxg:LookUpEdit.PopupContentTemplate>
+                            <ControlTemplate>
+                                <dxg:GridControl x:Name="PART_GridControl"  >
+                                    <dxg:GridControl.Columns>
+                                        <dxg:GridColumn FieldName="Key" Header="Account" AllowBestFit="True" AllowEditing="False" Visible="True" VisibleIndex="0"/>
+                                        <dxg:GridColumn FieldName="Caption" Header="Libelle" AllowBestFit="True" AllowEditing="False" Visible="True" VisibleIndex="1"/>
+                                    </dxg:GridControl.Columns>
+                                    <dxg:GridControl.View>
+                                        <dxg:TableView AutoWidth="True" />
+                                    </dxg:GridControl.View>
+                                </dxg:GridControl>
+                            </ControlTemplate>
+                        </dxg:LookUpEdit.PopupContentTemplate>
+                    </dxg:LookUpEdit>
+
+
+                    <Button Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="4" Margin="80,5" Width="80" HorizontalAlignment="Left" Content="Valider" Command="{Binding ValidateOfficeCommand}"/>
+                    <Button Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="4" Margin="80,5" Width="80" HorizontalAlignment="Right" Content="Annuler" Command="{Binding CancelOfficeCommand}"/>
+                </Grid>
+            </dx:DXExpander>
+            <Grid Opacity="0.7"  Background="Black" Panel.ZIndex="0">
+
+            </Grid>
+        </Grid>
+
+    </Grid>
+</UserControl>

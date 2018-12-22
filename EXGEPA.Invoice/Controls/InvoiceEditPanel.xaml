@@ -1,0 +1,43 @@
+﻿<UserControl xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:EXGEPA.Invoice.Controls"
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"  x:Class="EXGEPA.Invoice.Controls.InvoiceEditPanel"
+             >
+    <Grid Background="WhiteSmoke">
+        <dxlc:LayoutControl  Orientation="Vertical">
+            <dxlc:LayoutGroup  View="GroupBox" Header="Details de la facture : " Orientation="Vertical">
+                <dxlc:LayoutItem Label="Numero de facture">
+                    <dxe:TextEdit CharacterCasing="Upper" VerticalContentAlignment="Center" Text="{Binding ConcernedRow.Code, UpdateSourceTrigger=PropertyChanged}"/>
+                </dxlc:LayoutItem>
+                <dxlc:LayoutItem Label="Type">
+                    <dxe:TextEdit/>
+                </dxlc:LayoutItem>
+                <dxlc:LayoutItem Label="Date">
+                    <dxe:TextEdit/>
+                </dxlc:LayoutItem>
+                <dxlc:LayoutItem Label="Fournisseur">
+                    <dxe:TextEdit/>
+                </dxlc:LayoutItem>
+                <dxlc:LayoutItem Label="GeneralAccount">
+                    <dxe:TextEdit/>
+                </dxlc:LayoutItem>
+                <dxlc:LayoutItem Label="FE">
+                    <dxe:TextEdit/>
+                </dxlc:LayoutItem>
+                <dxlc:LayoutItem Label="Montant">
+                    <dxe:TextEdit/>
+                </dxlc:LayoutItem>
+                <dxlc:LayoutItem Label="Taux">
+                    <dxe:TextEdit/>
+                </dxlc:LayoutItem>
+            </dxlc:LayoutGroup>
+            <dxlc:LayoutGroup>
+                <Button Width="100"  Content="Valider" Command="{Binding ValidateCommand}" Margin="90,0,50,0" />
+                <Button Width="100"  Content="Annuler" Command="{Binding CancelCommand}" Margin="50,0,90,0" />
+            </dxlc:LayoutGroup>
+        </dxlc:LayoutControl>
+    </Grid>
+</UserControl>

@@ -1,0 +1,394 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{DEBD1B8E-7578-42DF-9047-7DE237552EFC}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EXGEPA.Report</RootNamespace>
+    <AssemblyName>EXGEPA.Report</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\Bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\Bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DevExpress.Charts.v18.2.Core, Version=18.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.CodeParser.v18.2, Version=18.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.Data.v18.2, Version=18.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.DataAccess.v18.2, Version=18.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Office.v18.2.Core, Version=18.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.Pdf.v18.2.Core, Version=18.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.PivotGrid.v18.2.Core, Version=18.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.RichEdit.v18.2.Export, Version=18.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.Printing.v18.2.Core, Version=18.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.RichEdit.v18.2.Core, Version=18.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.Sparkline.v18.2.Core, Version=18.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.Utils.v18.2.UI, Version=18.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.Mvvm.v18.2, Version=18.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Xpf.CodeView.v18.2, Version=18.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Xpf.Core.v18.2, Version=18.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Xpf.Docking.v18.2, Version=18.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Xpf.DocumentViewer.v18.2.Core, Version=18.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Xpf.Layout.v18.2.Core, Version=18.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Xpf.NavBar.v18.2, Version=18.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Xpf.Printing.v18.2, Version=18.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Xpf.Ribbon.v18.2, Version=18.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Xpo.v18.2, Version=18.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraCharts.v18.2, Version=18.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.XtraCharts.v18.2.Wizard, Version=18.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.XtraGauges.v18.2.Core, Version=18.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.XtraPrinting.v18.2, Version=18.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.XtraReports.v18.2, Version=18.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.XtraReports.v18.2.Extensions, Version=18.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="EXGEPA.Repository.Report">
+      <HintPath>..\EXGEPA.Repository.Report\bin\Debug\EXGEPA.Repository.Report.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.5\lib\net40-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="ReachFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Printing" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="UIAutomationTypes" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Aquisitions\PeriodAquisition.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Aquisitions\PeriodAquisition.Designer.cs">
+      <DependentUpon>PeriodAquisition.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aquisitions\PeriodAquisitionPreparator.cs" />
+    <Compile Include="AReportPreviwer.cs" />
+    <Compile Include="Commun\Commun.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Commun\Commun.Designer.cs">
+      <DependentUpon>Commun.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Commun\ReportPreparator.cs" />
+    <Compile Include="Controls\EditionView.xaml.cs">
+      <DependentUpon>EditionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\EditionViewModel.cs" />
+    <Compile Include="Controls\ReportView.xaml.cs">
+      <DependentUpon>ReportView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ReportViewModel.cs" />
+    <Compile Include="Controls\ReportWrapperViewModel.cs" />
+    <Compile Include="Immobilisation\ExploitationStartupSheet.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Immobilisation\ExploitationStartupSheet.Designer.cs">
+      <DependentUpon>ExploitationStartupSheet.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Immobilisation\ImmobilisationSheet.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Immobilisation\ImmobilisationSheet.Designer.cs">
+      <DependentUpon>ImmobilisationSheet.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Immobilisation\ImmobilisationSheetProvider.cs" />
+    <Compile Include="Immobilisation\ItemByCompte.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Immobilisation\ItemByCompte.Designer.cs">
+      <DependentUpon>ItemByCompte.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Immobilisation\ItemByCompteProvider.cs" />
+    <Compile Include="Inventory\InventorySheetProvider.cs" />
+    <Compile Include="Inventory\InventorySheet.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Inventory\InventorySheet.Designer.cs">
+      <DependentUpon>InventorySheet.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\TheoricalInventory.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Inventory\TheoricalInventory.Designer.cs">
+      <DependentUpon>TheoricalInventory.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InvestismentRecap\InvestismentRecapByGeneralAcount.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="InvestismentRecap\InvestismentRecapByGeneralAcount.Designer.cs">
+      <DependentUpon>InvestismentRecapByGeneralAcount.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InvestismentRecap\RecapByGeneralAccountPreparator.cs" />
+    <Compile Include="InvestismentRecap\RecapRow.cs" />
+    <Compile Include="Investment\InvestmentByAccount.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Investment\InvestmentByAccount.Designer.cs">
+      <DependentUpon>InvestmentByAccount.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Investment\RecapByInvestmentAccount.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Investment\RecapByInvestmentAccount.Designer.cs">
+      <DependentUpon>RecapByInvestmentAccount.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Invoice\InvoiceReport.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Invoice\InvoiceReport.Designer.cs">
+      <DependentUpon>InvoiceReport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Module.cs" />
+    <Compile Include="NamedKeyReport.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="NamedKeyReport.Designer.cs">
+      <DependentUpon>NamedKeyReport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NamedKeyRepositoryReport.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="NamedKeyRepositoryReport.Designer.cs">
+      <DependentUpon>NamedKeyRepositoryReport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Outputs\OutputSheet.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Outputs\OutputSheet.Designer.cs">
+      <DependentUpon>OutputSheet.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReportProvider.cs" />
+    <Compile Include="Test.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Test.Designer.cs">
+      <DependentUpon>Test.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="Properties\DataSources\CORESI.Data.NamedKeyRow.datasource" />
+    <None Include="Properties\DataSources\EXGEPA.Model.INamedKeyRepository.datasource" />
+    <None Include="Properties\DataSources\EXGEPA.Model.Item.datasource" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Aquisitions\PeriodAquisition.resx">
+      <DependentUpon>PeriodAquisition.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Commun\Commun.resx">
+      <DependentUpon>Commun.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Immobilisation\ExploitationStartupSheet.resx">
+      <DependentUpon>ExploitationStartupSheet.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Immobilisation\ImmobilisationSheet.resx">
+      <DependentUpon>ImmobilisationSheet.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Immobilisation\ItemByCompte.resx">
+      <DependentUpon>ItemByCompte.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Inventory\InventorySheet.resx">
+      <DependentUpon>InventorySheet.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Inventory\TheoricalInventory.resx">
+      <DependentUpon>TheoricalInventory.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InvestismentRecap\InvestismentRecapByGeneralAcount.resx">
+      <DependentUpon>InvestismentRecapByGeneralAcount.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Investment\InvestmentByAccount.resx">
+      <DependentUpon>InvestmentByAccount.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Investment\RecapByInvestmentAccount.resx">
+      <DependentUpon>RecapByInvestmentAccount.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Invoice\InvoiceReport.resx">
+      <DependentUpon>InvoiceReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NamedKeyReport.resx">
+      <DependentUpon>NamedKeyReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NamedKeyRepositoryReport.resx">
+      <DependentUpon>NamedKeyRepositoryReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Outputs\OutputSheet.resx">
+      <DependentUpon>OutputSheet.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="Test.resx">
+      <DependentUpon>Test.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CORESI.Data\CORESI.Data.csproj">
+      <Project>{b9e918c1-3125-4d0e-993d-2d922912a49c}</Project>
+      <Name>CORESI.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CORESI.IoC\CORESI.IoC.csproj">
+      <Project>{4542ee4d-6382-4318-b47f-b3adc47ef8aa}</Project>
+      <Name>CORESI.IoC</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CORESI.Report\CORESI.Report.csproj">
+      <Project>{64e9f215-bf65-4533-822e-eb09181401f8}</Project>
+      <Name>CORESI.Report</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CORESI.Tools\CORESI.Tools.csproj">
+      <Project>{3D84E36E-574E-4F12-AD62-49578CB4D651}</Project>
+      <Name>CORESI.Tools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CORESI.WPF.Controls\CORESI.WPF.Controls.csproj">
+      <Project>{33F2993C-F05C-45C1-827C-1CACA3B30734}</Project>
+      <Name>CORESI.WPF.Controls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CORESI.WPF.Core\CORESI.WPF.Core.csproj">
+      <Project>{e8e75679-cd86-44f0-a2b5-b43809063a37}</Project>
+      <Name>CORESI.WPF.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CORESI.WPF\CORESI.WPF.csproj">
+      <Project>{5ba5c32b-8083-4bb1-8e9b-d64b59856b90}</Project>
+      <Name>CORESI.WPF</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EXGEPA.Core\EXGEPA.Core.csproj">
+      <Project>{46bc067b-f010-4d0d-801b-959dbde9a7e3}</Project>
+      <Name>EXGEPA.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EXGEPA.Depreciations.Core\EXGEPA.Depreciations.Core.csproj">
+      <Project>{B9485348-2275-41DA-87E9-F504C4154650}</Project>
+      <Name>EXGEPA.Depreciations.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EXGEPA.Model\EXGEPA.Model.csproj">
+      <Project>{3f0d2c86-6076-44ca-b9a1-6949cbaf6c36}</Project>
+      <Name>EXGEPA.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Controls\EditionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ReportView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

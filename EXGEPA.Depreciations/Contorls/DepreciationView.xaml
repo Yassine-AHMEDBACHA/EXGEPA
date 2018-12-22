@@ -1,0 +1,116 @@
+﻿<CORESI:ExportableView xmlns:CORESI="clr-namespace:CORESI.WPF.Controls;assembly=CORESI.WPF.Controls"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" xmlns:ViewModels="clr-namespace:EXGEPA.Depreciations.Contorls"
+             xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" x:Class="EXGEPA.Depreciations.Contorls.DepreciationView"
+             mc:Ignorable="d"
+             d:DesignHeight="800" d:DesignWidth="1200">
+    <Grid>
+        <dxg:GridControl x:Name="grid" ItemsSource="{Binding ListOfRows}" ShowLoadingPanel="{Binding ShowLoadingPanel}" Grid.Row="1">
+            <dxg:GridControl.GroupSummary>
+                <dxg:GridSummaryItem Alignment="Left" FieldName="Item.Reference.InventoryNumber" SummaryType="Count" DisplayFormat="n0" />
+                <dxg:GridSummaryItem Alignment="Right" FieldName="Item.Amount" SummaryType="Sum" DisplayFormat="n2" />
+                <dxg:GridSummaryItem Alignment="Right" FieldName="Annuity" SummaryType="Sum" DisplayFormat="n2" />
+                <dxg:GridSummaryItem Alignment="Right" FieldName="PreviouseDepreciation" SummaryType="Sum" DisplayFormat="n2" />
+                <dxg:GridSummaryItem Alignment="Right" FieldName="Cumuled" SummaryType="Sum" DisplayFormat="n2" />
+                <dxg:GridSummaryItem Alignment="Right" FieldName="NetAccountingValue" SummaryType="Sum" DisplayFormat="n2" />
+            </dxg:GridControl.GroupSummary>
+            <dxg:GridControl.Columns>
+                <dxg:GridColumn FieldName="Item.Key" Header="Code" AllowEditing="False"  />
+                <dxg:GridColumn FieldName="Item.GeneralAccount.Key" Header="Compte d'investissement" AllowEditing="False"  />
+                <dxg:GridColumn FieldName="Item.Reference.Key" Header="Reference" AllowEditing="False"  />
+                <dxg:GridColumn FieldName="Item.Reference.Caption" Header="Designation reference"  AllowEditing="False" Visible="False"/>
+                <dxg:GridColumn FieldName="Item.Description" Header="Designation"  AllowEditing="False" />
+                <dxg:GridColumn FieldName="Item.AquisitionDate" Header="date acquisition"  AllowEditing="False" />
+                <dxg:GridColumn FieldName="Item.LimiteDate" Header="Date fin de vie"  AllowEditing="False" />
+                <dxg:GridColumn FieldName="Duration" Header="Duree"  AllowEditing="False" />
+                <dxg:GridColumn FieldName="Item.Amount" Header="Valeur d'acquisition" AllowEditing="False" >
+                    <dxg:GridColumn.EditSettings>
+                        <dxe:TextEditSettings Mask="n2" MaskType="Numeric" MaskUseAsDisplayFormat="True"/>
+                    </dxg:GridColumn.EditSettings>
+                </dxg:GridColumn>
+                <dxg:GridColumn FieldName="PreviouseDepreciation" Header="Amortissement antérieur"  AllowEditing="False" >
+                    <dxg:GridColumn.EditSettings>
+                        <dxe:TextEditSettings Mask="n2" MaskType="Numeric" MaskUseAsDisplayFormat="True"/>
+                    </dxg:GridColumn.EditSettings>
+                </dxg:GridColumn>
+                <dxg:GridColumn FieldName="Annuity" Header="Dotation"  AllowEditing="False" >
+                    <dxg:GridColumn.EditSettings>
+                        <dxe:TextEditSettings Mask="n2" MaskType="Numeric" MaskUseAsDisplayFormat="True"/>
+                    </dxg:GridColumn.EditSettings>
+                </dxg:GridColumn>
+                <dxg:GridColumn FieldName="Cumuled" Header="Amortissement cumulé"  AllowEditing="False" >
+                    <dxg:GridColumn.EditSettings>
+                        <dxe:TextEditSettings Mask="n2" MaskType="Numeric" MaskUseAsDisplayFormat="True"/>
+                    </dxg:GridColumn.EditSettings>
+                </dxg:GridColumn>
+                <dxg:GridColumn FieldName="NetAccountingValue" Header="VNC"  AllowEditing="False" >
+                    <dxg:GridColumn.EditSettings>
+                        <dxe:TextEditSettings Mask="n2" MaskType="Numeric" MaskUseAsDisplayFormat="True"/>
+                    </dxg:GridColumn.EditSettings>
+                </dxg:GridColumn>
+                <dxg:GridColumn FieldName="Item.GeneralAccount.Caption" Header="Libelle compte investissement"  AllowEditing="False" />
+                <dxg:GridColumn FieldName="Item.GeneralAccount.Children.Key" Header="Compte dotation" AllowEditing="False"  />
+                <dxg:GridColumn FieldName="Item.GeneralAccount.Children.Caption" Header="Libelle compte dotation"  AllowEditing="False" />
+                <dxg:GridColumn FieldName="Item.GeneralAccount.Children.Children.Key" Header="Compte amortissement" AllowEditing="False"  />
+                <dxg:GridColumn FieldName="Item.GeneralAccount.Children.Children.Caption" Header="Libelle compte amortissement"  AllowEditing="False" />
+                <dxg:GridColumn FieldName="Item.OldCode" Header="Ancien code" AllowEditing="False"/>
+                <dxg:GridColumn FieldName="Item.Id" Header="Sys Id" AllowEditing="False"  Visible="{Binding ShowSysIdColumn}" Fixed="Left" Width="55" />
+            </dxg:GridControl.Columns>
+            <dxg:GridControl.View>
+                <dxg:TableView Name="mainTableView"  NavigationStyle="Row"
+                               ShowGroupPanel="{Binding ShowGroupPanel}" 
+                               ShowAutoFilterRow="{Binding ShowColumnFilter}" 
+                               AllowConditionalFormattingManager="True"
+                               ShowTotalSummary="False"   
+                                WaitIndicatorType="Panel"
+                               PrintAutoWidth="False"   
+                               AllowPerPixelScrolling="False"  
+                               GroupSummaryDisplayMode="AlignByColumns"
+                                   
+                               AutoWidth="{Binding AutoWidth}"  
+                              ShowGroupedColumns="True" 
+                               SelectedRowsSource="{Binding Selection}"  
+                               UseEvenRowBackground="True">
+                </dxg:TableView>
+            </dxg:GridControl.View>
+            <dxg:GridControl.DetailDescriptor>
+                <dxg:DataControlDetailDescriptor ItemsSourceBinding="{Binding Depreciations}" ShowHeader="False" >
+                    <dxg:GridControl >
+                        <dxg:GridControl.Columns>
+                            <dxg:GridColumn FieldName="AccountingPeriod.Key" Header="Exercice" AllowEditing="False"  />
+                            <dxg:GridColumn FieldName="StartDate" AllowEditing="False" SortMode="Value" />
+                            <dxg:GridColumn FieldName="EndDate" AllowEditing="False"  />
+                            <dxg:GridColumn FieldName="InitialValue" AllowEditing="False"  >
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:TextEditSettings Mask="n2" MaskType="Numeric" MaskUseAsDisplayFormat="True"/>
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="Period"  AllowEditing="False" />
+                            <dxg:GridColumn FieldName="PreviousDepreciation"  AllowBestFit="True" AllowEditing="False" Visible="True" BestFitArea="All" SortOrder="Ascending" SortIndex="0">
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:TextEditSettings Mask="n2" MaskType="Numeric" MaskUseAsDisplayFormat="True"/>
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="Annuity"  AllowBestFit="True" AllowEditing="False" Visible="True" BestFitArea="All" SortOrder="Ascending" SortIndex="0">
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:TextEditSettings Mask="n2" MaskType="Numeric" MaskUseAsDisplayFormat="True"/>
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="AccountingNetValue" Header="VNC"  AllowEditing="False" >
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:TextEditSettings Mask="n2" MaskType="Numeric" MaskUseAsDisplayFormat="True"/>
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                        </dxg:GridControl.Columns>
+                        <dxg:GridControl.View>
+                            <dxg:TableView AllowPerPixelScrolling="True" ShowTotalSummary="False" AutoWidth="True" ShowGroupPanel="False"/>
+                        </dxg:GridControl.View>
+                    </dxg:GridControl>
+                </dxg:DataControlDetailDescriptor>
+            </dxg:GridControl.DetailDescriptor>
+        </dxg:GridControl>
+    </Grid>
+</CORESI:ExportableView>

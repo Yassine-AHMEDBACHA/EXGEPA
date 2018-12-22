@@ -1,0 +1,168 @@
+﻿<UserControl x:Class="EXGEPA.Items.Controls.AquisitionInfoPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
+              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
+             xmlns:local="clr-namespace:EXGEPA.Items.Controls"
+             xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" >
+
+    <dxlc:LayoutControl Header="LayoutGroup" Margin="-12">
+        <dxlc:LayoutGroup Orientation="Vertical">
+            <dxlc:LayoutGroup View="GroupBox" Header="Dates">
+                <dxlc:LayoutItem  Label="Acquisition" >
+                    <dxe:DateEdit DateTime="{Binding AquisitionDate,UpdateSourceTrigger=PropertyChanged}" Name="aquisitionDateControle"  IsReadOnly="{Binding IsAccountingInformationLocked}"/>
+                </dxlc:LayoutItem>
+                <dxlc:LayoutItem Label="Mise en service">
+                    <dxe:DateEdit DateTime="{Binding StartServiceDate,UpdateSourceTrigger=PropertyChanged}" MinValue="{Binding ElementName=aquisitionDateControle,Path=DateTime}"/>
+                </dxlc:LayoutItem>
+            </dxlc:LayoutGroup>
+            <dxlc:LayoutGroup Header="Pieces comptable" View="GroupBox" >
+                <dxlc:LayoutGroup   Orientation="Vertical">
+                    <dxlc:LayoutItem Label="Facture">
+                        <dxg:LookUpEdit 
+                					AssignNullValueOnClearingEditText="True" AutoComplete="True" InvalidValueBehavior="WaitForValidValue" ValidateOnEnterKeyPressed="True" 
+                			 IsReadOnly="{Binding IsAccountingInformationLocked}"
+                            PopupHeight="300 " PopupWidth="500" ItemsSource="{Binding RepositoryDataProvider.ListOfInvoice}" EditValue="{Binding Invoice}" DisplayMember="Key" AutoPopulateColumns="False"
+                            SelectedItem="{Binding Invoice}">
+                            <dxg:LookUpEdit.PopupContentTemplate>
+                                <ControlTemplate>
+                                    <dxg:GridControl	 						x:Name="PART_GridControl">
+                                        <dxg:GridControl.Columns>
+                                            <dxg:GridColumn Visible="True" VisibleIndex="0" Header="Code" FieldName="Key" AllowBestFit="True" AllowEditing="False" />
+                                            <dxg:GridColumn Visible="True" VisibleIndex="2" Header="Date" FieldName="Date" AllowBestFit="True" AllowEditing="False" />
+                                            <dxg:GridColumn Visible="True" Header="Fournisseur" FieldName="Provider.Key" AllowBestFit="True" AllowEditing="False" />
+                                            <dxg:GridColumn Visible="True" Header="Fiche d'entree" FieldName="InputSheet.Key" AllowBestFit="True" AllowEditing="False" />
+                                            <dxg:GridColumn Visible="True" Header="Montant" FieldName="Amount" AllowBestFit="True" AllowEditing="False" />
+                                        </dxg:GridControl.Columns>
+                                        <dxg:GridControl.View>
+                                            <dxg:TableView ShowAutoFilterRow="True"  AutoWidth="True" />
+                                        </dxg:GridControl.View>
+                                    </dxg:GridControl>
+                                </ControlTemplate>
+                            </dxg:LookUpEdit.PopupContentTemplate>
+                        </dxg:LookUpEdit>
+                    </dxlc:LayoutItem>
+                    <dxlc:LayoutItem Label="B.T">
+                        <dxg:LookUpEdit 
+                        			AssignNullValueOnClearingEditText="True" 
+                                    AutoComplete="True" 
+                             IsReadOnly="{Binding IsAccountingInformationLocked}"
+                                    InvalidValueBehavior="WaitForValidValue"
+                        			ValidateOnEnterKeyPressed="True" 
+                                    PopupHeight="300 " PopupWidth="500" ItemsSource="{Binding RepositoryDataProvider.ListOfTransferOrder}" EditValue="{Binding TransferOrder}" SelectedItem="{Binding TransferOrder}" DisplayMember="Key" AutoPopulateColumns="False">
+                            <dxg:LookUpEdit.PopupContentTemplate    >
+                                <ControlTemplate    >
+                                    <dxg:GridControl							x:Name="PART_GridControl">
+                                        <dxg:GridControl.Columns    >
+                                            <dxg:GridColumn FieldName="Id" Header="Sys Id" AllowEditing="False" Visible="False"  VisibleIndex="0" />
+                                            <dxg:GridColumn FieldName="Key" Header="Code"  AllowEditing="False" Visible="True" VisibleIndex="1"/>
+                                            <dxg:GridColumn FieldName="CompanyName" Header="Société"  AllowEditing="False" Visible="True" VisibleIndex="2"  Width="800" />
+                                            <dxg:GridColumn FieldName="Date" Header="Date"  AllowEditing="False" Visible="True" VisibleIndex="3" />
+                                        </dxg:GridControl.Columns>
+                                        <dxg:GridControl.View    >
+                                            <dxg:TableView ShowAutoFilterRow="True"  AutoWidth="True" />
+                                        </dxg:GridControl.View>
+                                    </dxg:GridControl>
+                                </ControlTemplate>
+                            </dxg:LookUpEdit.PopupContentTemplate>
+                        </dxg:LookUpEdit>
+                    </dxlc:LayoutItem>
+                </dxlc:LayoutGroup>
+                <dxlc:LayoutGroup   Orientation="Vertical" >
+                    <dxlc:LayoutItem Label="Date Fact">
+                        <dxe:TextEdit  CharacterCasing="Upper" Text="{Binding Invoice.Date}"   IsReadOnly="True" Mask="d" MaskType="DateTime" MaskUseAsDisplayFormat="True"/>
+                    </dxlc:LayoutItem>
+                    <dxlc:LayoutItem	Label="Date B.T">
+                        <dxe:TextEdit  CharacterCasing="Upper"      		Text="{Binding TransferOrder.Date}"	   IsReadOnly="True" Mask="d" MaskType="DateTime" MaskUseAsDisplayFormat="True"/>
+                    </dxlc:LayoutItem>
+                </dxlc:LayoutGroup>
+            </dxlc:LayoutGroup>
+            <dxlc:LayoutGroup Header="Fournisseur" View="GroupBox">
+                <dxlc:LayoutItem Label="Numero">
+                    <dxg:LookUpEdit ValidateOnEnterKeyPressed="True" PopupHeight="300"  IsReadOnly="{Binding IsAccountingInformationLocked}" PopupWidth="500" ItemsSource="{Binding RepositoryDataProvider.ListOfProvider}" SelectedItem="{Binding Provider}" DisplayMember="Key" AutoPopulateColumns="False" AllowRejectUnknownValues="False" >
+                        <dxg:LookUpEdit.PopupContentTemplate>
+                            <ControlTemplate >
+                                <dxg:GridControl   x:Name="PART_GridControl">
+                                    <dxg:GridControl.Columns >
+                                        <dxg:GridColumn    Visible="True" VisibleIndex="0" Header="Matricule" FieldName="Key" AllowBestFit="True" AllowEditing="False" />
+                                        <dxg:GridColumn    Visible="True" VisibleIndex="1" Header="Raison sociale" FieldName="Caption" AllowBestFit="True" AllowEditing="False" />
+                                    </dxg:GridControl.Columns>
+                                    <dxg:GridControl.View    >
+                                        <dxg:TableView ShowAutoFilterRow="True" AutoWidth="True" />
+                                    </dxg:GridControl.View>
+                                </dxg:GridControl>
+                            </ControlTemplate>
+                        </dxg:LookUpEdit.PopupContentTemplate>
+                    </dxg:LookUpEdit>
+                </dxlc:LayoutItem>
+                <dxlc:LayoutItem Label="Raison soc">
+                    <dxe:TextEdit  CharacterCasing="Upper"  Text="{Binding Provider.Caption}" IsReadOnly="True" />
+                </dxlc:LayoutItem>
+            </dxlc:LayoutGroup>
+            <dxlc:LayoutGroup Header="Entrée" View="GroupBox">
+                <dxlc:LayoutGroup   Orientation="Vertical" >
+                    <dxlc:LayoutItem Label="F.E">
+                        <dxg:LookUpEdit ItemsSource="{Binding RepositoryDataProvider.ListOfInputSheet}"
+                                         IsReadOnly="{Binding IsAccountingInformationLocked}"
+                                        AutoPopulateColumns="False"  DisplayMember="Key" SelectedItem="{Binding InputSheet}" PopupWidth="500" PopupHeight="300"  Grid.Row="6" Grid.Column="2" >
+                            <dxg:LookUpEdit.PopupContentTemplate>
+                                <ControlTemplate>
+                                    <dxg:GridControl x:Name="PART_GridControl"  >
+                                        <dxg:GridControl.Columns>
+                                            <dxg:GridColumn FieldName="Key" Header="Code"  AllowEditing="False" Visible="True" VisibleIndex="1"/>
+                                            <dxg:GridColumn FieldName="Date" Header="Date"  AllowEditing="False" Visible="True" VisibleIndex="2" />
+                                        </dxg:GridControl.Columns>
+                                        <dxg:GridControl.View>
+                                            <dxg:TableView ShowAutoFilterRow="True"  AutoWidth="True" />
+                                        </dxg:GridControl.View>
+                                    </dxg:GridControl>
+                                </ControlTemplate>
+                            </dxg:LookUpEdit.PopupContentTemplate>
+                        </dxg:LookUpEdit>
+
+                    </dxlc:LayoutItem>
+                    <dxlc:LayoutItem                			Label="B.R.M">
+                        <dxg:LookUpEdit ItemsSource="{Binding RepositoryDataProvider.ListOfReceiveOrder}" AutoPopulateColumns="False"  DisplayMember="Key" SelectedItem="{Binding ReceiveOrder}" PopupWidth="500" PopupHeight="300"  Grid.Row="6" Grid.Column="2" 
+                                         IsReadOnly="{Binding IsAccountingInformationLocked}">
+                            <dxg:LookUpEdit.PopupContentTemplate>
+                                <ControlTemplate>
+                                    <dxg:GridControl x:Name="PART_GridControl"  >
+                                        <dxg:GridControl.Columns>
+                                            <dxg:GridColumn FieldName="Key" Header="Code"  AllowEditing="False" Visible="True" VisibleIndex="1"/>
+                                            <dxg:GridColumn FieldName="Date" Header="Date"  AllowEditing="False" Visible="True" VisibleIndex="2" />
+                                        </dxg:GridControl.Columns>
+                                        <dxg:GridControl.View>
+                                            <dxg:TableView ShowAutoFilterRow="True"  AutoWidth="True" />
+                                        </dxg:GridControl.View>
+                                    </dxg:GridControl>
+                                </ControlTemplate>
+                            </dxg:LookUpEdit.PopupContentTemplate>
+                        </dxg:LookUpEdit>
+                    </dxlc:LayoutItem>
+                </dxlc:LayoutGroup>
+                <dxlc:LayoutGroup   Orientation="Vertical">
+                    <dxlc:LayoutItem Label="Date F.E">
+                        <dxe:TextEdit  CharacterCasing="Upper" Text="{Binding InputSheet.Date}"   Mask="d" MaskType="DateTime" MaskUseAsDisplayFormat="True" IsReadOnly="True"  Focusable="False"/>
+                    </dxlc:LayoutItem>
+                    <dxlc:LayoutItem  Label="Date B.R.M">
+                        <dxe:TextEdit  CharacterCasing="Upper" Text="{Binding ReceiveOrder.Date}"   Mask="d" MaskType="DateTime" MaskUseAsDisplayFormat="True" IsReadOnly="True"  Focusable="False"/>
+                    </dxlc:LayoutItem>
+                </dxlc:LayoutGroup>
+            </dxlc:LayoutGroup>
+
+            <dxlc:LayoutGroup View="Group"  Orientation="Vertical">
+                <dxlc:LayoutItem Label="Ancien Code">
+                    <dxe:TextEdit    CharacterCasing="Upper" Text="{Binding OldCode, UpdateSourceTrigger=PropertyChanged}"  IsReadOnly="{Binding IsAccountingInformationLocked}"/>
+                </dxlc:LayoutItem>
+            </dxlc:LayoutGroup>
+            <dxlc:LayoutGroup Header="Code à bar" View="GroupBox">
+                <dxe:BarCodeEdit EditValue="{Binding Key}" Margin="15,0">
+                    <dxe:BarCodeEdit.StyleSettings>
+                        <dxe:Code128StyleSettings CharacterSet="CharsetAuto"/>
+                    </dxe:BarCodeEdit.StyleSettings>
+                </dxe:BarCodeEdit>
+            </dxlc:LayoutGroup>
+        </dxlc:LayoutGroup>
+    </dxlc:LayoutControl>
+</UserControl>

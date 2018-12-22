@@ -1,0 +1,26 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+                    xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+                    xmlns:local="clr-namespace:CORESI.WPF.Core.Shell.Template">
+    <DataTemplate x:Key="ComboBoxEditTemplate">
+        <ContentControl>
+            <dxb:BarEditItem
+                    RibbonStyle="Large"
+                    Content="{Binding Caption}"
+                    EditWidth="{Binding Width}"
+                    Glyph="{Binding Glyph}"
+                    GlyphSize="Large"
+                    Focusable="True"
+                    EditValue="{Binding EditValue}"
+                    LargeGlyph="{Binding LargeGlyph}"
+                    IsEnabled="{Binding IsEnabled}"
+                    IsVisible="{Binding IsVisible}"
+                    Command="{Binding CommandAction}">
+                <dxb:BarEditItem.EditSettings>
+                    <dxe:ComboBoxEditSettings ItemsSource="{Binding ItemsSource}" AllowNullInput="False" AllowRejectUnknownValues="True" />
+                </dxb:BarEditItem.EditSettings>
+            </dxb:BarEditItem>
+        </ContentControl>
+    </DataTemplate>
+</ResourceDictionary>

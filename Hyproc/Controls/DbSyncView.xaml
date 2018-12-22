@@ -1,0 +1,53 @@
+﻿<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" xmlns:ViewModels="clr-namespace:Hyproc.Controls"
+             xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" xmlns:Serialization="clr-namespace:DevExpress.Xpf.LayoutControl.Serialization;assembly=DevExpress.Xpf.LayoutControl.v18.2" x:Class="Hyproc.Controls.DbSyncView"
+             mc:Ignorable="d"
+             d:DesignHeight="600" d:DesignWidth="1000">
+    <Grid>
+        <dxlc:LayoutControl Orientation="Vertical">
+            <dxlc:LayoutGroup>
+                <dxlc:LayoutItem Label="Data source">
+                    <dxe:TextEdit CharacterCasing="Upper" EditValue="{Binding DataSource, UpdateSourceTrigger=PropertyChanged}" />
+                </dxlc:LayoutItem>
+                <dxlc:LayoutItem Label="Autentification windows : " HorizontalContentAlignment="Center" Width="300">
+                    <dxe:CheckEdit x:Name="checkBoxUseWindowsAutentification" IsChecked="{Binding UseWindowsAutentification}" />
+                </dxlc:LayoutItem>
+            </dxlc:LayoutGroup>
+            <dxlc:LayoutGroup Name="credentiale" Header="Information d'autentification " IsEnabled="True">
+                <dxlc:LayoutItem Label="Nom d'utilisateur">
+                    <dxe:TextEdit CharacterCasing="Upper" Text="{Binding UserName}" />
+                </dxlc:LayoutItem>
+                <dxlc:LayoutItem Label="Mot de passe">
+                    <dxe:PasswordBoxEdit Text="{Binding Password}" />
+                </dxlc:LayoutItem>
+            </dxlc:LayoutGroup>
+            <dxlc:LayoutItem>
+                <Button Content="Se connecter" Margin="5" Height="24" Width="300" Command="{Binding TestConnexionString}" />
+            </dxlc:LayoutItem>
+            <dxlc:LayoutItem Label="Base de données">
+                <dxe:ComboBoxEdit AllowNullInput="True" ItemsSource="{Binding AvailableDataBase}" SelectedItem="{Binding DataBase}" />
+            </dxlc:LayoutItem>
+            <dxlc:LayoutItem>
+                <Button Content="Synchroniser la base" Margin="5" Height="24" Width="300" Command="{Binding LaunchSync}" />
+            </dxlc:LayoutItem>
+
+        </dxlc:LayoutControl>
+        <Grid>
+            <dxe:ProgressBarEdit VerticalAlignment="Center" Margin="30,0" Height="60" Minimum="0" Maximum="100" Value="{Binding ProgressValue}">
+                <dxe:ProgressBarEdit.Style>
+                    <Style TargetType="{x:Type dxe:ProgressBarEdit}">
+                        <Setter Property="Visibility" Value="Visible" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ProgressBarVisible}" Value="false">
+                                <Setter Property="Visibility" Value="Hidden" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </dxe:ProgressBarEdit.Style>
+            </dxe:ProgressBarEdit>
+        </Grid>
+    </Grid>
+</UserControl>
