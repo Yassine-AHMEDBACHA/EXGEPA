@@ -29,7 +29,7 @@ namespace EXGEPA.Saidal.Core
             ServiceLocator.Resolve(out parameterProvider);
             separator = this.parameterProvider.GetAndSetIfMissing("InterfaceSerializerSeparator", ",");
             additionalCharacter = this.parameterProvider.GetAndSetIfMissing("InterfaceAdditionalCharacter", " ");
-            this.fieldLenghts = new List<int> { 2, 8, 3, 2, 10, 6, 14, 1, 50, 20 };
+            this.fieldLenghts = new List<int> { 2, 8, 3, 2, 10, 6, 25, 1, 50, 20 };
 
         }
 
