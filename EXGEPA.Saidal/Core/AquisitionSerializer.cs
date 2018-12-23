@@ -38,12 +38,12 @@ namespace EXGEPA.Saidal.Core
 
         public void Serialize(IEnumerable<Item> items)
         {
-            if(!items.Any())
+            if (!items.Any())
             {
                 this.uIMessage.Error("Veuillez selectionner des articles à envoyer");
                 return;
             }
-                    
+
             var itemGroupedByFacture = items.Where(x => x.Invoice != null).GroupBy(x => x.Invoice);
 
             if (!itemGroupedByFacture.Any())
@@ -67,11 +67,13 @@ namespace EXGEPA.Saidal.Core
                     stringBuilder.AppendLine(this.Align(string.Join(";", firstPart, i, invoice.Date.Day, subGroup.Key.Key, " ", totalAmount, "D", lastPart)));
                     i++;
                 }
-                
+
                 var invoiceAmount = invoice.Amount - invoice.Holdback;
 
-                var thirdPartyAccount = invoice.Provider.Country.ToLower().Contains("alger") ? "404000" : "404010";
-                stringBuilder.AppendLine(this.Align(string.Join(";", firstPart, i, invoice.Date.Day, thirdPartyAccount, " ", invoiceAmount, "C", lastPart)));
+                var account = invoice.Provider.Country.ToLower().Contains("alger") ? "404000" : "404010";
+
+
+                stringBuilder.AppendLine(this.Align(string.Join(";", firstPart, i, invoice.Date.Day, account, invoice.Provider.ThirdPartyAccount , invoiceAmount, "C", lastPart)));
                 i++;
                 stringBuilder.AppendLine(this.Align(string.Join(";", firstPart, i, invoice.Date.Day, "404020", " ", invoice.Holdback, "C", lastPart)));
             }
