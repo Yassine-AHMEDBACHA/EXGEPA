@@ -21,5 +21,7 @@ namespace CORESI.WPF
 
         MessageBoxResult Warning(string message);
         MessageBoxResult Warning(string message, MessageBoxButton button);
+
+        void Notify(string message);
     }
 }
