@@ -8,6 +8,9 @@ namespace CORESI.Tools
     public class CurrentEnvirenement
     {
         static readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+        public static readonly string ApplicationName = RunTimeHelper.GetApplicationName();
+
         public static void LogEnvirenementInfo()
         {
             logger.Info("***************************************************Environment Informations******************************************************************");
@@ -24,6 +27,6 @@ namespace CORESI.Tools
             logger.Info("*********************************************************************************************************************************************");
         }
 
-
+        
     }
 }
