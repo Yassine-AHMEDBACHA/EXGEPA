@@ -17,7 +17,7 @@
                 <dxg:GridColumn FieldName="Key" Header="Code" AllowBestFit="True" AllowEditing="False" Visible="True" />
                 <dxg:GridColumn FieldName="Date" Header="Date" AllowBestFit="True" AllowEditing="False" Visible="True" />
                 <dxg:GridColumn FieldName="Provider.Key" Header="Fournisseur" AllowBestFit="True" AllowEditing="False" Visible="True" />
-                <dxg:GridColumn FieldName="Provider.Caption" Header="Compte general" AllowBestFit="True" AllowEditing="False" Visible="True" />
+                <dxg:GridColumn FieldName="Provider.Caption" Header="Libellé fournisseur" AllowBestFit="True" AllowEditing="False" Visible="True" />
                 <dxg:GridColumn FieldName="InputSheet.Key" Header="Fiche d'entree" AllowBestFit="True" AllowEditing="False" Visible="True" />
                 <dxg:GridColumn FieldName="Project.Key" Header="Projet" AllowBestFit="True" AllowEditing="False" Visible="True" />
                 <dxg:GridColumn FieldName="Amount" Header="Montant" AllowBestFit="True" AllowEditing="False" Visible="True"  >
