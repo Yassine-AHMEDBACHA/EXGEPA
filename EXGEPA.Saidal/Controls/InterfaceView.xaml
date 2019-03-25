@@ -53,7 +53,7 @@
                 </dxg:GridColumn>
                 <dxg:GridColumn FieldName="AnalyticalAccount.Key" Header="Compte analytique" AllowEditing="False"  />
                 <dxg:GridColumn FieldName="AnalyticalAccount.Caption" Header="libelle compte analytique"  AllowEditing="False" />
-                <dxg:GridColumn FieldName="Invoice.Key" Header="N° de Facture" AllowBestFit="True" AllowEditing="False"   />
+                <dxg:GridColumn FieldName="Invoice.Key" Header="N° de Facture" AllowBestFit="True" AllowEditing="False" GroupIndex="1"  />
                 <dxg:GridColumn FieldName="TransferOrder.Key" Header="N° Bon de Transfert" AllowBestFit="True" AllowEditing="False"   />
                 <dxg:GridColumn FieldName="TransferOrder.CompanyName" Header="Povenance" AllowBestFit="True" AllowEditing="False"   />
                 <dxg:GridColumn FieldName="Provider.Key" Header="Code Fournisseur" AllowBestFit="True" AllowEditing="False" />
