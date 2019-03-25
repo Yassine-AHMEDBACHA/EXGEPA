@@ -1,5 +1,6 @@
 ﻿using CORESI.Data;
 using CORESI.IoC;
+using DevExpress.Mvvm.UI;
 using DevExpress.Xpf.Core;
 using DevExpress.Xpf.WindowsUI;
 using System;
@@ -11,6 +12,7 @@ namespace CORESI.WPF.Controls
     [Export(typeof(IUIMessage))]
     public class UIMessage : UIMessageBase
     {
+        private NotificationService notificationService;
         public UIMessage()
         {
             var parameterProvider = ServiceLocator.Resolve<IParameterProvider>();
@@ -23,12 +25,17 @@ namespace CORESI.WPF.Controls
             {
                 this.ShowMessage = DXMessageBox.Show;
             }
+
+            this.notificationService = new NotificationService
+            {
+                CustomNotificationPosition = NotificationPosition.BottomRight,
+                CustomNotificationVisibleMaxCount = 3,
+                CustomNotificationScreen = NotificationScreen.Primary,
+                UseWin8NotificationsIfAvailable = true
+            };
         }
 
         Func<string, string, MessageBoxButton, MessageBoxImage, MessageBoxResult> ShowMessage { get; set; }
-
-
-
 
         public override int Priority
         {
@@ -37,6 +44,12 @@ namespace CORESI.WPF.Controls
         protected override MessageBoxResult ShowUiMessageBox(string message, string title, MessageBoxButton buttons, MessageBoxImage image)
         {
             return ShowMessage(message, title, buttons, image);
+        }
+
+        public override void Notify(string message)
+        {
+            //this.notificationService.ApplicationId = Application.Current.MainWindow.Title;
+            this.notificationService.CreateCustomNotification(message).ShowAsync();
         }
 
     }

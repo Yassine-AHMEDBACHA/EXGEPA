@@ -46,10 +46,8 @@ namespace CORESI.DataAccess.Core
             {
                 return GetValue<T>(paramter);
             }
-            else
-            {
-                throw new ArgumentNullException("Specified parameter not found");
-            }
+
+            throw new ArgumentNullException($"Specified parameter not found [ParameterName:{parameterName}]");
         }
 
         private T GetValue<T>(Parameter paramter)

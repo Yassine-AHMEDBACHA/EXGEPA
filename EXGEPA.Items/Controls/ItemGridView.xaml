@@ -25,6 +25,7 @@ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     <dxg:GridColumn FieldName="Brand" Header="Marque"  AllowEditing="False" />
                     <dxg:GridColumn FieldName="Model" Header="Model"  AllowEditing="False" />
                     <dxg:GridColumn FieldName="SerialNumber" Header="N° Serie"  AllowEditing="False" />
+                    <dxg:GridColumn FieldName="ItemExtendedProperties.VehicleNumber" Header="Matricule vehicule"  AllowEditing="False" />
                     <dxg:GridColumn FieldName="ElementCount" Header="Nbr"  AllowEditing="False" />
                     <dxg:GridColumn FieldName="Amount" Header="Valeur d'acquisition" AllowBestFit="True" AllowEditing="False" Visible="True" BestFitArea="All" >
                         <dxg:GridColumn.EditSettings>

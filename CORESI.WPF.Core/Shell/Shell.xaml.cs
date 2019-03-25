@@ -13,7 +13,8 @@ using System.Windows.Shapes;
 using DevExpress.Xpf.Ribbon;
 using DevExpress.Xpf.Core;
 using CORESI.IoC;
-
+using CORESI.Tools;
+using DevExpress.Data;
 
 namespace CORESI.WPF.Core.Shell
 {
@@ -28,6 +29,8 @@ namespace CORESI.WPF.Core.Shell
             InitializeComponent();
             logger.Debug("Resolving Shell View Model");
             this.DataContext = ServiceLocator.Resolve<ShellViewModel>();
+            var applicationID = CurrentEnvirenement.ApplicationName;
+            ShellHelper.TryCreateShortcut(applicationID, applicationID);
         }
         
         void Shell_Loaded(object sender, RoutedEventArgs e)
