@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
+﻿using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using CORESI.Data;
 using CORESI.IoC;
 using CORESI.Tools;
 using CORESI.WPF.Controls;
-using CORESI.WPF.Core.Framework;
 using CORESI.WPF.Core.Interfaces;
 using EXGEPA.Core.Interfaces;
 using EXGEPA.Model;
@@ -17,7 +12,7 @@ namespace EXGEPA.Saidal.Controls
 {
     public class InterfaceViewModel : GenericEditableViewModel<Item>
     {
-        IRepositoryDataProvider repositoryDataProvider;
+        readonly IRepositoryDataProvider repositoryDataProvider;
 
         public InterfaceViewModel(IExportable exportableView) : base(exportableView, false)
         {
