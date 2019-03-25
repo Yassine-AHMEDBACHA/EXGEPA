@@ -27,7 +27,6 @@ namespace EXGEPA.Saidal.Controls
             var aquisitionSeriliazer = new AquisitionSerializer();
 
             this.AddNewGroup().AddCommand("Aquisitions", () => aquisitionSeriliazer.Serialize(this.Selection));
-
         }
 
         public override void InitData()

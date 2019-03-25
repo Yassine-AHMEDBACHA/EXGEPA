@@ -98,7 +98,7 @@ namespace CORESI.WPF.Core.Shell
             DefaultCategory.Pages.Add(HomePage);
             Categories.Add(DefaultCategory);
             UpdateView = new DelegateCommand<Page>(SwitchView);
-            this.CopyRight = "CORESI © 2019";
+            this.CopyRight = AssemblyInfo.AssemblyCopyright;
         }
 
         void SwitchView(Page page)

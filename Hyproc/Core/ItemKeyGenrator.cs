@@ -17,7 +17,7 @@ namespace Hyproc.Core
         private readonly int maxGeneratedItemKey;
         private readonly int KeyLength;
 
-        public int Priority { get { return 50; } }
+        public int Priority => 50;
 
         public ItemKeyGenrator()
         {
@@ -26,7 +26,7 @@ namespace Hyproc.Core
             this.prefix = this.parameterProvider.GetAndSetIfMissing("Prefix", "ADM");
             this.minGeneratedItemKey = this.parameterProvider.GetAndSetIfMissing("MinGeneratedItemKey", 0);
             this.maxGeneratedItemKey = this.parameterProvider.GetAndSetIfMissing("MaxGeneratedItemKey", 500000);
-            this.KeyLength = this.parameterProvider.GetValue<int>("ItemKeyLength");
+            this.KeyLength = this.parameterProvider.GetAndSetIfMissing("ItemKeyLength", 12);
         }
         
         public bool CheckKey(string key)

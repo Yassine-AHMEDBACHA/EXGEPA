@@ -64,7 +64,8 @@ namespace EXGEPA.Model
 
         public List<Repair> Repairs { get; set; }
 
-        //public int LockLevel { get; set; }
+        [DataAttribute(Ignore =true)]
+        public ItemExtendedProperties ItemExtendedProperties { get; set; }
     }
 
     public enum StartDepreciationDate

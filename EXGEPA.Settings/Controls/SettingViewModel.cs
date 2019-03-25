@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel.Composition;
-using System.IO;
-using System.Linq;
 using CORESI.Data;
 using CORESI.IoC;
 using CORESI.WPF;
@@ -11,6 +5,11 @@ using CORESI.WPF.Core;
 using CORESI.WPF.Core.Framework;
 using CORESI.WPF.Model;
 using EXGEPA.Model;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
 
 namespace EXGEPA.Settings.Controls
 {
@@ -25,7 +24,6 @@ namespace EXGEPA.Settings.Controls
 
         private const string ThemeKey = "Theme";
         
-
         private const string LogoFileNameKey = "LogoFileName";
 
         private const string PicturesDirectoryKey = "PicturesDirectory";

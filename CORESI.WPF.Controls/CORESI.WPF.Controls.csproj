@@ -21,7 +21,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\Bin\</OutputPath>
+    <OutputPath>..\..\Bin\Release</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -30,7 +30,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\Bin\</OutputPath>
+    <OutputPath>..\..\Bin\Release</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -87,6 +87,10 @@
     <ProjectReference Include="..\CORESI.IoC\CORESI.IoC.csproj">
       <Project>{4542EE4D-6382-4318-B47F-B3ADC47EF8AA}</Project>
       <Name>CORESI.IoC</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CORESI.Tools\CORESI.Tools.csproj">
+      <Project>{3D84E36E-574E-4F12-AD62-49578CB4D651}</Project>
+      <Name>CORESI.Tools</Name>
     </ProjectReference>
     <ProjectReference Include="..\CORESI.WPF.Core\CORESI.WPF.Core.csproj">
       <Project>{E8E75679-CD86-44F0-A2B5-B43809063A37}</Project>

@@ -149,7 +149,14 @@ namespace EXGEPA.Items.Controls
                 {
                     var list = DBservice.SelectAll();
                     scoopLogger.Snap("Loading Data ");
-                    Parallel.ForEach(list, (item) => RepositoryDataProvider.BindItemFields(item));
+                    Parallel.ForEach(list, (item) =>
+                    {
+                        RepositoryDataProvider.BindItemFields(item);
+                        if (JsonHelper.TryDeserialize(item.Json, out ItemExtendedProperties itemExtendedProperties))
+                        {
+                            item.ItemExtendedProperties = itemExtendedProperties;
+                        }
+                    });
                     ListOfRows = new ObservableCollection<Item>(list);
                 }
             });

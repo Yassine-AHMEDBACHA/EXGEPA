@@ -27,7 +27,7 @@ namespace CORESI.IoC
                 var filter = nameSpace.Split('.').First() + "*.dll";
                 var directoryCatalog = new DirectoryCatalog(path, filter);
                 aggregateCatalog.Catalogs.Add(directoryCatalog);
-                ServiceLocator.CompositionContainer = new CompositionContainer(aggregateCatalog, true);
+                CompositionContainer = new CompositionContainer(aggregateCatalog, true);
                 logger.Debug("MefResolver is ready to use");
             }
             catch (Exception ex)
@@ -62,7 +62,7 @@ namespace CORESI.IoC
             }
             catch (Exception ex)
             {
-                logger.Debug("Resolve Faild : " + typeof(T).FullName);
+                logger.Debug($"Resolve Faild : [{typeof(T).FullName}]");
                 ManageExceptionLoader(ex);
             }
             return result;

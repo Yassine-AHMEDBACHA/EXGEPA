@@ -139,5 +139,10 @@ namespace CORESI.WPF
                 }
             }
         }
+
+        public virtual void Notify(string message)
+        {
+            this.Information(message);
+        }
     }
 }

@@ -22,6 +22,7 @@ namespace CORESI.WPF.Core
         public SplashScreen()
         {
             InitializeComponent();
+
             this.board.Completed += OnAnimationCompleted;
         }
 
