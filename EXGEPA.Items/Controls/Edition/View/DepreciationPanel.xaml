@@ -14,8 +14,8 @@
                     <dxg:GridColumn FieldName="AccountingPeriod.Key" Header="Exercice" />
                     <dxg:GridColumn FieldName="Rate" Visible="False"/>
                     <dxg:GridColumn FieldName="Annuity" Header="Dotation" />
-                    <dxg:GridColumn FieldName="AccumulatedDepreciation" Header="VNC"  Visible="False"/>
-                    <dxg:GridColumn FieldName="AccountingNetValue" />
+                    <dxg:GridColumn FieldName="PreviousDepreciation"  Header="Amort ant"/>
+                    <dxg:GridColumn FieldName="AccountingNetValue" Header="VNC" />
                 </dxg:GridControl.Columns>
                 <dxg:GridControl.View>
                     <dxg:TableView ShowAutoFilterRow="True"  AllowEditing="False" AutoWidth="True" ShowGroupPanel="False"/>
@@ -31,8 +31,8 @@
                     <dxg:GridColumn FieldName="AccountingPeriod.Key" Header="Exercice" />
                     <dxg:GridColumn FieldName="Rate" Visible="False"/>
                     <dxg:GridColumn FieldName="Annuity" Header="Dotation" />
-                    <dxg:GridColumn FieldName="AccumulatedDepreciation" Header="VNC"  Visible="False"/>
-                    <dxg:GridColumn FieldName="AccountingNetValue" />
+                    <dxg:GridColumn FieldName="PreviousDepreciation"  Header="Amort ant"/>
+                    <dxg:GridColumn FieldName="AccountingNetValue" Header="VNC" />
                 </dxg:GridControl.Columns>
                 <dxg:GridControl.View>
                     <dxg:TableView ShowAutoFilterRow="True"  AllowEditing="False" AutoWidth="True" ShowGroupPanel="False"/>
