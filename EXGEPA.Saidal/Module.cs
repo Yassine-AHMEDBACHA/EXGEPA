@@ -15,7 +15,7 @@ namespace EXGEPA.Saidal
         {
             var saidalGroup = new Group();
             saidalGroup.AddCommand("Interface", IconProvider.PageSetup, this.AddPage<Controls.InterfaceView, Controls.InterfaceViewModel>);
-            this.uIService.AddGroupToHomePage(saidalGroup);
+            this.UIService.AddGroupToHomePage(saidalGroup);
         }
     }
 }

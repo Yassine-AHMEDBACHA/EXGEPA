@@ -60,7 +60,7 @@ namespace EXGEPA.Saidal.Core
                 return;
             }
 
-            var itemGroupedByFacture = items.Where(x => x.Invoice != null).GroupBy(x => x.Invoice);
+            IEnumerable<IGrouping<Invoice, Item>> itemGroupedByFacture = items.Where(x => x.Invoice != null).GroupBy(x => x.Invoice);
 
             if (!itemGroupedByFacture.Any())
             {
@@ -68,48 +68,52 @@ namespace EXGEPA.Saidal.Core
                 return;
             }
 
-            var stringBuilder = new StringBuilder();
-            foreach (var group in itemGroupedByFacture)
+            StringBuilder stringBuilder = new StringBuilder();
+            foreach (IGrouping<Invoice, Item> group in itemGroupedByFacture)
             {
-                var invoice = group.Key;
+                Invoice invoice = group.Key;
                 int i = 1;
                 var lastPart = $"FACT {invoice.Key} {invoice.Date.ToString("dd/MM/yyyy")} {invoice.Provider.Caption};{invoice.Key}";
                 var firstPart = $"21;{invoice.InputSheet.Key}";
-                var itemGroupedByGenralAccount = group.GroupBy(x => x.GeneralAccount);
+                var itemGroupedByGenralAccount = group.OrderBy(x => x.GeneralAccount.Caption).GroupBy(x => x.GeneralAccount);
                 var totalInvestmentAccount = 0.0M;
                 var totalChargeAccount = 0.0M;
                 foreach (var subGroup in itemGroupedByGenralAccount)
                 {
-                    foreach (var item in subGroup)
+                    var subTotalInvestment = 0.0M;
+                    var subTotalCharge = 0.0M;
+                    foreach (Item item in subGroup)
                     {
                         if (item.GeneralAccount.GeneralAccountType.Type == EGeneralAccountType.Investment)
                         {
-                            totalInvestmentAccount += item.Amount;
+                            subTotalInvestment += item.Amount;
                         }
                         else if (item.GeneralAccount.GeneralAccountType.Type == EGeneralAccountType.Charge)
                         {
-                            totalChargeAccount += item.Amount;
+                            subTotalCharge += item.Amount;
                         }
                     }
 
-                    var totalAmount = totalChargeAccount + totalInvestmentAccount;
-                    stringBuilder.AppendLine(this.Align(string.Join(";", firstPart, i, invoice.Date.Day.ToString("dd"), subGroup.Key.Key, " ", totalAmount.ToString(CultureInfo.InvariantCulture), "D", lastPart)));
+                    var totalAmount = subTotalInvestment + subTotalCharge;
+                    totalInvestmentAccount += subTotalInvestment;
+                    totalChargeAccount += subTotalCharge;
+                    stringBuilder.AppendLine(this.Align(string.Join(";", firstPart, i, invoice.Date.ToString("dd"), subGroup.Key.Key, " ", totalAmount.ToString(CultureInfo.InvariantCulture), "D", lastPart)));
                     i++;
                 }
 
                 var invoiceAmount = totalInvestmentAccount - invoice.Holdback;
                 var account = invoice.Provider.Country.ToLower().Contains("alger") ? "404000" : "404010";
-                stringBuilder.AppendLine(this.Align(string.Join(";", firstPart, i, invoice.Date.Day.ToString("dd"), account, invoice.Provider.ThirdPartyAccount, invoiceAmount.ToString(CultureInfo.InvariantCulture), "C", lastPart)));
+                stringBuilder.AppendLine(this.Align(string.Join(";", firstPart, i, invoice.Date.ToString("dd"), account, invoice.Provider.ThirdPartyAccount, invoiceAmount.ToString(CultureInfo.InvariantCulture), "C", lastPart)));
                 if (totalChargeAccount > 0)
                 {
                     i++;
-                    stringBuilder.AppendLine(this.Align(string.Join(";", firstPart, i, invoice.Date.Day.ToString("dd"), account, "401010", totalChargeAccount.ToString(CultureInfo.InvariantCulture), "C", lastPart)));
+                    stringBuilder.AppendLine(this.Align(string.Join(";", firstPart, i, invoice.Date.ToString("dd"), "401010", invoice.Provider.ThirdPartyAccount, totalChargeAccount.ToString(CultureInfo.InvariantCulture), "C", lastPart)));
                 }
 
                 if (invoice.Holdback > 0)
                 {
                     i++;
-                    stringBuilder.AppendLine(this.Align(string.Join(";", firstPart, i, invoice.Date.Day.ToString("dd"), "404020", " ", invoice.Holdback.ToString(CultureInfo.InvariantCulture), "C", lastPart)));
+                    stringBuilder.AppendLine(this.Align(string.Join(";", firstPart, i, invoice.Date.ToString("dd"), "404020", " ", invoice.Holdback.ToString(CultureInfo.InvariantCulture), "C", lastPart)));
                 }
             }
 
