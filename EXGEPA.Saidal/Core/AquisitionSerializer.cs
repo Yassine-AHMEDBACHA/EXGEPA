@@ -21,15 +21,15 @@ namespace EXGEPA.Saidal.Core
     {
         private readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        private IParameterProvider parameterProvider;
+        private readonly IParameterProvider parameterProvider;
 
-        private string additionalCharacter;
+        private readonly string additionalCharacter;
 
-        private List<Func<string, string>> fieldAligner;
+        private readonly List<Func<string, string>> fieldAligner;
 
-        private IUIMessage uIMessage;
+        private readonly IUIMessage uIMessage;
 
-        private string separator;
+        private readonly string separator;
 
         public AquisitionSerializer()
         {
@@ -41,14 +41,14 @@ namespace EXGEPA.Saidal.Core
             {
                 (str) => "21",
                 (str) => "   1  ",
-                (str) => $" {str.Align(3, "0")}",
+                (str) => $"{this.additionalCharacter}{str.Align(2, "0")}",
                 (str) => str.Align(2, this.additionalCharacter, AdditionnalCharPosition.Right),
-                (str) => str.Align(10, this.additionalCharacter),
-                (str) => str.Align(6, this.additionalCharacter),
-                (str) => str.Align(12, this.additionalCharacter),
-                (str) => str.Align(1, this.additionalCharacter),
-                (str) => str.Align(50, this.additionalCharacter),
-                (str) => str.Align(8, this.additionalCharacter)
+                (str) => str.Align(10, this.additionalCharacter, AdditionnalCharPosition.Right),
+                (str) => str.Align(6, this.additionalCharacter, AdditionnalCharPosition.Right),
+                (str) => str.Align(16, this.additionalCharacter),
+                (str) => str.Align(1, this.additionalCharacter, AdditionnalCharPosition.Right),
+                (str) => str.Align(50, this.additionalCharacter, AdditionnalCharPosition.Right),
+                (str) => str.Align(8, this.additionalCharacter, AdditionnalCharPosition.Right)
             };
         }
 
@@ -76,7 +76,6 @@ namespace EXGEPA.Saidal.Core
                 var lastPart = $"FACT {invoice.Key} {invoice.Date.ToString("dd/MM/yyyy")} {invoice.Provider.Caption};{invoice.Key}";
                 var firstPart = $"21;{invoice.InputSheet.Key}";
                 var itemGroupedByGenralAccount = group.GroupBy(x => x.GeneralAccount);
-
                 var totalInvestmentAccount = 0.0M;
                 var totalChargeAccount = 0.0M;
                 foreach (var subGroup in itemGroupedByGenralAccount)
@@ -99,13 +98,12 @@ namespace EXGEPA.Saidal.Core
                 }
 
                 var invoiceAmount = totalInvestmentAccount - invoice.Holdback;
-
                 var account = invoice.Provider.Country.ToLower().Contains("alger") ? "404000" : "404010";
                 stringBuilder.AppendLine(this.Align(string.Join(";", firstPart, i, invoice.Date.Day.ToString("dd"), account, invoice.Provider.ThirdPartyAccount, invoiceAmount.ToString(CultureInfo.InvariantCulture), "C", lastPart)));
                 if (totalChargeAccount > 0)
                 {
                     i++;
-                    stringBuilder.AppendLine(this.Align(string.Join(";", firstPart, i, invoice.Date.Day.ToString("dd"), account, invoice.Provider.ThirdPartyAccount, totalChargeAccount.ToString(CultureInfo.InvariantCulture), "C", lastPart)));
+                    stringBuilder.AppendLine(this.Align(string.Join(";", firstPart, i, invoice.Date.Day.ToString("dd"), account, "401010", totalChargeAccount.ToString(CultureInfo.InvariantCulture), "C", lastPart)));
                 }
 
                 if (invoice.Holdback > 0)
