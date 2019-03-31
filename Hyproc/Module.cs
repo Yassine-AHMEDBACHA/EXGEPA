@@ -16,8 +16,8 @@ namespace Hyproc
 
         public void LoadModule()
         {
-            var uIService = ServiceLocator.Resolve<IUIService>();
-            var homeGroup = new Group()
+            IUIService uIService = ServiceLocator.Resolve<IUIService>();
+            Group homeGroup = new Group()
             {
                 Caption = "Hyproc"
             };
@@ -28,12 +28,12 @@ namespace Hyproc
                 LargeGlyph = IconProvider.ManageDatasource,
                 Action = () =>
                 {
-                    var viewModel = new DbSyncViewModel();
-                    var view = new DbSyncView
+                    DbSyncViewModel viewModel = new DbSyncViewModel();
+                    DbSyncView view = new DbSyncView
                     {
                         DataContext = viewModel
                     };
-                    var page = new Page(viewModel, view);
+                    Page page = new Page(viewModel, view);
                     uIService.AddPage(page);
                 }
             });

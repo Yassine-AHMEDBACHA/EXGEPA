@@ -14,9 +14,9 @@ namespace Hyproc.Core
 
         public static void test()
         {
-            var service = ServiceLocator.Resolve<IDataProvider<GeneralAccount>>();
-            var slave = service.SelectAll();
-            var master = service.SelectAll();
+            IDataProvider<GeneralAccount> service = ServiceLocator.Resolve<IDataProvider<GeneralAccount>>();
+            IList<GeneralAccount> slave = service.SelectAll();
+            IList<GeneralAccount> master = service.SelectAll();
 
             master.Take(5).ToList().ForEach(x =>
             {
@@ -37,7 +37,7 @@ namespace Hyproc.Core
 
         public static string BackupDataBase(IDbFacade dbfacade = null)
         {
-            var path = ServiceLocator.Resolve<IParameterProvider>().GetValue<string>("SyncShare", Environment.CurrentDirectory) + @"\";
+            string path = ServiceLocator.Resolve<IParameterProvider>().GetValue<string>("SyncShare", Environment.CurrentDirectory) + @"\";
             if (dbfacade == null)
             {
                 dbfacade = ServiceLocator.Resolve<IDbFacade>();
@@ -47,7 +47,7 @@ namespace Hyproc.Core
             {
                 path += "Remote_";
             }
-            var dbName = dbfacade.ExecuteScalaire<string>("SELECT db_name()");
+            string dbName = dbfacade.ExecuteScalaire<string>("SELECT db_name()");
             path += dbName + "_" + DateTime.Now.ToString("dd-MM-yyyy_HH-mm-ss") + ".bak";
             string query = "BACKUP DATABASE " + dbName + " TO DISK = '" + path + "' WITH FORMAT, NAME ='" + dbName + "'";
             dbfacade.ExecuteNonQuery(query);
@@ -60,10 +60,10 @@ namespace Hyproc.Core
             {
                 dBFacade = ServiceLocator.Resolve<IDbFacade>();
             }
-            var dbName = dBFacade.ExecuteScalaire<string>("SELECT db_name()");
+            string dbName = dBFacade.ExecuteScalaire<string>("SELECT db_name()");
 
 
-            var query = " ALTER DATABASE " + dbName + " SET SINGLE_USER WITH ROLLBACK IMMEDIATE ";
+            string query = " ALTER DATABASE " + dbName + " SET SINGLE_USER WITH ROLLBACK IMMEDIATE ";
 
             query += " restore database " + dbName + " from disk = '";
             query += path;
@@ -71,7 +71,7 @@ namespace Hyproc.Core
 
             query += " ALTER DATABASE " + dbName + " SET MULTI_USER";
             logger.Debug("Running query : " + query);
-            var tempfile = @"Temp.bak";
+            string tempfile = @"Temp.bak";
             File.Copy(path, tempfile, true);
             return dBFacade.ExecuteNonQuery(query, false, "master");
         }
@@ -103,13 +103,13 @@ namespace Hyproc.Core
         public IDbFacade DbFacade { get; set; }
         public DataBaseContent(string connectionString)
         {
-            var dbFacade = ServiceLocator.Resolve<IDbFacade>();
+            IDbFacade dbFacade = ServiceLocator.Resolve<IDbFacade>();
             DbFacade = dbFacade.ChangeDB(connectionString);
 
         }
         public Dictionary<string, Type> GetDbTables()
         {
-            var dictionary = new Dictionary<string, Type>();
+            Dictionary<string, Type> dictionary = new Dictionary<string, Type>();
             dictionary.Add("items", typeof(Item));
             return dictionary;
         }

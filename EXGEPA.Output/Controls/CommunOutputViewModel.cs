@@ -1,5 +1,5 @@
-﻿// <copyright file="CommunViewModel.cs" company="PlaceholderCompany">
-// Copyright (c) CORESI. All rights reserved.
+﻿// <copyright file="CommunOutputViewModel.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
 namespace EXGEPA.Output.Controls
@@ -16,34 +16,6 @@ namespace EXGEPA.Output.Controls
 
     public abstract class CommunOutputViewModel : GenericEditableViewModel<OutputCertificate>
     {
-        protected IUIItemService UIItemService { get; set; }
-
-        public virtual void SetItemAttribute()
-        {
-            var outputCertificate = this.SelectedRow;
-            if (outputCertificate == null)
-            {
-                return;
-            }
-
-            ItemAttributionOptions options = this.GetItemAttributionOptions(outputCertificate);
-            this.UIItemService.ShowItemAttribution(options);
-        }
-
-        public virtual ItemAttributionOptions GetItemAttributionOptions(OutputCertificate outputCertificate)
-        {
-            var options = new ItemAttributionOptions();
-            options.PageCaption = "PV N°:" + outputCertificate.Key;
-            options.SetConfirmationMessage = "Etes vous sûr de vouloir rajouter ces articles au PV N° " + outputCertificate.Key;
-            options.ResetConfirmationMessage = "Etes vous sûr de vouloir retirer ces articles du PV N° " + outputCertificate.Key;
-            options.RightPanelCaption = "Contenu du PV N° " + outputCertificate.Key;
-            options.Tester = (item) => item.OutputCertificate?.Id == outputCertificate.Id;
-            options.Setter = (item) => item.OutputCertificate = outputCertificate;
-            options.Resetter = (item) => item.OutputCertificate = null;
-            options.Categorie = new Categorie("Les Sorties", Colors.IndianRed);
-            return options;
-        }
-
         public CommunOutputViewModel(OutputType outputType, IExportableGrid exportableView)
             : base(exportableView)
         {
@@ -55,12 +27,42 @@ namespace EXGEPA.Output.Controls
 
         public OutputType OutputType { get; private set; }
 
+        protected IUIItemService UIItemService { get; set; }
+
+        public virtual void SetItemAttribute()
+        {
+            OutputCertificate outputCertificate = this.SelectedRow;
+            if (outputCertificate == null)
+            {
+                return;
+            }
+
+            ItemAttributionOptions options = this.GetItemAttributionOptions(outputCertificate);
+            this.UIItemService.ShowItemAttribution(options);
+        }
+
+        public virtual ItemAttributionOptions GetItemAttributionOptions(OutputCertificate outputCertificate)
+        {
+            ItemAttributionOptions options = new ItemAttributionOptions
+            {
+                PageCaption = "PV N°:" + outputCertificate.Key,
+                SetConfirmationMessage = "Etes vous sûr de vouloir rajouter ces articles au PV N° " + outputCertificate.Key,
+                ResetConfirmationMessage = "Etes vous sûr de vouloir retirer ces articles du PV N° " + outputCertificate.Key,
+                RightPanelCaption = "Contenu du PV N° " + outputCertificate.Key,
+                Tester = (item) => item.OutputCertificate?.Id == outputCertificate.Id,
+                Setter = (item) => item.OutputCertificate = outputCertificate,
+                Resetter = (item) => item.OutputCertificate = null,
+                Categorie = new Categorie("Les Sorties", Colors.IndianRed)
+            };
+            return options;
+        }
+
         public override void InitData()
         {
             this.StartBackGroundAction(() =>
             {
                 this.ShowLoadingPanel = true;
-                var list = this.DBservice.SelectAll().Where(x => x.OutputType == this.OutputType).ToList();
+                System.Collections.Generic.List<OutputCertificate> list = this.DBservice.SelectAll().Where(x => x.OutputType == this.OutputType).ToList();
                 this.ListOfRows = new ObservableCollection<OutputCertificate>(list);
                 this.ShowLoadingPanel = false;
             });

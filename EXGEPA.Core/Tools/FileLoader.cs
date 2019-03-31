@@ -8,8 +8,8 @@ namespace EXGEPA.Core.Tools
         public static List<string> LoadTextRows(string filePath)
         {
             List<string> result = new List<string>();
-            var data = string.Empty;
-            using (var streamReader = File.OpenText(filePath))
+            string data = string.Empty;
+            using (StreamReader streamReader = File.OpenText(filePath))
             {
                 while ((data = streamReader.ReadLine()) != null)
                 {

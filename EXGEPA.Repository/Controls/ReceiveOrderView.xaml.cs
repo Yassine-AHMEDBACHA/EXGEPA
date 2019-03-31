@@ -1,7 +1,11 @@
-﻿using CORESI.WPF.Controls;
+﻿// <copyright file="ReceiveOrderView.xaml.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace EXGEPA.Repository.Controls
 {
+    using CORESI.WPF.Controls;
+
     /// <summary>
     /// Interaction logic for ReceiveOrderView.xaml
     /// </summary>
@@ -9,7 +13,7 @@ namespace EXGEPA.Repository.Controls
     {
         public ReceiveOrderView()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
     }
 }

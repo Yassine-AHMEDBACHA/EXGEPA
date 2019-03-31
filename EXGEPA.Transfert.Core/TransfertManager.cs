@@ -9,9 +9,9 @@ namespace EXGEPA.Transfert.Core
 
         public static void StartDbLoading()
         {
-            var loader = new Loader();
+            Loader loader = new Loader();
             DbBuilder.BuildNewDatabase();
-            using (var dbInitializer = new DbInitializer())
+            using (DbInitializer dbInitializer = new DbInitializer())
             {
                 logger.Info("Loading rights");
                 dbInitializer.SetInitialRights();

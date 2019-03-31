@@ -26,11 +26,11 @@ namespace EXGEPA.Saidal.Core
 
         public string GenerateKey(params object[] parameters)
         {
-            var reference = parameters[0] as Reference;
-            var dbFacade = ServiceLocator.Resolve<IDbFacade>();
-            var key = KeyLengthNormalizer.Normalize(reference.Key, 6);
+            Reference reference = parameters[0] as Reference;
+            IDbFacade dbFacade = ServiceLocator.Resolve<IDbFacade>();
+            string key = KeyLengthNormalizer.Normalize(reference.Key, 6);
             string query = $"select isnull(max(CONVERT(int, SUBSTRING([Key],10,6))),0)  from Items where Reference_Id = {reference.Id}";
-            var result = dbFacade.ExecuteScalaire<int>(query) + 1;
+            int result = dbFacade.ExecuteScalaire<int>(query) + 1;
             key = $"{this.Region.Key}{key}{KeyLengthNormalizer.Normalize(result.ToString(), 6)}";
             return key;
         }

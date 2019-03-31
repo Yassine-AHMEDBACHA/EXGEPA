@@ -19,10 +19,10 @@ namespace EXGEPA.DataAccess.Service
 
         public override IList<OrderDocument> SelectAll()
         {
-            var allRows = base.SelectAll();
-            var types = this._OrderDocumentTypeService.SelectAll();
+            IList<OrderDocument> allRows = base.SelectAll();
+            IList<OrderDocumentType> types = this._OrderDocumentTypeService.SelectAll();
 
-            foreach (var item in allRows)
+            foreach (OrderDocument item in allRows)
             {
                 item.OrderDocumentType = types.Single(x => x.Id == item.OrderDocumentType?.Id);
             }

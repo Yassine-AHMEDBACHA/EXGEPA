@@ -7,7 +7,7 @@ namespace EXGEPA.Depreciations.Core
     {
         public static DateTime GetStartComputationDate(Item item, DateTime startDate)
         {
-            var itemStartDate = item.TransferOrder?.Date ?? GetDefaultStartDate(item);
+            DateTime itemStartDate = item.TransferOrder?.Date ?? GetDefaultStartDate(item);
             return itemStartDate > startDate ? itemStartDate : startDate;
         }
 
@@ -18,13 +18,13 @@ namespace EXGEPA.Depreciations.Core
 
         public static DateTime GetEndComputationDate(Item item, DateTime endDate)
         {
-            var itemEndLife = GetEndComputationDate(item);
+            DateTime itemEndLife = GetEndComputationDate(item);
             return itemEndLife > endDate ? endDate : itemEndLife;
         }
 
         public static DateTime GetEndComputationDate(Item item)
         {
-            var date = (item?.ReformeCertificate?.Date ?? item?.OutputCertificate?.Date);
+            DateTime? date = (item?.ReformeCertificate?.Date ?? item?.OutputCertificate?.Date);
             if (date.HasValue && date < item.LimiteDate)
             {
                 return date.Value;

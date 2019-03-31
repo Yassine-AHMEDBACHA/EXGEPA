@@ -13,7 +13,7 @@ namespace EXGEPA.DeviceManager.Android
 
         public void DownloadFile(string sourcepath, string targetPath, bool deleteSource = false)
         {
-            var stream = File.Open(targetPath, FileMode.OpenOrCreate);
+            FileStream stream = File.Open(targetPath, FileMode.OpenOrCreate);
             mediaDevice.DownloadFile(sourcepath, stream);
             stream.Close();
         }

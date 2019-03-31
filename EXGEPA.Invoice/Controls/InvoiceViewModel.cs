@@ -28,7 +28,7 @@ namespace EXGEPA.Invoice.Controls
             UIItemService = ServiceLocator.Resolve<IUIItemService>();
             DoubleClicAction = ItemAttribution;
             this.AddNewGroup().AddCommand("Items", IconProvider.GreaterThan, ItemAttribution);
-            var button = this.AddNewGroup().AddCommand<CheckedRibbonButton>("Validée", IconProvider.Task);
+            CheckedRibbonButton button = this.AddNewGroup().AddCommand<CheckedRibbonButton>("Validée", IconProvider.Task);
             button.Action = () =>
             {
                 if (this.SelectedRow != null)
@@ -48,10 +48,7 @@ namespace EXGEPA.Invoice.Controls
 
         public ObservableCollection<GeneralAccount> ListOfGeneralAccount
         {
-            get
-            {
-                return _ListOfGeneralAccount;
-            }
+            get => _ListOfGeneralAccount;
             set
             {
                 _ListOfGeneralAccount = value;
@@ -63,7 +60,7 @@ namespace EXGEPA.Invoice.Controls
 
         public ObservableCollection<Currency> ListOfCurrencies
         {
-            get { return _ListOfCurrencies; }
+            get => _ListOfCurrencies;
             set
             {
                 _ListOfCurrencies = value;
@@ -74,7 +71,7 @@ namespace EXGEPA.Invoice.Controls
         private ObservableCollection<OrderDocument> _OrderDocuments;
         public ObservableCollection<OrderDocument> OrderDocuments
         {
-            get { return _OrderDocuments; }
+            get => _OrderDocuments;
             set
             {
                 _OrderDocuments = value;
@@ -86,10 +83,7 @@ namespace EXGEPA.Invoice.Controls
 
         public ObservableCollection<Provider> ListOfProvider
         {
-            get
-            {
-                return _ListOfProvider;
-            }
+            get => _ListOfProvider;
             set
             {
                 _ListOfProvider = value;
@@ -101,7 +95,7 @@ namespace EXGEPA.Invoice.Controls
 
         public ObservableCollection<InputSheet> ListOfInputSheet
         {
-            get { return _ListOfInputSheet; }
+            get => _ListOfInputSheet;
             set
             {
                 _ListOfInputSheet = value;
@@ -113,7 +107,7 @@ namespace EXGEPA.Invoice.Controls
 
         public ObservableCollection<Project> ListOfProject
         {
-            get { return _ListOfProject; }
+            get => _ListOfProject;
             set
             {
                 _ListOfProject = value;
@@ -123,7 +117,7 @@ namespace EXGEPA.Invoice.Controls
 
         public override void AddItem()
         {
-            var localCurrency = ListOfCurrencies.FirstOrDefault(x => x.Key == ParametreProvider.GetValue("LocalCurrency", "DZD"));
+            Currency localCurrency = ListOfCurrencies.FirstOrDefault(x => x.Key == ParametreProvider.GetValue("LocalCurrency", "DZD"));
             this.ConcernedRow = new Model.Invoice() { Date = DateTime.Today, Key = this.GetTemporaryKey(), Currency = localCurrency };
             this.ValidateCommand = new Command(() =>
             {
@@ -183,11 +177,11 @@ namespace EXGEPA.Invoice.Controls
 
         public void ItemAttribution()
         {
-            var invoice = this.SelectedRow;
+            Model.Invoice invoice = this.SelectedRow;
             if (invoice == null)
                 return;
 
-            var options = new ItemAttributionOptions
+            ItemAttributionOptions options = new ItemAttributionOptions
             {
                 PageCaption = "Facture N°:" + invoice.Key,
                 SetConfirmationMessage = "Etes vous sûr de vouloir affecter ces articles à la facture N° " + invoice.Key,
@@ -198,8 +192,8 @@ namespace EXGEPA.Invoice.Controls
                 Resetter = (item) => item.Invoice = null,
                 Categorie = new Categorie("Contenu Facture", Colors.AliceBlue)
             };
-            var Group = new Group();
-            var button = Group.AddCommand<CheckedRibbonButton>("Validée", IconProvider.Task);
+            Group Group = new Group();
+            CheckedRibbonButton button = Group.AddCommand<CheckedRibbonButton>("Validée", IconProvider.Task);
             button.Action = () =>
             {
                 //this.ValidateInvoice(invoice);
@@ -222,9 +216,9 @@ namespace EXGEPA.Invoice.Controls
 
         public void ValidateInvoice(Model.Invoice invoice)
         {
-            var totalItemAmount = ServiceLocator.Resolve<IDataProvider<Item>>().SelectAll().Where(x => x.Invoice?.Id == invoice.Id).Sum(x => x.Amount);
+            decimal totalItemAmount = ServiceLocator.Resolve<IDataProvider<Item>>().SelectAll().Where(x => x.Invoice?.Id == invoice.Id).Sum(x => x.Amount);
 
-            var isValidated = totalItemAmount == invoice.Amount;
+            bool isValidated = totalItemAmount == invoice.Amount;
             if (invoice.IsValidated != isValidated)
             {
                 invoice.IsValidated = isValidated;
@@ -241,12 +235,12 @@ namespace EXGEPA.Invoice.Controls
         {
             StartBackGroundAction(() =>
                         {
-                            var generalAccountService = ServiceLocator.Resolve<IDataProvider<GeneralAccount>>();
-                            var providerService = ServiceLocator.Resolve<IDataProvider<Provider>>();
-                            var inputSheetService = ServiceLocator.Resolve<IDataProvider<InputSheet>>();
-                            var currencyService = ServiceLocator.Resolve<IDataProvider<Currency>>();
-                            var projectService = ServiceLocator.Resolve<IDataProvider<Project>>();
-                            var _OrderDocumentService = ServiceLocator.Resolve<IDataProvider<OrderDocument>>();
+                            IDataProvider<GeneralAccount> generalAccountService = ServiceLocator.Resolve<IDataProvider<GeneralAccount>>();
+                            IDataProvider<Provider> providerService = ServiceLocator.Resolve<IDataProvider<Provider>>();
+                            IDataProvider<InputSheet> inputSheetService = ServiceLocator.Resolve<IDataProvider<InputSheet>>();
+                            IDataProvider<Currency> currencyService = ServiceLocator.Resolve<IDataProvider<Currency>>();
+                            IDataProvider<Project> projectService = ServiceLocator.Resolve<IDataProvider<Project>>();
+                            IDataProvider<OrderDocument> _OrderDocumentService = ServiceLocator.Resolve<IDataProvider<OrderDocument>>();
                             ListOfGeneralAccount = new ObservableCollection<GeneralAccount>(generalAccountService.SelectAll().Where(g => g.GeneralAccountType.Type == EGeneralAccountType.Investment));
                             ListOfProvider = new ObservableCollection<Provider>(providerService.SelectAll());
                             ListOfInputSheet = new ObservableCollection<InputSheet>(inputSheetService.SelectAll());
@@ -254,7 +248,7 @@ namespace EXGEPA.Invoice.Controls
                             this.ListOfCurrencies = new ObservableCollection<Currency>(currencyService.SelectAll());
                             this.ListOfProject = new ObservableCollection<Project>(projectService.SelectAll());
                             this.ListOfRows = new ObservableCollection<Model.Invoice>(this.DBservice.SelectAll());
-                            foreach (var invoice in this.ListOfRows)
+                            foreach (Model.Invoice invoice in this.ListOfRows)
                             {
                                 invoice.InputSheet = ListOfInputSheet.FirstOrDefault(inputSheet => inputSheet.Id == invoice.InputSheet?.Id);
                                 invoice.Provider = ListOfProvider.FirstOrDefault(x => x.Id == invoice.Provider?.Id);

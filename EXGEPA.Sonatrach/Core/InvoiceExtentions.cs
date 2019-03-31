@@ -7,7 +7,7 @@ namespace EXGEPA.Sonatrach.Core
     {
         internal static FR30_BOD ToFR32_BOD(this Invoice invoice)
         {
-            var fr30_BOD = new FR30_BOD()
+            FR30_BOD fr30_BOD = new FR30_BOD()
             {
                 E_JRNL = "28",
                 E_CART = "30",

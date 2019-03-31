@@ -19,13 +19,13 @@ namespace CORESI.IoC
         {
             try
             {
-                var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                string path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
                 aggregateCatalog.Catalogs.Add(new DirectoryCatalog(path, "CORESI*.dll"));
-                var entryAssembly = Assembly.GetEntryAssembly();
-                var entryPoint = entryAssembly?.EntryPoint;
-                var nameSpace = entryPoint?.DeclaringType.Namespace ?? "EXGEPA";
-                var filter = nameSpace.Split('.').First() + "*.dll";
-                var directoryCatalog = new DirectoryCatalog(path, filter);
+                Assembly entryAssembly = Assembly.GetEntryAssembly();
+                MethodInfo entryPoint = entryAssembly?.EntryPoint;
+                string nameSpace = entryPoint?.DeclaringType.Namespace ?? "EXGEPA";
+                string filter = nameSpace.Split('.').First() + "*.dll";
+                DirectoryCatalog directoryCatalog = new DirectoryCatalog(path, filter);
                 aggregateCatalog.Catalogs.Add(directoryCatalog);
                 CompositionContainer = new CompositionContainer(aggregateCatalog, true);
                 logger.Debug("MefResolver is ready to use");
@@ -39,7 +39,7 @@ namespace CORESI.IoC
 
         public static void AddCatalogue(string path, string filter = "*.dll")
         {
-            var directoryCatalog = new DirectoryCatalog(path, filter);
+            DirectoryCatalog directoryCatalog = new DirectoryCatalog(path, filter);
             aggregateCatalog.Catalogs.Add(directoryCatalog);
         }
 
@@ -55,7 +55,7 @@ namespace CORESI.IoC
 
         public static T Resolve<T>()
         {
-            var result = default(T);
+            T result = default(T);
             try
             {
                 result = CompositionContainer.GetExportedValue<T>();
@@ -82,7 +82,7 @@ namespace CORESI.IoC
 
         public static IEnumerable<T> ResolveMany<T>()
         {
-            var result = default(IEnumerable<T>);
+            IEnumerable<T> result = default(IEnumerable<T>);
             try
             {
                 result = CompositionContainer.GetExportedValues<T>();
@@ -108,8 +108,8 @@ namespace CORESI.IoC
 
         public static T GetPriorizedInstance<T>() where T : IPriority
         {
-            var availableInstances = ResolveMany<T>();
-            var instance = availableInstances.OrderBy(x => x.Priority).Last();
+            IEnumerable<T> availableInstances = ResolveMany<T>();
+            T instance = availableInstances.OrderBy(x => x.Priority).Last();
             return instance;
         }
 
@@ -117,8 +117,8 @@ namespace CORESI.IoC
         {
             if (ex is ReflectionTypeLoadException)
             {
-                var typeLoadException = ex as ReflectionTypeLoadException;
-                var loaderExceptions = typeLoadException.LoaderExceptions;
+                ReflectionTypeLoadException typeLoadException = ex as ReflectionTypeLoadException;
+                Exception[] loaderExceptions = typeLoadException.LoaderExceptions;
 
                 loaderExceptions.GroupBy(e => e.Message).Select(x => x.First()).ToList().ForEach(exception =>
                 {

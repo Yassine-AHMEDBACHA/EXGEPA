@@ -21,7 +21,7 @@ namespace EXGEPA.Core.Security.DataAccess
 
         public override Role GetById(int id)
         {
-            var role = base.GetById(id);
+            Role role = base.GetById(id);
             FillMissingData(new List<Role> { role });
             return role;
         }
@@ -29,7 +29,7 @@ namespace EXGEPA.Core.Security.DataAccess
         public override IList<Role> SelectAll()
         {
 
-            var allRows = base.SelectAll();
+            IList<Role> allRows = base.SelectAll();
             FillMissingData(allRows);
 
             return allRows;
@@ -37,7 +37,7 @@ namespace EXGEPA.Core.Security.DataAccess
 
         private void FillMissingData(IList<Role> allRows)
         {
-            var abilities = AbilityService
+            Dictionary<int, List<Ability>> abilities = AbilityService
                                         .SelectAll()
                                         .GroupBy(x => x.Role.Id)
                                         .ToDictionary(g => g.Key, x => x.ToList());
@@ -70,22 +70,22 @@ namespace EXGEPA.Core.Security.DataAccess
 
         public override IList<Ability> SelectAll()
         {
-            var allRows = base.SelectAll();
+            IList<Ability> allRows = base.SelectAll();
             FillReferenceDate(allRows);
             return allRows;
         }
 
         public override Ability GetById(int id)
         {
-            var ability = base.GetById(id);
+            Ability ability = base.GetById(id);
             FillReferenceDate(new List<Ability> { ability });
             return ability;
         }
 
         private void FillReferenceDate(IList<Ability> allRows)
         {
-            var operations = OperationService.SelectAll().ToDictionary(x => x.Id);
-            var resources = ResourceService.SelectAll().ToDictionary(x => x.Id);
+            Dictionary<int, Operation> operations = OperationService.SelectAll().ToDictionary(x => x.Id);
+            Dictionary<int, Resource> resources = ResourceService.SelectAll().ToDictionary(x => x.Id);
             Parallel.ForEach(allRows, row =>
             {
                 if (operations.TryGetValue(row.Operation.Id, out Operation operation))

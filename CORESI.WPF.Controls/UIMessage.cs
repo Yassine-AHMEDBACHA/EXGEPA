@@ -15,8 +15,8 @@ namespace CORESI.WPF.Controls
         private NotificationService notificationService;
         public UIMessage()
         {
-            var parameterProvider = ServiceLocator.Resolve<IParameterProvider>();
-            var useWinUIMessageStyle = parameterProvider.GetValue("UseWinUIMessageStyle", true);
+            IParameterProvider parameterProvider = ServiceLocator.Resolve<IParameterProvider>();
+            bool useWinUIMessageStyle = parameterProvider.GetValue("UseWinUIMessageStyle", true);
             if (useWinUIMessageStyle)
             {
                 this.ShowMessage = WinUIMessageBox.Show;

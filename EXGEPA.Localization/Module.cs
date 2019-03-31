@@ -24,9 +24,9 @@ namespace EXGEPA.Localization
 
         public override void AddGroups()
         {
-            var localisation = new Group();
+            Group localisation = new Group();
             localisation.Commands.Add(GetHomePageRibbonButton());
-            uIService.AddGroupToHomePage(localisation);
+            UIService.AddGroupToHomePage(localisation);
         }
 
         private RibbonButton GetHomePageRibbonButton()
@@ -37,22 +37,22 @@ namespace EXGEPA.Localization
                 LargeGlyph = IconProvider.Localization,
                 Action = () =>
                 {
-                    this.uIService.AddPage(GetModulePage(), true);
+                    this.UIService.AddPage(GetModulePage(), true);
                 }
             };
         }
 
         private Page GetModulePage()
         {
-            var localizationViewModel = new EXGEPA.Localization.Controls.LocalizationViewModel();
-            var localizationView = new EXGEPA.Localization.Controls.LocalizationControl();
+            Controls.LocalizationViewModel localizationViewModel = new EXGEPA.Localization.Controls.LocalizationViewModel();
+            Controls.LocalizationControl localizationView = new EXGEPA.Localization.Controls.LocalizationControl();
 
-            var page = new Page(localizationViewModel, localizationView, true)
+            Page page = new Page(localizationViewModel, localizationView, true)
             {
                 Caption = "Localisations",
             };
 
-            var siteGroup = new Group() { Caption = "Sites" };
+            Group siteGroup = new Group() { Caption = "Sites" };
 
             siteGroup.Commands.Add(localizationViewModel.SiteAddNewRibbonButton);
             siteGroup.Commands.Add(localizationViewModel.SiteEditRibbonButton);
@@ -60,7 +60,7 @@ namespace EXGEPA.Localization
 
             page.Groups.Add(siteGroup);
 
-            var buildingGroup = new Group() { Caption = "Batiments" };
+            Group buildingGroup = new Group() { Caption = "Batiments" };
 
             buildingGroup.Commands.Add(localizationViewModel.BuildingAddNewRibbonButton);
             buildingGroup.Commands.Add(localizationViewModel.BuildingEditRibbonButton);
@@ -68,13 +68,13 @@ namespace EXGEPA.Localization
 
             page.Groups.Add(buildingGroup);
 
-            var NiveauGroup = new Group() { Caption = "Niveaux" };
+            Group NiveauGroup = new Group() { Caption = "Niveaux" };
             NiveauGroup.Commands.Add(localizationViewModel.LevelAddNewRibbonButton);
             NiveauGroup.Commands.Add(localizationViewModel.LevelEditRibbonButton);
             NiveauGroup.Commands.Add(localizationViewModel.LevelDeleteRibbonButton);
             page.Groups.Add(NiveauGroup);
 
-            var OfficeGroup = new Group() { Caption = "Locaux" };
+            Group OfficeGroup = new Group() { Caption = "Locaux" };
             OfficeGroup.Commands.Add(localizationViewModel.OfficeAddNewRibbonButton);
             OfficeGroup.Commands.Add(localizationViewModel.OfficeEditRibbonButton);
             OfficeGroup.Commands.Add(localizationViewModel.OfficeDeleteRibbonButton);
@@ -85,18 +85,18 @@ namespace EXGEPA.Localization
 
         public void ShowOfficeAttribution(PropertyInfo property, object value, object defaultValue, Group group = null)
         {
-            var view = new Controls.OfficeAttribution();
-            var viewModel = new Controls.OfficeAttributionViewModel(property, true, false)
+            Controls.OfficeAttribution view = new Controls.OfficeAttribution();
+            Controls.OfficeAttributionViewModel viewModel = new Controls.OfficeAttributionViewModel(property, true, false)
             {
                 Caption = "Locaux"
             };
-            var page = new Page(viewModel, view)
+            Page page = new Page(viewModel, view)
             {
                 Categorie = printeLabelCategorie
             };
             if (group != null)
                 page.Groups.Add(group);
-            uIService.AddPage(page);
+            UIService.AddPage(page);
             viewModel.InitData();
         }
 

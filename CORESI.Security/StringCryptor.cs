@@ -21,9 +21,9 @@ namespace CORESI.Security
             if (string.IsNullOrEmpty(value))
                 return value;
             mD5CryptoServiceProvider.ComputeHash(ASCIIEncoding.ASCII.GetBytes(value.ToString()));
-            var result = mD5CryptoServiceProvider.Hash;
+            byte[] result = mD5CryptoServiceProvider.Hash;
             stringBuilder.Clear();
-            foreach (var item in result)
+            foreach (byte item in result)
             {
                 stringBuilder.Append(item.ToString("x2"));
             }

@@ -19,16 +19,16 @@
 
         public override void AddGroups()
         {
-            var iUItemService = ServiceLocator.Resolve<IUIItemService>();
+            IUIItemService iUItemService = ServiceLocator.Resolve<IUIItemService>();
             Group immobilisationGroup = new Group("Immobilisations");
             immobilisationGroup.AddCommand("Consultation", IconProvider.Grid, iUItemService.DisplayAllItems);
             immobilisationGroup.AddCommand("Ajouter", IconProvider.AddItem, iUItemService.AddNewItem);
-            this.uIService.AddGroupToHomePage(immobilisationGroup);
+            this.UIService.AddGroupToHomePage(immobilisationGroup);
         }
 
         public override void InitializeModule()
         {
-            using (var sccopLogger = new ScoopLogger("Initializing Item module", logger))
+            using (ScoopLogger sccopLogger = new ScoopLogger("Initializing Item module", Logger))
             {
                 DXControlInitializer.LoadComponent<ItemView>();
                 DXControlInitializer.LoadComponent<ItemAttributionView>();

@@ -15,9 +15,9 @@ namespace CORESI.Tools
                 File.Delete(fileName);
             }
 
-            var directory = Path.GetDirectoryName(fileName);
+            string directory = Path.GetDirectoryName(fileName);
             Directory.CreateDirectory(directory);
-            using (var sr = File.AppendText(fileName))
+            using (StreamWriter sr = File.AppendText(fileName))
             {
                 sr.WriteLine(text);
             }

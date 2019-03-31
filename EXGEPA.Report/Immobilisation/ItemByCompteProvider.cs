@@ -38,14 +38,14 @@ namespace EXGEPA.Report.Immobilisation
         {
             if (items != null)
             {
-                var AccountingPeriodsService = ServiceLocator.Resolve<CORESI.Data.IDataProvider<AccountingPeriod>>();
-                var currentPeriod = AccountingPeriodsService.SelectAll().FirstOrDefault(x => !x.Approved);
-                var parameterProvider = ServiceLocator.Resolve<CORESI.Data.IParameterProvider>();
-                var companyName = parameterProvider.GetValue<string>("CompanyName");
-                var header = parameterProvider.GetValue<string>("DepartmentName");
+                CORESI.Data.IDataProvider<AccountingPeriod> AccountingPeriodsService = ServiceLocator.Resolve<CORESI.Data.IDataProvider<AccountingPeriod>>();
+                AccountingPeriod currentPeriod = AccountingPeriodsService.SelectAll().FirstOrDefault(x => !x.Approved);
+                CORESI.Data.IParameterProvider parameterProvider = ServiceLocator.Resolve<CORESI.Data.IParameterProvider>();
+                string companyName = parameterProvider.GetValue<string>("CompanyName");
+                string header = parameterProvider.GetValue<string>("DepartmentName");
 
-                var subHeader = parameterProvider.GetValue<string>("DirectionName");
-                var logo = Path.Combine(parameterProvider.GetValue("PicturesDirectory", @"C:\SQLIMMO\Images"), parameterProvider.GetValue("LogoFileName", "logo.jpg"));
+                string subHeader = parameterProvider.GetValue<string>("DirectionName");
+                string logo = Path.Combine(parameterProvider.GetValue("PicturesDirectory", @"C:\SQLIMMO\Images"), parameterProvider.GetValue("LogoFileName", "logo.jpg"));
                 dynamic report = new TReport();
                 if (title != null)
                 {
@@ -59,8 +59,8 @@ namespace EXGEPA.Report.Immobilisation
                 report.Logo.ImageUrl = logo;
                 report.Periode.Text = currentPeriod.Key;
                 report.CreateDocument();
-                var page = CORESI.Report.Controls.ReportViewModel.GetModulePage(report.SheetTitle.Text, report);
-                var uIService = ServiceLocator.Resolve<IUIService>();
+                dynamic page = CORESI.Report.Controls.ReportViewModel.GetModulePage(report.SheetTitle.Text, report);
+                IUIService uIService = ServiceLocator.Resolve<IUIService>();
                 uIService.AddPage(page);
             }
             else

@@ -21,7 +21,7 @@ namespace EXGEPA.Security.Controls
 
         public ObservableCollection<Role> ListOfRoles
         {
-            get { return _ListOfRoles; }
+            get => _ListOfRoles;
             set
             {
                 _ListOfRoles = value;
@@ -44,8 +44,8 @@ namespace EXGEPA.Security.Controls
 
         public override void InitData()
         {
-            var users = this.DBservice.SelectAll().ToList();
-            var persons = PersonService.SelectAll();
+            System.Collections.Generic.List<Operator> users = this.DBservice.SelectAll().ToList();
+            System.Collections.Generic.IList<Person> persons = PersonService.SelectAll();
             this.ListOfRoles = new ObservableCollection<Role>(this.RoleService.SelectAll());
             users.ForEach(u =>
             {
@@ -85,7 +85,7 @@ namespace EXGEPA.Security.Controls
 
         public ObservableCollection<Person> ListOfPersons
         {
-            get { return _ListOfPersons; }
+            get => _ListOfPersons;
             set
             {
                 _ListOfPersons = value;
@@ -104,7 +104,7 @@ namespace EXGEPA.Security.Controls
 
         private void GetTheNewPassword(string login)
         {
-            var newPassword = LoginManager.ResetPassword(login);
+            string newPassword = LoginManager.ResetPassword(login);
             this.UIMessage.Information("Le nouveau mot de passe est : " + newPassword);
         }
     }

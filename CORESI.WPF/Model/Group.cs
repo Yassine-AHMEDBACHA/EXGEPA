@@ -19,7 +19,7 @@ namespace CORESI.WPF.Model
             this.Caption = caption;
             if (buttons != null)
             {
-                foreach (var button in buttons)
+                foreach (RibbonButton button in buttons)
                 {
                     this.Commands.Add(button);
                 }
@@ -50,7 +50,7 @@ namespace CORESI.WPF.Model
 
         public T AddCommand<T>(string caption, ImageSource icon = null, Action actionToDo = null, bool isSmall = false) where T : RibbonButton
         {
-            var command = this.AddCommand<T>(null, caption);
+            T command = this.AddCommand<T>(null, caption);
             command.Caption = caption;
             command.IsSmall = isSmall;
             if (isSmall)
@@ -63,14 +63,14 @@ namespace CORESI.WPF.Model
 
         public RibbonButton AddNewButton(string caption)
         {
-            var ribbonCommand = new RibbonButton(caption);
+            RibbonButton ribbonCommand = new RibbonButton(caption);
             this.Commands.Add(ribbonCommand);
             return ribbonCommand;
         }
 
         public LegendItem AddLegend(string caption, Color? color = null)
         {
-            var legend = new LegendItem(caption, color);
+            LegendItem legend = new LegendItem(caption, color);
             this.Commands.Add(legend);
 
             return legend;

@@ -14,7 +14,7 @@ namespace CORESI.DataAccess.Core.Database
 
         public static List<string> GetAllDataBase(IDbFacade dbFacade)
         {
-            var query = "SELECT [name],[dbid],[sid] ,[mode] ,[status] ,[status2] ,[crdate] ,[reserved] ,[category] ,[cmptlevel],[filename],[version]FROM [master].[sys].[sysdatabases]";
+            string query = "SELECT [name],[dbid],[sid] ,[mode] ,[status] ,[status2] ,[crdate] ,[reserved] ,[category] ,[cmptlevel],[filename],[version]FROM [master].[sys].[sysdatabases]";
 
             return dbFacade.ExecuteReader(query, (dr) => $"{dr["name"]}");
         }
@@ -36,17 +36,17 @@ namespace CORESI.DataAccess.Core.Database
                 dbFacade = ServiceLocator.Resolve<IDbFacade>();
             }
 
-            var query = $"create database {dbName}";
+            string query = $"create database {dbName}";
             return dbFacade.ExecuteNonQuery(query, false, "Master") == 1;
         }
 
         public static void BuildNewDatabase()
         {
-            var dbFacade = ServiceLocator.Resolve<IDbFacade>();
-            using (var scoop = new ScoopLogger("Creating DataBase", logger))
+            IDbFacade dbFacade = ServiceLocator.Resolve<IDbFacade>();
+            using (ScoopLogger scoop = new ScoopLogger("Creating DataBase", logger))
             {
                 logger.Info("Checking Database");
-                var target = dbFacade.GetCurrentDatabase();
+                string target = dbFacade.GetCurrentDatabase();
                 if (!CheckIfExist(target, dbFacade))
                 {
                     CreateDatabase(target, dbFacade);
@@ -54,15 +54,15 @@ namespace CORESI.DataAccess.Core.Database
 
                 logger.Info("Loading Model");
 
-                var tables = QueryBuilder.GetMappedTypes();
-                var triggersCleaner = new List<string>();
-                var triggersQuery = new List<string>();
-                var list = tables.Select(t => new TableScriptGenerator(t)).ToList();
+                List<System.Type> tables = QueryBuilder.GetMappedTypes();
+                List<string> triggersCleaner = new List<string>();
+                List<string> triggersQuery = new List<string>();
+                List<TableScriptGenerator> list = tables.Select(t => new TableScriptGenerator(t)).ToList();
                 list.ForEach(t => t.GetTableCreationScript());
 
                 list.ForEach(t =>
                 {
-                    var script = t.GetForeignKey(); if (script.IsValidData())
+                    string script = t.GetForeignKey(); if (script.IsValidData())
                     {
                         logger.InfoFormat("Adding foreign keys for table : {0}", t.TableName);
                         dbFacade.ExecuteNonQuery(script);

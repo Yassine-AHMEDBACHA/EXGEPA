@@ -28,7 +28,7 @@ namespace CORESI.Tools
             Logger.Debug("Resolving : " + args.RequestingAssembly);
 
             // var strTempAssmbPath = @"C:\Program Files (x86)\DevExpress 15.2\Components\Bin\Framework\" + args.Name + ".dll";
-            var strTempAssmbPath = args.Name + ".dll";
+            string strTempAssmbPath = args.Name + ".dll";
             Assembly resolvedAssembly = null;
             if (File.Exists(strTempAssmbPath))
             {
@@ -56,9 +56,9 @@ namespace CORESI.Tools
                 AlreadyLoadedAssemblies[assembly.FullName] = assembly;
             }
 
-            using (var scooplogger = new ScoopLogger("Loading " + assembly.FullName, Logger))
+            using (ScoopLogger scooplogger = new ScoopLogger("Loading " + assembly.FullName, Logger))
             {
-                foreach (var type in assembly.GetExportedTypes())
+                foreach (Type type in assembly.GetExportedTypes())
                 {
                     RuntimeHelpers.RunClassConstructor(type.TypeHandle);
                 }

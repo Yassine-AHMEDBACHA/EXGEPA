@@ -1,22 +1,27 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Linq;
-using CORESI.Data;
-using CORESI.IoC;
-using CORESI.WPF.Core;
-using CORESI.WPF.Core.Interfaces;
-using EXGEPA.Core.Interfaces;
-using EXGEPA.Model;
+﻿// <copyright file="CessionCertificateViewModel.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace EXGEPA.Output.Controls
 {
+    using System;
+    using System.Collections.ObjectModel;
+    using System.Linq;
+    using CORESI.Data;
+    using CORESI.IoC;
+    using CORESI.WPF.Core;
+    using CORESI.WPF.Core.Interfaces;
+    using EXGEPA.Core.Interfaces;
+    using EXGEPA.Model;
+
     public class CessionCertificateViewModel : OutputViewModel
     {
-        IDataProvider<AnalyticalAccount> analyticalAccountService;
+        private readonly IDataProvider<AnalyticalAccount> analyticalAccountService;
 
-        IDataProvider<AnalyticalAccountType> analyticalAccountTypeService;
+        private readonly IDataProvider<AnalyticalAccountType> analyticalAccountTypeService;
 
-        public CessionCertificateViewModel(IExportableGrid exportableView) : base(OutputType.Cession, exportableView)
+        public CessionCertificateViewModel(IExportableGrid exportableView)
+            : base(OutputType.Cession, exportableView)
         {
             this.Caption = "Liste de PV de cession";
             ServiceLocator.Resolve(out this.analyticalAccountService);
@@ -24,27 +29,23 @@ namespace EXGEPA.Output.Controls
             this.TakerVisibility = System.Windows.Visibility.Visible;
             this.TakerFieldName = "Unité réceptrice";
             this.TakerOptionVisibilty = System.Windows.Visibility.Collapsed;
-            var types = this.analyticalAccountTypeService.SelectAll();
-            var internalType = types.FirstOrDefault(x => x.Key.ToLowerInvariant() == "external");
-            var list = this.analyticalAccountService.SelectAll(types);
+            System.Collections.Generic.IList<AnalyticalAccountType> types = this.analyticalAccountTypeService.SelectAll();
+            AnalyticalAccountType internalType = types.FirstOrDefault(x => x.Key.ToLowerInvariant() == "external");
+            System.Collections.Generic.IList<AnalyticalAccount> list = this.analyticalAccountService.SelectAll(types);
             this.ListOfTakers = new ObservableCollection<NamedKeyRow>(list.Where(x => x.AnalyticalAccountType == internalType));
-            this.AddNewGroup().AddCommand("Contenu du PV", IconProvider.GreaterThan, DisplayPvContent);
+            this.AddNewGroup().AddCommand("Contenu du PV", IconProvider.GreaterThan, this.DisplayPvContent);
         }
 
         private void DisplayPvContent()
         {
-            Predicate<Item> filter = x => x.OutputCertificate?.Id == this.SelectedRow.Id;
-            this.UIItemService.DisplayItems(filter, $"Contenu du PV de cession {this.SelectedRow?.Key}", (items) =>
+            this.UIItemService.DisplayItems(
+                 x => x.OutputCertificate?.Id == this.SelectedRow.Id,
+                 $"Contenu du PV de cession {this.SelectedRow?.Key}",
+                 (items) =>
             {
-                var reports = ServiceLocator.Resolve<IImmobilisationSheetProvider>();
+                IImmobilisationSheetProvider reports = ServiceLocator.Resolve<IImmobilisationSheetProvider>();
                 reports.PrintOutputSheet(items, true, "Fiche de cession");
             });
         }
-
-
-
-
-
-
     }
 }

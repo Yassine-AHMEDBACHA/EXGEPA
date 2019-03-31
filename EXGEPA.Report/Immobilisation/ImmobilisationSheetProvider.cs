@@ -20,12 +20,12 @@ namespace EXGEPA.Report.Immobilisation
         {
             if (Depreciations != null)
             {
-                var AccountingPeriodsService = ServiceLocator.Resolve<CORESI.Data.IDataProvider<AccountingPeriod>>();
-                var currentPeriod = AccountingPeriodsService.SelectAll().FirstOrDefault(x => !x.Approved);
-                var parameterProvider = ServiceLocator.Resolve<CORESI.Data.IParameterProvider>();
-                var companyName = parameterProvider.GetValue<string>("CompanyName");
-                var logo = Path.Combine(parameterProvider.GetValue("PicturesDirectory", @"C:\SQLIMMO\Images"), parameterProvider.GetValue("LogoFileName", "logo.jpg"));
-                var resport = new ImmobilisationSheet();
+                CORESI.Data.IDataProvider<AccountingPeriod> AccountingPeriodsService = ServiceLocator.Resolve<CORESI.Data.IDataProvider<AccountingPeriod>>();
+                AccountingPeriod currentPeriod = AccountingPeriodsService.SelectAll().FirstOrDefault(x => !x.Approved);
+                CORESI.Data.IParameterProvider parameterProvider = ServiceLocator.Resolve<CORESI.Data.IParameterProvider>();
+                string companyName = parameterProvider.GetValue<string>("CompanyName");
+                string logo = Path.Combine(parameterProvider.GetValue("PicturesDirectory", @"C:\SQLIMMO\Images"), parameterProvider.GetValue("LogoFileName", "logo.jpg"));
+                ImmobilisationSheet resport = new ImmobilisationSheet();
                 resport.SheetTitle.Text = "Carte d'immobilisation";
                 resport.DataSource = Depreciations;
                 resport.CompanyName.Text = companyName;
@@ -33,8 +33,8 @@ namespace EXGEPA.Report.Immobilisation
                 resport.Periode.Text = "Date Effet :" + currentPeriod.EndDate.ToString("dd/MM/yyyy");
                 //.Code;
                 resport.CreateDocument();
-                var page = CORESI.Report.Controls.ReportViewModel.GetModulePage(resport.SheetTitle.Text, resport);
-                var uIService = ServiceLocator.Resolve<IUIService>();
+                CORESI.WPF.Model.Page page = CORESI.Report.Controls.ReportViewModel.GetModulePage(resport.SheetTitle.Text, resport);
+                IUIService uIService = ServiceLocator.Resolve<IUIService>();
                 uIService.AddPage(page);
             }
             else
@@ -47,12 +47,12 @@ namespace EXGEPA.Report.Immobilisation
         {
             if (items != null)
             {
-                var AccountingPeriodsService = ServiceLocator.Resolve<CORESI.Data.IDataProvider<AccountingPeriod>>();
-                var currentPeriod = AccountingPeriodsService.SelectAll().FirstOrDefault(x => !x.Approved);
-                var parameterProvider = ServiceLocator.Resolve<CORESI.Data.IParameterProvider>();
-                var companyName = parameterProvider.GetValue<string>("CompanyName");
-                var logo = Path.Combine(parameterProvider.GetValue("PicturesDirectory", @"C:\SQLIMMO\Images"), parameterProvider.GetValue("LogoFileName", "logo.jpg"));
-                var resport = new ExploitationStartupSheet();
+                CORESI.Data.IDataProvider<AccountingPeriod> AccountingPeriodsService = ServiceLocator.Resolve<CORESI.Data.IDataProvider<AccountingPeriod>>();
+                AccountingPeriod currentPeriod = AccountingPeriodsService.SelectAll().FirstOrDefault(x => !x.Approved);
+                CORESI.Data.IParameterProvider parameterProvider = ServiceLocator.Resolve<CORESI.Data.IParameterProvider>();
+                string companyName = parameterProvider.GetValue<string>("CompanyName");
+                string logo = Path.Combine(parameterProvider.GetValue("PicturesDirectory", @"C:\SQLIMMO\Images"), parameterProvider.GetValue("LogoFileName", "logo.jpg"));
+                ExploitationStartupSheet resport = new ExploitationStartupSheet();
                 resport.SheetTitle.Text = "Fiche de mise en exploitation des investissements";
                 resport.DataSource = items;
                 resport.CompanyName.Text = companyName;
@@ -60,8 +60,8 @@ namespace EXGEPA.Report.Immobilisation
                 resport.Periode.Text = "Date Effet :" + currentPeriod.EndDate.ToString("dd/MM/yyyy");
                 //.Code;
                 resport.CreateDocument();
-                var page = CORESI.Report.Controls.ReportViewModel.GetModulePage(resport.SheetTitle.Text, resport);
-                var uIService = ServiceLocator.Resolve<IUIService>();
+                CORESI.WPF.Model.Page page = CORESI.Report.Controls.ReportViewModel.GetModulePage(resport.SheetTitle.Text, resport);
+                IUIService uIService = ServiceLocator.Resolve<IUIService>();
                 uIService.AddPage(page);
             }
             else
@@ -74,12 +74,12 @@ namespace EXGEPA.Report.Immobilisation
         {
             if (items?.Count() > 0)
             {
-                var AccountingPeriodsService = ServiceLocator.Resolve<CORESI.Data.IDataProvider<AccountingPeriod>>();
-                var currentPeriod = AccountingPeriodsService.SelectAll().FirstOrDefault(x => !x.Approved);
-                var parameterProvider = ServiceLocator.Resolve<CORESI.Data.IParameterProvider>();
-                var companyName = parameterProvider.GetValue<string>("CompanyName");
-                var logo = Path.Combine(parameterProvider.GetValue("PicturesDirectory", @"C:\SQLIMMO\Images"), parameterProvider.GetValue("LogoFileName", "logo.jpg"));
-                var rpt = new Outputs.OutputSheet();
+                CORESI.Data.IDataProvider<AccountingPeriod> AccountingPeriodsService = ServiceLocator.Resolve<CORESI.Data.IDataProvider<AccountingPeriod>>();
+                AccountingPeriod currentPeriod = AccountingPeriodsService.SelectAll().FirstOrDefault(x => !x.Approved);
+                CORESI.Data.IParameterProvider parameterProvider = ServiceLocator.Resolve<CORESI.Data.IParameterProvider>();
+                string companyName = parameterProvider.GetValue<string>("CompanyName");
+                string logo = Path.Combine(parameterProvider.GetValue("PicturesDirectory", @"C:\SQLIMMO\Images"), parameterProvider.GetValue("LogoFileName", "logo.jpg"));
+                Outputs.OutputSheet rpt = new Outputs.OutputSheet();
                 NewMethod(isCession, rpt);
                 rpt.SheetTitle.Text = title ?? "Fiche de sortie";
                 rpt.DataSource = items;
@@ -88,8 +88,8 @@ namespace EXGEPA.Report.Immobilisation
                 rpt.Periode.Text = "Date Effet :" + currentPeriod.EndDate.ToString("dd/MM/yyyy");
                 //.Code;
                 rpt.CreateDocument();
-                var page = CORESI.Report.Controls.ReportViewModel.GetModulePage(rpt.SheetTitle.Text, rpt);
-                var uIService = ServiceLocator.Resolve<IUIService>();
+                CORESI.WPF.Model.Page page = CORESI.Report.Controls.ReportViewModel.GetModulePage(rpt.SheetTitle.Text, rpt);
+                IUIService uIService = ServiceLocator.Resolve<IUIService>();
                 uIService.AddPage(page);
             }
             else

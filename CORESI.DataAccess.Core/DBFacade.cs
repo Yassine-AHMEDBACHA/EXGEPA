@@ -25,12 +25,12 @@ namespace CORESI.DataAccess
 
         public T ExecuteScalaire<T>(IDbCommand dBCommand)
         {
-            var result = default(T);
-            using (var dBconnection = DBConnectionFactory.GetDbConnection(this.ConnectionString))
+            T result = default(T);
+            using (IDbConnection dBconnection = DBConnectionFactory.GetDbConnection(this.ConnectionString))
             {
                 dBCommand.Connection = dBconnection;
                 dBconnection.Open();
-                var returnedObject = dBCommand.ExecuteScalar();
+                object returnedObject = dBCommand.ExecuteScalar();
                 dBconnection.Close();
                 result = (T)returnedObject;
             }
@@ -41,7 +41,7 @@ namespace CORESI.DataAccess
         public int ExecuteNonQuery(IDbCommand dBCommand, string dataBaseName = null)
         {
             int count = 0;
-            using (var dBconnection = DBConnectionFactory.GetDbConnection(this.ConnectionString))
+            using (IDbConnection dBconnection = DBConnectionFactory.GetDbConnection(this.ConnectionString))
             {
                 dBCommand.Connection = dBconnection;
                 dBconnection.Open();
@@ -54,15 +54,15 @@ namespace CORESI.DataAccess
 
         public void Fill<T>(IDbCommand dBCommand, IList<T> ListOfInstances, Func<IDataReader, T> mapper)
         {
-            using (var dBconnection = DBConnectionFactory.GetDbConnection(this.ConnectionString))
+            using (IDbConnection dBconnection = DBConnectionFactory.GetDbConnection(this.ConnectionString))
             {
                 dBCommand.Connection = dBconnection;
                 dBconnection.Open();
-                using (var dataReader = dBCommand.ExecuteReader())
+                using (IDataReader dataReader = dBCommand.ExecuteReader())
                 {
                     while (dataReader.Read())
                     {
-                        var instance = mapper(dataReader);
+                        T instance = mapper(dataReader);
                         ListOfInstances.Add(instance);
                     }
                 }
@@ -71,7 +71,7 @@ namespace CORESI.DataAccess
 
         public void Fill<T>(IDbCommand dBCommand, T instance, Action<IDataReader, T> mapper)
         {
-            using (var dBconnection = DBConnectionFactory.GetDbConnection(this.ConnectionString))
+            using (IDbConnection dBconnection = DBConnectionFactory.GetDbConnection(this.ConnectionString))
             {
                 dBCommand.Connection = dBconnection;
                 dBconnection.Open();
@@ -88,7 +88,7 @@ namespace CORESI.DataAccess
         public List<T> ExecuteReader<T>(string command, Func<IDataReader, T> mapper)
         {
             List<T> list = new List<T>();
-            var dBCommand = CommandFactory.GetDBCommand(command, false);
+            IDbCommand dBCommand = CommandFactory.GetDBCommand(command, false);
             Fill<T>(dBCommand, list, mapper);
             return list;
         }
@@ -101,15 +101,15 @@ namespace CORESI.DataAccess
 
         public int ExecuteNonQuery(string command, bool isStoredProcedure = false, string dataBaseName = null)
         {
-            var dBCommand = CommandFactory.GetDBCommand(command, false);
+            IDbCommand dBCommand = CommandFactory.GetDBCommand(command, false);
             return this.ExecuteNonQuery(dBCommand, dataBaseName);
         }
 
         public void ExecuteAction(string command, Action<IDataReader> action)
         {
-            using (var dBconnection = DBConnectionFactory.GetDbConnection(this.ConnectionString))
+            using (IDbConnection dBconnection = DBConnectionFactory.GetDbConnection(this.ConnectionString))
             {
-                var dBCommand = CommandFactory.GetDBCommand(dBconnection, command, false);
+                IDbCommand dBCommand = CommandFactory.GetDBCommand(dBconnection, command, false);
                 dBconnection.Open();
                 using (IDataReader dataReader = dBCommand.ExecuteReader())
                 {
@@ -128,7 +128,7 @@ namespace CORESI.DataAccess
                 throw new Exception("La chaine de connexion est vide");
             try
             {
-                using (var dBconnection = DBConnectionFactory.GetDbConnection(connectionString))
+                using (IDbConnection dBconnection = DBConnectionFactory.GetDbConnection(connectionString))
                 {
                     dBconnection.Open();
                     result = dBconnection.State == ConnectionState.Open;

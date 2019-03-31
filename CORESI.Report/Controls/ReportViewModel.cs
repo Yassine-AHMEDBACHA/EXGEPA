@@ -12,7 +12,7 @@ namespace CORESI.Report.Controls
 
         public object DocumentSource
         {
-            get { return _DocumentSource; }
+            get => _DocumentSource;
             set
             {
                 _DocumentSource = value;
@@ -34,12 +34,12 @@ namespace CORESI.Report.Controls
 
         public static Page GetModulePage(string pageTitle, object documentSource = null)
         {
-            var viewModel = new ReportViewModel();
-            var view = ReportView.GetInstance(viewModel);
+            ReportViewModel viewModel = new ReportViewModel();
+            ReportView view = ReportView.GetInstance(viewModel);
 
             viewModel.DocumentSource = documentSource;
 
-            var page = new Page(viewModel, view)
+            Page page = new Page(viewModel, view)
             {
                 Caption = pageTitle,
                 Categorie = printCategorie

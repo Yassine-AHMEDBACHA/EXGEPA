@@ -75,15 +75,15 @@ namespace EXGEPA.Localization.Controls
                 this.ShowLoadingPanel = true;
                 this.AnalyticalAccountService = ServiceLocator.Resolve<IDataProvider<AnalyticalAccount>>();
                 InitRibbonCommand();
-                var allRegion = RegionalService.SelectAll();
-                var sites = this.SiteService.SelectAll();
-                var allOffices = this.OfficeService.SelectAll();
-                var allLevels = this.LevelService.SelectAll();
-                var allBuildings = this.BuildingService.SelectAll();
+                IList<Region> allRegion = RegionalService.SelectAll();
+                IList<Site> sites = this.SiteService.SelectAll();
+                IList<Office> allOffices = this.OfficeService.SelectAll();
+                IList<Level> allLevels = this.LevelService.SelectAll();
+                IList<Building> allBuildings = this.BuildingService.SelectAll();
                 Core.LoacalizationTools.BindLocalization(allOffices, allLevels, sites, allBuildings, allRegion);
                 CurrentRegion = sites.FirstOrDefault().Region;
                 ListOfAnalyticalAccount = new ObservableCollection<AnalyticalAccount>(AnalyticalAccountService.SelectAll());
-                foreach (var office in allOffices)
+                foreach (Office office in allOffices)
                 {
                     if (office.AnalyticalAccount != null)
                         office.AnalyticalAccount = ListOfAnalyticalAccount.FirstOrDefault(aAccout => aAccout.Id == (office.AnalyticalAccount.Id));
@@ -100,12 +100,12 @@ namespace EXGEPA.Localization.Controls
             this.UIMessage.TryDoUIActionAsync(Logger, () =>
              {
                  IList<Item> items = null;
-                 var offices = SelectedOffices.ToDictionary(x => x.Key);
-                 var inventoryRows = InventoryRowService.SelectAll().Where(x => offices.ContainsKey(x.Localization)).ToList();
+                 Dictionary<string, Office> offices = SelectedOffices.ToDictionary(x => x.Key);
+                 List<InventoryRow> inventoryRows = InventoryRowService.SelectAll().Where(x => offices.ContainsKey(x.Localization)).ToList();
                  if (inventoryRows.Count > 0)
                  {
                      items = ItemService.SelectAll();
-                     var allItems = items.Where(x => x.OutputCertificate == null).ToDictionary(x => x.Key, x => x);
+                     Dictionary<string, Item> allItems = items.Where(x => x.OutputCertificate == null).ToDictionary(x => x.Key, x => x);
                      items = inventoryRows.Select(x =>
                     {
                         if (allItems.TryGetValue(x.Key, out Item item))
@@ -127,8 +127,8 @@ namespace EXGEPA.Localization.Controls
         private void PrintTheoricalInventory()
         {
             RepositoryDataProvider.Refresh();
-            var officeIds = SelectedOffices.Select(x => x.Id).ToList();
-            var items = ItemService.SelectAll();
+            List<int> officeIds = SelectedOffices.Select(x => x.Id).ToList();
+            IList<Item> items = ItemService.SelectAll();
             RepositoryDataProvider.BindItemFields(items);
             items = items.Where(x => x.OutputCertificate == null && officeIds.Contains(x.Office.Id)).ToList();
             OfficeInventoryReportProvider.PrintInventorySheet(items);
@@ -138,7 +138,7 @@ namespace EXGEPA.Localization.Controls
 
         public Region CurrentRegion
         {
-            get { return _CurrentRegion; }
+            get => _CurrentRegion;
             set
             {
                 _CurrentRegion = value;
@@ -151,7 +151,7 @@ namespace EXGEPA.Localization.Controls
 
         public ObservableCollection<AnalyticalAccount> ListOfAnalyticalAccount
         {
-            get { return _ListOfAnalyticalAccount; }
+            get => _ListOfAnalyticalAccount;
             set
             {
                 _ListOfAnalyticalAccount = value;
@@ -163,7 +163,7 @@ namespace EXGEPA.Localization.Controls
 
         public ObservableCollection<Region> ListOfRegion
         {
-            get { return _ListOfRegion; }
+            get => _ListOfRegion;
             set
             {
                 _ListOfRegion = value;
@@ -174,7 +174,7 @@ namespace EXGEPA.Localization.Controls
         private bool _DisplaySiteDetail;
         public bool DisplaySiteDetail
         {
-            get { return _DisplaySiteDetail; }
+            get => _DisplaySiteDetail;
             set
             {
                 _DisplaySiteDetail = value;
@@ -185,10 +185,7 @@ namespace EXGEPA.Localization.Controls
         private Site _ConecernedSite;
         public Site ConecernedSite
         {
-            get
-            {
-                return _ConecernedSite;
-            }
+            get => _ConecernedSite;
             set
             {
                 _ConecernedSite = value;
@@ -200,7 +197,7 @@ namespace EXGEPA.Localization.Controls
         private bool _DisplayBuildingDetail;
         public bool DisplayBuildingDetail
         {
-            get { return _DisplayBuildingDetail; }
+            get => _DisplayBuildingDetail;
             set
             {
                 _DisplayBuildingDetail = value;
@@ -211,7 +208,7 @@ namespace EXGEPA.Localization.Controls
         private Building _ConecernedBuilding;
         public Building ConecernedBuilding
         {
-            get { return _ConecernedBuilding; }
+            get => _ConecernedBuilding;
             set
             {
                 _ConecernedBuilding = value;
@@ -224,7 +221,7 @@ namespace EXGEPA.Localization.Controls
         private bool _DisplayLevelDetail;
         public bool DisplayLevelDetail
         {
-            get { return _DisplayLevelDetail; }
+            get => _DisplayLevelDetail;
             set
             {
                 _DisplayLevelDetail = value;
@@ -236,7 +233,7 @@ namespace EXGEPA.Localization.Controls
         private Level _ConecernedLevel;
         public Level ConecernedLevel
         {
-            get { return _ConecernedLevel; }
+            get => _ConecernedLevel;
             set
             {
                 _ConecernedLevel = value;
@@ -248,7 +245,7 @@ namespace EXGEPA.Localization.Controls
         private bool _DisplayOfficeDetail;
         public bool DisplayOfficeDetail
         {
-            get { return _DisplayOfficeDetail; }
+            get => _DisplayOfficeDetail;
             set
             {
                 _DisplayOfficeDetail = value;
@@ -259,7 +256,7 @@ namespace EXGEPA.Localization.Controls
         private Office _ConecernedOffice;
         public Office ConecernedOffice
         {
-            get { return _ConecernedOffice; }
+            get => _ConecernedOffice;
             set
             {
                 _ConecernedOffice = value;
@@ -278,7 +275,7 @@ namespace EXGEPA.Localization.Controls
 
         public ICommand CancelSiteCommand
         {
-            get { return _CancelSiteCommand; }
+            get => _CancelSiteCommand;
             set
             {
                 _CancelSiteCommand = value;
@@ -292,7 +289,7 @@ namespace EXGEPA.Localization.Controls
 
         public ICommand CancelBuildingCommand
         {
-            get { return _CancelBuildingCommand; }
+            get => _CancelBuildingCommand;
             set { _CancelBuildingCommand = value; RaisePropertyChanged("CancelBuildingCommand"); }
         }
 
@@ -301,7 +298,7 @@ namespace EXGEPA.Localization.Controls
 
         public ICommand CancelLevelCommand
         {
-            get { return _CancelLevelCommand; }
+            get => _CancelLevelCommand;
             set { _CancelLevelCommand = value; RaisePropertyChanged("CancelLevelCommand"); }
         }
 
@@ -309,7 +306,7 @@ namespace EXGEPA.Localization.Controls
 
         public ICommand CancelOfficeCommand
         {
-            get { return _CancelOfficeCommand; }
+            get => _CancelOfficeCommand;
             set { _CancelOfficeCommand = value; RaisePropertyChanged("CancelOfficeCommand"); }
         }
 
@@ -319,7 +316,7 @@ namespace EXGEPA.Localization.Controls
         private ICommand _ValidateSiteCommand;
         public ICommand ValidateSiteCommand
         {
-            get { return _ValidateSiteCommand; }
+            get => _ValidateSiteCommand;
             set
             {
                 _ValidateSiteCommand = value;
@@ -330,7 +327,7 @@ namespace EXGEPA.Localization.Controls
         private ICommand _ValidateBuildingCommand;
         public ICommand ValidateBuildingCommand
         {
-            get { return _ValidateBuildingCommand; }
+            get => _ValidateBuildingCommand;
             set
             {
                 _ValidateBuildingCommand = value;
@@ -341,7 +338,7 @@ namespace EXGEPA.Localization.Controls
         private ICommand _ValidateLevelCommand;
         public ICommand ValidateLevelCommand
         {
-            get { return _ValidateLevelCommand; }
+            get => _ValidateLevelCommand;
             set
             {
                 _ValidateLevelCommand = value;
@@ -352,7 +349,7 @@ namespace EXGEPA.Localization.Controls
         private ICommand _ValidateOfficeCommand;
         public ICommand ValidateOfficeCommand
         {
-            get { return _ValidateOfficeCommand; }
+            get => _ValidateOfficeCommand;
             set
             {
                 _ValidateOfficeCommand = value;
@@ -366,7 +363,7 @@ namespace EXGEPA.Localization.Controls
 
         public void AddSite()
         {
-            var old = this.ConecernedSite;
+            Site old = this.ConecernedSite;
             ValidateSiteCommand = new Command(() =>
             {
                 this.UIMessage.TryDoAction(Logger, () =>
@@ -397,7 +394,7 @@ namespace EXGEPA.Localization.Controls
         public void DeleteSite()
         {
 
-            var result = this.UIMessage.Warning("Etes vous sur de vouloir supprimer ce site ?");
+            System.Windows.MessageBoxResult result = this.UIMessage.Warning("Etes vous sur de vouloir supprimer ce site ?");
             if (result == System.Windows.MessageBoxResult.Yes)
             {
                 this.UIMessage.TryDoAction(Logger, () =>
@@ -429,7 +426,7 @@ namespace EXGEPA.Localization.Controls
 
         public void AddBuilding()
         {
-            var old = this.ConecernedBuilding;
+            Building old = this.ConecernedBuilding;
             CancelBuildingCommand = new Command(() =>
                 {
                     this.ConecernedBuilding = old;
@@ -467,7 +464,7 @@ namespace EXGEPA.Localization.Controls
 
         public void DeleteBuilding()
         {
-            var result = this.UIMessage.Warning("Etes vous sur de vouloir supprimer ce batiement ?");
+            System.Windows.MessageBoxResult result = this.UIMessage.Warning("Etes vous sur de vouloir supprimer ce batiement ?");
             if (result == System.Windows.MessageBoxResult.Yes)
             {
                 this.UIMessage.TryDoAction(Logger, () =>
@@ -497,7 +494,7 @@ namespace EXGEPA.Localization.Controls
 
         public void AddLevel()
         {
-            var old = ConecernedLevel;
+            Level old = ConecernedLevel;
             CancelLevelCommand = new Command(() =>
                 {
                     this.ConecernedLevel = old;
@@ -536,7 +533,7 @@ namespace EXGEPA.Localization.Controls
 
         public void DeleteLevel()
         {
-            var result = this.UIMessage.Warning("Etes vous sur de vouloir supprimer cet etage ?");
+            System.Windows.MessageBoxResult result = this.UIMessage.Warning("Etes vous sur de vouloir supprimer cet etage ?");
             if (result == System.Windows.MessageBoxResult.Yes)
             {
                 this.UIMessage.TryDoAction(Logger, () =>
@@ -589,7 +586,7 @@ namespace EXGEPA.Localization.Controls
                 result = (ConecernedLevel.Offices.Count() + 1).ToString();
             }
 
-            var code = LoacalizationTools.NormelizeOfficeCode(result);
+            string code = LoacalizationTools.NormelizeOfficeCode(result);
 
             ConecernedOffice = new Office()
             {
@@ -630,7 +627,7 @@ namespace EXGEPA.Localization.Controls
 
         public void DeleteOffice()
         {
-            var result = this.UIMessage.Warning("Etes vous sur de vouloir supprimer ce local ?");
+            System.Windows.MessageBoxResult result = this.UIMessage.Warning("Etes vous sur de vouloir supprimer ce local ?");
             if (result == System.Windows.MessageBoxResult.Yes)
             {
                 this.UIMessage.TryDoAction(Logger, () =>

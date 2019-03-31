@@ -18,32 +18,32 @@ namespace EXGEPA.Transfert.Core
 
         public void Load()
         {
-            var parameterProvider = ServiceLocator.Resolve<IParameterProvider>();
-            var dataBaseTransfertEngin = new DataBaseTransfertEngin();
-            var companyName = dataBaseTransfertEngin.GetCompanyName();
+            IParameterProvider parameterProvider = ServiceLocator.Resolve<IParameterProvider>();
+            DataBaseTransfertEngin dataBaseTransfertEngin = new DataBaseTransfertEngin();
+            string companyName = dataBaseTransfertEngin.GetCompanyName();
             parameterProvider.TrySetOrAdd("CompanyName", companyName);
 
             logger.Info("Loading Regions");
-            var regions = DbInitializer.InsertData(dataBaseTransfertEngin.LoadRegion());
+            List<Region> regions = DbInitializer.InsertData(dataBaseTransfertEngin.LoadRegion());
 
             logger.Info("Loading ReceiveOrders");
-            var ListOfReceiveOrder = DbInitializer.InsertData(dataBaseTransfertEngin.LoadReceiveOrder());
+            List<ReceiveOrder> ListOfReceiveOrder = DbInitializer.InsertData(dataBaseTransfertEngin.LoadReceiveOrder());
 
             logger.Info("Loading InputSheet");
-            var ListOfInputSheet = DbInitializer.InsertData(dataBaseTransfertEngin.LoadInputSheet());
+            List<InputSheet> ListOfInputSheet = DbInitializer.InsertData(dataBaseTransfertEngin.LoadInputSheet());
 
             logger.Info("Loading Providers");
-            var ListOfProvider = DbInitializer.InsertData(dataBaseTransfertEngin.LoadProviders());
+            List<Provider> ListOfProvider = DbInitializer.InsertData(dataBaseTransfertEngin.LoadProviders());
 
             logger.Info("Loading Persons");
-            var ListOfPerson = DbInitializer.InsertData(dataBaseTransfertEngin.LoadPeron());
+            List<Person> ListOfPerson = DbInitializer.InsertData(dataBaseTransfertEngin.LoadPeron());
 
             logger.Info("Loading OrderDocumentTypes");
-            var listOfOrderDocumentTypes = DbInitializer.InsertData(dataBaseTransfertEngin.LoadOrderDocumentTypes());
+            List<OrderDocumentType> listOfOrderDocumentTypes = DbInitializer.InsertData(dataBaseTransfertEngin.LoadOrderDocumentTypes());
 
 
             logger.Info("loading GeneralAccountType");
-            var generalAccountTypes = DbInitializer.InsertData(dataBaseTransfertEngin.ListOfGeneralAccountType());
+            List<GeneralAccountType> generalAccountTypes = DbInitializer.InsertData(dataBaseTransfertEngin.ListOfGeneralAccountType());
 
 
             logger.Info("Loading GeneralAccount");
@@ -55,10 +55,10 @@ namespace EXGEPA.Transfert.Core
                 return ga;
             };
 
-            var ListOfGeneralAccount = dataBaseTransfertEngin.LoadGeneralAccount();
+            List<GeneralAccount> ListOfGeneralAccount = dataBaseTransfertEngin.LoadGeneralAccount();
 
-            var endowment = DbInitializer.InsertInstances(ListOfGeneralAccount.Select(x => x.Children?.Children).Where(x => x != null).GroupBy(x => x.Key).Select(x => x.First()).Select(gAMapper));
-            foreach (var item in ListOfGeneralAccount.Select(x => x.Children).Where(x => x != null).GroupBy(x => x.Key).Select(x => x.First()).Select(gAMapper))
+            IEnumerable<GeneralAccount> endowment = DbInitializer.InsertInstances(ListOfGeneralAccount.Select(x => x.Children?.Children).Where(x => x != null).GroupBy(x => x.Key).Select(x => x.First()).Select(gAMapper));
+            foreach (GeneralAccount item in ListOfGeneralAccount.Select(x => x.Children).Where(x => x != null).GroupBy(x => x.Key).Select(x => x.First()).Select(gAMapper))
             {
                 item.Children = endowment.FirstOrDefault(x => x.Key == item.Children?.Key);
                 DbInitializer.InsertInstance(item);
@@ -67,13 +67,13 @@ namespace EXGEPA.Transfert.Core
             DbInitializer.InsertInstances(ListOfGeneralAccount.Where(x => x != null).GroupBy(x => x.Key).Select(x => x.First()).Select(gAMapper));
 
             logger.Info("Loading Transfert Order");
-            var ListOfTransferOrder = DbInitializer.InsertData(dataBaseTransfertEngin.loadTransferOrder());
+            List<TransferOrder> ListOfTransferOrder = DbInitializer.InsertData(dataBaseTransfertEngin.loadTransferOrder());
 
             logger.Info("Loading Currencies");
-            var ListOfAllCurrencies = DbInitializer.InsertData(CurrencyLoader.LoadCurrencies());
+            List<Currency> ListOfAllCurrencies = DbInitializer.InsertData(CurrencyLoader.LoadCurrencies());
 
             logger.Info("Loading Invoices");
-            var ListOfInvoice = dataBaseTransfertEngin.LoadInvoices();
+            List<Invoice> ListOfInvoice = dataBaseTransfertEngin.LoadInvoices();
             ListOfInvoice.ForEach(invoice =>
             {
                 invoice.InputSheet = ListOfInputSheet.FirstOrDefault(inputsheet => inputsheet.Key == invoice.InputSheet.Key);
@@ -83,10 +83,10 @@ namespace EXGEPA.Transfert.Core
             ListOfInvoice = DbInitializer.InsertData(ListOfInvoice);
 
             logger.Info("loading references type");
-            var listOfRefenreceType = DbInitializer.InsertData(dataBaseTransfertEngin.LoadReferenceType());
+            List<ReferenceType> listOfRefenreceType = DbInitializer.InsertData(dataBaseTransfertEngin.LoadReferenceType());
 
             logger.Info("Loading References");
-            var ListOfReference = dataBaseTransfertEngin.LoadReferences();
+            List<Reference> ListOfReference = dataBaseTransfertEngin.LoadReferences();
             ListOfReference.ForEach(reference =>
             {
                 reference.InvestmentAccount = ListOfGeneralAccount.FirstOrDefault(ga => ga.Key == reference.InvestmentAccount?.Key);
@@ -96,10 +96,10 @@ namespace EXGEPA.Transfert.Core
             ListOfReference = DbInitializer.InsertData(ListOfReference);
 
             logger.Info("Loading Analytical Account types");
-            var AnalyticalAccountTypes = DbInitializer.InsertData(dataBaseTransfertEngin.LoadAnalyticalAccountTypes());
+            List<AnalyticalAccountType> AnalyticalAccountTypes = DbInitializer.InsertData(dataBaseTransfertEngin.LoadAnalyticalAccountTypes());
 
             logger.Info("Loading Analytical Account");
-            var ListOfAnalyticalAccount = dataBaseTransfertEngin.LoadAnalyticalAccount();
+            List<AnalyticalAccount> ListOfAnalyticalAccount = dataBaseTransfertEngin.LoadAnalyticalAccount();
             ListOfAnalyticalAccount.ForEach(a =>
             {
                 a.AnalyticalAccountType = AnalyticalAccountTypes.FirstOrDefault(x => x.Key == a.AnalyticalAccountType.Key);
@@ -107,25 +107,25 @@ namespace EXGEPA.Transfert.Core
             ListOfAnalyticalAccount = DbInitializer.InsertData(ListOfAnalyticalAccount);
 
             logger.Info("Loading sites");
-            var sites = LoadSites(dataBaseTransfertEngin, regions);
+            List<Site> sites = LoadSites(dataBaseTransfertEngin, regions);
 
             logger.Info("Loading buildings");
-            var buildings = LoadBuildings(dataBaseTransfertEngin, sites);
+            List<Building> buildings = LoadBuildings(dataBaseTransfertEngin, sites);
 
             logger.Info("Loading levels");
-            var levels = LoadLevels(dataBaseTransfertEngin, buildings);
+            List<Level> levels = LoadLevels(dataBaseTransfertEngin, buildings);
 
             logger.Info("Loading offices");
-            var offices = LoadOffices(dataBaseTransfertEngin, ListOfAnalyticalAccount, levels);
+            List<Office> offices = LoadOffices(dataBaseTransfertEngin, ListOfAnalyticalAccount, levels);
 
             logger.Info("Loading reformes certificates");
-            var ListOfReformeCertificate = DbInitializer.InsertData(dataBaseTransfertEngin.LoadReformsCertificate());
+            List<ReformeCertificate> ListOfReformeCertificate = DbInitializer.InsertData(dataBaseTransfertEngin.LoadReformsCertificate());
 
             logger.Info("Loading output certificates");
-            var ListOfOutputCertificate = DbInitializer.InsertData(dataBaseTransfertEngin.LoadOutputCertificate());
+            List<OutputCertificate> ListOfOutputCertificate = DbInitializer.InsertData(dataBaseTransfertEngin.LoadOutputCertificate());
 
             logger.Info("Loading States");
-            var states = dataBaseTransfertEngin.LoadStates();
+            List<ItemState> states = dataBaseTransfertEngin.LoadStates();
             if (states != null && states.Count == 0)
             {
                 states = new List<ItemState>();
@@ -136,7 +136,7 @@ namespace EXGEPA.Transfert.Core
             states = DbInitializer.InsertData(states);
 
             logger.Info("Loading inventory");
-            var ListOfinventory = dataBaseTransfertEngin.loadInventory();
+            List<InventoryRow> ListOfinventory = dataBaseTransfertEngin.loadInventory();
             ListOfinventory.ForEach(row =>
             {
                 row.ItemState = states.FirstOrDefault(state => state.Key == row.ItemState?.Key);
@@ -144,25 +144,25 @@ namespace EXGEPA.Transfert.Core
             ListOfinventory = DbInitializer.InsertData(ListOfinventory);
 
             logger.Info("Loading Periods");
-            var periods = dataBaseTransfertEngin.LoadAccountingPeriods();
+            List<AccountingPeriod> periods = dataBaseTransfertEngin.LoadAccountingPeriods();
             periods.Last().Approved = false;
             periods = DbInitializer.InsertData(periods);
 
             logger.Info("Loading Items");
-            var assignements = DbInitializer.InsertData(dataBaseTransfertEngin.LoadAssignament());
+            List<Assignment> assignements = DbInitializer.InsertData(dataBaseTransfertEngin.LoadAssignament());
 
-            var stopwatch = Stopwatch.StartNew();
-            var Items = dataBaseTransfertEngin.LoadItem();
+            Stopwatch stopwatch = Stopwatch.StartNew();
+            List<Item> Items = dataBaseTransfertEngin.LoadItem();
             stopwatch.Stop();
             logger.Info(stopwatch.Elapsed + " + to Load Items");
             stopwatch.Restart();
 
-            var allPersons = ListOfPerson.ToDictionary(x => x.Key);
-            var allInvoices = ListOfInvoice.ToDictionary(x => x.Key);
-            var allOffices = offices.ToDictionary(x => x.Key.ToUpper());
-            var allProviders = ListOfProvider.ToDictionary(x => x.Key);
-            var allGA = ListOfGeneralAccount.ToDictionary(x => x.Key);
-            var CodeLength = 15;
+            Dictionary<string, Person> allPersons = ListOfPerson.ToDictionary(x => x.Key);
+            Dictionary<string, Invoice> allInvoices = ListOfInvoice.ToDictionary(x => x.Key);
+            Dictionary<string, Office> allOffices = offices.ToDictionary(x => x.Key.ToUpper());
+            Dictionary<string, Provider> allProviders = ListOfProvider.ToDictionary(x => x.Key);
+            Dictionary<string, GeneralAccount> allGA = ListOfGeneralAccount.ToDictionary(x => x.Key);
+            int CodeLength = 15;
             parameterProvider.TrySetOrAdd($"{typeof(Item).Name}KeyLength", CodeLength);
             // parameterProvider.TrySetOrAdd("CodeLength", CodeLength);
             Parallel.ForEach(Items, item =>
@@ -249,12 +249,12 @@ namespace EXGEPA.Transfert.Core
 
         private static List<Office> LoadOffices(IDataBaseTransfertEngin dataBaseTransfertEngin, List<AnalyticalAccount> ListOfAnalyticalAccount, List<Level> levels)
         {
-            var probleme = new List<Office>();
-            var offices = dataBaseTransfertEngin.LoadOffices().GroupBy(x => x.Key).Select(y => y.First()).ToList();
-            foreach (var office in offices)
+            List<Office> probleme = new List<Office>();
+            List<Office> offices = dataBaseTransfertEngin.LoadOffices().GroupBy(x => x.Key).Select(y => y.First()).ToList();
+            foreach (Office office in offices)
             {
-                var levelSubKey = $"{office.Level.Building.Site.Code}{office.Level.Building.Code}{office.Level.Code }";
-                var level = levels.FirstOrDefault(l => levelSubKey == l.Key.Substring(3));
+                string levelSubKey = $"{office.Level.Building.Site.Code}{office.Level.Building.Code}{office.Level.Code }";
+                Level level = levels.FirstOrDefault(l => levelSubKey == l.Key.Substring(3));
                 if (level == null)
                 {
                     logger.Warn("Bureau avec code niveau non valide " + office.Code);
@@ -272,10 +272,10 @@ namespace EXGEPA.Transfert.Core
 
         private static List<Level> LoadLevels(IDataBaseTransfertEngin dataBaseTransfertEngin, List<Building> buildings)
         {
-            var levels = dataBaseTransfertEngin.LoadLevels();
+            List<Level> levels = dataBaseTransfertEngin.LoadLevels();
             levels.ForEach(level =>
             {
-                var build = buildings.FirstOrDefault(building => $"{level.Building.Site.Code}{level.Building.Code}" == building.Key.Substring(3));
+                Building build = buildings.FirstOrDefault(building => $"{level.Building.Site.Code}{level.Building.Code}" == building.Key.Substring(3));
 
                 if (build != null)
                 {
@@ -290,7 +290,7 @@ namespace EXGEPA.Transfert.Core
 
         private static List<Building> LoadBuildings(IDataBaseTransfertEngin dataBaseTransfertEngin, List<Site> sites)
         {
-            var buildings = dataBaseTransfertEngin.LoadBuildings();
+            List<Building> buildings = dataBaseTransfertEngin.LoadBuildings();
             buildings.ForEach(building =>
             {
                 building.Site = sites.FirstOrDefault(site => site.Code == building.Site.Code);
@@ -302,8 +302,8 @@ namespace EXGEPA.Transfert.Core
         private static List<Site> LoadSites(IDataBaseTransfertEngin dataBaseTransfertEngin, List<Region> regions)
         {
             logger.Info("Loading Sites");
-            var siteService = ServiceLocator.Resolve<IDataProvider<Site>>();
-            var sites = dataBaseTransfertEngin.LoadSites();
+            IDataProvider<Site> siteService = ServiceLocator.Resolve<IDataProvider<Site>>();
+            List<Site> sites = dataBaseTransfertEngin.LoadSites();
             sites.ForEach(site =>
             {
                 site.Region = regions.FirstOrDefault(region => region.Key == site.Region.Key);

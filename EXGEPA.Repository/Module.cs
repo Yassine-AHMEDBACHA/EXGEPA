@@ -1,9 +1,13 @@
-﻿using CORESI.WPF.Core;
-using CORESI.WPF.Model;
-using EXGEPA.Repository.Controls;
+﻿// <copyright file="Module.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace EXGEPA.Repository
 {
+    using CORESI.WPF.Core;
+    using CORESI.WPF.Model;
+    using EXGEPA.Repository.Controls;
+
     public sealed class Module : AModule
     {
         public override int Priority
@@ -13,10 +17,10 @@ namespace EXGEPA.Repository
 
         public override void AddGroups()
         {
-            //var referenceGroup = new Group();
-            //referenceGroup.AddCommand("References", IconProvider.Reference, this.AddPage<ReferenceView, ReferenceViewModel>);
-            //UIService.AddGroupToHomePage(referenceGroup);
-            var repository = new Group("Référentiel");
+            // var referenceGroup = new Group();
+            // referenceGroup.AddCommand("References", IconProvider.Reference, this.AddPage<ReferenceView, ReferenceViewModel>);
+            // UIService.AddGroupToHomePage(referenceGroup);
+            Group repository = new Group("Référentiel");
             repository.AddCommand("Cpts généraux", IconProvider.GeneralAccountSmall, this.AddPage<GeneralAccountView, GeneralAccountViewModel>, true);
             repository.AddCommand("Cpts analytiques", IconProvider.AnalyticalAccountSmall, this.AddPage<AnalyticalAccountView, AnalyticalAccountViewModel>, true);
             repository.AddCommand("Fournisseurs", IconProvider.ProviderSmall, this.AddPage<ProviderView, ProviderViewModel>, true);
@@ -32,14 +36,8 @@ namespace EXGEPA.Repository
 
             repository.AddCommand("Pcs base", IconProvider.PropertiesSmall, this.AddPage<OrderDocumentView, OrderDocumentViewModel>, true);
 
-
-
-
-            this.uIService.AddGroupToHomePage(repository);
-            logger.Info("loading Repository Module done");
+            this.UIService.AddGroupToHomePage(repository);
+            Logger.Info("loading Repository Module done");
         }
-
-
-
     }
 }

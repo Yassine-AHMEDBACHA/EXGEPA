@@ -30,7 +30,7 @@ namespace EXGEPA.Depreciations.Core
 
         protected List<Item> GetConcernedItem(IEnumerable<Item> source, DateTime startDate, DateTime EndDate)
         {
-            var result = source.Where(x => Tools.GetEndComputationDate(x) >= startDate).ToList();
+            List<Item> result = source.Where(x => Tools.GetEndComputationDate(x) >= startDate).ToList();
             logger.Debug("Filtring Items that limite date is after " + startDate.ToShortDateString() + "  =  " + result.Count);
             result = result.Where(x => Tools.GetStartComputationDate(x) <= EndDate).ToList();
             Parallel.ForEach(source.Except(result), item => item.Depreciations = new List<Depreciation>());
@@ -47,13 +47,13 @@ namespace EXGEPA.Depreciations.Core
         public Dictionary<Item, List<Depreciation>> GetDepriciation(List<Item> source, DateTime startDate, DateTime endDate)
         {
             logger.Debug("Start computing for : " + source.Count() + "Item(s) and period between  " + startDate.ToShortDateString() + " and " + endDate.ToShortDateString());
-            var target = GetConcernedItem(source, startDate, endDate);
+            List<Item> target = GetConcernedItem(source, startDate, endDate);
             return target.ToDictionary(x => x, x => this.GetDepriciations(x, startDate, endDate));
         }
 
         protected List<Depreciation> GenerateDepriciationFromAccountingPeriod(Item item, DateTime startComputationDate, DateTime endComputationDate, List<AccountingPeriod> periods)
         {
-            var result = periods.Select(x => new Depreciation()
+            List<Depreciation> result = periods.Select(x => new Depreciation()
             {
                 Item = item,
                 Rate = item.FiscalRate,
@@ -79,12 +79,12 @@ namespace EXGEPA.Depreciations.Core
         {
             logger.Debug($"Starting computing depreciation for :{item.Key}|-Start Date :{startDate.ToString("yyyy/MM/dd")}|-End date :{endDate.ToString("yyyy/MM/dd")}");
 
-            var startComputationDate = Tools.GetStartComputationDate(item, startDate);
-            var endComputationDate = Tools.GetEndComputationDate(item, endDate);
+            DateTime startComputationDate = Tools.GetStartComputationDate(item, startDate);
+            DateTime endComputationDate = Tools.GetEndComputationDate(item, endDate);
 
-            var periods = AccountingPeriodHelper.GetAccountingPeriodToDate(startComputationDate, endComputationDate);
-            var result = GenerateDepriciationFromAccountingPeriod(item, startComputationDate, endComputationDate, periods);
-            var firstPeriod = result.FirstOrDefault();
+            List<AccountingPeriod> periods = AccountingPeriodHelper.GetAccountingPeriodToDate(startComputationDate, endComputationDate);
+            List<Depreciation> result = GenerateDepriciationFromAccountingPeriod(item, startComputationDate, endComputationDate, periods);
+            Depreciation firstPeriod = result.FirstOrDefault();
             SetStartingComputeParameters(item, startComputationDate, firstPeriod);
             ComputeDep(result, firstPeriod);
             item.Depreciations = result;
@@ -95,8 +95,8 @@ namespace EXGEPA.Depreciations.Core
         {
             if (Tools.GetDefaultStartDate(item) < startComputationDate && item.PreviousDepreciation == 0)
             {
-                var previous = LoadPrevieousDepriciation(item, startComputationDate.AddDays(-1));
-                var lastComputationResult = previous.LastOrDefault();
+                List<Depreciation> previous = LoadPrevieousDepriciation(item, startComputationDate.AddDays(-1));
+                Depreciation lastComputationResult = previous.LastOrDefault();
 
                 if (lastComputationResult != null)
                 {
@@ -118,11 +118,11 @@ namespace EXGEPA.Depreciations.Core
 
         private List<Depreciation> LoadPrevieousDepriciation(Item item, DateTime targetDate)
         {
-            var startDate = Tools.GetDefaultStartDate(item);
+            DateTime startDate = Tools.GetDefaultStartDate(item);
             if (startDate > targetDate)
                 return new List<Depreciation>();
-            var periods = AccountingPeriodHelper.GetAccountingPeriodToDate(startDate, targetDate);
-            var result = GenerateDepriciationFromAccountingPeriod(item, startDate, targetDate, periods);
+            List<AccountingPeriod> periods = AccountingPeriodHelper.GetAccountingPeriodToDate(startDate, targetDate);
+            List<Depreciation> result = GenerateDepriciationFromAccountingPeriod(item, startDate, targetDate, periods);
 
             result.First().InitialValue = this.GetInitialValue(item);
             ComputeDep(result, result.First());

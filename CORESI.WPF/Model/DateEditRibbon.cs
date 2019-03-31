@@ -17,7 +17,7 @@ namespace CORESI.WPF.Model
 
         public DateTime Date
         {
-            get { return _Date; }
+            get => _Date;
             set
             {
                 _Date = value;

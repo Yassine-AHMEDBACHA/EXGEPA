@@ -1,4 +1,8 @@
-﻿namespace EXGEPA.Repository.Controls
+﻿// <copyright file="ProjectView.xaml.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace EXGEPA.Repository.Controls
 {
     /// <summary>
     /// Interaction logic for Project.xaml
@@ -7,7 +11,7 @@
     {
         public ProjectView()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
     }
 }

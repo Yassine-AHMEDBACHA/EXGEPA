@@ -88,9 +88,9 @@ namespace CORESI.Report.Controls
 
         public static ReportView GetInstance(object dataContext = null)
         {
-            var result = Application.Current.Dispatcher.Invoke((Func<ReportView>)(() =>
+            ReportView result = Application.Current.Dispatcher.Invoke((Func<ReportView>)(() =>
             {
-                var reportView = new ReportView();
+                ReportView reportView = new ReportView();
                 if (dataContext != null)
                 {
                     reportView.DataContext = dataContext;

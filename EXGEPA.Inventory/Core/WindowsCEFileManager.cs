@@ -16,13 +16,13 @@ namespace EXGEPA.Inventory.Core
         }
         bool CheckConnexionWithDevice()
         {
-            var s = AppDomain.CurrentDomain.GetAssemblies();
-            var t = s.ToArray();
+            System.Reflection.Assembly[] s = AppDomain.CurrentDomain.GetAssemblies();
+            System.Reflection.Assembly[] t = s.ToArray();
 
             bool connexionStatus = false;
             while (!RemoteAPI.DevicePresent)
             {
-                var userChoice = base.UIMessage.Warning("Aucun lecteur n'est detecté\nAssurez vous que le PDA est allumer et connecter à l'ordinateur puis cliquez sur OK\npour quitter l'opération appuyez sur annuler", MessageBoxButton.OKCancel);
+                MessageBoxResult userChoice = base.UIMessage.Warning("Aucun lecteur n'est detecté\nAssurez vous que le PDA est allumer et connecter à l'ordinateur puis cliquez sur OK\npour quitter l'opération appuyez sur annuler", MessageBoxButton.OKCancel);
                 if (userChoice == System.Windows.MessageBoxResult.Cancel)
                 {
                     break;

@@ -13,7 +13,7 @@ namespace EXGEPA.Depriciations.Tests
         [Test]
         public void GetMonthelyDepreciationsStandardTest()
         {
-            var item = new Item
+            Item item = new Item
             {
                 Amount = 1000,
                 FiscalRate = 100,
@@ -21,10 +21,10 @@ namespace EXGEPA.Depriciations.Tests
                 LimiteDate = new DateTime(2015, 12, 31)
             };
             ICalculator calculator = new MonthelyCalculator(new AccountingPeriodHelper(loadHistory: false));
-            var result = calculator.GetDepriciations(item, new DateTime(2010, 01, 01), new DateTime(2015, 12, 31));
+            System.Collections.Generic.List<Depreciation> result = calculator.GetDepriciations(item, new DateTime(2010, 01, 01), new DateTime(2015, 12, 31));
             Assert.IsNotNull(result);
             Assert.IsTrue(result.Count == 1);
-            var depreciation = result.First();
+            Depreciation depreciation = result.First();
             Assert.AreEqual(0, depreciation.AccountingNetValue);
         }
 
@@ -32,12 +32,12 @@ namespace EXGEPA.Depriciations.Tests
         [Test]
         public void GetMonthelyDepreciationsTwoYears()
         {
-            var item = new Item() { Amount = 1000, FiscalRate = 50, AquisitionDate = new DateTime(2014, 01, 1), LimiteDate = new DateTime(2015, 12, 31) };
+            Item item = new Item() { Amount = 1000, FiscalRate = 50, AquisitionDate = new DateTime(2014, 01, 1), LimiteDate = new DateTime(2015, 12, 31) };
             ICalculator calculator = new MonthelyCalculator(new AccountingPeriodHelper(loadHistory: false));
-            var result = calculator.GetDepriciations(item, new DateTime(2010, 01, 01), new DateTime(2020, 12, 31));
+            System.Collections.Generic.List<Depreciation> result = calculator.GetDepriciations(item, new DateTime(2010, 01, 01), new DateTime(2020, 12, 31));
             Assert.IsNotNull(result);
             Assert.IsTrue(result.Count == 2);
-            var depreciation = result.First();
+            Depreciation depreciation = result.First();
             Assert.AreEqual(500, depreciation.AccountingNetValue);
             depreciation = result.Last();
             Assert.AreEqual(0, depreciation.AccountingNetValue);
@@ -46,17 +46,17 @@ namespace EXGEPA.Depriciations.Tests
         [Test]
         public void GetMonthelyDepreciations()
         {
-            var item = new Item()
+            Item item = new Item()
             {
                 Amount = 1000,
                 AquisitionDate = new DateTime(2014, 01, 6),
                 LimiteDate = new DateTime(2015, 12, 24)
             };
             ICalculator calculator = new MonthelyCalculator(new AccountingPeriodHelper(loadHistory: false));
-            var result = calculator.GetDepriciations(item, new DateTime(2010, 01, 01), new DateTime(2015, 12, 31));
+            System.Collections.Generic.List<Depreciation> result = calculator.GetDepriciations(item, new DateTime(2010, 01, 01), new DateTime(2015, 12, 31));
             Assert.IsNotNull(result);
             Assert.IsTrue(result.Count == 2);
-            var depreciation = result.Last();
+            Depreciation depreciation = result.Last();
             Assert.AreEqual(0, depreciation.AccountingNetValue);
             Assert.AreEqual(1000, result.Sum(x => x.Annuity));
         }
@@ -64,9 +64,9 @@ namespace EXGEPA.Depriciations.Tests
         [Test]
         public void GetMonthelyDepreciationsWithDefaultValue()
         {
-            var item = new Item();
+            Item item = new Item();
             ICalculator calculator = new MonthelyCalculator(new AccountingPeriodHelper(loadHistory: false));
-            var result = calculator.GetDepriciations(item, new DateTime(1, 01, 01), new DateTime(1, 1, 1));
+            System.Collections.Generic.List<Depreciation> result = calculator.GetDepriciations(item, new DateTime(1, 01, 01), new DateTime(1, 1, 1));
             Assert.IsNotNull(result);
             Assert.AreEqual(1, result.Count);
         }
@@ -86,17 +86,17 @@ namespace EXGEPA.Depriciations.Tests
         [TestCase("2018/12/15", "2018/12/16", 1)]
         public void GetDuration(string start, string end, int expectedResult)
         {
-            var startDate = DateTime.Parse(start);
-            var endDate = DateTime.Parse(end);
-            var monthlyCalculator = new MonthelyCalculator();
-            var actual = monthlyCalculator.GetMonthCount(startDate, endDate);
+            DateTime startDate = DateTime.Parse(start);
+            DateTime endDate = DateTime.Parse(end);
+            MonthelyCalculator monthlyCalculator = new MonthelyCalculator();
+            int actual = monthlyCalculator.GetMonthCount(startDate, endDate);
             Assert.AreEqual(expectedResult, actual);
         }
 
         [Test]
         public void Should_Compute_Depreciation_when_got_Previouse_Depreciation_And_TransferOrder_Date()
         {
-            var item = new Item()
+            Item item = new Item()
             {
                 Amount = 10000,
                 AquisitionDate = new DateTime(2010, 01, 01),
@@ -106,15 +106,15 @@ namespace EXGEPA.Depriciations.Tests
                 FiscalRate = 10,
                 StartDepreciationDate = StartDepreciationDate.AqusitionDate,
             };
-            var calculator = new MonthelyCalculator(new AccountingPeriodHelper(loadHistory: false));
-            var result = calculator.GetDepriciations(item, new DateTime(2010, 01, 01), new DateTime(2019, 12, 31));
+            MonthelyCalculator calculator = new MonthelyCalculator(new AccountingPeriodHelper(loadHistory: false));
+            System.Collections.Generic.List<Depreciation> result = calculator.GetDepriciations(item, new DateTime(2010, 01, 01), new DateTime(2019, 12, 31));
             Assert.AreEqual(2, result.Count);
         }
 
         [Test]
         public void Should_Compute_Depreciation_when()
         {
-            var item = new Item()
+            Item item = new Item()
             {
                 Amount = 10000,
                 AquisitionDate = new DateTime(2010, 01, 01),
@@ -124,8 +124,8 @@ namespace EXGEPA.Depriciations.Tests
                 StartDepreciationDate = StartDepreciationDate.AqusitionDate,
             };
 
-            var calculator = new MonthelyCalculator(new AccountingPeriodHelper(loadHistory: false));
-            var result = calculator.GetDepriciations(item, new DateTime(2010, 01, 01), new DateTime(2019, 12, 31));
+            MonthelyCalculator calculator = new MonthelyCalculator(new AccountingPeriodHelper(loadHistory: false));
+            System.Collections.Generic.List<Depreciation> result = calculator.GetDepriciations(item, new DateTime(2010, 01, 01), new DateTime(2019, 12, 31));
             Assert.AreEqual(10, result.Count);
         }
     }

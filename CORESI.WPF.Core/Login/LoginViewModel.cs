@@ -37,7 +37,7 @@ namespace CORESI.WPF.Core.Login
 #endif
 
             BadInformations = false;
-            var opertor = LoginManager.OpenSession(Login, Password);
+            IOperator opertor = LoginManager.OpenSession(Login, Password);
             if (opertor == null)
             {
                 chanceCount--;
@@ -53,8 +53,8 @@ namespace CORESI.WPF.Core.Login
             }
             else
             {
-                var sessionManager = ServiceLocator.Resolve<ISessionManager>();
-                var session = sessionManager.OpenSession(Login, "CORESI.WPF.Core.Login");
+                ISessionManager sessionManager = ServiceLocator.Resolve<ISessionManager>();
+                Session session = sessionManager.OpenSession(Login, "CORESI.WPF.Core.Login");
                 if (opertor.ExpiredPassword)
                 {
                     ChangePasswordViewModel.ShowChangePasswordViewModel(Login, Password);
@@ -87,7 +87,7 @@ namespace CORESI.WPF.Core.Login
 
         public string Login
         {
-            get { return _Login; }
+            get => _Login;
             set
             {
                 _Login = value;
@@ -98,7 +98,7 @@ namespace CORESI.WPF.Core.Login
 
         public string Password
         {
-            get { return _Password; }
+            get => _Password;
             set
             {
                 _Password = value;

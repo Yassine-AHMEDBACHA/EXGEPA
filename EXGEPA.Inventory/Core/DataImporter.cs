@@ -15,25 +15,25 @@ namespace EXGEPA.Inventory.Core
     {
         public static void LoadFile(string filePath)
         {
-            var inventoryService = ServiceLocator.Resolve<IDataProvider<InventoryRow>>();
-            var itemStateService = ServiceLocator.Resolve<IDataProvider<ItemState>>();
-            var parameterProvider = ServiceLocator.Resolve<IParameterProvider>();
+            IDataProvider<InventoryRow> inventoryService = ServiceLocator.Resolve<IDataProvider<InventoryRow>>();
+            IDataProvider<ItemState> itemStateService = ServiceLocator.Resolve<IDataProvider<ItemState>>();
+            IParameterProvider parameterProvider = ServiceLocator.Resolve<IParameterProvider>();
 
             int codeLength = parameterProvider.GetValue($"{typeof(Item).Name}KeyLength", 6);
 
-            var Allinventory = inventoryService.SelectAll().ToDictionary(x => x.Key);
-            var rowsToInsert = new Dictionary<string, InventoryRow>();
-            var rowsToUpdate = new Dictionary<string, InventoryRow>();
-            var textRows = FileLoader.LoadTextRows(filePath);
+            Dictionary<string, InventoryRow> Allinventory = inventoryService.SelectAll().ToDictionary(x => x.Key);
+            Dictionary<string, InventoryRow> rowsToInsert = new Dictionary<string, InventoryRow>();
+            Dictionary<string, InventoryRow> rowsToUpdate = new Dictionary<string, InventoryRow>();
+            List<string> textRows = FileLoader.LoadTextRows(filePath);
 
-            foreach (var textRow in textRows.Where(x => x.Length >= 13 + codeLength))
+            foreach (string textRow in textRows.Where(x => x.Length >= 13 + codeLength))
             {
                 string code = textRow.Substring(13, codeLength).ToUpper();
                 string localization = textRow.Substring(0, 13).ToUpper();
                 if (Allinventory.TryGetValue(code, out InventoryRow inventory))
                 {
                     inventory.Localization = localization;
-                    var toUpdate = inventory;
+                    InventoryRow toUpdate = inventory;
                     if (!rowsToUpdate.TryGetValue(code, out inventory))
                     {
                         rowsToUpdate.Add(code, toUpdate);
@@ -63,7 +63,7 @@ namespace EXGEPA.Inventory.Core
             {
                 inventoryService.Update(row);
             });
-            var rows = rowsToInsert.Values.ToList();
+            List<InventoryRow> rows = rowsToInsert.Values.ToList();
             SqlHelper.InsertBulk(rows);
 
             ArchiveFile(filePath);
@@ -71,14 +71,14 @@ namespace EXGEPA.Inventory.Core
 
         private static void ArchiveFile(string filePath)
         {
-            var parameterProvider = ServiceLocator.Resolve<IParameterProvider>();
-            var path = parameterProvider.GetValue<string>("InventFileArchive", @"ArchiveInvent");
+            IParameterProvider parameterProvider = ServiceLocator.Resolve<IParameterProvider>();
+            string path = parameterProvider.GetValue<string>("InventFileArchive", @"ArchiveInvent");
 
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
             }
-            var targetfile = path + @"\Invent_" + DateTime.Now.ToString("dd_MM_yyyy_hh_mm_ss") + ".Loaded.txt";
+            string targetfile = path + @"\Invent_" + DateTime.Now.ToString("dd_MM_yyyy_hh_mm_ss") + ".Loaded.txt";
             File.Move(filePath, targetfile);
             File.Delete(filePath);
         }

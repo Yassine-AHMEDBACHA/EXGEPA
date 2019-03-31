@@ -20,9 +20,9 @@ namespace EXGEPA.Core.Security
         }
         public override IList<Operator> SelectAll()
         {
-            var allOperators = base.SelectAll();
-            var roles = RoleService.SelectAll();
-            foreach (var item in allOperators)
+            IList<Operator> allOperators = base.SelectAll();
+            IList<Role> roles = RoleService.SelectAll();
+            foreach (Operator item in allOperators)
             {
                 item.Role = roles.FirstOrDefault(x => item.Role.Id == x.Id);
             }

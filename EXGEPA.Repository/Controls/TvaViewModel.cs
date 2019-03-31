@@ -1,12 +1,17 @@
-using CORESI.WPF.Controls;
-using CORESI.WPF.Core.Interfaces;
-using EXGEPA.Model;
+// <copyright file="TvaViewModel.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace EXGEPA.Repository.Controls
 {
+    using CORESI.WPF.Controls;
+    using CORESI.WPF.Core.Interfaces;
+    using EXGEPA.Model;
+
     public class TvaViewModel : GenericEditableViewModel<Tva>
     {
-        public TvaViewModel(IExportableGrid exportableView) : base(exportableView)
+        public TvaViewModel(IExportableGrid exportableView)
+            : base(exportableView)
         {
             this.Caption = "Liste de TVA";
         }

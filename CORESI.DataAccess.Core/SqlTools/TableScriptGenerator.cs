@@ -17,18 +17,18 @@ namespace CORESI.DataAccess.Core.SqlTools
 
         public string GetTableCreationScript()
         {
-            var script = ScriptGenerator.GetScriptHeader("Table : " + this.TableName);
+            string script = ScriptGenerator.GetScriptHeader("Table : " + this.TableName);
             script += this.GetScriptToDeleteFK();
             script += this.GetScriptToCreateTable();
             CreatTable(this.TableName, script);
             if (this.IsArchivable)
             {
-                var query = ScriptGenerator.GetScriptHeader("Table : " + this.HistoTableName);
+                string query = ScriptGenerator.GetScriptHeader("Table : " + this.HistoTableName);
                 query += this.GetScriptToCreateHistoTable();
                 this.CreatTable(this.HistoTableName, query);
                 DbFacade.ExecuteNonQuery(query);
                 script += query;
-                var archivabletableScripGenerator = new ArchivableTableScriptGeneratorcs(this.TableName, this.HistoTableName);
+                ArchivableTableScriptGeneratorcs archivabletableScripGenerator = new ArchivableTableScriptGeneratorcs(this.TableName, this.HistoTableName);
                 script += archivabletableScripGenerator.GetTriggerScripts();
             }
             return script;
@@ -50,12 +50,12 @@ namespace CORESI.DataAccess.Core.SqlTools
 
         protected string GetScriptToCreateTable()
         {
-            var fieldsSeparator = ",\n";
+            string fieldsSeparator = ",\n";
 
-            var script = this.GetScripteToDropTable(this.TableName);
+            string script = this.GetScripteToDropTable(this.TableName);
             script += "SET ANSI_NULLS ON\nSET QUOTED_IDENTIFIER ON\n";
             script += "CREATE TABLE [dbo].[" + this.TableName + "](\n";
-            var subQuery = new List<string>();
+            List<string> subQuery = new List<string>();
 
             subQuery.Add(string.Join(fieldsSeparator, this.Fields.Select(f => f.GetColumnDefinition())));
             subQuery.Add("[VersionDate] [DateTime]  DEFAULT(getdate()) NOT NULL");
@@ -69,7 +69,7 @@ namespace CORESI.DataAccess.Core.SqlTools
 
         public string GetConstraint()
         {
-            var subqueries = new List<string>();
+            List<string> subqueries = new List<string>();
             subqueries.Add(this.GetUniqueContraint());
             subqueries.Add(this.GetPrimaryKey());
             return string.Join(",\n", subqueries.Where(x => x != null));
@@ -77,26 +77,26 @@ namespace CORESI.DataAccess.Core.SqlTools
 
         protected string GetPrimaryKey()
         {
-            var primaryKeyFields = this.Fields.Where(f => f.IsPrimeryKey).ToList();
+            List<Field> primaryKeyFields = this.Fields.Where(f => f.IsPrimeryKey).ToList();
             if (primaryKeyFields.Count == 0)
                 return null;
-            var query = "CONSTRAINT[PK_" + this.TableName + "] PRIMARY KEY CLUSTERED(" + string.Join(",", primaryKeyFields.Select(f => f.GetSqlColumnName()));
+            string query = "CONSTRAINT[PK_" + this.TableName + "] PRIMARY KEY CLUSTERED(" + string.Join(",", primaryKeyFields.Select(f => f.GetSqlColumnName()));
             query += " ASC )\nWITH(PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) \nON[PRIMARY]";
             return query;
         }
 
         public string GetUniqueContraint()
         {
-            var uniqueFields = this.Fields.Where(f => f.IsUnique && !f.IsPrimeryKey).ToList();
+            List<Field> uniqueFields = this.Fields.Where(f => f.IsUnique && !f.IsPrimeryKey).ToList();
             if (uniqueFields.Count == 0)
                 return null;
-            var subqueries = uniqueFields.Select(f => "CONSTRAINT UK_" + this.TableName + "_" + f.Name + " UNIQUE(" + f.GetSqlColumnName() + ")");
+            IEnumerable<string> subqueries = uniqueFields.Select(f => "CONSTRAINT UK_" + this.TableName + "_" + f.Name + " UNIQUE(" + f.GetSqlColumnName() + ")");
             return string.Join(",\n", subqueries);
         }
         protected string GetScriptToCreateHistoTable()
         {
-            var fieldsSeparator = ",\n";
-            var script = this.GetScripteToDropTable(this.HistoTableName);
+            string fieldsSeparator = ",\n";
+            string script = this.GetScripteToDropTable(this.HistoTableName);
             script += "SET ANSI_NULLS ON\nSET QUOTED_IDENTIFIER ON\n";
             script += "CREATE TABLE [dbo].[" + this.HistoTableName + "](\n";
             script += string.Join(fieldsSeparator, this.Fields.Select(f => f.GetColumnDefForHistoTable()));

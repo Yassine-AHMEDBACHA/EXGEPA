@@ -9,9 +9,9 @@ namespace EXGEPA.Report
     {
         public override Group GetGroupForReportBottons()
         {
-            var group = new Group();
+            Group group = new Group();
             group.AddCommand("Edition", IconProvider.Reading, this.PrintSheet);
-            var additionalButtons = this.GetAdditionalReportCommand();
+            List<SimpleItem> additionalButtons = this.GetAdditionalReportCommand();
             if (additionalButtons?.Count > 0)
             {
                 additionalButtons.ForEach(button => group.Commands.Add(button));

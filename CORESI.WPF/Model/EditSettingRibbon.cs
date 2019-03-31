@@ -11,7 +11,7 @@
         public int _Width;
         public int Width
         {
-            get { return _Width; }
+            get => _Width;
             set
             {
                 _Width = value;

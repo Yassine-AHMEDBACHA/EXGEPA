@@ -2,24 +2,22 @@
 using CORESI.IoC;
 using CORESI.WPF.Core.Interfaces;
 using CORESI.WPF.Model;
+using log4net;
 
 namespace CORESI.WPF.Core
 {
     public abstract class AModule : IModule
     {
-        protected static readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
-        public abstract int Priority
-        {
-            get;
-        }
-
-        protected readonly IUIService uIService;
+        protected static readonly ILog Logger = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public AModule()
         {
-            ServiceLocator.Resolve(out this.uIService);
+            this.UIService = ServiceLocator.Resolve<IUIService>();
         }
+
+        public abstract int Priority { get; }
+
+        protected IUIService UIService { get; }
 
         public abstract void AddGroups();
 
@@ -27,10 +25,10 @@ namespace CORESI.WPF.Core
             where TViewModel : IPageSetter
             where TView : System.Windows.Controls.UserControl, IExportableGrid
         {
-            var view = Activator.CreateInstance<TView>();
-            var viewModel = (IPageSetter)Activator.CreateInstance(typeof(TViewModel), new[] { view });
-            var page = new Page(viewModel, view);
-            uIService.AddPage(page);
+            TView view = Activator.CreateInstance<TView>();
+            IPageSetter viewModel = (IPageSetter)Activator.CreateInstance(typeof(TViewModel), new[] { view });
+            Page page = new Page(viewModel, view);
+            UIService.AddPage(page);
         }
 
         public void LoadModule()

@@ -24,7 +24,7 @@ namespace CORESI.DataAccess.Core
 
         public void CloseSession()
         {
-            var query = "Update Sessions set [CloseDate] = GetDate() where id =" + this.currentSession.Id.ToString();
+            string query = "Update Sessions set [CloseDate] = GetDate() where id =" + this.currentSession.Id.ToString();
             _DbFacade.ExecuteNonQuery(query);
         }
 
@@ -41,11 +41,11 @@ namespace CORESI.DataAccess.Core
                 HostName = Environment.MachineName,
                 UserName = Environment.UserName
             };
-            var fields = PropertiesExtractor.ExtractFields(typeof(Session)).Where(f => !(f.IsIdentity || f.IsAutomatique)).ToList();
-            var query = QueryBuilder.GetInsertQuery(typeof(Session), fields);
-            var parameters = DbParameterFactory.BuildParametersFromTypeOfInstance(currentSession, fields);
+            System.Collections.Generic.List<Field> fields = PropertiesExtractor.ExtractFields(typeof(Session)).Where(f => !(f.IsIdentity || f.IsAutomatique)).ToList();
+            string query = QueryBuilder.GetInsertQuery(typeof(Session), fields);
+            System.Collections.Generic.List<System.Data.IDataParameter> parameters = DbParameterFactory.BuildParametersFromTypeOfInstance(currentSession, fields);
 
-            var dBCommand = CommandFactory.GetDBCommand(query, false);
+            System.Data.IDbCommand dBCommand = CommandFactory.GetDBCommand(query, false);
 
             parameters.ForEach(parameter => dBCommand.Parameters.Add(parameter));
 
@@ -60,7 +60,7 @@ namespace CORESI.DataAccess.Core
         public void SetApplicationName(string name)
         {
 
-            var query = "Update Sessions set [ApplicationName] = '" + name + "' where id =" + this.currentSession.Id.ToString();
+            string query = "Update Sessions set [ApplicationName] = '" + name + "' where id =" + this.currentSession.Id.ToString();
             _DbFacade.ExecuteNonQuery(query);
         }
     }

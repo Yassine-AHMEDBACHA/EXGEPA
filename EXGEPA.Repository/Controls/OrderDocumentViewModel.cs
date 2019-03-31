@@ -1,44 +1,48 @@
-﻿using System.Collections.ObjectModel;
-using System.Linq;
-using CORESI.Data;
-using CORESI.IoC;
-using CORESI.WPF.Controls;
-using CORESI.WPF.Core.Interfaces;
-using EXGEPA.Model;
+﻿// <copyright file="OrderDocumentViewModel.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace EXGEPA.Repository.Controls
 {
+    using System.Collections.ObjectModel;
+    using System.Linq;
+    using CORESI.Data;
+    using CORESI.IoC;
+    using CORESI.WPF.Controls;
+    using CORESI.WPF.Core.Interfaces;
+    using EXGEPA.Model;
+
     public class OrderDocumentViewModel : GenericEditableViewModel<OrderDocument>
     {
-        private IDataProvider<OrderDocumentType> _OrderDocumentTypeTypeService;
+        private readonly IDataProvider<OrderDocumentType> orderDocumentTypeTypeService;
+        private ObservableCollection<OrderDocumentType> listOfOrderDocumentType;
 
-        public OrderDocumentViewModel(IExportableGrid exportableView) : base(exportableView)
+        public OrderDocumentViewModel(IExportableGrid exportableView)
+            : base(exportableView)
         {
             this.Caption = "Liste de documents de base";
-            ServiceLocator.Resolve(out this._OrderDocumentTypeTypeService);
+            ServiceLocator.Resolve(out this.orderDocumentTypeTypeService);
         }
-
-        private ObservableCollection<OrderDocumentType> _ListOfOrderDocumentType;
 
         public ObservableCollection<OrderDocumentType> ListOfOrderDocumentType
         {
-            get { return _ListOfOrderDocumentType; }
+            get => this.listOfOrderDocumentType;
             set
             {
-                _ListOfOrderDocumentType = value;
-                RaisePropertyChanged("ListOfOrderDocumentType");
+                this.listOfOrderDocumentType = value;
+                this.RaisePropertyChanged("ListOfOrderDocumentType");
             }
         }
 
         public override void InitData()
         {
-            StartBackGroundAction(() =>
+            this.StartBackGroundAction(() =>
             {
                 this.ListOfRows = new ObservableCollection<OrderDocument>(this.DBservice.SelectAll());
-                ListOfOrderDocumentType = new ObservableCollection<OrderDocumentType>(_OrderDocumentTypeTypeService.SelectAll());
-                foreach (var item in ListOfRows)
+                this.ListOfOrderDocumentType = new ObservableCollection<OrderDocumentType>(this.orderDocumentTypeTypeService.SelectAll());
+                foreach (OrderDocument item in this.ListOfRows)
                 {
-                    item.OrderDocumentType = ListOfOrderDocumentType.Single(x => x.Id == item.OrderDocumentType.Id);
+                    item.OrderDocumentType = this.ListOfOrderDocumentType.Single(x => x.Id == item.OrderDocumentType.Id);
                 }
             });
         }
@@ -46,11 +50,8 @@ namespace EXGEPA.Repository.Controls
         public override void AddItem()
         {
             base.AddItem();
-            this.ConcernedRow.OrderDocumentType = ListOfOrderDocumentType.FirstOrDefault();
+            this.ConcernedRow.OrderDocumentType = this.ListOfOrderDocumentType.FirstOrDefault();
             this.RaisePropertyChanged();
         }
-
-
-
     }
 }

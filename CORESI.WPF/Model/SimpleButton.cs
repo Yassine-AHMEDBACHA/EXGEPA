@@ -19,7 +19,7 @@ namespace CORESI.WPF.Model
         private bool _IsEnabled;
         public bool IsEnabled
         {
-            get { return _IsEnabled; }
+            get => _IsEnabled;
             set
             {
                 _IsEnabled = value;

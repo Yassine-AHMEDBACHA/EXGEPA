@@ -11,10 +11,10 @@ namespace EXGEPA.Sonatrach.Core
         public string Generate(int length = 6)
         {
             string query = "SELECT ISNULL(MAX(CONVERT(INTEGER,[Key])),1) FROM ITEMS";
-            var dbFacade = ServiceLocator.Resolve<IDbFacade>();
+            IDbFacade dbFacade = ServiceLocator.Resolve<IDbFacade>();
             int result = dbFacade.ExecuteScalaire<int>(query);
             result++;
-            var code = KeyLengthNormalizer.Normalize(result.ToString(), length);
+            string code = KeyLengthNormalizer.Normalize(result.ToString(), length);
             return code;
         }
     }

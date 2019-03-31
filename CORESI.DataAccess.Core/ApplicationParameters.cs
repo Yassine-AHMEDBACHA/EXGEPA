@@ -20,7 +20,7 @@ namespace CORESI.DataAccess.Core
 
         public T GetValue<T>(string parameterName, T defaultValue = default)
         {
-            var paramter = this.Get(parameterName);
+            Parameter paramter = this.Get(parameterName);
             if (paramter != null)
             {
                 try
@@ -41,7 +41,7 @@ namespace CORESI.DataAccess.Core
 
         public T GetValue<T>(string parameterName)
         {
-            var paramter = this.Get(parameterName);
+            Parameter paramter = this.Get(parameterName);
             if (paramter != null)
             {
                 return GetValue<T>(paramter);
@@ -83,8 +83,8 @@ namespace CORESI.DataAccess.Core
 
         public bool TrySetOrAdd(string key, object value)
         {
-            var stringValue = value.ToString();
-            var parameter = Get(key);
+            string stringValue = value.ToString();
+            Parameter parameter = Get(key);
             if (parameter != null)
             {
                 if (ValuesAreSame(parameter.Value, stringValue))
@@ -128,7 +128,7 @@ namespace CORESI.DataAccess.Core
 
         public T GetAndSetIfMissing<T>(string parameterName, T value)
         {
-            var parameter = this.Get(parameterName);
+            Parameter parameter = this.Get(parameterName);
             if (parameter != null)
             {
                 return GetValue<T>(parameter);

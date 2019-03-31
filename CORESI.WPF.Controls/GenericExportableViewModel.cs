@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using CORESI.Data;
 using CORESI.IoC;
 using CORESI.WPF.Core;
 using CORESI.WPF.Core.Interfaces;
@@ -9,8 +10,9 @@ namespace CORESI.WPF.Controls
     public class GenericExportableViewModel<T> : BasicGridViewModel<T>
     {
         internal protected IExportableGrid exportableView;
-        public int KeyLength { get; set; }
-        public GenericExportableViewModel(IExportableGrid view = null) : base()
+        
+        public GenericExportableViewModel(IExportableGrid view = null) 
+            : base()
         {
             this.exportableView = view;
             if (view != null)
@@ -18,22 +20,23 @@ namespace CORESI.WPF.Controls
                 this.SetExportGroup(view);
             }
 
+            this.ParameterProvider = ServiceLocator.Resolve<IParameterProvider>();
             ServiceLocator.Resolve<IReportPreviwer<T>>()?.SetPreviewReportGroup(this);
         }
 
         public string DisplayedFilter => exportableView.DisplayedFilter;
 
-
+        public IParameterProvider ParameterProvider { get; }
 
         protected virtual void SetExportGroup(IExportableGrid view, bool AllSmall = false)
         {
-            var group = this.AddNewGroup("Export");
+            Group group = this.AddNewGroup("Export");
             if (AllSmall)
 
                 AddSmallButtons(view, group);
             else
                 AddButtons(view, group);
-            foreach (var item in group.Commands.OfType<RibbonButton>())
+            foreach (RibbonButton item in group.Commands.OfType<RibbonButton>())
             {
                 item.SetAbility<T>("Export");
             }

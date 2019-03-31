@@ -28,7 +28,7 @@ namespace EXGEPA.HotelElDjazair
 
         public void LoadModule()
         {
-            var hotelElDjazair = new Group("Hotel El Djazair");
+            Group hotelElDjazair = new Group("Hotel El Djazair");
 
             hotelElDjazair.Commands.Add(GetHomePageRibbonButton());
             UIService.AddGroupToHomePage(hotelElDjazair);
@@ -42,8 +42,8 @@ namespace EXGEPA.HotelElDjazair
                 LargeGlyph = IconProvider.MoreFunctions,
                 Action = () =>
                 {
-                    var report = new Reports.AquisitionReports();
-                    var parameterProvider = ServiceLocator.Resolve<IParameterProvider>();
+                    Reports.AquisitionReports report = new Reports.AquisitionReports();
+                    IParameterProvider parameterProvider = ServiceLocator.Resolve<IParameterProvider>();
                     report.companyName.Text = parameterProvider.GetValue<string>("CompanyName");
                     report.departementName.Text = "DGM";
                     report.reportTitle.Text = "Etat des aquisitions";

@@ -19,8 +19,8 @@ namespace Hyproc.Controls
             this.UseWindowsAutentification = true;
             this.TestConnexionString = new Command(testConnextion);
             LaunchSync = new Command(sync);
-            var saveDbGroup = new Group("Sauvgarde");
-            var restorDbGroup = new Group("Restoration");
+            Group saveDbGroup = new Group("Sauvgarde");
+            Group restorDbGroup = new Group("Restoration");
             this.Groups.Add(saveDbGroup);
             this.Groups.Add(restorDbGroup);
             saveDbGroup.Commands.Add(new RibbonButton()
@@ -38,11 +38,11 @@ namespace Hyproc.Controls
                 Action = () =>
                 {
 
-                    var dbfacade = ServiceLocator.Resolve<IDbFacade>();
-                    var connextionString = this.GetConnextionString(this.DataBase);
+                    IDbFacade dbfacade = ServiceLocator.Resolve<IDbFacade>();
+                    string connextionString = this.GetConnextionString(this.DataBase);
                     if (dbfacade.TestConnection(connextionString))
                     {
-                        var newDbFacade = dbfacade.ChangeDB(connextionString);
+                        IDbFacade newDbFacade = dbfacade.ChangeDB(connextionString);
                         Core.DataBaseContent.BackupDataBase(newDbFacade);
                     }
                 }
@@ -55,12 +55,12 @@ namespace Hyproc.Controls
 
         private void ShowOptionWindow()
         {
-            var result = this.UIService.ShowLoginWindow();
+            ClientInformation result = this.UIService.ShowLoginWindow();
             if (result != null)
                 if (result.Login.ToLower() == "admin")
                 {
-                    var viewModel = new HyprocSettingViewModel();
-                    var view = new HyprocSettings()
+                    HyprocSettingViewModel viewModel = new HyprocSettingViewModel();
+                    HyprocSettings view = new HyprocSettings()
                     {
                         DataContext = viewModel
                     };
@@ -73,8 +73,8 @@ namespace Hyproc.Controls
 
         private void sync()
         {
-            var dbfacade = ServiceLocator.Resolve<IDbFacade>();
-            var connextionString = this.GetConnextionString(this.DataBase);
+            IDbFacade dbfacade = ServiceLocator.Resolve<IDbFacade>();
+            string connextionString = this.GetConnextionString(this.DataBase);
             AskForSync(dbfacade, connextionString);
         }
 
@@ -87,11 +87,11 @@ namespace Hyproc.Controls
 
             this.UIMessage.TryDoAction(Logger, () =>
             {
-                var dbFacade = ServiceLocator.Resolve<IDbFacade>();
-                var connextionString = this.GetConnextionString(this.DataBase);
+                IDbFacade dbFacade = ServiceLocator.Resolve<IDbFacade>();
+                string connextionString = this.GetConnextionString(this.DataBase);
                 if (dbFacade.TestConnection(connextionString))
                 {
-                    var remotedbFacade = dbFacade.ChangeDB(connextionString);
+                    IDbFacade remotedbFacade = dbFacade.ChangeDB(connextionString);
                     this.UIMessage.Information("Test reussit");
                     this.AvailableDataBase = remotedbFacade.ExecuteReader<string>("SELECT name  FROM sys.databases  where database_id>4 ", (dr) => dr["name"].ToString());
                 }
@@ -106,9 +106,9 @@ namespace Hyproc.Controls
                                 () =>
                                 {
                                     this.ProgressBarVisible = true;
-                                    var parameterProvider = ServiceLocator.Resolve<IParameterProvider>();
-                                    var newDbFacade = dbFacade.ChangeDB(connextionString);
-                                    var allParameters = parameterProvider.GetAllParameters();
+                                    IParameterProvider parameterProvider = ServiceLocator.Resolve<IParameterProvider>();
+                                    IDbFacade newDbFacade = dbFacade.ChangeDB(connextionString);
+                                    System.Collections.IDictionary allParameters = parameterProvider.GetAllParameters();
                                     this.ProgressValue = 5;
 #if !DEBUG
                                     Core.DataBaseContent.BackupDataBase();
@@ -121,13 +121,13 @@ namespace Hyproc.Controls
 
 #if !DEBUG
                                     this.ProgressValue = 92;
-                                    var path = Core.DataBaseContent.BackupDataBase(newDbFacade);
+                                    string path = Core.DataBaseContent.BackupDataBase(newDbFacade);
                                     this.ProgressValue = 98;
                                     Core.DataBaseContent.RestorDataBase(path);
                                     File.Delete(path);
 #endif
 
-                                    foreach (var key in allParameters.Keys)
+                                    foreach (object key in allParameters.Keys)
                                     {
                                         parameterProvider.TrySetOrAdd(key.ToString(), allParameters[key]);
                                     }
@@ -140,7 +140,7 @@ namespace Hyproc.Controls
         {
 
             DataSource.CheckData("Data source");
-            var connexionString = "Data Source=" + this.DataSource + ";";
+            string connexionString = "Data Source=" + this.DataSource + ";";
             if (dataBase != null)
                 connexionString += "Initial Catalog=" + dataBase + ";";
             if (this.UseWindowsAutentification)
@@ -160,9 +160,9 @@ namespace Hyproc.Controls
 
         private void Synchronize(IDbFacade dbFacade)
         {
-            var tables = Core.DataBaseContent.GetListOfAnalyzer();
-            var step = 80 / tables.Count();
-            foreach (var item in tables)
+            List<Core.IAnlayzer> tables = Core.DataBaseContent.GetListOfAnalyzer();
+            int step = 80 / tables.Count();
+            foreach (Core.IAnlayzer item in tables)
             {
                 item.UpdateDatabase(dbFacade);
                 ProgressValue += step;
@@ -173,7 +173,7 @@ namespace Hyproc.Controls
 
         public int ProgressValue
         {
-            get { return _ProgressValue; }
+            get => _ProgressValue;
             set
             {
                 _ProgressValue = value;
@@ -186,7 +186,7 @@ namespace Hyproc.Controls
 
         public bool ProgressBarVisible
         {
-            get { return _ProgressBarVisible; }
+            get => _ProgressBarVisible;
             set
             {
                 _ProgressBarVisible = value;
@@ -198,7 +198,7 @@ namespace Hyproc.Controls
 
         public string DataSource
         {
-            get { return _DataSource; }
+            get => _DataSource;
             set
             {
                 _DataSource = value;
@@ -209,7 +209,7 @@ namespace Hyproc.Controls
         private string _DataBase;
         public string DataBase
         {
-            get { return _DataBase; }
+            get => _DataBase;
             set
             {
                 _DataBase = value;
@@ -221,7 +221,7 @@ namespace Hyproc.Controls
 
         public string UserName
         {
-            get { return _UserName; }
+            get => _UserName;
             set
             {
                 _UserName = value;
@@ -234,7 +234,7 @@ namespace Hyproc.Controls
 
         public string Password
         {
-            get { return _Password; }
+            get => _Password;
             set
             {
                 _Password = value;
@@ -246,7 +246,7 @@ namespace Hyproc.Controls
 
         public List<string> AvailableDataBase
         {
-            get { return _AvailableDataBase; }
+            get => _AvailableDataBase;
             set
             {
                 _AvailableDataBase = value;
@@ -258,7 +258,7 @@ namespace Hyproc.Controls
 
         public bool UseWindowsAutentification
         {
-            get { return _UseWindowsAutentification; }
+            get => _UseWindowsAutentification;
             set
             {
                 _UseWindowsAutentification = value;

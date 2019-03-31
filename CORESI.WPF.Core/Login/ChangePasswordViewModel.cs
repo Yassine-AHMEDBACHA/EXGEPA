@@ -42,7 +42,7 @@ namespace CORESI.WPF.Core.Login
         private string _Password;
         public string Password
         {
-            get { return _Password; }
+            get => _Password;
             set
             {
                 _Password = value;
@@ -53,7 +53,7 @@ namespace CORESI.WPF.Core.Login
         private string _Confirmation;
         public string Confirmation
         {
-            get { return _Confirmation; }
+            get => _Confirmation;
             set
             {
                 _Confirmation = value;
@@ -63,8 +63,8 @@ namespace CORESI.WPF.Core.Login
 
         public static void ShowChangePasswordViewModel(string login, string oldPassword)
         {
-            var changePasswordViewModel = new ChangePasswordViewModel(login, oldPassword);
-            var changePasswordView = new ChangePasswordView
+            ChangePasswordViewModel changePasswordViewModel = new ChangePasswordViewModel(login, oldPassword);
+            ChangePasswordView changePasswordView = new ChangePasswordView
             {
                 DataContext = changePasswordViewModel
             };

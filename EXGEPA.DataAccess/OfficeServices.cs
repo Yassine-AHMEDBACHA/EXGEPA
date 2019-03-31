@@ -28,11 +28,11 @@ namespace EXGEPA.DataAccess
 
         public override IList<Office> SelectAll()
         {
-            var offices = base.SelectAll().ToList();
-            var levels = this.LevelService.SelectAll().ToList();
-            var sites = SiteService.SelectAll().ToList();
-            var buildings = BuildingService.SelectAll().ToList();
-            var regions = RegionService.SelectAll().ToList();
+            List<Office> offices = base.SelectAll().ToList();
+            List<Level> levels = this.LevelService.SelectAll().ToList();
+            List<Site> sites = SiteService.SelectAll().ToList();
+            List<Building> buildings = BuildingService.SelectAll().ToList();
+            List<Region> regions = RegionService.SelectAll().ToList();
             LoacalizationTools.BindLocalization(offices, levels, sites, buildings, regions);
             return offices;
         }

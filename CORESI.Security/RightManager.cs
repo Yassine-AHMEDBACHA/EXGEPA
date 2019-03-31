@@ -27,7 +27,7 @@ namespace CORESI.Security
 
         public bool HasAccess(string actionName)
         {
-            var key = string.Join("-", actionName.Split('-').Select(x => Transcode(x)));
+            string key = string.Join("-", actionName.Split('-').Select(x => Transcode(x)));
             if (!Rights.TryGetValue(key, out bool hasRight))
                 return true;
             return hasRight;

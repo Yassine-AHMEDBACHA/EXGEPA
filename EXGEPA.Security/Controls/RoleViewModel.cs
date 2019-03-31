@@ -28,7 +28,7 @@ namespace EXGEPA.Security.Controls
         private string _PanelCaption;
         public string PanelCaption
         {
-            get { return _PanelCaption; }
+            get => _PanelCaption;
             set
             {
                 _PanelCaption = value;
@@ -57,11 +57,11 @@ namespace EXGEPA.Security.Controls
 
         private void UpdateRole()
         {
-            var oldRole = DBservice.GetById(ConcernedRow.Id);
-            var allAbilities = oldRole.Abilities.Union(this.ConcernedRow.Abilities);
-            var abilityToUpdate = allAbilities.GroupBy(x => x.Id).Where(g => g.Count() > 1 && g.First().HasAccess != g.Last().HasAccess).Select(g => this.ConcernedRow.Abilities.FirstOrDefault(x => x.Id == g.Key));
+            Role oldRole = DBservice.GetById(ConcernedRow.Id);
+            IEnumerable<Ability> allAbilities = oldRole.Abilities.Union(this.ConcernedRow.Abilities);
+            IEnumerable<Ability> abilityToUpdate = allAbilities.GroupBy(x => x.Id).Where(g => g.Count() > 1 && g.First().HasAccess != g.Last().HasAccess).Select(g => this.ConcernedRow.Abilities.FirstOrDefault(x => x.Id == g.Key));
 
-            foreach (var item in abilityToUpdate)
+            foreach (Ability item in abilityToUpdate)
             {
                 this.AbilityService.Update(item);
             }
@@ -83,7 +83,7 @@ namespace EXGEPA.Security.Controls
             this.StartBackGroundAction(() =>
             {
                 this.DBservice.Add(this.ConcernedRow);
-                foreach (var item in this.ConcernedRow.Abilities)
+                foreach (Ability item in this.ConcernedRow.Abilities)
                 {
                     this.AbilityService.Add(item);
                 }
@@ -95,7 +95,7 @@ namespace EXGEPA.Security.Controls
 
         public List<Ability> Abilities
         {
-            get { return this.ConcernedRow?.Abilities; }
+            get => this.ConcernedRow?.Abilities;
             set
             {
                 this.ConcernedRow.Abilities = value;

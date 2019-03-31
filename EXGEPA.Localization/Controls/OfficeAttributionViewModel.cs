@@ -31,7 +31,7 @@ namespace EXGEPA.Localization.Controls
         private ObservableCollection<Office> _AffectedRows;
         public ObservableCollection<Office> AffectedRows
         {
-            get { return _AffectedRows; }
+            get => _AffectedRows;
             set
             {
                 _AffectedRows = value;
@@ -42,7 +42,7 @@ namespace EXGEPA.Localization.Controls
         private ObservableCollection<Office> _AffectedRowsSelection;
         public ObservableCollection<Office> AffectedRowsSelection
         {
-            get { return _AffectedRowsSelection; }
+            get => _AffectedRowsSelection;
             set
             {
                 _AffectedRowsSelection = value;
@@ -63,7 +63,7 @@ namespace EXGEPA.Localization.Controls
             if (typeof(KeyRow).IsAssignableFrom(property.PropertyType))
                 itemTester = (item) =>
                  {
-                     var result = property.GetValue(item, null);
+                     object result = property.GetValue(item, null);
                      if ((value != null) && (result != null))
                      {
                          return ((KeyRow)value).Id == ((KeyRow)result).Id;
@@ -74,7 +74,7 @@ namespace EXGEPA.Localization.Controls
             else
                 itemTester = (item) =>
                   {
-                      var result = property.GetValue(item, null);
+                      object result = property.GetValue(item, null);
                       return value.Equals(result);
                   };
             Func<Office, bool> set = (Office) =>
@@ -100,7 +100,7 @@ namespace EXGEPA.Localization.Controls
                 {
                     ConfirmeAndStartBackGroundAction("Etes vous sûr de vouloir deplacer ces items ?", () =>
                     {
-                        var rows = Selection.ToList();
+                        List<Office> rows = Selection.ToList();
                         SetRows(locker, set, rows);
                     });
                 });
@@ -108,7 +108,7 @@ namespace EXGEPA.Localization.Controls
                 {
                     ConfirmeAndStartBackGroundAction("Etes vous sûr de vouloir deplacer ces items ?", () =>
                     {
-                        var rows = AffectedRows.ToList();
+                        List<Office> rows = AffectedRows.ToList();
                         ResetRows(locker, reset, rows);
                     });
                 });
@@ -117,7 +117,7 @@ namespace EXGEPA.Localization.Controls
                 {
                     ConfirmeAndStartBackGroundAction("Etes vous sûr de vouloir deplacer ces items ?", () =>
                         {
-                            var rows = AffectedRowsSelection.ToList();
+                            List<Office> rows = AffectedRowsSelection.ToList();
                             ResetRows(locker, reset, rows);
                         });
                 });
@@ -172,8 +172,8 @@ namespace EXGEPA.Localization.Controls
             StartBackGroundAction(() =>
             {
                 AffectedRows.Clear();
-                var list = DBservice.SelectAll();
-                foreach (var office in list)
+                IList<Office> list = DBservice.SelectAll();
+                foreach (Office office in list)
                 {
                     if (ItemTester(office))
                     {

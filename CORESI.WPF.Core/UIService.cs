@@ -27,7 +27,7 @@ namespace CORESI.WPF.Core
 
         public bool AddCategorie(Categorie categorie)
         {
-            var target = ShellViewModel.Categories.Where(x => x == categorie).FirstOrDefault();
+            Categorie target = ShellViewModel.Categories.Where(x => x == categorie).FirstOrDefault();
             if (target == null)
             {
                 ShellViewModel.Categories.Add(categorie);
@@ -50,7 +50,7 @@ namespace CORESI.WPF.Core
 
         public Group GetGroupPageByCaption(string Caption)
         {
-            var result = ShellViewModel.HomePage.Groups.FirstOrDefault(x => x.Caption == Caption);
+            Group result = ShellViewModel.HomePage.Groups.FirstOrDefault(x => x.Caption == Caption);
             return result;
         }
 
@@ -106,7 +106,7 @@ namespace CORESI.WPF.Core
                 GC.Collect(4, GCCollectionMode.Forced);
             }
 
-            foreach (var item in ShellViewModel.Categories.Where(c => c.Pages.Contains(page)).ToList())
+            foreach (Categorie item in ShellViewModel.Categories.Where(c => c.Pages.Contains(page)).ToList())
             {
                 item.Pages.Remove(page);
                 if (item.Pages.Count < 1)
@@ -121,7 +121,7 @@ namespace CORESI.WPF.Core
 
         public void IncludeCloseButton(Page page)
         {
-            var general = page.AddNewGroup();
+            Group general = page.AddNewGroup();
             general.AddCommand("Fermer", CORESI.WPF.Core.IconProvider.CloseDetail, () => this.RemovePage(page));
         }
 
@@ -140,10 +140,7 @@ namespace CORESI.WPF.Core
 
         public bool IsWaintingCursor
         {
-            get
-            {
-                return ShellViewModel.IsWaintingCursor;
-            }
+            get => ShellViewModel.IsWaintingCursor;
             set
             {
                 lock (locker)

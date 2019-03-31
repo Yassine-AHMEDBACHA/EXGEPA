@@ -12,11 +12,11 @@ namespace EXGEPA.Items.Controls
 
             if (value != null)
             {
-                var source = value.ToString();
+                string source = value.ToString();
 
                 if (File.Exists(source))
                 {
-                    var uri = new Uri(source);
+                    Uri uri = new Uri(source);
                     return new BitmapImage(uri);
                 }
                 else return null;

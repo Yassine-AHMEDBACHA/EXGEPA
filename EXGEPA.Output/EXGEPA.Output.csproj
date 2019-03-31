@@ -28,6 +28,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <CodeAnalysisRuleSet>..\CORESI.Stylecop.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -37,6 +38,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <CodeAnalysisRuleSet>..\CORESI.Stylecop.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -133,6 +135,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\CessionCertificateViewModel.cs" />
+    <Compile Include="Controls\CommunOutputViewModel.cs" />
     <Compile Include="Controls\DestructionCertificateViewModel.cs" />
     <Compile Include="Controls\DisparitionCertificateViewModel.cs" />
     <Compile Include="Controls\OutputEditionPanel.xaml.cs">
@@ -142,7 +145,6 @@
       <DependentUpon>OutputView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\OutputViewModel.cs" />
-    <Compile Include="Controls\CommunViewModel.cs" />
     <Compile Include="Controls\ProposeToReformViewModel.cs" />
     <Compile Include="Controls\ReformeCertificateViewModel.cs" />
     <Compile Include="Controls\SaleCertificateViewModel.cs" />
@@ -218,6 +220,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.2\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.2\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

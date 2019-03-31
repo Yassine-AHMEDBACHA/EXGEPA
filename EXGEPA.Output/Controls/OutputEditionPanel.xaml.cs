@@ -1,7 +1,11 @@
-﻿using System.Windows.Controls;
+﻿// <copyright file="OutputEditionPanel.xaml.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace EXGEPA.Output.Controls
 {
+    using System.Windows.Controls;
+
     /// <summary>
     /// Interaction logic for OutputEditionPanel.xaml
     /// </summary>
@@ -9,7 +13,7 @@ namespace EXGEPA.Output.Controls
     {
         public OutputEditionPanel()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
     }
 }

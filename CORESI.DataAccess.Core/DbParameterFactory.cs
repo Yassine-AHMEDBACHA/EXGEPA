@@ -31,9 +31,9 @@ namespace CORESI.DataAccess.Core
 
         public static List<IDataParameter> BuildParametersFromTypeOfInstance<T>(T instance, List<Field> fields)
         {
-            var ListOfSqlParamsters = new List<IDataParameter>();
-            var targetFiels = fields.Where(x => !x.IsAutomatique).ToList();
-            foreach (var field in targetFiels)
+            List<IDataParameter> ListOfSqlParamsters = new List<IDataParameter>();
+            List<Field> targetFiels = fields.Where(x => !x.IsAutomatique).ToList();
+            foreach (Field field in targetFiels)
             {
                 SqlParameter sqlParameter = new SqlParameter
                 {
@@ -41,7 +41,7 @@ namespace CORESI.DataAccess.Core
                 };
                 if (field.Type == typeof(DateTime))
                     sqlParameter.SqlDbType = SqlDbType.Date;
-                var value = field.GetValue(instance);
+                object value = field.GetValue(instance);
                 if (value == null)
                 {
                     if (field.IsNullable)

@@ -15,20 +15,20 @@ namespace EXGEPA.Inventory.Core
         public override bool DownloadFile(string destinationPath = tempFile)
         {
             this.logger.Info("Retrieving devices...");
-            var devices = MediaDevice.GetDevices();
+            System.Collections.Generic.IEnumerable<MediaDevice> devices = MediaDevice.GetDevices();
             this.logger.Info($"{devices.Count()} device was found.");
-            foreach (var item in devices)
+            foreach (MediaDevice item in devices)
             {
                 item.Connect();
-                var folders = item.EnumerateDirectories(@"/");
-                foreach (var folder in folders)
+                System.Collections.Generic.IEnumerable<string> folders = item.EnumerateDirectories(@"/");
+                foreach (string folder in folders)
                 {
-                    foreach (var file in item.EnumerateFiles(folder))
+                    foreach (string file in item.EnumerateFiles(folder))
                     {
                         if (file.ToLowerInvariant().Equals(targetPath.ToLowerInvariant()))
                         {
-                            var stream = File.Open(targetPath, FileMode.OpenOrCreate);
-                            var path = Path.Combine(folder, file);
+                            FileStream stream = File.Open(targetPath, FileMode.OpenOrCreate);
+                            string path = Path.Combine(folder, file);
                             item.DownloadFile(path, stream);
                             stream.Close();
                             item.DeleteFile(path);

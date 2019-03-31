@@ -1,155 +1,113 @@
-using System;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using CORESI.Data;
-using CORESI.Data.Tools;
-using CORESI.IoC;
-using CORESI.WPF.Controls;
-using CORESI.WPF.Core.Interfaces;
-using EXGEPA.Model;
+// <copyright file="ReferenceViewModel.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace EXGEPA.Repository.Controls
 {
+    using System;
+    using System.Collections.ObjectModel;
+    using System.IO;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using CORESI.Data;
+    using CORESI.Data.Tools;
+    using CORESI.IoC;
+    using CORESI.WPF.Controls;
+    using CORESI.WPF.Core.Interfaces;
+    using EXGEPA.Model;
+
     public class ReferenceViewModel : GenericEditableViewModel<Reference>
     {
-        private IParameterProvider parameterProvider;
+        private readonly IDataProvider<GeneralAccount> generalAccountService;
 
-        private IDataProvider<GeneralAccountType> generalAccountTypeService;
+        private readonly IDataProvider<ReferenceType> referenceTypeService;
 
-        internal Action _SavePicture;
+        private readonly IDataProvider<GeneralAccountType> generalAccountTypeService;
 
-        private ObservableCollection<ReferenceType> _ListOfReferenceType;
+        private Action savePicture;
 
-        public ReferenceViewModel(IExportableGrid exportableView) : base(exportableView, false)
+        private ObservableCollection<ReferenceType> listOfReferenceType;
+
+        private ObservableCollection<GeneralAccount> chargeAccounts;
+
+        private ObservableCollection<GeneralAccount> investmentAccounts;
+
+        public ReferenceViewModel(IExportableGrid exportableView)
+            : base(exportableView, false)
         {
             this.Caption = "Liste de réfèrences";
-            ServiceLocator.Resolve(out this.parameterProvider);
             ServiceLocator.Resolve(out this.generalAccountService);
             ServiceLocator.Resolve(out this.generalAccountTypeService);
             ServiceLocator.Resolve(out this.referenceTypeService);
-            this.PicturesDirectory = parameterProvider.GetValue("PicturesDirectory", @"C:\SQLIMMO\Images");
+            this.PicturesDirectory = this.ParameterProvider.GetValue("PicturesDirectory", @"C:\SQLIMMO\Images");
             this.InitData();
         }
 
-        public ObservableCollection<ReferenceType> ListOfReferenceType
-        {
-            get { return _ListOfReferenceType; }
-            set
-            {
-                _ListOfReferenceType = value;
-                RaisePropertyChanged("ListOfReferenceType");
-            }
-        }
-
-        public ReferenceType ReferenceType
-        {
-            get { return this.ConcernedRow?.ReferenceType; }
-            set
-            {
-                this.ConcernedRow.ReferenceType = value;
-                this.SetCodes(value);
-                RaisePropertyChanged("ReferenceType");
-            }
-        }
-
-        public string Key
-        {
-            get { return this.ConcernedRow?.Key; }
-            set
-            {
-                this.ConcernedRow.Key = value;
-                RaisePropertyChanged("Key");
-            }
-        }
-
-        private void SetCodes(ReferenceType newItem)
-        {
-            if (newItem != null && this.OldValues == null)
-            {
-                var count = this.ListOfRows.Count(x => x.ReferenceType.Id == newItem.Id).ToString(); ;
-                while (count.Length < 3)
-                {
-                    count = "0" + count;
-                }
-                this.Key = $"{newItem.Key}{count}";
-            }
-        }
-
-        private ObservableCollection<GeneralAccount> _ChargeAccounts;
-        private ObservableCollection<GeneralAccount> _InvestmentAccounts;
-
         public ObservableCollection<GeneralAccount> ChargeAccounts
         {
-            get { return _ChargeAccounts; }
+            get => this.chargeAccounts;
             set
             {
-                _ChargeAccounts = value;
-                RaisePropertyChanged("ChargeAccounts");
+                this.chargeAccounts = value;
+                this.RaisePropertyChanged("ChargeAccounts");
             }
         }
 
         public ObservableCollection<GeneralAccount> InvestmentAccounts
         {
-            get
-            {
-                return _InvestmentAccounts;
-            }
+            get => this.investmentAccounts;
             set
             {
-                _InvestmentAccounts = value;
-                RaisePropertyChanged("InvestmentAccounts");
+                this.investmentAccounts = value;
+                this.RaisePropertyChanged("InvestmentAccounts");
             }
         }
-        private IDataProvider<GeneralAccount> generalAccountService;
-        private IDataProvider<ReferenceType> referenceTypeService;
+
         public string PicturesDirectory { get; private set; }
 
-
-
-        public override void InitData()
+        public ObservableCollection<ReferenceType> ListOfReferenceType
         {
-            ListOfReferenceType = new ObservableCollection<ReferenceType>();
-            StartBackGroundAction(() =>
-                {
-                    var toto = this.DBservice.SelectAll(true);
-                    ListOfRows = new ObservableCollection<Reference>(toto);
-                    foreach (var item in this.referenceTypeService.SelectAll())
-                    {
-                        this.ListOfReferenceType.Add(item);
-                    }
+            get => this.listOfReferenceType;
+            set
+            {
+                this.listOfReferenceType = value;
+                this.RaisePropertyChanged("ListOfReferenceType");
+            }
+        }
 
-                    var generalAccounts = this.generalAccountService.SelectAll();
+        public ReferenceType ReferenceType
+        {
+            get => this.ConcernedRow?.ReferenceType;
+            set
+            {
+                this.ConcernedRow.ReferenceType = value;
+                this.SetCodes(value);
+                this.RaisePropertyChanged("ReferenceType");
+            }
+        }
 
-                    var types = this.generalAccountTypeService.SelectAll();
-                    var chargeAccountTypeId = types.Single(x => x.Type == EGeneralAccountType.Charge).Id;
-                    var investmentAccountTypeId = types.FirstOrDefault(x => x.Type == EGeneralAccountType.Investment).Id;
-
-
-                    this.ChargeAccounts = new ObservableCollection<GeneralAccount>(generalAccounts.Where(x => x.GeneralAccountType.Id == chargeAccountTypeId));
-                    this.InvestmentAccounts = new ObservableCollection<GeneralAccount>(generalAccounts.Where(x => x.GeneralAccountType.Id == investmentAccountTypeId));
-
-                    Parallel.ForEach(ListOfRows, x =>
-                                         {
-                                             x.InvestmentAccount = InvestmentAccounts.Single(g => g.Id == x.InvestmentAccount?.Id);
-                                             x.ChargeAccount = ChargeAccounts.Single(g => g.Id == x.ChargeAccount.Id);
-                                             x.ReferenceType = ListOfReferenceType.Single(rt => rt.Id == x.ReferenceType?.Id);
-                                         });
-                });
+        public string Key
+        {
+            get => this.ConcernedRow?.Key;
+            set
+            {
+                this.ConcernedRow.Key = value;
+                this.RaisePropertyChanged("Key");
+            }
         }
 
         public string ImagePath
         {
             get
             {
-                if (string.IsNullOrEmpty(ConcernedRow?.ImagePath))
+                if (string.IsNullOrEmpty(this.ConcernedRow?.ImagePath))
                 {
                     return null;
                 }
 
-                return PicturesDirectory + ConcernedRow.ImagePath;
+                return this.PicturesDirectory + this.ConcernedRow.ImagePath;
             }
+
             set
             {
                 string target = null;
@@ -157,53 +115,74 @@ namespace EXGEPA.Repository.Controls
                 {
                     if (!string.IsNullOrEmpty(this.ImagePath))
                     {
-                        var s = this.ImagePath;
-                        _SavePicture = () => { DeleteImage(s); };
+                        string s = this.ImagePath;
+                        this.savePicture = () => { this.DeleteImage(s); };
                     }
                 }
                 else
                 {
                     target = this.TypeName + this.ConcernedRow.Id.ToString() + Path.GetExtension(value);
-                    _SavePicture = () => { CopyPicture(value, target); };
+                    this.savePicture = () => { this.CopyPicture(value, target); };
                 }
-                ConcernedRow.ImagePath = target;
-                RaisePropertyChanged("ImagePath");
+
+                this.ConcernedRow.ImagePath = target;
+                this.RaisePropertyChanged("ImagePath");
             }
         }
 
-        private void CopyPicture(string sourcePath, string target)
+        public override void InitData()
         {
-            if (!Directory.Exists(PicturesDirectory))
-                Directory.CreateDirectory(PicturesDirectory);
-            File.Copy(sourcePath, PicturesDirectory + target, true);
-        }
-        private void DeleteImage(string path)
-        {
-            File.Delete(path);
+            this.ListOfReferenceType = new ObservableCollection<ReferenceType>();
+            this.StartBackGroundAction(() =>
+                {
+                    System.Collections.Generic.IList<Reference> toto = this.DBservice.SelectAll(true);
+                    this.ListOfRows = new ObservableCollection<Reference>(toto);
+                    foreach (ReferenceType item in this.referenceTypeService.SelectAll())
+                    {
+                        this.ListOfReferenceType.Add(item);
+                    }
+
+                    System.Collections.Generic.IList<GeneralAccount> generalAccounts = this.generalAccountService.SelectAll();
+
+                    System.Collections.Generic.IList<GeneralAccountType> types = this.generalAccountTypeService.SelectAll();
+                    int chargeAccountTypeId = types.Single(x => x.Type == EGeneralAccountType.Charge).Id;
+                    int investmentAccountTypeId = types.FirstOrDefault(x => x.Type == EGeneralAccountType.Investment).Id;
+
+                    this.ChargeAccounts = new ObservableCollection<GeneralAccount>(generalAccounts.Where(x => x.GeneralAccountType.Id == chargeAccountTypeId));
+                    this.InvestmentAccounts = new ObservableCollection<GeneralAccount>(generalAccounts.Where(x => x.GeneralAccountType.Id == investmentAccountTypeId));
+
+                    Parallel.ForEach(this.ListOfRows, x =>
+                                         {
+                                             x.InvestmentAccount = this.InvestmentAccounts.Single(g => g.Id == x.InvestmentAccount?.Id);
+                                             x.ChargeAccount = this.ChargeAccounts.Single(g => g.Id == x.ChargeAccount.Id);
+                                             x.ReferenceType = this.ListOfReferenceType.Single(rt => rt.Id == x.ReferenceType?.Id);
+                                         });
+                });
         }
 
         public bool IsReadyToGo()
         {
             if (this.ConcernedRow?.ReferenceType == null)
             {
-                UIMessage.Error($"Vous devez selectionner une famille");
+                this.UIMessage.Error($"Vous devez selectionner une famille");
                 return false;
             }
 
             if (!this.ConcernedRow.Caption.IsValidData())
             {
-                UIMessage.Error($"Vous devez saisir une libellé");
+                this.UIMessage.Error($"Vous devez saisir une libellé");
                 return false;
             }
 
             if (!this.ConcernedRow.Key.IsValidData() || !this.ConcernedRow.Key.StartsWith(this.ConcernedRow.ReferenceType.Key))
             {
-                UIMessage.Error($"Code non valide, le code doit commencer par {this.ConcernedRow.ReferenceType?.Key}");
+                this.UIMessage.Error($"Code non valide, le code doit commencer par {this.ConcernedRow.ReferenceType?.Key}");
                 return false;
             }
+
             if (this.ConcernedRow.InvestmentAccount == null)
             {
-                UIMessage.Error($"Vous devez selectionner un compte investissment");
+                this.UIMessage.Error($"Vous devez selectionner un compte investissment");
                 return false;
             }
 
@@ -212,25 +191,24 @@ namespace EXGEPA.Repository.Controls
 
         public override void AddItem(Reference RowToInsert)
         {
-
-            if (!IsReadyToGo())
+            if (!this.IsReadyToGo())
             {
                 return;
             }
 
-            _SavePicture?.Invoke();
+            this.savePicture?.Invoke();
 
             base.AddItem(RowToInsert);
         }
 
         public override void UpdateItem()
         {
-            if (!IsReadyToGo())
+            if (!this.IsReadyToGo())
             {
                 return;
             }
 
-            _SavePicture?.Invoke();
+            this.savePicture?.Invoke();
 
             base.UpdateItem();
         }
@@ -243,8 +221,37 @@ namespace EXGEPA.Repository.Controls
 
         public override void RaisePropertyChangedForEditionPanel()
         {
-            RaisePropertyChanged("ImagePath");
+            this.RaisePropertyChanged("ImagePath");
             base.RaisePropertyChangedForEditionPanel();
+        }
+
+        private void SetCodes(ReferenceType newItem)
+        {
+            if (newItem != null && this.OldValues == null)
+            {
+                string count = this.ListOfRows.Count(x => x.ReferenceType.Id == newItem.Id).ToString();
+                while (count.Length < 3)
+                {
+                    count = "0" + count;
+                }
+
+                this.Key = $"{newItem.Key}{count}";
+            }
+        }
+
+        private void CopyPicture(string sourcePath, string target)
+        {
+            if (!Directory.Exists(this.PicturesDirectory))
+            {
+                Directory.CreateDirectory(this.PicturesDirectory);
+            }
+
+            File.Copy(sourcePath, this.PicturesDirectory + target, true);
+        }
+
+        private void DeleteImage(string path)
+        {
+            File.Delete(path);
         }
     }
 }

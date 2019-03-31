@@ -31,7 +31,7 @@
             ServiceLocator.Resolve(out this.parameterProvider);
             ServiceLocator.GetDefault(out this.keyGenerator);
             this.PicturesDirectory = parameterProvider.GetValue("PicturesDirectory", @"C:\SQLIMMO\Images");
-            var accountingPeriodHelper = new AccountingPeriodHelper(loadHistory: true);
+            AccountingPeriodHelper accountingPeriodHelper = new AccountingPeriodHelper(loadHistory: true);
             MonthelyCalculator = new MonthelyCalculator(accountingPeriodHelper);
             DailyCalculator = new DailyCalculator(accountingPeriodHelper);
             this.MinAmount = parameterProvider.GetValue("ItemInvestismentMinAmount", 30000);
@@ -45,12 +45,12 @@
 
         internal void BindFields()
         {
-            var generalAccountTypeService = ServiceLocator.Resolve<IDataProvider<GeneralAccountType>>();
-            var Types = generalAccountTypeService.SelectAll();
+            IDataProvider<GeneralAccountType> generalAccountTypeService = ServiceLocator.Resolve<IDataProvider<GeneralAccountType>>();
+            IList<GeneralAccountType> Types = generalAccountTypeService.SelectAll();
             RepositoryDataProvider = ServiceLocator.Resolve<IRepositoryDataProvider>();
             RepositoryDataProvider.Refresh();
             RepositoryDataProvider.BindItemFields(ConcernedItem);
-            foreach (var item in RepositoryDataProvider.ListOfGeneralAccount)
+            foreach (GeneralAccount item in RepositoryDataProvider.ListOfGeneralAccount)
             {
                 item.GeneralAccountType = Types.FirstOrDefault(x => x.Id == item.GeneralAccountType.Id);
             }
@@ -86,10 +86,7 @@
 
         public string VehicleNumber
         {
-            get
-            {
-                return this.itemExtendedProperties?.VehicleNumber;
-            }
+            get => this.itemExtendedProperties?.VehicleNumber;
             set
             {
                 this.itemExtendedProperties.VehicleNumber = value;
@@ -101,10 +98,7 @@
 
         public Reference Reference
         {
-            get
-            {
-                return this.ConcernedItem.Reference;
-            }
+            get => this.ConcernedItem.Reference;
             set
             {
                 this.UpdateKey(value);
@@ -132,7 +126,7 @@
         private IRepositoryDataProvider _RepositoryDataProvider;
         public IRepositoryDataProvider RepositoryDataProvider
         {
-            get { return _RepositoryDataProvider; }
+            get => _RepositoryDataProvider;
             set
             {
                 _RepositoryDataProvider = value;
@@ -146,7 +140,7 @@
         public Item InitialItem { get; set; }
         public bool ExcludedFromInventory
         {
-            get { return ConcernedItem.ExcludedFromInventory; }
+            get => ConcernedItem.ExcludedFromInventory;
             set
             {
                 ConcernedItem.ExcludedFromInventory = value;
@@ -158,7 +152,7 @@
         private ObservableCollection<Depreciation> _ListOfDailyDepreciation;
         public ObservableCollection<Depreciation> ListOfDailyDepreciation
         {
-            get { return _ListOfDailyDepreciation; }
+            get => _ListOfDailyDepreciation;
             set
             {
                 _ListOfDailyDepreciation = value;
@@ -168,7 +162,7 @@
         private ObservableCollection<Depreciation> _ListOfMonthelyDepreciation;
         public ObservableCollection<Depreciation> ListOfMonthelyDepreciation
         {
-            get { return _ListOfMonthelyDepreciation; }
+            get => _ListOfMonthelyDepreciation;
             set
             {
                 _ListOfMonthelyDepreciation = value;
@@ -179,10 +173,7 @@
 
         public decimal PreviousDepreciation
         {
-            get
-            {
-                return this.ConcernedItem.PreviousDepreciation;
-            }
+            get => this.ConcernedItem.PreviousDepreciation;
             set
             {
                 this.ConcernedItem.PreviousDepreciation = value;
@@ -193,10 +184,7 @@
 
         public GeneralAccount GeneralAccount
         {
-            get
-            {
-                return ConcernedItem.GeneralAccount;
-            }
+            get => ConcernedItem.GeneralAccount;
             set
             {
                 this.UpdateFiscaleRate(value);
@@ -216,7 +204,7 @@
 
         public ItemState ItemState
         {
-            get { return ConcernedItem.ItemState; }
+            get => ConcernedItem.ItemState;
             set
             {
                 ConcernedItem.ItemState = value;
@@ -227,7 +215,7 @@
         private ComboBoxRibbon<int> _Quantity;
         public ComboBoxRibbon<int> Quantity
         {
-            get { return _Quantity; }
+            get => _Quantity;
             set
             {
                 _Quantity = value;
@@ -241,7 +229,7 @@
         public Office Office
         {
 
-            get { return ConcernedItem.Office; }
+            get => ConcernedItem.Office;
             set
             {
                 ConcernedItem.Office = value;
@@ -256,7 +244,7 @@
 
         public Provider Provider
         {
-            get { return ConcernedItem.Provider; }
+            get => ConcernedItem.Provider;
             set
             {
                 ConcernedItem.Provider = value;
@@ -279,7 +267,7 @@
                 string target = "I" + this.ConcernedItem.Id.ToString() + Path.GetExtension(value);
                 if (string.IsNullOrEmpty(value))
                 {
-                    var s = this.ImagePath;
+                    string s = this.ImagePath;
                     _SavePicture = () => { DeleteImage(s); };
                     target = null;
                 }
@@ -297,7 +285,7 @@
         private bool _IsOldItem;
         public bool IsOldItem
         {
-            get { return _IsOldItem; }
+            get => _IsOldItem;
             set
             {
                 _IsOldItem = value;
@@ -320,7 +308,7 @@
 
         public decimal FiscaleRate
         {
-            get { return ConcernedItem.FiscalRate; }
+            get => ConcernedItem.FiscalRate;
             set
             {
                 this.ConcernedItem.FiscalRate = value;
@@ -336,7 +324,7 @@
 
         public string Comment
         {
-            get { return ConcernedItem.Comment; }
+            get => ConcernedItem.Comment;
             set
             {
                 ConcernedItem.Comment = value;
@@ -345,7 +333,7 @@
         }
         public string OldCode
         {
-            get { return ConcernedItem.OldCode; }
+            get => ConcernedItem.OldCode;
             set
             {
                 ConcernedItem.OldCode = value;
@@ -355,7 +343,7 @@
 
         public Item Owner
         {
-            get { return ConcernedItem.Owner; }
+            get => ConcernedItem.Owner;
             set
             {
                 ConcernedItem.Owner = value;
@@ -366,7 +354,7 @@
         private ObservableCollection<Item> _ListOfItems;
         public ObservableCollection<Item> ListOfItems
         {
-            get { return _ListOfItems; }
+            get => _ListOfItems;
             set
             {
                 _ListOfItems = value;
@@ -376,7 +364,7 @@
 
         public decimal DepreciationBase
         {
-            get { return ConcernedItem.DepreciationBase; }
+            get => ConcernedItem.DepreciationBase;
             set
             {
                 ConcernedItem.DepreciationBase = value;
@@ -386,7 +374,7 @@
         }
         public decimal Amount
         {
-            get { return ConcernedItem.Amount; }
+            get => ConcernedItem.Amount;
             set
             {
                 ConcernedItem.Amount = value;
@@ -397,7 +385,7 @@
 
         private void UpdateAmountHT(decimal amount)
         {
-            var amountHt = amount;
+            decimal amountHt = amount;
             if (this.Tva != null)
             {
                 amountHt = amount - (amount * this.Tva.Rate / 100);
@@ -409,10 +397,7 @@
 
         public DateTime AquisitionDate
         {
-            get
-            {
-                return ConcernedItem.AquisitionDate;
-            }
+            get => ConcernedItem.AquisitionDate;
             set
             {
                 ConcernedItem.AquisitionDate = value;
@@ -432,7 +417,7 @@
 
         public DateTime StartServiceDate
         {
-            get { return ConcernedItem.StartServiceDate; }
+            get => ConcernedItem.StartServiceDate;
             set
             {
                 ConcernedItem.StartServiceDate = value;
@@ -461,7 +446,7 @@
 
         public bool IsTvaDepreciatible
         {
-            get { return ConcernedItem.IsTvaDepreciatible; }
+            get => ConcernedItem.IsTvaDepreciatible;
             set
             {
                 ConcernedItem.IsTvaDepreciatible = value;
@@ -471,7 +456,7 @@
         }
         public Tva Tva
         {
-            get { return ConcernedItem.Tva; }
+            get => ConcernedItem.Tva;
             set
             {
                 ConcernedItem.Tva = value;
@@ -481,7 +466,7 @@
         }
         public decimal AmountHT
         {
-            get { return ConcernedItem.AmountHT; }
+            get => ConcernedItem.AmountHT;
             set
             {
                 ConcernedItem.AmountHT = value;
@@ -492,14 +477,14 @@
 
         private void UpdateDepreciationBase()
         {
-            var depreciationBase = this.IsTvaDepreciatible ? this.Amount : this.AmountHT;
+            decimal depreciationBase = this.IsTvaDepreciatible ? this.Amount : this.AmountHT;
 
             this.DepreciationBase = depreciationBase > this.PreviousDepreciation ? (depreciationBase - this.PreviousDepreciation) : depreciationBase;
         }
 
         public decimal TvaAmount
         {
-            get { return ConcernedItem.TvaAmount; }
+            get => ConcernedItem.TvaAmount;
             set
             {
                 ConcernedItem.TvaAmount = value;
@@ -508,7 +493,7 @@
         }
         public DateTime LimiteDate
         {
-            get { return ConcernedItem.LimiteDate; }
+            get => ConcernedItem.LimiteDate;
             set
             {
                 this.ConcernedItem.LimiteDate = value;
@@ -528,7 +513,7 @@
 
         public string Key
         {
-            get { return ConcernedItem.Key; }
+            get => ConcernedItem.Key;
 
             set
             {
@@ -547,7 +532,7 @@
 
         public Invoice Invoice
         {
-            get { return ConcernedItem.Invoice; }
+            get => ConcernedItem.Invoice;
             set
             {
                 ConcernedItem.Invoice = value;
@@ -567,7 +552,7 @@
         }
         public Person Person
         {
-            get { return ConcernedItem.Person; }
+            get => ConcernedItem.Person;
             set
             {
                 ConcernedItem.Person = value;
@@ -576,7 +561,7 @@
         }
         public TransferOrder TransferOrder
         {
-            get { return ConcernedItem.TransferOrder; }
+            get => ConcernedItem.TransferOrder;
             set
             {
                 ConcernedItem.TransferOrder = value;
@@ -588,7 +573,7 @@
         }
         public InputSheet InputSheet
         {
-            get { return ConcernedItem.InputSheet; }
+            get => ConcernedItem.InputSheet;
             set
             {
                 ConcernedItem.InputSheet = value;
@@ -597,7 +582,7 @@
         }
         public ReceiveOrder ReceiveOrder
         {
-            get { return ConcernedItem.ReceiveOrder; }
+            get => ConcernedItem.ReceiveOrder;
             set
             {
                 ConcernedItem.ReceiveOrder = value;
@@ -606,7 +591,7 @@
         }
         public AnalyticalAccount AnalyticalAccount
         {
-            get { return ConcernedItem.AnalyticalAccount; }
+            get => ConcernedItem.AnalyticalAccount;
             set
             {
                 ConcernedItem.AnalyticalAccount = value;
@@ -616,10 +601,7 @@
 
         public string Description
         {
-            get
-            {
-                return ConcernedItem.Description;
-            }
+            get => ConcernedItem.Description;
             set
             {
                 ConcernedItem.Description = value;
@@ -629,10 +611,7 @@
 
         public string SmallDescription
         {
-            get
-            {
-                return ConcernedItem.SmallDescription;
-            }
+            get => ConcernedItem.SmallDescription;
             set
             {
                 ConcernedItem.SmallDescription = value;
@@ -642,10 +621,7 @@
 
         public string Brand
         {
-            get
-            {
-                return ConcernedItem.Brand;
-            }
+            get => ConcernedItem.Brand;
             set
             {
                 ConcernedItem.Brand = value;
@@ -654,10 +630,7 @@
         }
         public string Model
         {
-            get
-            {
-                return ConcernedItem.Model;
-            }
+            get => ConcernedItem.Model;
             set
             {
                 ConcernedItem.Model = value;
@@ -666,10 +639,7 @@
         }
         public string SerialNumber
         {
-            get
-            {
-                return ConcernedItem.SerialNumber;
-            }
+            get => ConcernedItem.SerialNumber;
             set
             {
                 ConcernedItem.SerialNumber = value;
@@ -678,7 +648,7 @@
         }
         public bool PrintLabel
         {
-            get { return ConcernedItem.PrintLabel; }
+            get => ConcernedItem.PrintLabel;
             set
             {
                 ConcernedItem.PrintLabel = value;
@@ -687,10 +657,7 @@
         }
         public int ElementCount
         {
-            get
-            {
-                return ConcernedItem.ElementCount;
-            }
+            get => ConcernedItem.ElementCount;
             set
             {
                 ConcernedItem.ElementCount = value;
@@ -699,10 +666,7 @@
         }
         public DateTime OfficeAssignmentStartDate
         {
-            get
-            {
-                return ConcernedItem.OfficeAssignmentStartDate;
-            }
+            get => ConcernedItem.OfficeAssignmentStartDate;
             set
             {
                 ConcernedItem.OfficeAssignmentStartDate = value;
@@ -711,10 +675,7 @@
         }
         public DateTime UserAssignmentStartDate
         {
-            get
-            {
-                return ConcernedItem.UserAssignmentStartDate;
-            }
+            get => ConcernedItem.UserAssignmentStartDate;
             set
             {
                 ConcernedItem.UserAssignmentStartDate = value;
@@ -726,7 +687,7 @@
 
         public bool IsBaseDepreciationReadOnly
         {
-            get { return isBaseDepreciationReadOnly; }
+            get => isBaseDepreciationReadOnly;
             set
             {
                 isBaseDepreciationReadOnly = value;
@@ -742,10 +703,7 @@
 
         public ObservableCollection<GeneralAccount> ListOfGeneralAccount
         {
-            get
-            {
-                return _ListOfGeneralAccount;
-            }
+            get => _ListOfGeneralAccount;
             set
             {
                 _ListOfGeneralAccount = value; RaisePropertyChanged("ListOfGeneralAccount");
@@ -755,10 +713,7 @@
         public bool _IsKeyReadOnly;
         public bool IsKeyReadOnly
         {
-            get
-            {
-                return _IsKeyReadOnly;
-            }
+            get => _IsKeyReadOnly;
             set
             {
                 _IsKeyReadOnly = value;

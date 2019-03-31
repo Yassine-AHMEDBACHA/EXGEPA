@@ -15,7 +15,7 @@
 
         public bool IsChecked
         {
-            get { return _IsChecked; }
+            get => _IsChecked;
             set
             {
                 _IsChecked = value;

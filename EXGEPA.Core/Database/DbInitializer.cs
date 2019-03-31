@@ -31,15 +31,15 @@ namespace EXGEPA.Core.Database
 
         public static T InsertInstance<T>(T instance) where T : Row
         {
-            var service = ServiceLocator.Resolve<IDataProvider<T>>();
+            IDataProvider<T> service = ServiceLocator.Resolve<IDataProvider<T>>();
             service.Add(instance);
             return instance;
         }
 
         public static IEnumerable<T> InsertInstances<T>(IEnumerable<T> instances) where T : Row
         {
-            var service = ServiceLocator.Resolve<IDataProvider<T>>();
-            foreach (var instance in instances)
+            IDataProvider<T> service = ServiceLocator.Resolve<IDataProvider<T>>();
+            foreach (T instance in instances)
             {
                 service.Add(instance);
             }
@@ -49,13 +49,13 @@ namespace EXGEPA.Core.Database
 
         public static List<T> LoadAllTable<T>()
         {
-            var service = ServiceLocator.Resolve<IDataProvider<T>>();
+            IDataProvider<T> service = ServiceLocator.Resolve<IDataProvider<T>>();
             return service.SelectAll().ToList();
         }
 
         public void AddSettings()
         {
-            var parameterProvider = ServiceLocator.Resolve<IParameterProvider>();
+            IParameterProvider parameterProvider = ServiceLocator.Resolve<IParameterProvider>();
             parameterProvider.TrySetOrAdd("ItemLabelType", "RegionCode_ItemCode_LocalCode");
             parameterProvider.TrySetOrAdd("LocalCurrency", "DZD");
             parameterProvider.TrySetOrAdd("Theme", "Office2010Silver");
@@ -85,16 +85,16 @@ namespace EXGEPA.Core.Database
 
         public void SetInitialRights()
         {
-            var tables = QueryBuilder.GetMappedTypes();
-            var roleService = ServiceLocator.Resolve<IDataProvider<Role>>();
-            var role = new Role()
+            List<Type> tables = QueryBuilder.GetMappedTypes();
+            IDataProvider<Role> roleService = ServiceLocator.Resolve<IDataProvider<Role>>();
+            Role role = new Role()
             {
                 Key = "Administrateur"
             };
             InsertInstance(role);
-            var operations = InsertData(RightManager.Transcoder.Values.Distinct().Select(v => new Operation { Key = v }));
-            var resources = InsertData(tables.OrderBy(x => x.Name).Select(x => new Resource { Key = x.Name }));
-            var ablilities = resources.SelectMany(resource => operations.Select(operation => new Ability
+            List<Operation> operations = InsertData(RightManager.Transcoder.Values.Distinct().Select(v => new Operation { Key = v }));
+            List<Resource> resources = InsertData(tables.OrderBy(x => x.Name).Select(x => new Resource { Key = x.Name }));
+            IEnumerable<Ability> ablilities = resources.SelectMany(resource => operations.Select(operation => new Ability
             {
                 HasAccess = true,
                 Resource = resource,

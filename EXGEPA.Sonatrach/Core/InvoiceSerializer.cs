@@ -29,21 +29,21 @@ namespace EXGEPA.Sonatrach.Core
 
         public void SerializeInvoice(Invoice invoice)
         {
-            var header = this.GetCGFRA_FR30_BOD(invoice);
-            var itemRows = this.GetCGFRA_FR32(invoice.Items);
-            var stringBuilder = new StringBuilder();
+            string header = this.GetCGFRA_FR30_BOD(invoice);
+            List<string> itemRows = this.GetCGFRA_FR32(invoice.Items);
+            StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.AppendLine(header);
-            foreach (var item in itemRows)
+            foreach (string item in itemRows)
             {
                 stringBuilder.AppendLine(item);
             }
-            var fileName = this.GetFileName(invoice);
+            string fileName = this.GetFileName(invoice);
             TextAppender.Append(fileName, stringBuilder.ToString(), true);
         }
 
         private string GetFileName(Invoice invoice)
         {
-            var fileName = "Invoice.csv";
+            string fileName = "Invoice.csv";
             return Path.Combine(this.OutPutDirectory, fileName);
         }
 
@@ -72,7 +72,7 @@ namespace EXGEPA.Sonatrach.Core
 
         public List<FR30_BOD> GenerateCGFRA_FR30_BOD(List<Certificate> invoices)
         {
-            var result = invoices.Select(invoice => GenerateCGFRA_FR30_BOD(invoice)).ToList();
+            List<FR30_BOD> result = invoices.Select(invoice => GenerateCGFRA_FR30_BOD(invoice)).ToList();
             return result;
         }
     }

@@ -8,8 +8,8 @@ namespace EXGEPA.HotelElDjazair
     {
         public static AquisitionReports GetReport()
         {
-            var parameterProvider = ServiceLocator.Resolve<IParameterProvider>();
-            var report = new Reports.AquisitionReports();
+            IParameterProvider parameterProvider = ServiceLocator.Resolve<IParameterProvider>();
+            AquisitionReports report = new Reports.AquisitionReports();
             report.companyName.Text = parameterProvider.GetValue<string>("CompanyName");
             report.departementName.Text = "DGM";
             report.reportTitle.Text = "Etat des aquisitions";

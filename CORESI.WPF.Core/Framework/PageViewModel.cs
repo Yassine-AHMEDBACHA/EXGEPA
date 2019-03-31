@@ -41,7 +41,7 @@ namespace CORESI.WPF.Core.Framework
 
         public Group AddNewGroup(string caption = null, IList<RibbonButton> buttons = null)
         {
-            var group = new Group(caption, buttons);
+            Group group = new Group(caption, buttons);
             this.AddGroup(group);
             return group;
         }

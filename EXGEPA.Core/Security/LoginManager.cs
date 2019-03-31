@@ -33,14 +33,14 @@ namespace EXGEPA.Security
         private string GenerateNewPassword(int length)
         {
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            var random = new Random();
-            var newPassword = new string(Enumerable.Repeat(chars, length).Select(s => s[random.Next(s.Length)]).ToArray());
+            Random random = new Random();
+            string newPassword = new string(Enumerable.Repeat(chars, length).Select(s => s[random.Next(s.Length)]).ToArray());
             return newPassword.ToLower();
         }
 
         public string ResetPassword(string login)
         {
-            var password = GenerateNewPassword(8);
+            string password = GenerateNewPassword(8);
             UpdatePassword(login, password, true);
             return password;
         }
@@ -50,8 +50,8 @@ namespace EXGEPA.Security
             IOperator user = null;
             try
             {
-                var cryptedPassword = StringCryptor.Crypte(password);
-                var users = ApplicationOperatorService.SelectAll();
+                string cryptedPassword = StringCryptor.Crypte(password);
+                System.Collections.Generic.IList<Operator> users = ApplicationOperatorService.SelectAll();
                 user = users.FirstOrDefault(opr => opr?.Key == login && opr?.Password == cryptedPassword);
             }
             catch (Exception ex)
@@ -64,15 +64,15 @@ namespace EXGEPA.Security
 
         public bool UpdatePassword(string login, string password, bool toBeReset = false)
         {
-            var user = GetOperatorByLogin(login); user.Password = StringCryptor.Crypte(password);
+            Operator user = GetOperatorByLogin(login); user.Password = StringCryptor.Crypte(password);
             user.ExpiredPassword = toBeReset;
             return this.ApplicationOperatorService.Update(user) > 0;
         }
 
         private Operator GetOperatorByLogin(string login)
         {
-            var users = ApplicationOperatorService.SelectAll();
-            var user = users.First(opr => opr.Key == login);
+            System.Collections.Generic.IList<Operator> users = ApplicationOperatorService.SelectAll();
+            Operator user = users.First(opr => opr.Key == login);
 
             return user;
         }

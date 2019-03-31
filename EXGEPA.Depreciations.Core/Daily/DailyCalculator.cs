@@ -27,11 +27,11 @@ namespace EXGEPA.Depreciations.Core
 
         private List<Depreciation> LoadPrevieousDepriciation(Item item, DateTime targetDate)
         {
-            var startDate = Tools.GetDefaultStartDate(item);
+            DateTime startDate = Tools.GetDefaultStartDate(item);
             if (startDate > targetDate)
                 return new List<Depreciation>();
-            var periods = AccountingPeriodHelper.GetAccountingPeriodToDate(startDate, targetDate);
-            var result = GenerateDepriciationFromAccountingPeriod(item, startDate, targetDate, periods);
+            List<AccountingPeriod> periods = AccountingPeriodHelper.GetAccountingPeriodToDate(startDate, targetDate);
+            List<Depreciation> result = GenerateDepriciationFromAccountingPeriod(item, startDate, targetDate, periods);
             result.First().InitialValue = item.Amount;
             ComputeDep(result, result.First());
             return result;
@@ -39,8 +39,8 @@ namespace EXGEPA.Depreciations.Core
 
         protected override void SetDepriciationValues(Depreciation depriciation)
         {
-            var totalDayesByPeriod = (int)(depriciation.Item.LimiteDate - depriciation.StartDate).TotalDays + 1;
-            var dailyAnnuity = (depriciation.InitialValue / totalDayesByPeriod);
+            int totalDayesByPeriod = (int)(depriciation.Item.LimiteDate - depriciation.StartDate).TotalDays + 1;
+            decimal dailyAnnuity = (depriciation.InitialValue / totalDayesByPeriod);
             depriciation.Period = (int)(depriciation.EndDate - depriciation.StartDate).TotalDays + 1;
             depriciation.Annuity = Math.Round(dailyAnnuity * depriciation.Period, 2);
             depriciation.AccountingNetValue = depriciation.InitialValue - depriciation.Annuity;

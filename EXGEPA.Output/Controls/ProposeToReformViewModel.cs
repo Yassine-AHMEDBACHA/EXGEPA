@@ -1,37 +1,46 @@
-﻿using CORESI.IoC;
-using CORESI.WPF.Controls;
-using CORESI.WPF.Core.Interfaces;
-using CORESI.WPF.Model;
-using EXGEPA.Core.Interfaces;
-using EXGEPA.Model;
-using System;
-using System.Windows.Media;
+﻿// <copyright file="ProposeToReformViewModel.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace EXGEPA.Output.Controls
 {
+    using System;
+    using System.Windows.Media;
+    using CORESI.IoC;
+    using CORESI.WPF.Controls;
+    using CORESI.WPF.Core.Interfaces;
+    using CORESI.WPF.Model;
+    using EXGEPA.Core.Interfaces;
+    using EXGEPA.Model;
+
     public class ProposeToReformViewModel : GenericEditableViewModel<ProposeToReformCertificate>
     {
-        IUIItemService UIItemService { get; set; }
-        public ProposeToReformViewModel(IExportableGrid exportableView) : base(exportableView)
+        public ProposeToReformViewModel(IExportableGrid exportableView)
+            : base(exportableView)
         {
             this.UIItemService = ServiceLocator.Resolve<IUIItemService>();
             this.DoubleClicAction = this.SetItemAttribute;
             this.Caption = "Liste de PV de proposition à la reforme";
         }
 
+        protected IUIItemService UIItemService { get; set; }
+
         public override void AddItem()
         {
             base.AddItem();
             this.ConcernedRow.Date = DateTime.Today;
-            RaisePropertyChanged("ConcernedRow");
+            this.RaisePropertyChanged("ConcernedRow");
         }
 
         public void SetItemAttribute()
         {
-            var proposeToReformCertificate = this.SelectedRow;
+            ProposeToReformCertificate proposeToReformCertificate = this.SelectedRow;
             if (proposeToReformCertificate == null)
+            {
                 return;
-            var options = new ItemAttributionOptions
+            }
+
+            ItemAttributionOptions options = new ItemAttributionOptions
             {
                 PageCaption = "PV N°:" + proposeToReformCertificate.Key,
                 SetConfirmationMessage = "Etes vous sûr de vouloir affecter ces articles au PV N° " + proposeToReformCertificate.Key,
@@ -42,7 +51,7 @@ namespace EXGEPA.Output.Controls
                 Resetter = (item) => item.ProposeToReformCertificate = null,
                 Categorie = new Categorie("PV de Proposition à la Reforme", Colors.Tomato)
             };
-            UIItemService.ShowItemAttribution(options);
+            this.UIItemService.ShowItemAttribution(options);
         }
     }
 }

@@ -13,27 +13,27 @@ namespace EXGEPA.Security
 
         public override void AddGroups()
         {
-            var setting = new Group();
+            Group setting = new Group();
             setting.AddCommand("Utilisateur", IconProvider.BOUserSmall, this.ShowApplicationUserPage, true);
             setting.AddCommand("Roles", IconProvider.BOUserSmall, this.ShowRolePage, true);
-            uIService.AddGroupToHomePage(setting);
+            UIService.AddGroupToHomePage(setting);
         }
 
         private void ShowRolePage()
         {
-            var view = new RoleView();
-            var viewModel = new RoleViewModel(view);
-            var page = new Page(viewModel, view, true);
-            uIService.AddPage(page);
+            RoleView view = new RoleView();
+            RoleViewModel viewModel = new RoleViewModel(view);
+            Page page = new Page(viewModel, view, true);
+            UIService.AddPage(page);
             viewModel.InitData();
         }
 
         private void ShowApplicationUserPage()
         {
-            var view = new OperatorView();
-            var viewModel = new OperatorViewModel(view);
-            var page = new Page(viewModel, view, true);
-            uIService.AddPage(page);
+            OperatorView view = new OperatorView();
+            OperatorViewModel viewModel = new OperatorViewModel(view);
+            Page page = new Page(viewModel, view, true);
+            UIService.AddPage(page);
             viewModel.InitData();
         }
     }

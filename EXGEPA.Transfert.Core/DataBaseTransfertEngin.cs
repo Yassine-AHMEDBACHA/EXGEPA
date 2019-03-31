@@ -110,7 +110,7 @@ namespace EXGEPA.Transfert.Core
             string query = "select NUM_FACT ,min(DAT_ACQI) as DAT_ACQI, sum(montant) as montant,max(COD_FOURN) as COD_FOURN,max(NUM_FE) as NUM_FE,min(COMPTE_G) as COMPTE_G from equip where REF_CPTA like 'Facture%' and  NUM_FACT is not null and NUM_FACT not like '' group by NUM_FACT";
             return LoadData<Invoice>(query, (sqlDataReader) =>
             {
-                var invoice = new Invoice()
+                Invoice invoice = new Invoice()
                 {
                     Key = sqlDataReader["NUM_FACT"].ToString().TrimEnd(' ').TrimStart(' '),
                 };
@@ -130,7 +130,7 @@ namespace EXGEPA.Transfert.Core
             string query = "select NUM_FACT ,isnull(min(DAT_ACQI),'19000101') as DAT_ACQI,MAX(FOURN) as FOURN from equip where (REF_CPTA not like 'Facture%' or REF_CPTA is null) and  NUM_FACT is not null and NUM_FACT not like '' group by NUM_FACT";
             return LoadData<TransferOrder>(query, (sqlDataReader) =>
             {
-                var transferOrder = new TransferOrder()
+                TransferOrder transferOrder = new TransferOrder()
                 {
                     Key = sqlDataReader["NUM_FACT"].ToString().TrimEnd(' ').TrimStart(' '),
                 };
@@ -172,13 +172,13 @@ namespace EXGEPA.Transfert.Core
             string query = "SELECT isnull([MATRI],row_number() over (order by code)) as code,[RAISON],isnull([ADRES],' ') as adres , isnull([NUM_IF],'') as [NUM_IF]      , isnull([NUM_RC],'') as [NUM_RC]     , isnull(TELE1,'') as TEL,isnull([FAX],'') as FAX   FROM [dbo].[Fic0f]";
             return LoadData<Provider>(query, (sqlDataReader) =>
 {
-    var p = new Provider
+    Provider p = new Provider
     {
         Key = sqlDataReader["code"].ToString().TrimEnd(' ').TrimStart(' '),
         Caption = sqlDataReader["RAISON"].ToString().TrimEnd(' ').TrimStart(' ')
     };
-    var n = sqlDataReader["ADRES"].ToString();
-    var names = n.TrimEnd(' ').Split(' ');
+    string n = sqlDataReader["ADRES"].ToString();
+    string[] names = n.TrimEnd(' ').Split(' ');
     p.City = names.LastOrDefault();
     p.Address = n.Remove(n.IndexOf(p.City), p.City.Length).TrimEnd(' ').TrimStart(' ');
     p.Country = "Algeria";
@@ -214,13 +214,13 @@ namespace EXGEPA.Transfert.Core
             string query = "SELECT  [Matricule] ,convert(date,[Date_naissance],103) as [Date_naissance] ,[nom_prenom],[fonction]  FROM [dbo].[personnel]";
             return LoadData<Person>(query, (sqlDataReader) =>
             {
-                var p = new Person
+                Person p = new Person
                 {
                     BirthDate = Convert.ToDateTime(sqlDataReader["Date_naissance"])
                 };
-                var n = sqlDataReader["nom_prenom"].ToString();
+                string n = sqlDataReader["nom_prenom"].ToString();
 
-                var names = n.TrimEnd(' ').Split(' ');
+                string[] names = n.TrimEnd(' ').Split(' ');
                 p.FirstName = names.LastOrDefault();
                 p.Name = n.Remove(n.IndexOf(p.FirstName), p.FirstName.Length).TrimEnd(' ').TrimStart(' ');
                 p.Function = sqlDataReader["fonction"].ToString().TrimEnd(' ').TrimStart(' ');
@@ -265,7 +265,7 @@ namespace EXGEPA.Transfert.Core
             string query = "SELECT  [cod_site],[Lib_site],[Cod_reg] FROM Fic0s ";
             return LoadData<Site>(query, (sqlDataReader) =>
             {
-                var instance = new Site()
+                Site instance = new Site()
                 {
                     Caption = sqlDataReader["Lib_site"].ToString().TrimEnd(' ').TrimStart(' '),
                     Key = sqlDataReader["cod_site"].ToString().TrimEnd(' ').TrimStart(' ').ToUpper(),
@@ -284,7 +284,7 @@ namespace EXGEPA.Transfert.Core
             string query = "SELECT  [cod_site]      ,[cod_bat]      ,[LIB_BAT]  FROM [Fic0b]";
             return LoadData<Building>(query, (sqlDataReader) =>
             {
-                var instance = new Building()
+                Building instance = new Building()
                 {
 
                     Caption = sqlDataReader["LIB_BAT"].ToString().TrimEnd(' ').TrimStart(' '),
@@ -307,7 +307,7 @@ namespace EXGEPA.Transfert.Core
             string query = "SELECT  isnull([cod_bat],'#') as [cod_bat], isnull([cod_site],'#') as [cod_site],isnull([cod_niv],'#') as [cod_niv] FROM [Fic0n]";
             return LoadData<Level>(query, (sqlDataReader) =>
             {
-                var instance = new Level()
+                Level instance = new Level()
                 {
                     Caption = sqlDataReader["cod_niv"].ToString().TrimEnd(' ').TrimStart(' '),
                     Code = sqlDataReader["cod_niv"].ToString().TrimEnd(' ').TrimStart(' ').ToUpper(),
@@ -359,7 +359,7 @@ namespace EXGEPA.Transfert.Core
             return LoadData<Office>(query, (sqlDataReader) =>
             {
 
-                var codeUni = sqlDataReader["Code"].ToString().TrimEnd(' ').TrimStart(' ').ToUpper();
+                string codeUni = sqlDataReader["Code"].ToString().TrimEnd(' ').TrimStart(' ').ToUpper();
                 if (string.IsNullOrEmpty(codeUni) || codeUni.Length != 13)
                     throw new Exception("Invalide localization code");
 
@@ -429,10 +429,10 @@ namespace EXGEPA.Transfert.Core
         public List<ItemState> LoadStates()
         {
             string query = "select distinct Etat_art from equip";
-            var states = new[] { "Neuf", "Bon", "Vétuste" };
-            var result = LoadData<ItemState>(query, (sqlDataReader) =>
+            string[] states = new[] { "Neuf", "Bon", "Vétuste" };
+            List<ItemState> result = LoadData<ItemState>(query, (sqlDataReader) =>
             {
-                var itemState = new ItemState()
+                ItemState itemState = new ItemState()
                 {
                     Key = sqlDataReader["Etat_art"].ToString()
                 };
@@ -451,7 +451,7 @@ namespace EXGEPA.Transfert.Core
             string query = "SELECT TAUX_AMO, isnull(N_ELEM,1) as N_ELEM, DESIG,Etat_art, isnull(pv_cession,'') as pv_cession,isnull(pv_disp,'') as pv_disp,isnull(pv_distruction,'') as pv_distruction , isnull(pv_reforme,'') as pv_reforme,[CODECAR],isnull([N_ELEM],0) as N_ELEM,[QUANT],[OBS_ARTICLE],[DATE_SER],[Date_limite] ,[DAT_PIECE],[REF_CPTA],[NUM_FACT],[DAT_FACT],[VAL_REEVALUEE],[AMOR_CUMULE] ,[VALEUR_NETTE],[NUM_FE],[NUM_BE],[COD_UNI],[NUM_INV],isnull([sous_desig],'') as sous_desig,[MARQUE],[NUM_SERIE],[GENRE],isnull([DAT_ACQI],'19000101' ) as [DAT_ACQI],[COD_FOURN],isnull([MONTANT],0) as MONTANT,[COMPTE_G],convert (date,[DAT_CIR],103) as [DAT_CIR],[CPT_ANAL],[PIECE_B],[NUM_BS],[Etat_art],[EMA],[Chemin],isnull([amo_ant_fiscal],0) as [amo_ant_fiscal] FROM [equip]";
             return LoadData<Item>(query, (sqlDataReader) =>
             {
-                var item = new Item
+                Item item = new Item
                 {
                     Key = $"DEB{sqlDataReader["CODECAR"].ToString().ToUpperInvariant()}",
                     //item.Key = $"{sqlDataReader["CODECAR"].ToString().ToUpperInvariant()}";
@@ -482,21 +482,21 @@ namespace EXGEPA.Transfert.Core
 
                 item.GeneralAccount = new GeneralAccount() { Key = sqlDataReader["COMPTE_G"].ToString().ToUpperInvariant() };
 
-                var dateAcquiString = sqlDataReader["DAT_ACQI"].ToString().ToUpperInvariant();
+                string dateAcquiString = sqlDataReader["DAT_ACQI"].ToString().ToUpperInvariant();
                 item.AquisitionDate = DateTime.Parse(dateAcquiString).Date;
                 item.ElementCount = int.Parse(sqlDataReader["N_ELEM"].ToString().ToUpperInvariant());
-                var datcir = sqlDataReader["DAT_CIR"].ToString().ToUpperInvariant();
+                string datcir = sqlDataReader["DAT_CIR"].ToString().ToUpperInvariant();
                 if (string.IsNullOrEmpty(datcir))
                     datcir = dateAcquiString;
 
                 item.OfficeAssignmentStartDate = DateTime.Parse(datcir).Date;
                 item.OldCode = sqlDataReader["EMA"].ToString().ToUpperInvariant();
-                var datelimiteString = sqlDataReader["Date_limite"].ToString().ToUpperInvariant();
+                string datelimiteString = sqlDataReader["Date_limite"].ToString().ToUpperInvariant();
                 if (string.IsNullOrEmpty(datelimiteString))
                     datelimiteString = dateAcquiString;
 
-                var tauxString = sqlDataReader["TAUX_AMO"].ToString().ToUpperInvariant();
-                var fiscalRate = decimal.Parse(tauxString);
+                string tauxString = sqlDataReader["TAUX_AMO"].ToString().ToUpperInvariant();
+                decimal fiscalRate = decimal.Parse(tauxString);
                 item.FiscalRate = fiscalRate;
                 item.LimiteDate = DateTime.Parse(datelimiteString).Date;
                 if (fiscalRate > 0 && datelimiteString == dateAcquiString)
@@ -505,7 +505,7 @@ namespace EXGEPA.Transfert.Core
                 }
                 item.StartDepreciationDate = StartDepreciationDate.AqusitionDate;
                 item.Comment = sqlDataReader["OBS_ARTICLE"].ToString().ToUpperInvariant();
-                var dateServiceString = sqlDataReader["DATE_SER"].ToString().ToUpperInvariant();
+                string dateServiceString = sqlDataReader["DATE_SER"].ToString().ToUpperInvariant();
                 if (string.IsNullOrEmpty(dateServiceString))
                     dateServiceString = dateAcquiString;
 
@@ -535,7 +535,7 @@ namespace EXGEPA.Transfert.Core
             string query = "select Code,codecar,date_affectation,date_retour from bon_affectation where date_retour is null";
             return LoadData(query, (sqlDataReader) =>
             {
-                var assignment = new Assignment
+                Assignment assignment = new Assignment
                 {
                     Key = sqlDataReader["Code"].ToString(),
                     Item = new Item { Key = sqlDataReader["codecar"].ToString() },
@@ -548,7 +548,7 @@ namespace EXGEPA.Transfert.Core
 
         public List<ReformeCertificate> LoadReformsCertificate()
         {
-            var query = "select pv_reforme,date_reforme from equip  where pv_reforme is not null and pv_reforme not like '-' group by pv_reforme,date_reforme";
+            string query = "select pv_reforme,date_reforme from equip  where pv_reforme is not null and pv_reforme not like '-' group by pv_reforme,date_reforme";
             return LoadData(query, (sqlDataReader) =>
                 {
                     return new ReformeCertificate()
@@ -561,7 +561,7 @@ namespace EXGEPA.Transfert.Core
 
         public List<OutputCertificate> LoadOutputCertificate()
         {
-            var query = "select pv,date,3 as 'type' from pv_disparition union select pv,date,1 as 'type' from pv_cession union select pv,date,2 as 'type' from pv_distruction";
+            string query = "select pv,date,3 as 'type' from pv_disparition union select pv,date,1 as 'type' from pv_cession union select pv,date,2 as 'type' from pv_distruction";
             return LoadData(query, (sqlDataReader) =>
             {
                 return new OutputCertificate()
@@ -577,9 +577,9 @@ namespace EXGEPA.Transfert.Core
         {
             Func<string, string, AccountingPeriod> builder = (year, cloture) =>
             {
-                var approuved = bool.Parse(cloture);
-                var startdate = DateTime.Parse(@"01/01/" + year);
-                var endtdate = DateTime.Parse(@"31/12/" + year);
+                bool approuved = bool.Parse(cloture);
+                DateTime startdate = DateTime.Parse(@"01/01/" + year);
+                DateTime endtdate = DateTime.Parse(@"31/12/" + year);
                 return new AccountingPeriod()
                 {
                     Approved = approuved,
@@ -588,11 +588,11 @@ namespace EXGEPA.Transfert.Core
                     EndDate = endtdate
                 };
             };
-            var query = "SELECT [exercice]      ,[cloturer]     FROM [dbo].[exercice]";
-            var exercies = LoadData(query, (sqlDataReader) =>
+            string query = "SELECT [exercice]      ,[cloturer]     FROM [dbo].[exercice]";
+            List<AccountingPeriod> exercies = LoadData(query, (sqlDataReader) =>
              {
-                 var year = sqlDataReader["exercice"].ToString();
-                 var approuved = sqlDataReader["cloturer"].ToString();
+                 string year = sqlDataReader["exercice"].ToString();
+                 string approuved = sqlDataReader["cloturer"].ToString();
                  return builder(year, approuved);
              });
 
@@ -609,7 +609,7 @@ namespace EXGEPA.Transfert.Core
 
         public List<ReferenceType> LoadReferenceType()
         {
-            var query = "SELECT [Cod_famille],[Lib_famille]  FROM [dbo].[Familles]";
+            string query = "SELECT [Cod_famille],[Lib_famille]  FROM [dbo].[Familles]";
             return LoadData(query, (sqlDataReader) =>
             {
                 return new ReferenceType()
@@ -622,7 +622,7 @@ namespace EXGEPA.Transfert.Core
 
         public List<GeneralAccountType> ListOfGeneralAccountType()
         {
-            var result = Enum.GetValues(typeof(EGeneralAccountType))
+            List<GeneralAccountType> result = Enum.GetValues(typeof(EGeneralAccountType))
                 .OfType<EGeneralAccountType>()
                 .Select(x => new GeneralAccountType { Type = x, Key = x.ToString() })
                 .ToList();

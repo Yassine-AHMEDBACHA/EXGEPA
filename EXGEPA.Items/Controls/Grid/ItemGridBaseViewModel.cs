@@ -28,7 +28,7 @@ namespace EXGEPA.Items
 
         public override void InitData()
         {
-            var items = this.DBservice.SelectAll().Where(x => displayFilter(x)).ToList();
+            List<Item> items = this.DBservice.SelectAll().Where(x => displayFilter(x)).ToList();
             repositoryDataProvider.BindItemFields(items);
             this.ListOfRows = new System.Collections.ObjectModel.ObservableCollection<Item>(items);
             this.Selection = new System.Collections.ObjectModel.ObservableCollection<Item>(ListOfRows.Take(1));

@@ -47,13 +47,13 @@ namespace CORESI.WPF.Core
 
         internal static void SetTheme()
         {
-            var parameterProvider = ServiceLocator.Resolve<IParameterProvider>();
+            IParameterProvider parameterProvider = ServiceLocator.Resolve<IParameterProvider>();
             SetTheme(parameterProvider.GetValue<string>("Theme", Theme.Office2010SilverName));
         }
 
         static void TextBox_KeyDown(object sender, KeyEventArgs e)
         {
-            var acceptReturn = (bool)sender.GetType().GetProperty("AcceptsReturn").GetValue(sender, null);
+            bool acceptReturn = (bool)sender.GetType().GetProperty("AcceptsReturn").GetValue(sender, null);
             if (e.Key == Key.Enter & acceptReturn == false) MoveToNextUIElement(e);
         }
 

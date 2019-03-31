@@ -40,7 +40,7 @@ namespace CORESI.WPF.Model
 
         public bool IsSelected
         {
-            get { return _IsSelected; }
+            get => _IsSelected;
             set
             {
                 _IsSelected = value;
@@ -61,7 +61,7 @@ namespace CORESI.WPF.Model
 
         public System.Windows.Controls.UserControl UserControl
         {
-            get { return _UserControl; }
+            get => _UserControl;
             private set
             {
                 _UserControl = value;

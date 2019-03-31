@@ -11,7 +11,7 @@ namespace CORESI.DataAccess.Core
 
         public static Session CreateSession()
         {
-            var session = new Session()
+            Session session = new Session()
             {
                 ApplicationName = Assembly.GetExecutingAssembly().FullName,
                 HostName = Environment.MachineName,
@@ -22,13 +22,13 @@ namespace CORESI.DataAccess.Core
 
         public static void OpenSession(string applicationName, string applicationLogin)
         {
-            var sessionManager = ServiceLocator.Resolve<ISessionManager>();
+            ISessionManager sessionManager = ServiceLocator.Resolve<ISessionManager>();
             Session = sessionManager.OpenSession(applicationName, applicationLogin);
         }
 
         public static void CloseSession()
         {
-            var sessionManager = ServiceLocator.Resolve<ISessionManager>();
+            ISessionManager sessionManager = ServiceLocator.Resolve<ISessionManager>();
             sessionManager.CloseSession();
         }
 

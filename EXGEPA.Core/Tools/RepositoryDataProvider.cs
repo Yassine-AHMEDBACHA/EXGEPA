@@ -96,7 +96,7 @@ namespace EXGEPA.Core
 
         public ObservableCollection<ItemState> ListOfStats
         {
-            get { return _ListOfStats; }
+            get => _ListOfStats;
             set
             {
                 _ListOfStats = value;
@@ -108,7 +108,7 @@ namespace EXGEPA.Core
 
         public ObservableCollection<ProposeToReformCertificate> ListOfProposeToReformCertificate
         {
-            get { return _ListOfProposeToReformCertificate; }
+            get => _ListOfProposeToReformCertificate;
             set
             {
                 _ListOfProposeToReformCertificate = value;
@@ -120,7 +120,7 @@ namespace EXGEPA.Core
 
         public ObservableCollection<Tva> ListOfTva
         {
-            get { return _ListOfTva; }
+            get => _ListOfTva;
             set
             {
                 _ListOfTva = value;
@@ -131,50 +131,50 @@ namespace EXGEPA.Core
         private ObservableCollection<ReformeCertificate> _ListOfReformeCertificate;
         public ObservableCollection<ReformeCertificate> ListOfReformeCertificate
         {
-            get { return _ListOfReformeCertificate; }
-            set { _ListOfReformeCertificate = value; }
+            get => _ListOfReformeCertificate;
+            set => _ListOfReformeCertificate = value;
         }
 
         private ObservableCollection<OutputCertificate> _ListOfOutputCertificate;
         public ObservableCollection<OutputCertificate> ListOfOutputCertificate
         {
-            get { return _ListOfOutputCertificate; }
-            set { _ListOfOutputCertificate = value; }
+            get => _ListOfOutputCertificate;
+            set => _ListOfOutputCertificate = value;
         }
 
         private ObservableCollection<GeneralAccount> _ListOfGeneralAccount;
         public ObservableCollection<GeneralAccount> ListOfGeneralAccount
         {
-            get { return _ListOfGeneralAccount; }
-            set { _ListOfGeneralAccount = value; }
+            get => _ListOfGeneralAccount;
+            set => _ListOfGeneralAccount = value;
         }
 
         private ObservableCollection<Reference> _ListOfReference;
         public ObservableCollection<Reference> ListOfReference
         {
-            get { return _ListOfReference; }
-            set { _ListOfReference = value; }
+            get => _ListOfReference;
+            set => _ListOfReference = value;
         }
 
         private ObservableCollection<ReferenceType> _ListOfReferenceType;
         public ObservableCollection<ReferenceType> ListOfReferenceType
         {
-            get { return _ListOfReferenceType; }
-            set { _ListOfReferenceType = value; }
+            get => _ListOfReferenceType;
+            set => _ListOfReferenceType = value;
         }
 
         private ObservableCollection<Invoice> _ListOfInvoice;
         public ObservableCollection<Invoice> ListOfInvoice
         {
-            get { return _ListOfInvoice; }
-            set { _ListOfInvoice = value; }
+            get => _ListOfInvoice;
+            set => _ListOfInvoice = value;
         }
 
         private ObservableCollection<TransferOrder> _ListOfTransferOrder;
         public ObservableCollection<TransferOrder> ListOfTransferOrder
         {
-            get { return _ListOfTransferOrder; }
-            set { _ListOfTransferOrder = value; }
+            get => _ListOfTransferOrder;
+            set => _ListOfTransferOrder = value;
         }
 
 
@@ -182,76 +182,68 @@ namespace EXGEPA.Core
         private ObservableCollection<Provider> _ListOfProvider;
         public ObservableCollection<Provider> ListOfProvider
         {
-            get { return _ListOfProvider; }
-            set { _ListOfProvider = value; }
+            get => _ListOfProvider;
+            set => _ListOfProvider = value;
         }
 
         private ObservableCollection<OrderDocument> _OrderDocuments;
         public ObservableCollection<OrderDocument> OrderDocuments
         {
-            get { return _OrderDocuments; }
-            set { _OrderDocuments = value; }
+            get => _OrderDocuments;
+            set => _OrderDocuments = value;
         }
 
         private ObservableCollection<AnalyticalAccount> _ListOfAnalyticalAccount;
         public ObservableCollection<AnalyticalAccount> ListOfAnalyticalAccount
         {
-            get { return _ListOfAnalyticalAccount; }
-            set { _ListOfAnalyticalAccount = value; }
+            get => _ListOfAnalyticalAccount;
+            set => _ListOfAnalyticalAccount = value;
         }
 
         private ObservableCollection<Office> _ListOfOffice;
         public ObservableCollection<Office> ListOfOffice
         {
-            get { return _ListOfOffice; }
-            set { _ListOfOffice = value; }
+            get => _ListOfOffice;
+            set => _ListOfOffice = value;
         }
 
         private ObservableCollection<Depreciation> _ListOfDepreciation;
         public ObservableCollection<Depreciation> ListOfDepreciation
         {
-            get { return _ListOfDepreciation; }
-            set { _ListOfDepreciation = value; }
+            get => _ListOfDepreciation;
+            set => _ListOfDepreciation = value;
         }
 
         private ObservableCollection<InputSheet> _ListOfInputSheet;
 
         public ObservableCollection<InputSheet> ListOfInputSheet
         {
-            get { return _ListOfInputSheet; }
-            set { _ListOfInputSheet = value; }
+            get => _ListOfInputSheet;
+            set => _ListOfInputSheet = value;
         }
 
         private ObservableCollection<ReceiveOrder> _ListOfReceiveOrder;
 
         public ObservableCollection<ReceiveOrder> ListOfReceiveOrder
         {
-            get { return _ListOfReceiveOrder; }
-            set { _ListOfReceiveOrder = value; }
+            get => _ListOfReceiveOrder;
+            set => _ListOfReceiveOrder = value;
         }
 
         private ObservableCollection<Person> _ListOfPerson;
 
         public ObservableCollection<Person> ListOfPerson
         {
-            get { return _ListOfPerson; }
-            set
-            {
-                _ListOfPerson = value;
-
-            }
+            get => _ListOfPerson;
+            set => _ListOfPerson = value;
         }
 
         private ObservableCollection<AccountingPeriod> _ListOfAccountingPeriod;
 
         public ObservableCollection<AccountingPeriod> ListOfAccountingPeriod
         {
-            get { return _ListOfAccountingPeriod; }
-            set
-            {
-                _ListOfAccountingPeriod = value;
-
-            }
+            get => _ListOfAccountingPeriod;
+            set => _ListOfAccountingPeriod = value;
         }
 
         #endregion
@@ -299,11 +291,11 @@ namespace EXGEPA.Core
             ListOfAnalyticalAccount = new ObservableCollection<AnalyticalAccount>(AnalyticalAccountService.SelectAll());
             ListOfDepreciation = new ObservableCollection<Depreciation>();
             ListOfTva = new ObservableCollection<Tva>(TvaService.SelectAll());
-            var ListOfOffices = OfficeService.SelectAll();
+            IList<Office> ListOfOffices = OfficeService.SelectAll();
             ListOfOffice = new ObservableCollection<Office>(ListOfOffices);
             ListOfOffices.ParallelForEach(office =>
             {
-                var x = office.AnalyticalAccount?.Id;
+                int? x = office.AnalyticalAccount?.Id;
                 office.AnalyticalAccount = ListOfAnalyticalAccount.FirstOrDefault(analyticalAccount => analyticalAccount.Id == office.AnalyticalAccount?.Id);
             });
 

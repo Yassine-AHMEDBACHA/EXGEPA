@@ -37,7 +37,7 @@ namespace CORESI.DataAccess.Core
         public virtual IList<T> SelectAll(bool mapReferences)
         {
 
-            var allRows = this.SelectAll();
+            IList<T> allRows = this.SelectAll();
             //if (mapReferences)
             //{
             //    var references = this.DataAccessor.Fields.Where(x => x.IsReference);
@@ -131,7 +131,7 @@ namespace CORESI.DataAccess.Core
 
         public IDataProvider<T> ChangeDataSource(IDbFacade dbFacade)
         {
-            var newDBService = Activator.CreateInstance(this.GetType(), false) as DbService<T>;
+            DbService<T> newDBService = Activator.CreateInstance(this.GetType(), false) as DbService<T>;
             newDBService.DataAccessor.DbFacade = dbFacade;
             return newDBService;
         }
@@ -143,14 +143,14 @@ namespace CORESI.DataAccess.Core
 
         public IList<T> SelectAll<V>(IEnumerable<V> ElementToBind) where V : IRowId
         {
-            var allElement = this.SelectAll();
-            var dico = ElementToBind.ToDictionary(x => x.Id);
-            var fieldToUpdate = this.Fields.Where(f => f.Type == typeof(V));
-            foreach (var field in fieldToUpdate)
+            IList<T> allElement = this.SelectAll();
+            Dictionary<int, V> dico = ElementToBind.ToDictionary(x => x.Id);
+            IEnumerable<Field> fieldToUpdate = this.Fields.Where(f => f.Type == typeof(V));
+            foreach (Field field in fieldToUpdate)
             {
-                foreach (var item in allElement)
+                foreach (T item in allElement)
                 {
-                    var referenceId = ((IRowId)field.GetValue(item))?.Id ?? -1;
+                    int referenceId = ((IRowId)field.GetValue(item))?.Id ?? -1;
                     if (dico.TryGetValue(referenceId, out V value))
                     {
                         field.SetValue(item, value);

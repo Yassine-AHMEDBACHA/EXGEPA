@@ -60,7 +60,7 @@ namespace CORESI.DataAccess.Core.SqlTools
 
         public static string GetTableName(this Type type)
         {
-            var tableName = type.IsInterface ? type.Name.Substring(1) : type.Name;
+            string tableName = type.IsInterface ? type.Name.Substring(1) : type.Name;
             if (!tableName.EndsWith("s"))
             {
                 tableName += "s";
@@ -72,11 +72,11 @@ namespace CORESI.DataAccess.Core.SqlTools
         public static bool UseTypeInHisProperties(this Type type, Type V)
         {
             logger.Warn("Comparing " + type.Name + " and " + V.Name);
-            var propertyTypes = type.GetProperties().Select(p => p.PropertyType).ToList();
+            System.Collections.Generic.List<Type> propertyTypes = type.GetProperties().Select(p => p.PropertyType).ToList();
             if (propertyTypes.Contains(V))
                 return true;
             propertyTypes = propertyTypes.Where(t => (typeof(IRowId).IsAssignableFrom(t))).ToList();
-            var result = propertyTypes.Any(t => t.UseTypeInHisProperties(V));
+            bool result = propertyTypes.Any(t => t.UseTypeInHisProperties(V));
             return result;
         }
 

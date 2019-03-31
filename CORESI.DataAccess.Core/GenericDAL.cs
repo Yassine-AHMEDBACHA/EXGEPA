@@ -44,7 +44,7 @@ namespace CORESI.DataAccess.Core
 
         public void FillInstance<V>(V instance) where V : T
         {
-            var sqlCommand = CommandFactory.GetDBCommand(SelectCommand, false);
+            IDbCommand sqlCommand = CommandFactory.GetDBCommand(SelectCommand, false);
             sqlCommand.Parameters.Add(DbParameterFactory.BuildIdParameter(instance.Id));
             DbFacade.Fill<V>(sqlCommand, instance, this.GenericMapper);
         }
@@ -64,7 +64,7 @@ namespace CORESI.DataAccess.Core
 
         public IList<T> SelectAll()
         {
-            var listOfInstances = new List<T>();
+            List<T> listOfInstances = new List<T>();
             Fill<T>(listOfInstances);
             return listOfInstances;
         }
@@ -73,8 +73,8 @@ namespace CORESI.DataAccess.Core
 
         public void Fill<V>(IList<V> ListOfInstances) where V : T
         {
-            var dBCommand = CommandFactory.GetDBCommand(SelectCommand, false);
-            var sqlParameter = DbParameterFactory.BuildIdParameter();
+            IDbCommand dBCommand = CommandFactory.GetDBCommand(SelectCommand, false);
+            IDataParameter sqlParameter = DbParameterFactory.BuildIdParameter();
             dBCommand.Parameters.Add(sqlParameter);
             DbFacade.Fill<V>(dBCommand, ListOfInstances, GenericMapper<V>);
         }
@@ -82,8 +82,8 @@ namespace CORESI.DataAccess.Core
         public int Add(T instance)
         {
             instance.Session = GenericDALBase.Session;
-            var dBCommand = CommandFactory.GetDBCommand(InsertCommand, false);
-            var parameters = DbParameterFactory.BuildParametersFromTypeOfInstance(instance, this.Fields);
+            IDbCommand dBCommand = CommandFactory.GetDBCommand(InsertCommand, false);
+            List<IDataParameter> parameters = DbParameterFactory.BuildParametersFromTypeOfInstance(instance, this.Fields);
 
             parameters.ForEach(parameter =>
                 {
@@ -97,8 +97,8 @@ namespace CORESI.DataAccess.Core
         public int Delete(T instance)
         {
             instance.Session = GenericDALBase.Session;
-            var dBCommand = CommandFactory.GetDBCommand(DeleteCommand, false);
-            var parameter = DbParameterFactory.BuildIdParameter(instance.Id);
+            IDbCommand dBCommand = CommandFactory.GetDBCommand(DeleteCommand, false);
+            IDataParameter parameter = DbParameterFactory.BuildIdParameter(instance.Id);
             dBCommand.Parameters.Add(parameter);
             parameter = DbParameterFactory.BuildIdParameter(instance.Session.Id, "@Session_Id");
             dBCommand.Parameters.Add(parameter);
@@ -116,9 +116,9 @@ namespace CORESI.DataAccess.Core
         public int Update(T instance)
         {
             instance.Session = GenericDALBase.Session;
-            var dBCommand = CommandFactory.GetDBCommand(UpdateCommand);
+            IDbCommand dBCommand = CommandFactory.GetDBCommand(UpdateCommand);
             dBCommand.Parameters.Add(DbParameterFactory.BuildIdParameter(instance.Id));
-            var parameters = DbParameterFactory.BuildParametersFromTypeOfInstance<T>(instance, this.Fields);
+            List<IDataParameter> parameters = DbParameterFactory.BuildParametersFromTypeOfInstance<T>(instance, this.Fields);
             parameters.ForEach(parameter =>
             {
                 dBCommand.Parameters.Add(parameter);
@@ -147,7 +147,7 @@ namespace CORESI.DataAccess.Core
 
         private void GenericMapper(IDataReader dataReader, T instance)
         {
-            var row = new object[dataReader.FieldCount];
+            object[] row = new object[dataReader.FieldCount];
             dataReader.GetValues(row);
             GenericMapper(instance, this.Fields, row);
         }
@@ -155,7 +155,7 @@ namespace CORESI.DataAccess.Core
         public static void GenericMapper(T instance, List<Field> fields, object[] tableRow)
         {
             instance.Id = (int)tableRow[0];
-            foreach (var field in fields)
+            foreach (Field field in fields)
             {
                 int index = field.Ordinal;
                 object value;
@@ -175,7 +175,7 @@ namespace CORESI.DataAccess.Core
                     value = tableRow[index];
                     if (field.IsReference)
                     {
-                        var newInstance = Activator.CreateInstance(field.PropertyInfo.PropertyType, null) as IRowId;
+                        IRowId newInstance = Activator.CreateInstance(field.PropertyInfo.PropertyType, null) as IRowId;
                         newInstance.Id = (int)value;
                         value = newInstance;
                     }
@@ -186,9 +186,9 @@ namespace CORESI.DataAccess.Core
 
         public IList<T> LoadAllTable()
         {
-            var listOfInstances = new List<T>();
-            var dBCommand = CommandFactory.GetDBCommand(LoadAllCommand, false);
-            var sqlParameter = DbParameterFactory.BuildIdParameter();
+            List<T> listOfInstances = new List<T>();
+            IDbCommand dBCommand = CommandFactory.GetDBCommand(LoadAllCommand, false);
+            IDataParameter sqlParameter = DbParameterFactory.BuildIdParameter();
             dBCommand.Parameters.Add(sqlParameter);
             DbFacade.Fill<T>(dBCommand, listOfInstances, GenericMapper<T>);
             return listOfInstances;
@@ -196,21 +196,21 @@ namespace CORESI.DataAccess.Core
 
         public IList<T> GetHistoric(int id)
         {
-            var listOfInstances = new List<T>();
-            var dbCommand = CommandFactory.GetDBCommand(LoadHistoCommand);
-            var sqlParameter = DbParameterFactory.BuildIdParameter(id);
+            List<T> listOfInstances = new List<T>();
+            IDbCommand dbCommand = CommandFactory.GetDBCommand(LoadHistoCommand);
+            IDataParameter sqlParameter = DbParameterFactory.BuildIdParameter(id);
             dbCommand.Parameters.Add(sqlParameter);
             DbFacade.Fill<T>(dbCommand, listOfInstances, GenericMapper<T>);
 
-            foreach (var referenceField in this.ReferenceField)
+            foreach (Field referenceField in this.ReferenceField)
             {
                 dynamic dataService = ServiceLocator.Resolve(typeof(IDataProvider<>).MakeGenericType(referenceField.Type));
-                foreach (var instance in listOfInstances)
+                foreach (T instance in listOfInstances)
                 {
-                    var idToFind = ((IRowId)referenceField.GetValue(instance))?.Id;
+                    int? idToFind = ((IRowId)referenceField.GetValue(instance))?.Id;
                     if (idToFind != null)
                     {
-                        var result = dataService?.GetById(idToFind.Value);
+                        dynamic result = dataService?.GetById(idToFind.Value);
                         referenceField.SetValue(instance, (object)result);
                     }
                 }

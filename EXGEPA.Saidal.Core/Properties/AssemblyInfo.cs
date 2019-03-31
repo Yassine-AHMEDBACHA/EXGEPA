@@ -3,7 +3,6 @@
 // </copyright>
 
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following
@@ -12,9 +11,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("EXGEPA.Saidal.Core")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("CORESI")]
 [assembly: AssemblyProduct("EXGEPA.Saidal.Core")]
-[assembly: AssemblyCopyright("Copyright ©  2019")]
+[assembly: AssemblyCopyright("Copyright © CORESI 2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

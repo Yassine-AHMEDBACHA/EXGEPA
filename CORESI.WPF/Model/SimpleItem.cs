@@ -12,10 +12,7 @@
         private bool _IsVisible;
         public bool IsVisible
         {
-            get
-            {
-                return _IsVisible;
-            }
+            get => _IsVisible;
             set
             {
                 _IsVisible = value;

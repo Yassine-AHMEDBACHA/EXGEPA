@@ -12,10 +12,10 @@ namespace CORESI.Tools
     {
         public static void StartProcess(string appName)
         {
-            var path = Path.Combine(Environment.CurrentDirectory, appName);
+            string path = Path.Combine(Environment.CurrentDirectory, appName);
             if (File.Exists(path))
             {
-                var p = new Process
+                Process p = new Process
                 {
                     StartInfo = new ProcessStartInfo(path)
                 };

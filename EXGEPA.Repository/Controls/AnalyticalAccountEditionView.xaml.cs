@@ -1,7 +1,11 @@
-﻿using System.Windows.Controls;
+﻿// <copyright file="AnalyticalAccountEditionView.xaml.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace EXGEPA.Repository.Controls
 {
+    using System.Windows.Controls;
+
     /// <summary>
     /// Interaction logic for AnalyticalAccountEditionView.xaml
     /// </summary>
@@ -9,7 +13,7 @@ namespace EXGEPA.Repository.Controls
     {
         public AnalyticalAccountEditionView()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
     }
 }

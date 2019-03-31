@@ -17,7 +17,7 @@ namespace CORESI.WPF.Model
 
         public T EditValue
         {
-            get { return _EditValue; }
+            get => _EditValue;
             set
             {
                 _EditValue = value;
@@ -29,7 +29,7 @@ namespace CORESI.WPF.Model
 
         public ObservableCollection<T> ItemsSource
         {
-            get { return _ItemsSource; }
+            get => _ItemsSource;
             set
             {
                 _ItemsSource = value;

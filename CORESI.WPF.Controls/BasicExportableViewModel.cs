@@ -8,7 +8,7 @@ namespace CORESI.WPF.Controls
         public BasicExportableViewModel(ExportableView view)
             : base()
         {
-            var group = this.AddNewGroup("Outils");
+            Group group = this.AddNewGroup("Outils");
             group.AddCommand("Refresh", IconProvider.Refresh, this.InitData);
             group.AddCommand("Filtre", IconProvider.Filtre, () => this.ShowColumnFilter = !ShowColumnFilter);
             group.AddCommand("Groupement", IconProvider.GroupRows, () => this.ShowGroupPanel = !ShowGroupPanel);

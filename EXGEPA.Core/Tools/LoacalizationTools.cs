@@ -8,7 +8,7 @@ namespace EXGEPA.Core
     {
         public static void BindLocalization(IEnumerable<Office> allOffices, IEnumerable<Level> AllLevel, IEnumerable<Site> allSites, IEnumerable<Building> allbuildings, IEnumerable<Region> allRegions)
         {
-            foreach (var region in allRegions)
+            foreach (Region region in allRegions)
             {
                 region.Sites = new List<Site>();
                 BindSites(allOffices, AllLevel, allSites, allbuildings, region);
@@ -17,7 +17,7 @@ namespace EXGEPA.Core
 
         private static void BindSites(IEnumerable<Office> allOffices, IEnumerable<Level> AllLevel, IEnumerable<Site> allSites, IEnumerable<Building> allbuildings, Region region)
         {
-            foreach (var site in allSites.Where(s => s.Region.Id == region.Id))
+            foreach (Site site in allSites.Where(s => s.Region.Id == region.Id))
             {
                 region.Sites.Add(site);
                 site.Region = region;
@@ -28,7 +28,7 @@ namespace EXGEPA.Core
 
         private static void BindBuildings(IEnumerable<Office> allOffices, IEnumerable<Level> AllLevel, IEnumerable<Building> allbuildings, Site site)
         {
-            foreach (var building in allbuildings.Where(b => b.Site.Id == site.Id))
+            foreach (Building building in allbuildings.Where(b => b.Site.Id == site.Id))
             {
                 site.Buildings.Add(building);
                 building.Site = site;
@@ -39,12 +39,12 @@ namespace EXGEPA.Core
 
         private static void BindLevels(IEnumerable<Office> allOffices, IEnumerable<Level> AllLevel, Building building)
         {
-            foreach (var level in AllLevel.Where(l => l.Building.Id == building.Id))
+            foreach (Level level in AllLevel.Where(l => l.Building.Id == building.Id))
             {
                 level.Offices = new List<Office>();
                 level.Building = building;
                 building.Levels.Add(level);
-                foreach (var office in allOffices.Where(o => o.Level.Id == level.Id))
+                foreach (Office office in allOffices.Where(o => o.Level.Id == level.Id))
                 {
                     office.Level = level;
                     level.Offices.Add(office);

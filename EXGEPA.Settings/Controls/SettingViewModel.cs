@@ -45,7 +45,7 @@ namespace EXGEPA.Settings.Controls
             ServiceLocator.Resolve(out this.accountingPeriodService);
             ServiceLocator.Resolve(out this.parameterProvider);
             ListOfAccountingPeriod = new ObservableCollection<AccountingPeriod>(accountingPeriodService.SelectAll());
-            var group = new Group();
+            Group group = new Group();
             group.Commands.Add(new RibbonButton()
             {
                 Caption = "Enregistrer",
@@ -91,10 +91,7 @@ namespace EXGEPA.Settings.Controls
         private ObservableCollection<AccountingPeriod> _ListOfAccountingPeriod;
         public ObservableCollection<AccountingPeriod> ListOfAccountingPeriod
         {
-            get
-            {
-                return _ListOfAccountingPeriod;
-            }
+            get => _ListOfAccountingPeriod;
             set
             {
                 _ListOfAccountingPeriod = value;
@@ -105,7 +102,7 @@ namespace EXGEPA.Settings.Controls
         private string _CompanyName;
         public string CompanyName
         {
-            get { return _CompanyName; }
+            get => _CompanyName;
             set
             {
                 _CompanyName = value;
@@ -117,7 +114,7 @@ namespace EXGEPA.Settings.Controls
         private string _DirectionName;
         public string DirectionName
         {
-            get { return _DirectionName; }
+            get => _DirectionName;
             set
             {
                 _DirectionName = value;
@@ -128,7 +125,7 @@ namespace EXGEPA.Settings.Controls
         private string _DepartmentName;
         public string DepartmentName
         {
-            get { return _DepartmentName; }
+            get => _DepartmentName;
             set
             {
                 _DepartmentName = value;
@@ -139,7 +136,7 @@ namespace EXGEPA.Settings.Controls
         private string _LogoFileName;
         public string LogoFileName
         {
-            get { return _LogoFileName; }
+            get => _LogoFileName;
             set
             {
                 _LogoFileName = value;
@@ -150,7 +147,7 @@ namespace EXGEPA.Settings.Controls
         private string _Theme;
         public string Theme
         {
-            get { return _Theme; }
+            get => _Theme;
             set
             {
                 _Theme = value;
@@ -162,7 +159,7 @@ namespace EXGEPA.Settings.Controls
         private List<string> _AvaibleTheme;
         public List<string> AvaibleTheme
         {
-            get { return _AvaibleTheme; }
+            get => _AvaibleTheme;
             set
             {
                 _AvaibleTheme = value;
@@ -188,16 +185,13 @@ namespace EXGEPA.Settings.Controls
 
         public string ImagePath
         {
-            get
-            {
-                return Path.Combine(PicturesDirectory, LogoFileName);
-            }
+            get => Path.Combine(PicturesDirectory, LogoFileName);
 
             set
             {
                 if (string.IsNullOrEmpty(value))
                 {
-                    var s = this.ImagePath;
+                    string s = this.ImagePath;
                     _SavePicture = () =>
                     {
                         if (this.UIMessage.Warning("Etes vous sur de vouloir supprimer le logo ?") == System.Windows.MessageBoxResult.Yes)

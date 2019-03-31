@@ -9,7 +9,7 @@ namespace EXGEPA.Items.Report
     {
         public Group GetGroupForReportBottons()
         {
-            var group = new Group("Editions");
+            Group group = new Group("Editions");
             group.AddCommand<RibbonButton>();
             return group;
         }

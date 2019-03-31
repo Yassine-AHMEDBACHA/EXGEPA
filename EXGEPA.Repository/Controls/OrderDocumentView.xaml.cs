@@ -1,7 +1,11 @@
-﻿using CORESI.WPF.Controls;
+﻿// <copyright file="OrderDocumentView.xaml.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace EXGEPA.Repository.Controls
 {
+    using CORESI.WPF.Controls;
+
     /// <summary>
     /// Interaction logic for OrderDocumentView.xaml
     /// </summary>
@@ -9,7 +13,7 @@ namespace EXGEPA.Repository.Controls
     {
         public OrderDocumentView()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
     }
 }

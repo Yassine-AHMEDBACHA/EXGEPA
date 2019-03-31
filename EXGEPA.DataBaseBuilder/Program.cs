@@ -11,7 +11,7 @@ namespace EXGEPA.DataBaseBuilder
         {
             XmlConfigurator.Configure();
             DbBuilder.BuildNewDatabase();
-            using (var dbInitializer = new DbInitializer())
+            using (DbInitializer dbInitializer = new DbInitializer())
             {
                 dbInitializer.AddSettings();
                 dbInitializer.SetInitialRights();

@@ -35,7 +35,7 @@
             this.IsOldItem = true;
             this.Caption = Caption = "Article N°: " + item.Key;
             this.IsSelected = true;
-            var group = this.AddNewGroup();
+            Group group = this.AddNewGroup();
             if (!JsonHelper.TryDeserialize(this.ConcernedItem.Json, out this.itemExtendedProperties))
             {
                 this.itemExtendedProperties = new ItemExtendedProperties();
@@ -43,10 +43,10 @@
 
             group.AddCommand("Sauver & Fermer", IconProvider.SaveAndClose, this.UpdateItem);
             BindFields();
-            var immobilisationSheetProvider = ServiceLocator.Resolve<IImmobilisationSheetProvider>();
+            IImmobilisationSheetProvider immobilisationSheetProvider = ServiceLocator.Resolve<IImmobilisationSheetProvider>();
             if (immobilisationSheetProvider != null)
             {
-                var immobilisationSheetGroup = this.AddNewGroup("Fiche immobilisation");
+                Group immobilisationSheetGroup = this.AddNewGroup("Fiche immobilisation");
                 immobilisationSheetGroup.AddCommand("Mensuel", () => immobilisationSheetProvider.PrintImmobilisationSheet(this.ListOfMonthelyDepreciation.ToList(), "Mensuel"));
                 immobilisationSheetGroup.AddCommand("Journalier", () => immobilisationSheetProvider.PrintImmobilisationSheet(this.ListOfDailyDepreciation.ToList(), "Journalier"));
                 immobilisationSheetGroup.AddCommand("Fiche d'exploitation", () => immobilisationSheetProvider.PrintExploitationStartupSheet(new[] { item }));
@@ -57,7 +57,7 @@
         {
             this.UIMessage.TryDoAction(Logger, () =>
             {
-                var result = Core.ItemValidator.CheckItem(this.ConcernedItem);
+                string result = Core.ItemValidator.CheckItem(this.ConcernedItem);
                 if (result != null)
                 {
                     this.UIMessage.Error(result);

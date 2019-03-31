@@ -10,7 +10,7 @@ namespace CORESI.DataAccess
 
         public static string GetConnectionStrings(string config = "DataBaseContext")
         {
-            var connectionStrings = ConfigurationManager.ConnectionStrings;
+            ConnectionStringSettingsCollection connectionStrings = ConfigurationManager.ConnectionStrings;
             log.Debug("ConnectionString = " + connectionStrings[config].ConnectionString);
             return connectionStrings[config].ConnectionString;
         }

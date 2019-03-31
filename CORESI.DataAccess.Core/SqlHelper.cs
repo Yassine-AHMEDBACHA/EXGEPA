@@ -21,9 +21,9 @@ namespace CORESI.DataAccess.Core
             if ((instances == null) || (!instances.Any()))
                 return succes;
 
-            var dataTable = new DataTable(tableName);
+            DataTable dataTable = new DataTable(tableName);
 
-            var fields = PropertiesExtractor.ExtractFields(typeof(T));
+            List<Field> fields = PropertiesExtractor.ExtractFields(typeof(T));
             fields.ForEach(field =>
             {
                 DataColumn column = new DataColumn()
@@ -34,11 +34,11 @@ namespace CORESI.DataAccess.Core
                 dataTable.Columns.Add(column);
             });
 
-            var referenceFields = fields.Where(x => x.IsReference).ToList();
-            var simpleFields = fields.Except(referenceFields).ToList();
-            foreach (var instance in instances)
+            List<Field> referenceFields = fields.Where(x => x.IsReference).ToList();
+            List<Field> simpleFields = fields.Except(referenceFields).ToList();
+            foreach (T instance in instances)
             {
-                var row = dataTable.NewRow();
+                DataRow row = dataTable.NewRow();
                 referenceFields.ForEach(referenceField =>
                 {
                     if (referenceField.GetValue(instance) is RowId value)
@@ -51,10 +51,10 @@ namespace CORESI.DataAccess.Core
                 dataTable.Rows.Add(row);
             };
             dataTable.AcceptChanges();
-            using (var connection = DBConnectionFactory.GetDbConnection(DBConnectionFactory.ConnectionString))
+            using (IDbConnection connection = DBConnectionFactory.GetDbConnection(DBConnectionFactory.ConnectionString))
             {
-                var sqconnection = new SqlConnection(connection.ConnectionString);
-                using (var bulkCopy = new SqlBulkCopy(sqconnection))
+                SqlConnection sqconnection = new SqlConnection(connection.ConnectionString);
+                using (SqlBulkCopy bulkCopy = new SqlBulkCopy(sqconnection))
                 {
                     bulkCopy.BatchSize = 100;
                     bulkCopy.DestinationTableName = tableName;
@@ -85,9 +85,9 @@ namespace CORESI.DataAccess.Core
             if ((instances == null) || (!instances.Any()))
                 return succes;
 
-            var dataTable = new DataTable(tableName);
+            DataTable dataTable = new DataTable(tableName);
 
-            var fields = PropertiesExtractor.ExtractFields(typeof(T));
+            List<Field> fields = PropertiesExtractor.ExtractFields(typeof(T));
             fields.ForEach(field =>
                 {
                     DataColumn column = new DataColumn()
@@ -98,12 +98,12 @@ namespace CORESI.DataAccess.Core
                     dataTable.Columns.Add(column);
                 });
 
-            var referenceFields = fields.Where(x => x.IsReference).ToList();
-            var simpleFields = fields.Except(referenceFields).ToList();
-            foreach (var instance in instances)
+            List<Field> referenceFields = fields.Where(x => x.IsReference).ToList();
+            List<Field> simpleFields = fields.Except(referenceFields).ToList();
+            foreach (T instance in instances)
             {
                 instance.Session = GenericDALBase.Session;
-                var row = dataTable.NewRow();
+                DataRow row = dataTable.NewRow();
                 referenceFields.ForEach(referenceField =>
                     {
                         if (referenceField.GetValue(instance) is RowId value)
@@ -116,10 +116,10 @@ namespace CORESI.DataAccess.Core
                 dataTable.Rows.Add(row);
             };
             dataTable.AcceptChanges();
-            using (var connection = DBConnectionFactory.GetDbConnection(DBConnectionFactory.ConnectionString))
+            using (IDbConnection connection = DBConnectionFactory.GetDbConnection(DBConnectionFactory.ConnectionString))
             {
-                var sqconnection = new SqlConnection(connection.ConnectionString);
-                using (var bulkCopy = new SqlBulkCopy(sqconnection))
+                SqlConnection sqconnection = new SqlConnection(connection.ConnectionString);
+                using (SqlBulkCopy bulkCopy = new SqlBulkCopy(sqconnection))
                 {
                     bulkCopy.BatchSize = 100;
                     bulkCopy.DestinationTableName = tableName;

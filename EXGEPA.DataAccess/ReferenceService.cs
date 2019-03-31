@@ -21,7 +21,7 @@ namespace EXGEPA.DataAccess
 
         public override IList<Reference> SelectAll()
         {
-            var list = new List<Reference>();
+            List<Reference> list = new List<Reference>();
             this.DataAccessor.Fill<Reference>(list);
             UpdateListOfReference<Reference>(list);
             return list;
@@ -29,8 +29,8 @@ namespace EXGEPA.DataAccess
 
         private void UpdateListOfReference<V>(IList<V> list) where V : Reference
         {
-            var ListOfGeneralAccount = this.GeneralAccountService.SelectAll();
-            foreach (var item in list)
+            IList<GeneralAccount> ListOfGeneralAccount = this.GeneralAccountService.SelectAll();
+            foreach (V item in list)
             {
                 if (item.InvestmentAccount != null)
                     item.InvestmentAccount = ListOfGeneralAccount.FirstOrDefault(x => x.Id == item.InvestmentAccount.Id);

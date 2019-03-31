@@ -10,7 +10,7 @@ namespace EXGEPA.Transfert.Core.RepositoryHelper
 
         public static List<Currency> LoadCurrencies()
         {
-            var result = new List<Currency>()
+            List<Currency> result = new List<Currency>()
             {
                 new Currency{Key = "AED",Caption = "Dirham des émirats arabes unis"},
 new Currency{Key = "AFN",Caption = "Afghani"},

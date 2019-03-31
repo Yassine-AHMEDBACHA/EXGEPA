@@ -42,13 +42,13 @@ namespace EXGEPA.Items
         {
             UIMessage.TryDoUIActionAsync(logger, () =>
             {
-                using (var scoopeLogger = new ScoopLogger("adding new Item", this.logger))
+                using (ScoopLogger scoopeLogger = new ScoopLogger("adding new Item", this.logger))
                 {
-                    var view = new Items.Controls.ItemView();
+                    ItemView view = new Items.Controls.ItemView();
                     scoopeLogger.Snap("creating view");
-                    var vm = new NewItemViewModel();
+                    NewItemViewModel vm = new NewItemViewModel();
                     scoopeLogger.Snap("creating viewModel");
-                    var page = new Page(vm, view);
+                    Page page = new Page(vm, view);
                     scoopeLogger.Snap("creating page");
                     this.UIService.AddPage(page);
                     scoopeLogger.Snap("adding page");
@@ -58,16 +58,16 @@ namespace EXGEPA.Items
 
         public void EditItem(Item item)
         {
-            var itemService = ServiceLocator.Resolve<IDataProvider<Item>>();
+            IDataProvider<Item> itemService = ServiceLocator.Resolve<IDataProvider<Item>>();
             logger.Info("loading Item data access");
 
             UIMessage.TryDoAction(logger, () =>
             {
-                var view = new ItemView();
+                ItemView view = new ItemView();
 
-                var vm = new EditItemViewModel(item);
+                EditItemViewModel vm = new EditItemViewModel(item);
 
-                var page = new Page(vm, view, true);
+                Page page = new Page(vm, view, true);
 
                 this.UIService.AddPage(page);
             });
@@ -75,16 +75,16 @@ namespace EXGEPA.Items
 
         public void DisplayAllItems()
         {
-            var view = new ItemGridView();
-            var itemGridViewModel = new ItemGridViewModel(view);
-            var page = new Page(itemGridViewModel, view, true);
+            ItemGridView view = new ItemGridView();
+            ItemGridViewModel itemGridViewModel = new ItemGridViewModel(view);
+            Page page = new Page(itemGridViewModel, view, true);
             UIService.AddPage(page, true);
             itemGridViewModel.InitData();
         }
 
         public void ShowPrintLabelPanel()
         {
-            var itemAttributionOptions = new ItemAttributionOptions()
+            ItemAttributionOptions itemAttributionOptions = new ItemAttributionOptions()
             {
                 Categorie = printeLabelCategorie,
                 Resetter = (item) => item.PrintLabel = false,
@@ -99,21 +99,21 @@ namespace EXGEPA.Items
 
         public void ShowItemAttribution(ItemAttributionOptions itemAttributionOptions)
         {
-            var view = new ItemAttributionView();
-            var viewModel = new ItemAttributionVM(itemAttributionOptions);
-            var page = new Page(viewModel, view, true);
+            ItemAttributionView view = new ItemAttributionView();
+            ItemAttributionVM viewModel = new ItemAttributionVM(itemAttributionOptions);
+            Page page = new Page(viewModel, view, true);
             UIService.AddPage(page);
             viewModel.InitData();
         }
 
         public void DisplayItems(Predicate<Item> filter, string pageCaption, Action<IEnumerable<Item>> report)
         {
-            var view = new ItemGridView();
-            var viewModel = new ItemGridBaseViewModel(filter, view, report)
+            ItemGridView view = new ItemGridView();
+            ItemGridBaseViewModel viewModel = new ItemGridBaseViewModel(filter, view, report)
             {
                 Caption = pageCaption
             };
-            var page = new Page(viewModel, view, true);
+            Page page = new Page(viewModel, view, true);
             UIService.AddPage(page, true);
 
             viewModel.InitData();

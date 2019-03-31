@@ -21,7 +21,7 @@ namespace CORESI.WPF.Core.Login
 
         public bool BadInformations
         {
-            get { return badInformations; }
+            get => badInformations;
             set
             {
                 badInformations = value;
@@ -32,10 +32,7 @@ namespace CORESI.WPF.Core.Login
 
         public bool TopMost
         {
-            get
-            {
-                return topMost;
-            }
+            get => topMost;
             set
             {
                 topMost = value;

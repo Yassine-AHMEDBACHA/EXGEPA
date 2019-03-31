@@ -39,22 +39,22 @@ namespace CORESI.DataAccess.Core.SqlTools
 
         public static string GetColumnDefinition(this Field field)
         {
-            var scriptParts = new List<string>();
+            List<string> scriptParts = new List<string>();
             scriptParts.Add(field.GetSqlColumnName());
             scriptParts.Add(field.Type.GetDBType(field.IsLong));
             scriptParts.Add(field.GetSqlColumnDefaultValue());
             scriptParts.Add(field.IsSqlNullable());
-            var script = string.Join(" ", scriptParts);
+            string script = string.Join(" ", scriptParts);
             return script;
         }
 
         public static string GetColumnDefForHistoTable(this Field field)
         {
-            var scriptParts = new List<string>();
+            List<string> scriptParts = new List<string>();
             scriptParts.Add(field.GetSqlColumnName());
             scriptParts.Add(field.Type.GetDBType(field.IsLong));
             scriptParts.Add(field.IsSqlNullable());
-            var script = string.Join(" ", scriptParts);
+            string script = string.Join(" ", scriptParts);
             return script;
         }
     }

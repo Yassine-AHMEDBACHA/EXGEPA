@@ -12,7 +12,7 @@ namespace CORESI.WPF.Controls
         private ObservableCollection<SimpleButton> _ContextMenuItems;
         public ObservableCollection<SimpleButton> ContextMenuItems
         {
-            get { return _ContextMenuItems; }
+            get => _ContextMenuItems;
             set
             {
                 _ContextMenuItems = value;
@@ -39,10 +39,7 @@ namespace CORESI.WPF.Controls
 
         public ObservableCollection<T> Selection
         {
-            get
-            {
-                return _Selection;
-            }
+            get => _Selection;
             set
             {
                 _Selection = value;
@@ -54,10 +51,7 @@ namespace CORESI.WPF.Controls
 
         public bool ShowLoadingPanel
         {
-            get
-            {
-                return _ShowLoadingPanel;
-            }
+            get => _ShowLoadingPanel;
             set
             {
                 _ShowLoadingPanel = value;
@@ -69,10 +63,7 @@ namespace CORESI.WPF.Controls
 
         public ObservableCollection<T> ListOfRows
         {
-            get
-            {
-                return _ListOfRows;
-            }
+            get => _ListOfRows;
             set
             {
                 _ListOfRows = value;
@@ -95,7 +86,7 @@ namespace CORESI.WPF.Controls
 
         public bool ShowTotalSummary
         {
-            get { return _ShowTotalSummary; }
+            get => _ShowTotalSummary;
             set
             {
                 _ShowTotalSummary = value;
@@ -107,7 +98,7 @@ namespace CORESI.WPF.Controls
 
         public bool ShowColumnFilter
         {
-            get { return _ShowColumnFilter; }
+            get => _ShowColumnFilter;
             set
             {
                 _ShowColumnFilter = value;
@@ -119,7 +110,7 @@ namespace CORESI.WPF.Controls
 
         public bool ShowGroupPanel
         {
-            get { return _ShowGroupPanel; }
+            get => _ShowGroupPanel;
             set
             {
                 _ShowGroupPanel = value;
@@ -131,7 +122,7 @@ namespace CORESI.WPF.Controls
 
         public bool ShowSysIdColumn
         {
-            get { return _ShowSysIdColumn; }
+            get => _ShowSysIdColumn;
             set
             {
                 _ShowSysIdColumn = value;
@@ -143,7 +134,7 @@ namespace CORESI.WPF.Controls
 
         public bool AutoWidth
         {
-            get { return _AutoWidth; }
+            get => _AutoWidth;
             set
             {
                 _AutoWidth = value;

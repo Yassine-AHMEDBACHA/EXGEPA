@@ -35,11 +35,11 @@ namespace EXGEPA.Label.Core
                 {
                     List<OfficeLabel> dataSource = new List<OfficeLabel>();
 
-                    var officeServices = ServiceLocator.Resolve<IDataProvider<Office>>();
-                    var listOfOffice = officeServices.SelectAll();
+                    IDataProvider<Office> officeServices = ServiceLocator.Resolve<IDataProvider<Office>>();
+                    IList<Office> listOfOffice = officeServices.SelectAll();
                     listOfOffice.Where(x => x.PrintLabel).ForEach(x =>
                         {
-                            var label = new OfficeLabel
+                            OfficeLabel label = new OfficeLabel
                             {
                                 CodeBare = x.Key,
                                 OfficeCaption = x.Caption,
@@ -53,16 +53,16 @@ namespace EXGEPA.Label.Core
                         });
                     if (dataSource.Count > 0)
                     {
-                        var parameterProvider = ServiceLocator.Resolve<IParameterProvider>();
-                        var companyName = parameterProvider.GetValue<string>("CompanyName");
-                        var logo = Path.Combine(parameterProvider.GetValue("PicturesDirectory", @"C:\SQLIMMO\Images"), parameterProvider.GetValue("LogoFileName", "logo.jpg"));
-                        var etiquete = new Label.Core.Reports.LabelOffice6030(companyName, logo)
+                        IParameterProvider parameterProvider = ServiceLocator.Resolve<IParameterProvider>();
+                        string companyName = parameterProvider.GetValue<string>("CompanyName");
+                        string logo = Path.Combine(parameterProvider.GetValue("PicturesDirectory", @"C:\SQLIMMO\Images"), parameterProvider.GetValue("LogoFileName", "logo.jpg"));
+                        Reports.LabelOffice6030 etiquete = new Label.Core.Reports.LabelOffice6030(companyName, logo)
                         {
                             DataSource = dataSource
                         };
                         etiquete.CreateDocument();
-                        var page = CORESI.Report.Controls.ReportViewModel.GetModulePage("Etiquettes Locaux", etiquete);
-                        var uIService = ServiceLocator.Resolve<IUIService>();
+                        Page page = CORESI.Report.Controls.ReportViewModel.GetModulePage("Etiquettes Locaux", etiquete);
+                        IUIService uIService = ServiceLocator.Resolve<IUIService>();
                         uIService.AddPage(page);
                     }
                     else
@@ -78,23 +78,23 @@ namespace EXGEPA.Label.Core
 
         public static Group GetItemLabelDialog()
         {
-            var group = new Group();
+            Group group = new Group();
             group.AddCommand("Imprimer", IconProvider.BarCode, () =>
               {
                   ILabelItemGenerator labelItemGenerator = LabelGeneratorFactoy.GetGeneraor();
-                  var result = labelItemGenerator.LoadLabels();
+                  List<ItemLabel> result = labelItemGenerator.LoadLabels();
                   if (result.Count > 0)
                   {
-                      var parameterProvider = ServiceLocator.Resolve<IParameterProvider>();
-                      var companyName = parameterProvider.GetValue<string>("CompanyName");
-                      var logo = Path.Combine(parameterProvider.GetValue("PicturesDirectory", @"C:\SQLIMMO\Images"), parameterProvider.GetValue("LogoFileName", "logo.jpg"));
-                      var etiquete = new Label.Core.Reports.LabelItem5025(companyName, logo)
+                      IParameterProvider parameterProvider = ServiceLocator.Resolve<IParameterProvider>();
+                      string companyName = parameterProvider.GetValue<string>("CompanyName");
+                      string logo = Path.Combine(parameterProvider.GetValue("PicturesDirectory", @"C:\SQLIMMO\Images"), parameterProvider.GetValue("LogoFileName", "logo.jpg"));
+                      Reports.LabelItem5025 etiquete = new Label.Core.Reports.LabelItem5025(companyName, logo)
                       {
                           DataSource = result
                       };
                       etiquete.CreateDocument();
-                      var page = CORESI.Report.Controls.ReportViewModel.GetModulePage("Etiquettes Articles", etiquete);
-                      var uIService = ServiceLocator.Resolve<IUIService>();
+                      Page page = CORESI.Report.Controls.ReportViewModel.GetModulePage("Etiquettes Articles", etiquete);
+                      IUIService uIService = ServiceLocator.Resolve<IUIService>();
                       uIService.AddPage(page);
                   }
                   else

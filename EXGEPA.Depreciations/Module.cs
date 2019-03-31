@@ -13,9 +13,9 @@ namespace EXGEPA.Depreciations
 
         public override void AddGroups()
         {
-            var depreciationGroup = new Group();
+            Group depreciationGroup = new Group();
             depreciationGroup.Commands.Add(GetHomePageRibbonButton());
-            uIService.AddGroupToHomePage(depreciationGroup);
+            UIService.AddGroupToHomePage(depreciationGroup);
         }
 
         private RibbonButton GetHomePageRibbonButton()
@@ -28,12 +28,12 @@ namespace EXGEPA.Depreciations
 
                 Action = () =>
                 {
-                    var accountingHepler = new AccountingPeriodHelper();
-                    var calculator = new DailyCalculator(accountingHepler);
-                    var view = new Depreciations.Contorls.DepreciationView();
-                    var viewModelm = new Depreciations.Contorls.DepreciationViewModel(view, "Dotations");
-                    var page = new Page(viewModelm, view, true);
-                    uIService.AddPage(page);
+                    AccountingPeriodHelper accountingHepler = new AccountingPeriodHelper();
+                    DailyCalculator calculator = new DailyCalculator(accountingHepler);
+                    Contorls.DepreciationView view = new Depreciations.Contorls.DepreciationView();
+                    Contorls.DepreciationViewModel viewModelm = new Depreciations.Contorls.DepreciationViewModel(view, "Dotations");
+                    Page page = new Page(viewModelm, view, true);
+                    UIService.AddPage(page);
                 }
             };
         }

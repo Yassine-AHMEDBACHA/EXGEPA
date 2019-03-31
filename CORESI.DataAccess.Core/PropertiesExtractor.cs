@@ -16,11 +16,11 @@ namespace CORESI.DataAccess.Core
         {
             if (typeof(string) != property.PropertyType && typeof(IEnumerable).IsAssignableFrom(property.PropertyType))
                 return null;
-            var attributes = property.GetCustomAttributes(typeof(DataAttribute), false);
-            var dataAttribute = attributes.FirstOrDefault() as DataAttribute;
+            object[] attributes = property.GetCustomAttributes(typeof(DataAttribute), false);
+            DataAttribute dataAttribute = attributes.FirstOrDefault() as DataAttribute;
             if (dataAttribute?.Ignore == true)
                 return null;
-            var field = new Field()
+            Field field = new Field()
             {
                 PropertyInfo = property,
                 Type = property.PropertyType,
@@ -50,7 +50,7 @@ namespace CORESI.DataAccess.Core
 
         public static List<Field> GetAllFields(this Type type)
         {
-            var result = type.GetProperties()
+            List<Field> result = type.GetProperties()
                 .Select(p => p.PropertyToField())
                 .Where(f => f != null)
                 .OrderBy(x => x.Ordinal)
@@ -62,7 +62,7 @@ namespace CORESI.DataAccess.Core
 
         public static List<Field> ExtractFields(Type type)
         {
-            var result = type.GetAllFields().Where(f => !f.IsPrimeryKey && !f.IsAutomatique).ToList(); ;
+            List<Field> result = type.GetAllFields().Where(f => !f.IsPrimeryKey && !f.IsAutomatique).ToList(); ;
             return result;
         }
 

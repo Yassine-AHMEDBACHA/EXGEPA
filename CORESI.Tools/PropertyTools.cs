@@ -10,7 +10,7 @@ namespace CORESI.Tools
     {
         public static string GetPropertyName<T>(System.Linq.Expressions.Expression<Func<T, object>> property)
         {
-            var lambda = (System.Linq.Expressions.LambdaExpression)property;
+            System.Linq.Expressions.LambdaExpression lambda = (System.Linq.Expressions.LambdaExpression)property;
             System.Linq.Expressions.MemberExpression memberExpression;
 
             if (lambda.Body is System.Linq.Expressions.UnaryExpression unaryExpression)

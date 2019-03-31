@@ -13,9 +13,9 @@ namespace Transfert.Tests
         [Ignore("Inutile")]
         public void TestLoadData()
         {
-            var filePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\AccessDb.accdb";
+            string filePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\AccessDb.accdb";
             Assert.IsTrue(File.Exists(filePath));
-            var result = AccessDatabaseReader.SelectAll<Item>(filePath, "Select * From equip", (reader) =>
+            System.Collections.Generic.IList<Item> result = AccessDatabaseReader.SelectAll<Item>(filePath, "Select * From equip", (reader) =>
               {
                   return new Item() { Key = reader["Code"].ToString() };
               });

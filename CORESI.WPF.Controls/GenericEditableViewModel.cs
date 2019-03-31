@@ -14,8 +14,6 @@ namespace CORESI.WPF.Controls
     public abstract class GenericEditableViewModel<T> : GenericExportableViewModel<T>
         where T : KeyRow, ICloneable
     {
-        static IButtonRights ButtonRights = ServiceLocator.GetDefault<IButtonRights>();
-
         public GenericEditableViewModel(IExportableGrid exportableView, bool loadData = true)
             : this()
         {
@@ -32,7 +30,7 @@ namespace CORESI.WPF.Controls
             : base()
         {
             this.ToolGroup = this.AddNewGroup("Outils");
-            var parameterProvider = ServiceLocator.Resolve<IParameterProvider>();
+            IParameterProvider parameterProvider = ServiceLocator.Resolve<IParameterProvider>();
             this.DBservice = ServiceLocator.Resolve<IDataProvider<T>>();
             this.KeyLength = parameterProvider.GetValue(typeof(T).Name + "KeyLength", 6);
             ConcernedRow = default;
@@ -42,7 +40,7 @@ namespace CORESI.WPF.Controls
             });
             this.ListOfRows = new ObservableCollection<T>();
             DoubleClicAction = EditItem;
-            var command = new Command(() =>
+            Command command = new Command(() =>
             {
                 if ((DoubleClicAction) != null)
                     DoubleClicAction();
@@ -54,6 +52,8 @@ namespace CORESI.WPF.Controls
         }
 
         public static Action<object, T> NotifyUpdate { get; set; }
+
+        public int KeyLength { get; set; }
 
         public IKeyGenerator<T> KeyGenerator { get; private set; }
 
@@ -73,8 +73,6 @@ namespace CORESI.WPF.Controls
 
         public Group ToolGroup { get; set; }
 
-
-
         public virtual void InitData()
         {
             StartBackGroundAction(() =>
@@ -93,7 +91,7 @@ namespace CORESI.WPF.Controls
 
         protected void RefreshView(T value)
         {
-            var oldValue = ListOfRows.FirstOrDefault(x => x.Id == value.Id);
+            T oldValue = ListOfRows.FirstOrDefault(x => x.Id == value.Id);
             int index = ListOfRows.IndexOf(oldValue);
             if (index < 0)
             {
@@ -109,7 +107,7 @@ namespace CORESI.WPF.Controls
 
         public bool DisplayDetail
         {
-            get { return _DisplayDetail; }
+            get => _DisplayDetail;
             set
             {
                 _DisplayDetail = value;
@@ -120,10 +118,7 @@ namespace CORESI.WPF.Controls
         private T _ConcernedRow;
         public T ConcernedRow
         {
-            get
-            {
-                return _ConcernedRow;
-            }
+            get => _ConcernedRow;
             set
             {
                 _ConcernedRow = value;
@@ -137,7 +132,7 @@ namespace CORESI.WPF.Controls
 
         public string Filter
         {
-            get { return _Filter; }
+            get => _Filter;
             set
             {
                 _Filter = value;
@@ -215,7 +210,7 @@ namespace CORESI.WPF.Controls
 
         private T GetNewInstance()
         {
-            var newInstance = Activator.CreateInstance<T>();
+            T newInstance = Activator.CreateInstance<T>();
             newInstance.Key = this.GetTemporaryKey();
 
             if (newInstance is IDatable databaleInstance)
@@ -307,7 +302,7 @@ namespace CORESI.WPF.Controls
         }
         protected virtual void SetEditionGroup()
         {
-            var group = new Group("Edition");
+            Group group = new Group("Edition");
             if (!HideEditButton)
             {
                 group.AddCommand("Modifier", IconProvider.Edit, this.EditItem).SetAbility<T>();

@@ -31,7 +31,7 @@ namespace EXGEPA.Inventory.Core
             bool updateStatus = false;
             if (File.Exists(targetPath))
             {
-                var userChoice = UIMessage.Warning(@"Attention, il existe sur votre ordinateur un fichier INVENT non traiter\t\n\n\t
+                MessageBoxResult userChoice = UIMessage.Warning(@"Attention, il existe sur votre ordinateur un fichier INVENT non traiter\t\n\n\t
 pour le mettre à jour appuyez sur Oui\n\n\t
 pour le remplacer appuyer sur Non\n\n\t
 pour quitter appuyez sur Annuler", MessageBoxButton.YesNoCancel);

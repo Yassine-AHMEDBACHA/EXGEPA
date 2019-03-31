@@ -44,7 +44,7 @@ namespace EXGEPA.Depreciations.Contorls
             ComboBoxRibbon.EditValue = ComboBoxRibbon.ItemsSource.FirstOrDefault();
             EndDateEditRibbon = new DateEditRibbon("Date Fin");
             StartDateEditRibbon = new DateEditRibbon("Date debut");
-            var sttingsGroup = new Group("Parametres de calcul");
+            Group sttingsGroup = new Group("Parametres de calcul");
             sttingsGroup.Commands.Add(StartDateEditRibbon);
             sttingsGroup.Commands.Add(EndDateEditRibbon);
             sttingsGroup.Commands.Add(ComboBoxRibbon);
@@ -58,7 +58,7 @@ namespace EXGEPA.Depreciations.Contorls
 
             this.SetExportGroup(view);
 
-            var accountingPeriodHelper = new AccountingPeriodHelper();
+            AccountingPeriodHelper accountingPeriodHelper = new AccountingPeriodHelper();
             Daily = new DailyCalculator(accountingPeriodHelper);
             Monthely = new MonthelyCalculator(accountingPeriodHelper);
             this.Caption = pageCaption;
@@ -67,7 +67,7 @@ namespace EXGEPA.Depreciations.Contorls
                 {
                     _RepositoryDataProvider = ServiceLocator.Resolve<IRepositoryDataProvider>();
                     ItemService = ServiceLocator.Resolve<IDataProvider<Item>>();
-                    var currentAccountingPeriod = accountingPeriodHelper.GetOpenPeriod();
+                    AccountingPeriod currentAccountingPeriod = accountingPeriodHelper.GetOpenPeriod();
                     StartDateEditRibbon.Date = currentAccountingPeriod.StartDate;
                     EndDateEditRibbon.Date = currentAccountingPeriod.EndDate;
 
@@ -75,7 +75,7 @@ namespace EXGEPA.Depreciations.Contorls
 
 
                 });
-            var processName = parameterProvider.GetAndSetIfMissing("DepreciationReport", "simulation.exe");
+            string processName = parameterProvider.GetAndSetIfMissing("DepreciationReport", "simulation.exe");
 
             this.Reports = this.AddNewGroup().AddCommand("Etats", () => this.UIMessage.TryDoAction(logger, () => ExternalProcess.StartProcess(processName)));
             this.UIMessage.TryDoActionAsync(logger, () =>
@@ -111,15 +111,15 @@ namespace EXGEPA.Depreciations.Contorls
                 this.ShowLoadingPanel = true;
                 ListOfRows = null;
 
-                var stopwatcher = Stopwatch.StartNew();
-                var items = ItemService.SelectAll().ToList();
+                Stopwatch stopwatcher = Stopwatch.StartNew();
+                System.Collections.Generic.List<Item> items = ItemService.SelectAll().ToList();
                 Parallel.ForEach(items, x => _RepositoryDataProvider.BindItemFields(x));
                 stopwatcher.Stop();
                 logger.Info("Loading Items done in : " + stopwatcher.Elapsed + " and " + items.Count + " item(s) retreived");
                 logger.Info("Computing and preparing Data ...");
                 stopwatcher.Restart();
-                var result = calculator.GetDepriciation(items, StartDateEditRibbon.Date, EndDateEditRibbon.Date);
-                var data = result.Where(v => v.Value.Any(d => d.StartDate >= StartDateEditRibbon.Date && d.EndDate <= EndDateEditRibbon.Date)).Select(x => new Wrapper()
+                System.Collections.Generic.Dictionary<Item, System.Collections.Generic.List<Depreciation>> result = calculator.GetDepriciation(items, StartDateEditRibbon.Date, EndDateEditRibbon.Date);
+                System.Collections.Generic.List<Wrapper> data = result.Where(v => v.Value.Any(d => d.StartDate >= StartDateEditRibbon.Date && d.EndDate <= EndDateEditRibbon.Date)).Select(x => new Wrapper()
                 {
                     Item = x.Key,
                     Depreciations = x.Value.OrderBy(d => d.StartDate).ToList(),

@@ -20,10 +20,10 @@ namespace EXGEPA.DataAccess.Service
 
         public override IList<GeneralAccount> SelectAll()
         {
-            var allAccounts = base.SelectAll();
-            var types = generalAccountTypeServices.SelectAll();
+            IList<GeneralAccount> allAccounts = base.SelectAll();
+            IList<GeneralAccountType> types = generalAccountTypeServices.SelectAll();
 
-            foreach (var item in allAccounts)
+            foreach (GeneralAccount item in allAccounts)
             {
                 item.GeneralAccountType = types.Single(x => x.Id == item.GeneralAccountType?.Id);
                 if (item.Children != null)

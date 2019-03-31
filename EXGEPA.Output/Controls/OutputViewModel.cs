@@ -1,76 +1,79 @@
-﻿using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows;
-using CORESI.Data;
-using CORESI.WPF.Core.Interfaces;
-using EXGEPA.Model;
+﻿// <copyright file="OutputViewModel.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace EXGEPA.Output.Controls
 {
+    using System.Collections.ObjectModel;
+    using System.Linq;
+    using System.Windows;
+    using CORESI.Data;
+    using CORESI.WPF.Core.Interfaces;
+    using EXGEPA.Model;
+
     public class OutputViewModel : CommunOutputViewModel
     {
-        public OutputViewModel(OutputType outputType, IExportableGrid exportableView) : base(outputType, exportableView)
-        { }
+        private Visibility takerVisibility;
 
-        private ObservableCollection<NamedKeyRow> _ListOfTakers;
-        public ObservableCollection<NamedKeyRow> ListOfTakers
+        private Visibility takerOptionVisibilty;
+
+        private ObservableCollection<NamedKeyRow> listOfTakers;
+
+        private string takerFieldName;
+
+        public OutputViewModel(OutputType outputType, IExportableGrid exportableView)
+            : base(outputType, exportableView)
         {
-            get { return _ListOfTakers; }
-            set
-            {
-                _ListOfTakers = value;
-                RaisePropertyChanged("ListOfTakers");
-            }
         }
 
-        private Visibility _TakerVisibility;
+        public ObservableCollection<NamedKeyRow> ListOfTakers
+        {
+            get => this.listOfTakers;
+            set
+            {
+                this.listOfTakers = value;
+                this.RaisePropertyChanged("ListOfTakers");
+            }
+        }
 
         public Visibility TakerVisibility
         {
-            get { return _TakerVisibility; }
+            get => this.takerVisibility;
             set
             {
-                _TakerVisibility = value;
-                RaisePropertyChanged("TakerVisibility");
+                this.takerVisibility = value;
+                this.RaisePropertyChanged("TakerVisibility");
             }
         }
 
-        private string _TakerFieldName;
         public string TakerFieldName
         {
-            get { return _TakerFieldName; }
+            get => this.takerFieldName;
             set
             {
-                _TakerFieldName = value;
-                RaisePropertyChanged("TakerFieldName");
+                this.takerFieldName = value;
+                this.RaisePropertyChanged("TakerFieldName");
             }
         }
-
-        private Visibility _TakerOptionVisibilty;
 
         public Visibility TakerOptionVisibilty
         {
-            get { return _TakerOptionVisibilty; }
+            get => this.takerOptionVisibilty;
             set
             {
-                _TakerOptionVisibilty = value;
-                RaisePropertyChanged("TakerOptionVisibilty");
+                this.takerOptionVisibilty = value;
+                this.RaisePropertyChanged("TakerOptionVisibilty");
             }
         }
 
         public NamedKeyRow Taker
         {
-            get { return this.GetTacker(this.ConcernedRow?.Tag.ToString()); }
+            get => this.GetTacker(this.ConcernedRow?.Tag.ToString());
             set
             {
                 this.ConcernedRow.Tag = value.Key;
-                RaisePropertyChanged("Taker");
+                this.RaisePropertyChanged("Taker");
             }
-        }
-
-        public virtual NamedKeyRow GetTacker(string key)
-        {
-            return this.ListOfTakers?.FirstOrDefault(x => x.Key == key);
         }
 
         public decimal SaleAmount
@@ -80,11 +83,12 @@ namespace EXGEPA.Output.Controls
                 decimal.TryParse(this.ConcernedRow?.Json, out decimal amount);
                 return amount;
             }
-            set
-            {
-                this.ConcernedRow.Json = value.ToString();
-            }
+            set => this.ConcernedRow.Json = value.ToString();
         }
 
+        public virtual NamedKeyRow GetTacker(string key)
+        {
+            return this.ListOfTakers?.FirstOrDefault(x => x.Key == key);
+        }
     }
 }

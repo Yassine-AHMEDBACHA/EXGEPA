@@ -13,11 +13,11 @@ namespace EXGEPA.Depreciations.Model
 
         public static void SaveDepreciation(IEnumerable<Depreciation> dep)
         {
-            var simulationOwner = $"{Environment.MachineName}-{Environment.UserName}";
+            string simulationOwner = $"{Environment.MachineName}-{Environment.UserName}";
 
             cleanSimulation(simulationOwner);
 
-            var itemToSave = dep.Select(x => new DepreciationArchive
+            List<DepreciationArchive> itemToSave = dep.Select(x => new DepreciationArchive
             {
                 Code = x.Item.Key,
                 AmortissementAnterieur = x.PreviousDepreciation,
@@ -34,14 +34,14 @@ namespace EXGEPA.Depreciations.Model
 
         private static void cleanSimulation(string simulationOwner)
         {
-            var query = $"Delete from {TableName} where SimulationOwner = '{simulationOwner}'";
+            string query = $"Delete from {TableName} where SimulationOwner = '{simulationOwner}'";
             CORESI.IoC.ServiceLocator.Resolve<IDbFacade>().ExecuteNonQuery(query);
         }
 
         public static bool Any()
         {
-            var simulationOwner = $"{Environment.MachineName}-{Environment.UserName}";
-            var query = $"select count(1) from {TableName} where SimulationOwner = '{simulationOwner}'";
+            string simulationOwner = $"{Environment.MachineName}-{Environment.UserName}";
+            string query = $"select count(1) from {TableName} where SimulationOwner = '{simulationOwner}'";
             try
             {
                 return CORESI.IoC.ServiceLocator.Resolve<IDbFacade>().ExecuteScalaire<int>(query) > 0;

@@ -33,7 +33,7 @@ namespace EXGEPA.Depreciations.Core
         object locker = new object();
         public List<AccountingPeriod> GetAccountingPeriodToDate(DateTime startDate, DateTime endDate)
         {
-            var result = new List<AccountingPeriod>();
+            List<AccountingPeriod> result = new List<AccountingPeriod>();
             startDate = new DateTime(startDate.Year, 01, 01);
             do
             {

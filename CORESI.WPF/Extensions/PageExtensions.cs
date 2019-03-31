@@ -7,7 +7,7 @@ namespace CORESI.WPF
     {
         public static Group AddNewGroup(this Page page, string caption = null, IList<RibbonButton> buttons = null)
         {
-            var group = new Group(caption, buttons);
+            Group group = new Group(caption, buttons);
             page.AddNewGroup(group);
             return group;
         }

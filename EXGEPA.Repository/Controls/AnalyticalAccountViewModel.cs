@@ -1,48 +1,51 @@
-using CORESI.Data;
-using CORESI.IoC;
-using CORESI.WPF.Controls;
-using CORESI.WPF.Core.Interfaces;
-using EXGEPA.Model;
-using System.Collections.ObjectModel;
-using System.Linq;
+// <copyright file="AnalyticalAccountViewModel.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace EXGEPA.Repository.Controls
 {
+    using System.Collections.ObjectModel;
+    using System.Linq;
+    using CORESI.Data;
+    using CORESI.IoC;
+    using CORESI.WPF.Controls;
+    using CORESI.WPF.Core.Interfaces;
+    using EXGEPA.Model;
+
     public class AnalyticalAccountViewModel : GenericEditableViewModel<AnalyticalAccount>
     {
-        private IDataProvider<AnalyticalAccountType> analyticalAccountTypeService;
+        private readonly IDataProvider<AnalyticalAccountType> analyticalAccountTypeService;
 
-        private ObservableCollection<AnalyticalAccountType> _ListOfAnalyticalAccountType;
-        public ObservableCollection<AnalyticalAccountType> ListOfAnalyticalAccountType
-        {
-            get { return _ListOfAnalyticalAccountType; }
-            set
-            {
-                _ListOfAnalyticalAccountType = value;
-                RaisePropertyChanged("ListOfAnalyticalAccountType");
-            }
-        }
+        private ObservableCollection<AnalyticalAccountType> listOfAnalyticalAccountType;
 
-        public AnalyticalAccountViewModel(IExportableGrid exportableView) : base(exportableView)
+        public AnalyticalAccountViewModel(IExportableGrid exportableView)
+            : base(exportableView)
         {
             ServiceLocator.Resolve(out this.analyticalAccountTypeService);
             this.Caption = "Lists de comptes analytiques";
         }
 
-
+        public ObservableCollection<AnalyticalAccountType> ListOfAnalyticalAccountType
+        {
+            get => this.listOfAnalyticalAccountType;
+            set
+            {
+                this.listOfAnalyticalAccountType = value;
+                this.RaisePropertyChanged("ListOfAnalyticalAccountType");
+            }
+        }
 
         public override void InitData()
         {
-            StartBackGroundAction(() =>
+            this.StartBackGroundAction(() =>
             {
                 this.ListOfRows = new ObservableCollection<AnalyticalAccount>(this.DBservice.SelectAll());
-                ListOfAnalyticalAccountType = new ObservableCollection<AnalyticalAccountType>(analyticalAccountTypeService.SelectAll());
-                foreach (var item in ListOfRows)
+                this.ListOfAnalyticalAccountType = new ObservableCollection<AnalyticalAccountType>(this.analyticalAccountTypeService.SelectAll());
+                foreach (AnalyticalAccount item in this.ListOfRows)
                 {
-                    item.AnalyticalAccountType = ListOfAnalyticalAccountType.Single(x => x.Id == item.AnalyticalAccountType.Id);
+                    item.AnalyticalAccountType = this.ListOfAnalyticalAccountType.Single(x => x.Id == item.AnalyticalAccountType.Id);
                 }
             });
-
         }
     }
 }

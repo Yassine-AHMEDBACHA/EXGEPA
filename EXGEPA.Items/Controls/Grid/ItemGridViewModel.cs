@@ -30,20 +30,20 @@ namespace EXGEPA.Items.Controls
             RepositoryDataProvider = ServiceLocator.Resolve<IRepositoryDataProvider>();
             UIItemService = ServiceLocator.Resolve<IUIItemService>();
             this.Logger.Debug("ItemGridViewModel Composition Done");
-            var MenthlyCalculator = new Depreciations.Core.MonthelyCalculator(new Depreciations.Core.AccountingPeriodHelper());
-            var immoSheetGroup = this.AddNewGroup("Fiches immo");
+            Depreciations.Core.MonthelyCalculator MenthlyCalculator = new Depreciations.Core.MonthelyCalculator(new Depreciations.Core.AccountingPeriodHelper());
+            Group immoSheetGroup = this.AddNewGroup("Fiches immo");
             immoSheetGroup.AddCommand("Mensuelle", () => this.StartUIBackGroundAction(() =>
             {
-                var result = this.Selection.ToList();
+                System.Collections.Generic.List<Item> result = this.Selection.ToList();
                 MenthlyCalculator.GetDepriciation(result, DateTime.MinValue, DateTime.MaxValue);
                 ServiceLocator.Resolve<IImmobilisationSheetProvider>().PrintImmobilisationSheet(result.SelectMany(x => x.Depreciations).ToList(), "Fiche immo mensuelle");
             }), true);
 
-            var dailyCalculator = new Depreciations.Core.DailyCalculator(new Depreciations.Core.AccountingPeriodHelper());
+            Depreciations.Core.DailyCalculator dailyCalculator = new Depreciations.Core.DailyCalculator(new Depreciations.Core.AccountingPeriodHelper());
             immoSheetGroup.AddCommand("Journaliere", () => this.StartUIBackGroundAction(
                  () =>
                  {
-                     var result = this.Selection.ToList();
+                     System.Collections.Generic.List<Item> result = this.Selection.ToList();
                      MenthlyCalculator.GetDepriciation(result, DateTime.MinValue, DateTime.MaxValue);
                      ServiceLocator.Resolve<IImmobilisationSheetProvider>().PrintImmobilisationSheet(result.SelectMany(x => x.Depreciations).ToList(), "Fiche immo journaliere");
                  }), true);
@@ -51,11 +51,11 @@ namespace EXGEPA.Items.Controls
             immoSheetGroup.AddCommand("F.exploitation", () => this.StartUIBackGroundAction(
                 () =>
                 {
-                    var result = this.Selection.ToList();
+                    System.Collections.Generic.List<Item> result = this.Selection.ToList();
                     ServiceLocator.Resolve<IImmobilisationSheetProvider>().PrintExploitationStartupSheet(result, "Fiche de mise en exploitation");
                 }), true);
 
-            var viewGroup = this.AddNewGroup("Filtres");
+            Group viewGroup = this.AddNewGroup("Filtres");
             this.Filter = "[OutputCertificate.OutputType] is null";
             viewGroup.AddCommand("Tous", () => this.Filter = string.Empty, true);
             viewGroup.AddCommand("Actifs", () => this.Filter = "[OutputCertificate.OutputType] is null", true);
@@ -65,16 +65,16 @@ namespace EXGEPA.Items.Controls
             viewGroup.AddCommand("Déstruction", () => this.Filter = "[OutputCertificate.OutputType] ='Destruction'", true);
             this.AddNewGroup().AddCommand("Etiquettes", IconProvider.BarCode, this.UIItemService.ShowPrintLabelPanel);
 
-            var itemByCompteProvider = ServiceLocator.Resolve<IItemByCompteProvider>();
-            var group = GetReportGroup(itemByCompteProvider);
+            IItemByCompteProvider itemByCompteProvider = ServiceLocator.Resolve<IItemByCompteProvider>();
+            Group group = GetReportGroup(itemByCompteProvider);
             this.AddGroup(group);
             this.AddNewGroup().AddCommand("Historique des mouvements", () =>
             {
                 if (this.SelectedRow != null)
                 {
-                    var view = new ItemHistoView();
-                    var vm = new ItemHistoViewModel(view, this.SelectedRow.Id);
-                    var page = new Page(vm, view, true);
+                    ItemHistoView view = new ItemHistoView();
+                    ItemHistoViewModel vm = new ItemHistoViewModel(view, this.SelectedRow.Id);
+                    Page page = new Page(vm, view, true);
                     this.UIService.AddPage(page);
                 }
             });
@@ -88,7 +88,7 @@ namespace EXGEPA.Items.Controls
             if (itemByCompteProvider != null)
             {
 
-                var group = new Group("Immobilisations");
+                Group group = new Group("Immobilisations");
                 //group.AddCommand("Fiche immobilisation", () =>
                 //{
                 //    var items = this.ListOfRows.Where(x => x.InvestmentAccount != null).ToList();
@@ -109,10 +109,10 @@ namespace EXGEPA.Items.Controls
 
                 group.AddCommand("Récap", () =>
                 {
-                    var items = this.ListOfRows.Where(x => x.GeneralAccount.GeneralAccountType.Type == EGeneralAccountType.Investment).ToList();
-                    var others = RepositoryDataProvider.ListOfGeneralAccount.Where(x => x.GeneralAccountType.Id == 3);
-                    var availableaccounts = items.GroupBy(g => g.GeneralAccount.Id).Select(g => g.First().Id);
-                    var otherItems = others.Where(x => availableaccounts.Any(a => a == x.Id)).Select(t => new Item() { GeneralAccount = t }).ToList();
+                    System.Collections.Generic.List<Item> items = this.ListOfRows.Where(x => x.GeneralAccount.GeneralAccountType.Type == EGeneralAccountType.Investment).ToList();
+                    System.Collections.Generic.IEnumerable<GeneralAccount> others = RepositoryDataProvider.ListOfGeneralAccount.Where(x => x.GeneralAccountType.Id == 3);
+                    System.Collections.Generic.IEnumerable<int> availableaccounts = items.GroupBy(g => g.GeneralAccount.Id).Select(g => g.First().Id);
+                    System.Collections.Generic.List<Item> otherItems = others.Where(x => availableaccounts.Any(a => a == x.Id)).Select(t => new Item() { GeneralAccount = t }).ToList();
                     itemByCompteProvider.PrintRecapByAccount(items.Union(otherItems).ToList(), "Etat récapitulatif des investissements par compte.");
                 });
 
@@ -138,9 +138,9 @@ namespace EXGEPA.Items.Controls
         {
             StartBackGroundAction(() =>
             {
-                using (var scoopLogger = new ScoopLogger("Loading Data", this.Logger, true))
+                using (ScoopLogger scoopLogger = new ScoopLogger("Loading Data", this.Logger, true))
                 {
-                    var list = DBservice.SelectAll();
+                    System.Collections.Generic.IList<Item> list = DBservice.SelectAll();
                     scoopLogger.Snap("Loading Data ");
                     Parallel.ForEach(list, (item) =>
                     {

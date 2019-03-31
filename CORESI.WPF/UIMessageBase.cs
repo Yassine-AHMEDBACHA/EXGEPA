@@ -53,7 +53,7 @@ namespace CORESI.WPF
         {
             if (Application.Current != null)
             {
-                var result = Application.Current.Dispatcher.Invoke((Func<MessageBoxResult>)(() =>
+                MessageBoxResult result = Application.Current.Dispatcher.Invoke((Func<MessageBoxResult>)(() =>
                 {
                     return ShowUiMessageBox(message, title, buttons, image);
                 }));
@@ -87,7 +87,7 @@ namespace CORESI.WPF
 
         public void TryDoActionAsync(ILog log, Action action, Action finallyAction = null)
         {
-            var task = new Task(() =>
+            Task task = new Task(() =>
             {
                 TryDoAction(log, action, finallyAction);
             });

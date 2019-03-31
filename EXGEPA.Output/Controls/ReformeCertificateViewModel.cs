@@ -1,19 +1,22 @@
-﻿using CORESI.IoC;
-using CORESI.WPF.Controls;
-using CORESI.WPF.Core.Interfaces;
-using CORESI.WPF.Model;
-using EXGEPA.Core.Interfaces;
-using EXGEPA.Model;
-using System;
-using System.Windows.Media;
+﻿// <copyright file="ReformeCertificateViewModel.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace EXGEPA.Output.Controls
 {
+    using System;
+    using System.Windows.Media;
+    using CORESI.IoC;
+    using CORESI.WPF.Controls;
+    using CORESI.WPF.Core.Interfaces;
+    using CORESI.WPF.Model;
+    using EXGEPA.Core.Interfaces;
+    using EXGEPA.Model;
+
     public class ReformeCertificateViewModel : GenericEditableViewModel<ReformeCertificate>
     {
-        IUIItemService UIItemService { get; set; }
-
-        public ReformeCertificateViewModel(IExportableGrid exportableView) : base(exportableView)
+        public ReformeCertificateViewModel(IExportableGrid exportableView)
+            : base(exportableView)
         {
             this.UIItemService = ServiceLocator.Resolve<IUIItemService>();
             this.DoubleClicAction = this.SetItemAttribute;
@@ -21,19 +24,24 @@ namespace EXGEPA.Output.Controls
             base.EnableTotalSumary = true;
         }
 
+        protected IUIItemService UIItemService { get; set; }
+
         public override void AddItem()
         {
             base.AddItem();
             this.ConcernedRow.Date = DateTime.Today;
-            RaisePropertyChanged("ConcernedRow");
+            this.RaisePropertyChanged("ConcernedRow");
         }
 
         public void SetItemAttribute()
         {
-            var reformeCertificate = this.SelectedRow;
+            ReformeCertificate reformeCertificate = this.SelectedRow;
             if (reformeCertificate == null)
+            {
                 return;
-            var options = new ItemAttributionOptions
+            }
+
+            ItemAttributionOptions options = new ItemAttributionOptions
             {
                 PageCaption = "PV N°:" + reformeCertificate.Key,
                 SetConfirmationMessage = "Etes vous sûr de vouloir reformer ces articles et les inclure dans le PV N° " + reformeCertificate.Key,
@@ -44,7 +52,7 @@ namespace EXGEPA.Output.Controls
                 Resetter = (item) => item.ReformeCertificate = null,
                 Categorie = new Categorie("PV de Reforme", Colors.Tomato)
             };
-            UIItemService.ShowItemAttribution(options);
+            this.UIItemService.ShowItemAttribution(options);
         }
     }
 }

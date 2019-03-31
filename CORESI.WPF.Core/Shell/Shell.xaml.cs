@@ -18,7 +18,7 @@ namespace CORESI.WPF.Core.Shell
             InitializeComponent();
             logger.Debug("Resolving Shell View Model");
             this.DataContext = ServiceLocator.Resolve<ShellViewModel>();
-            var applicationID = CurrentEnvirenement.ApplicationName;
+            string applicationID = CurrentEnvirenement.ApplicationName;
             ShellHelper.TryCreateShortcut(applicationID, applicationID);
         }
 

@@ -31,7 +31,7 @@ namespace Hyproc.Controls
 
         public string SyncPath
         {
-            get { return _SyncPath; }
+            get => _SyncPath;
             set
             {
                 _SyncPath = value;
@@ -44,7 +44,7 @@ namespace Hyproc.Controls
 
         public string Prefix
         {
-            get { return _Prefix; }
+            get => _Prefix;
             set
             {
                 _Prefix = value;

@@ -26,13 +26,13 @@ namespace EXGEPA.Report
 
         public void SetPreviewReportGroup(IPageSetter pageSetter)
         {
-            var group = this.GetGroupForReportBottons();
+            Group group = this.GetGroupForReportBottons();
             pageSetter.Groups.Add(group);
         }
 
         public virtual IEnumerable<T> GetDataToDisplay()
         {
-            var data = ServiceLocator.Resolve<IDataProvider<T>>()?.SelectAll();
+            IList<T> data = ServiceLocator.Resolve<IDataProvider<T>>()?.SelectAll();
             if (data == null || data.Count == 0)
             {
                 this.UIMessage.Information("Aucun ligne à afficher !");

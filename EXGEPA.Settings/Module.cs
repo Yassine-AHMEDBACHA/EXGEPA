@@ -11,17 +11,17 @@ namespace EXGEPA.Settings
         }
         public override void AddGroups()
         {
-            var setting = new Group();
+            Group setting = new Group();
             setting.AddCommand("Options", IconProvider.Properties, this.ShowSettingPage);
-            uIService.AddGroupToHomePage(setting);
+            UIService.AddGroupToHomePage(setting);
         }
 
         private void ShowSettingPage()
         {
-            var viewModel = new Controls.SettingViewModel();
-            var view = new Controls.SettingView();
+            Controls.SettingViewModel viewModel = new Controls.SettingViewModel();
+            Controls.SettingView view = new Controls.SettingView();
             Page page = new Page(viewModel, view);
-            uIService.AddPage(page);
+            UIService.AddPage(page);
         }
 
 

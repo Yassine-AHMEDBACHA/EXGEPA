@@ -14,7 +14,7 @@ namespace CORESI.WPF.Core.Shell
 
         public bool IsWaintingCursor
         {
-            get { return _IsWaintingCursor; }
+            get => _IsWaintingCursor;
             set
             {
                 _IsWaintingCursor = value;
@@ -25,10 +25,7 @@ namespace CORESI.WPF.Core.Shell
         private string _CopyRight;
         public string CopyRight
         {
-            get
-            {
-                return _CopyRight;
-            }
+            get => _CopyRight;
             set
             {
                 _CopyRight = value;
@@ -40,7 +37,7 @@ namespace CORESI.WPF.Core.Shell
 
         public ClientInformation ClientInformation
         {
-            get { return _ClientInformation; }
+            get => _ClientInformation;
             set
             {
                 _ClientInformation = value;
@@ -51,7 +48,7 @@ namespace CORESI.WPF.Core.Shell
 
         public string WindowTitle
         {
-            get { return _WindowTitle; }
+            get => _WindowTitle;
             set { _WindowTitle = value; RaisePropertyChanged("WindowTitle"); }
         }
 
@@ -61,7 +58,7 @@ namespace CORESI.WPF.Core.Shell
 
         public Page CurrentPage
         {
-            get { return _CurrentPage; }
+            get => _CurrentPage;
             set
             {
 
@@ -77,7 +74,7 @@ namespace CORESI.WPF.Core.Shell
 
         public System.Windows.Controls.UserControl UserControl
         {
-            get { return _UserControl; }
+            get => _UserControl;
             set
             {
                 _UserControl = value;
@@ -91,7 +88,7 @@ namespace CORESI.WPF.Core.Shell
         public ShellViewModel()
         {
             HomePage = new Page("Acceuil");
-            var exitGroup = HomePage.AddNewGroup();
+            Group exitGroup = HomePage.AddNewGroup();
             exitGroup.AddCommand("Quitter", IconProvider.Close, () => Application.Current.Shutdown());
             Categories = new ObservableCollection<Categorie>();
             DefaultCategory = new Categorie();

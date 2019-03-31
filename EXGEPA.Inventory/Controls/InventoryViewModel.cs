@@ -58,8 +58,8 @@ namespace EXGEPA.Inventory.Controls
             this.Caption = "Inventaire physique";
             InitilizeRibbonGroup(view);
             this.DisplayScannedItemOnly();
-            var itemByCompteProvider = ServiceLocator.Resolve<IItemByCompteProvider>();
-            var group = GetReportGroup(itemByCompteProvider);
+            IItemByCompteProvider itemByCompteProvider = ServiceLocator.Resolve<IItemByCompteProvider>();
+            Group group = GetReportGroup(itemByCompteProvider);
             this.AddGroup(group);
         }
 
@@ -69,7 +69,7 @@ namespace EXGEPA.Inventory.Controls
             if (itemByCompteProvider != null)
             {
 
-                var group = new Group("Ecarts");
+                Group group = new Group("Ecarts");
                 //group.AddCommand("Fiche immobilisation", () =>
                 //{
                 //    var items = this.ListOfRows.Where(x => x.InvestmentAccount != null).ToList();
@@ -79,7 +79,7 @@ namespace EXGEPA.Inventory.Controls
 
                 group.AddCommand("Non scannés", () =>
                 {
-                    var select = this.ExcludItemAccordingToExcludedAccountingPersiods(this.ListOfRows)
+                    List<Item> select = this.ExcludItemAccordingToExcludedAccountingPersiods(this.ListOfRows)
                     .Where(x => x.Item != null && x.Office == null)
                     .Select(x => x.Item)
                     .Where(x => x.OutputCertificate == null && x.GeneralAccount.GeneralAccountType.Type == EGeneralAccountType.Investment)
@@ -89,10 +89,10 @@ namespace EXGEPA.Inventory.Controls
 
                 group.AddCommand("Negatif par compte", () =>
                 {
-                    var allItems = this.itemService.SelectAll().GroupBy(x => x.Office);
-                    var scannedItem = this.ListOfRows.Select(x => x.Item);
-                    var scannedOffices = this.ListOfRows.Where(x => x.Office != null).GroupBy(c => c.Office.Id).Select(g => g.Key).ToList();
-                    var select = this.ExcludItemAccordingToExcludedAccountingPersiods(this.ListOfRows)
+                    IEnumerable<IGrouping<Office, Item>> allItems = this.itemService.SelectAll().GroupBy(x => x.Office);
+                    IEnumerable<Item> scannedItem = this.ListOfRows.Select(x => x.Item);
+                    List<int> scannedOffices = this.ListOfRows.Where(x => x.Office != null).GroupBy(c => c.Office.Id).Select(g => g.Key).ToList();
+                    List<Item> select = this.ExcludItemAccordingToExcludedAccountingPersiods(this.ListOfRows)
                     .Where(x => x.Item != null && x.Office == null && scannedOffices.Contains(x.Item.Office.Id))
                     .Select(x => x.Item)
                     .ToList();
@@ -156,19 +156,19 @@ namespace EXGEPA.Inventory.Controls
         {
             StartBackGroundAction(() =>
             {
-                using (var scoopLogger = new ScoopLogger("Initializing inventory module", this.Logger))
+                using (ScoopLogger scoopLogger = new ScoopLogger("Initializing inventory module", this.Logger))
                 {
-                    var inventoryRows = this.inventoryService.SelectAll();
+                    IList<InventoryRow> inventoryRows = this.inventoryService.SelectAll();
                     scoopLogger.Snap("To load inventorys");
-                    var Items = this.itemService.SelectAll();
+                    IList<Item> Items = this.itemService.SelectAll();
                     scoopLogger.Snap("To load Items");
                     Parallel.ForEach(Items, (item) => this.repositoryDataProvider.BindItemFields(item));
                     scoopLogger.Snap("To bind Items");
-                    var allItems = Items.ToDictionary(x => x.Key);
+                    Dictionary<string, Item> allItems = Items.ToDictionary(x => x.Key);
                     this.AllOffices = this.repositoryDataProvider.ListOfOffice.ToDictionary(x => x.Key);
-                    var result = new ConcurrentBag<InventoryData>();
+                    ConcurrentBag<InventoryData> result = new ConcurrentBag<InventoryData>();
                     Parallel.ForEach(inventoryRows, row => result.Add(this.ConvertToInventoryDataAndKeepOnlyNotScanned(row, allItems)));
-                    var NotscannedItem = allItems.Values.Where(x => x.OutputCertificate == null).ToList();
+                    List<Item> NotscannedItem = allItems.Values.Where(x => x.OutputCertificate == null).ToList();
                     Parallel.ForEach(result, x => x.GapType = this.ComputeGap(x));
                     Parallel.ForEach(NotscannedItem, x => { this.CheckIfItemIsExcludedFromInventory(result, x); });
                     ListOfRows = new ObservableCollection<InventoryData>(ExcludItemAccordingToExcludedAccountingPersiods(result));
@@ -178,7 +178,7 @@ namespace EXGEPA.Inventory.Controls
 
         private IEnumerable<InventoryData> ExcludItemAccordingToExcludedAccountingPersiods(IEnumerable<InventoryData> result)
         {
-            var excludedAccountingPeriod = this.GetExcludedAccountingPeriods();
+            List<int> excludedAccountingPeriod = this.GetExcludedAccountingPeriods();
             return result.Where(x => !excludedAccountingPeriod.Contains(x?.Item?.AccountingPeriod?.Id ?? -1));
         }
 
@@ -212,7 +212,7 @@ namespace EXGEPA.Inventory.Controls
 
         private InventoryData ConvertToInventoryDataAndKeepOnlyNotScanned(InventoryRow inventoryRow, Dictionary<string, Item> allItems)
         {
-            var inventory = new InventoryData()
+            InventoryData inventory = new InventoryData()
             {
 
                 Id = inventoryRow.Id,
@@ -279,27 +279,10 @@ namespace EXGEPA.Inventory.Controls
             gapTraitement.AddCommand("Physique", IconProvider.Redo, this.AdjustToNewPosition);
         }
 
-        private void AdjustPostion(bool toNewPosition = true)
-        {
-            var rowToUpdate = this.Selection.Where(x => x.InventoryRow != null).ToList();
-            foreach (var item in rowToUpdate)
-            {
-                var localisationToswitch = toNewPosition ? item.Localization : item?.Item.Office.Key;
-                AllOffices.TryGetValue(localisationToswitch, out Office office);
-                if (office != null)
-                {
-                    item.Item.Office = office;
-                    itemService.Update(item.Item);
-                    item.GapType = ComputeGap(item);
-                    this.RefreshView(item);
-                }
-            }
-        }
-
         private void AdjustToNewPosition()
         {
-            var rowToUpdate = this.Selection.Where(x => x.InventoryRow != null).ToList();
-            foreach (var item in rowToUpdate)
+            List<InventoryData> rowToUpdate = this.Selection.Where(x => x.InventoryRow != null).ToList();
+            foreach (InventoryData item in rowToUpdate)
             {
                 AllOffices.TryGetValue(item.Localization, out Office office);
                 if (office != null)
@@ -314,8 +297,8 @@ namespace EXGEPA.Inventory.Controls
 
         private void AdjustToOldPosition()
         {
-            var rowToUpdate = this.Selection.Where(x => x.InventoryRow != null).ToList();
-            foreach (var row in rowToUpdate)
+            List<InventoryData> rowToUpdate = this.Selection.Where(x => x.InventoryRow != null).ToList();
+            foreach (InventoryData row in rowToUpdate)
             {
                 row.InventoryRow.Localization = row.Item.Office.Key;
                 row.Office = row.Item.Office;
@@ -327,7 +310,7 @@ namespace EXGEPA.Inventory.Controls
 
         private void SetViewGroup()
         {
-            var viewGroup = this.AddNewGroup("Vues");
+            Group viewGroup = this.AddNewGroup("Vues");
             viewGroup.AddCommand("Scannés", IconProvider.Phone, this.DisplayScannedItemOnly);
             viewGroup.Commands.Add(new RibbonButton() { IsSmall = true, Caption = "Non scannés", Action = () => { Filter = "GapType =  'Item non scanné'"; } });
             viewGroup.Commands.Add(new RibbonButton() { IsSmall = true, Caption = "Non identifiés", Action = () => { Filter = "GapType = 'Item non identifié'"; } });
@@ -344,7 +327,7 @@ namespace EXGEPA.Inventory.Controls
 
         private void SetInventToolGroup()
         {
-            var inventToolsGroup = this.AddNewGroup("Outils d'inventaire");
+            Group inventToolsGroup = this.AddNewGroup("Outils d'inventaire");
             if (this.parameterProvider.GetValue("AllowInventFileLoading", false))
             {
                 inventToolsGroup.AddCommand("Charger fichier", IconProvider.DownloadSmall, this.LoadFileFromDisk, true);
@@ -379,7 +362,7 @@ namespace EXGEPA.Inventory.Controls
 
         private void LoadFileFromDisk()
         {
-            var openFileDialog = new OpenFileDialog();
+            OpenFileDialog openFileDialog = new OpenFileDialog();
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 StartBackGroundAction(() =>
@@ -394,9 +377,9 @@ namespace EXGEPA.Inventory.Controls
         {
             this.UIMessage.TryDoUIActionAsync(this.Logger, () =>
             {
-                var vm = new Wind1VM();
+                Wind1VM vm = new Wind1VM();
 
-                var v = new Window1
+                Window1 v = new Window1
                 {
                     DataContext = vm
                 };
@@ -410,8 +393,8 @@ namespace EXGEPA.Inventory.Controls
 
         private void SaveAll(string comment)
         {
-            var archiveDate = DateTime.Now;
-            var itemToSave = this.ListOfRows.Select(x => new InventoryArchiveRow
+            DateTime archiveDate = DateTime.Now;
+            List<InventoryArchiveRow> itemToSave = this.ListOfRows.Select(x => new InventoryArchiveRow
             {
                 Code = x.Key,
                 Ancien_Code = x.Item?.OldCode,

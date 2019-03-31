@@ -15,12 +15,12 @@ namespace Hyproc.Core
 
         public void UpdateDatabase(IDbFacade targetDbFacade)
         {
-            var sourceProvider = ServiceLocator.Resolve<IDataProvider<TData>>();
-            var targetProvider = sourceProvider.ChangeDataSource(targetDbFacade);
-            var Source = sourceProvider.GetAllTable();
-            var target = targetProvider.GetAllTable();
-            var result = Comparator<TKey, TData>.Compare(Source, target, this.Selector);
-            foreach (var item in result)
+            IDataProvider<TData> sourceProvider = ServiceLocator.Resolve<IDataProvider<TData>>();
+            IDataProvider<TData> targetProvider = sourceProvider.ChangeDataSource(targetDbFacade);
+            System.Collections.Generic.IList<TData> Source = sourceProvider.GetAllTable();
+            System.Collections.Generic.IList<TData> target = targetProvider.GetAllTable();
+            System.Collections.Generic.List<Wrapper<TData>> result = Comparator<TKey, TData>.Compare(Source, target, this.Selector);
+            foreach (Wrapper<TData> item in result)
             {
                 switch (item.DbOperation)
                 {

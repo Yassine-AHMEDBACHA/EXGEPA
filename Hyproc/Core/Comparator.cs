@@ -11,9 +11,9 @@ namespace Hyproc.Core
         public static List<Wrapper<TData>> Compare(IList<TData> master, IList<TData> slave, Func<TData, TKey> keySelector)
         {
             logger.Debug("Comparing table : " + typeof(TData).Name);
-            var errorlist = slave.GroupBy(x => keySelector(x)).Where(group => group.Count() > 1).Select(group => group.Key).ToList();
+            List<TKey> errorlist = slave.GroupBy(x => keySelector(x)).Where(group => group.Count() > 1).Select(group => group.Key).ToList();
             errorlist.ForEach(x => logger.Error("Duplicate Key found = " + x));
-            var slaveDictionary = slave.ToDictionary(x => keySelector(x), x => x);
+            Dictionary<TKey, TData> slaveDictionary = slave.ToDictionary(x => keySelector(x), x => x);
             logger.Debug("generating data for table : " + typeof(TData).Name);
             return master.Select(x => GetData(x, slaveDictionary, keySelector)).Where(x => x != null).ToList();
         }
@@ -21,7 +21,7 @@ namespace Hyproc.Core
         private static Wrapper<TData> GetData(TData x, Dictionary<TKey, TData> slaveDictionary, Func<TData, TKey> keySelector)
         {
             Wrapper<TData> data = null;
-            var key = keySelector(x);
+            TKey key = keySelector(x);
             if (slaveDictionary.TryGetValue(key, out TData slaveItem))
             {
                 x.Id = slaveItem.Id;

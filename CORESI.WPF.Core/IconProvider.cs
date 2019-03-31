@@ -25,7 +25,7 @@ namespace CORESI.WPF.Core
                 size = "_16x16.png";
             }
             source += size;
-            var result = Images.Where(image => image.Name == source).FirstOrDefault();
+            IDXImageInfo result = Images.Where(image => image.Name == source).FirstOrDefault();
             if (result != null)
             {
                 Uri uri = new Uri(result.MakeUri());

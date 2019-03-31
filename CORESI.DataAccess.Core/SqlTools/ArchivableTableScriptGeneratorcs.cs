@@ -23,9 +23,9 @@ namespace CORESI.DataAccess.Core.SqlTools
 
         public string GetTriggerScripts()
         {
-            var scriptParts = new List<string>();
+            List<string> scriptParts = new List<string>();
 
-            var query = this.GetUpdateTriggerDropper();
+            string query = this.GetUpdateTriggerDropper();
             DBFacade.ExecuteNonQuery(query);
             scriptParts.Add(query);
 
@@ -40,7 +40,7 @@ namespace CORESI.DataAccess.Core.SqlTools
             query = this.GetScriptForDeleteTrigger();
             DBFacade.ExecuteNonQuery(query);
             scriptParts.Add(query);
-            var script = string.Join("\nGo\n", scriptParts);
+            string script = string.Join("\nGo\n", scriptParts);
 
             return script;
         }
@@ -48,7 +48,7 @@ namespace CORESI.DataAccess.Core.SqlTools
         private string GetScriptForUpdateTrigger()
         {
 
-            var script = "Create trigger [" + UpdateTriggerName + "] on [dbo].[" + this.TableName + "]  after Update \nas \nbegin \nSET NOCOUNT ON;";
+            string script = "Create trigger [" + UpdateTriggerName + "] on [dbo].[" + this.TableName + "]  after Update \nas \nbegin \nSET NOCOUNT ON;";
             script += "insert into [dbo].[" + this.HistoTableName + "] select * from deleted; ";
             script += "update [dbo].[" + this.TableName + "]  set VersionDate = GetDate() from deleted where [dbo].[" + this.TableName + "].Id = deleted.Id end";
             return script;
@@ -56,7 +56,7 @@ namespace CORESI.DataAccess.Core.SqlTools
 
         private string GetUpdateTriggerDropper()
         {
-            var script = ScriptGenerator.GetScriptHeader("Trigger : " + this.UpdateTriggerName);
+            string script = ScriptGenerator.GetScriptHeader("Trigger : " + this.UpdateTriggerName);
             script += this.GetScriptToDropTrigger(this.UpdateTriggerName);
             return script;
         }
@@ -64,21 +64,21 @@ namespace CORESI.DataAccess.Core.SqlTools
         private string GetScriptForDeleteTrigger()
         {
 
-            var script = "Create trigger [" + DeleteTriggerName + "] on [dbo].[" + this.TableName + "]  after delete \nas \nBEGIN \nSET NOCOUNT ON;\n";
+            string script = "Create trigger [" + DeleteTriggerName + "] on [dbo].[" + this.TableName + "]  after delete \nas \nBEGIN \nSET NOCOUNT ON;\n";
             script += "insert into [dbo].[" + this.HistoTableName + "] select * from deleted END";
             return script;
         }
 
         private string GetDeleteTriggerDropper()
         {
-            var script = ScriptGenerator.GetScriptHeader("Trigger : " + this.DeleteTriggerName);
+            string script = ScriptGenerator.GetScriptHeader("Trigger : " + this.DeleteTriggerName);
             script += this.GetScriptToDropTrigger(this.DeleteTriggerName);
             return script;
         }
 
         private string GetScriptToDropTrigger(string triggerName)
         {
-            var query = "IF OBJECT_ID ('" + triggerName + "', 'TR') IS NOT NULL\nBEGIN \n\tDROP TRIGGER " + triggerName + " \nEND\n";
+            string query = "IF OBJECT_ID ('" + triggerName + "', 'TR') IS NOT NULL\nBEGIN \n\tDROP TRIGGER " + triggerName + " \nEND\n";
             return query;
         }
 

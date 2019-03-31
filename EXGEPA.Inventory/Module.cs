@@ -26,7 +26,7 @@ namespace EXGEPA.Inventory
 
         public override void AddGroups()
         {
-            var InventoryGroup = new Group()
+            Group InventoryGroup = new Group()
             {
                 Caption = "Inventaire"
             };
@@ -37,10 +37,10 @@ namespace EXGEPA.Inventory
                 Caption = "Consultation",
                 Action = () =>
                 {
-                    var view = new InventoryView();
-                    var inventoryViewModel = new InventoryViewModel(view);
-                    var page = new Page(inventoryViewModel, view, true);
-                    uIService.AddPage(page, true);
+                    InventoryView view = new InventoryView();
+                    InventoryViewModel inventoryViewModel = new InventoryViewModel(view);
+                    Page page = new Page(inventoryViewModel, view, true);
+                    UIService.AddPage(page, true);
                     inventoryViewModel.InitData();
                 }
             });
@@ -76,14 +76,14 @@ namespace EXGEPA.Inventory
                 Glyph = IconProvider.BarCodeSmall,
                 Action = () =>
                     {
-                        var fields = CORESI.DataAccess.Core.PropertiesExtractor.ExtractFields(typeof(Office));
-                        var labelPropertyInfo = fields.First(x => x.Name == "PrintLabel").PropertyInfo;
+                        System.Collections.Generic.List<CORESI.Data.Field> fields = CORESI.DataAccess.Core.PropertiesExtractor.ExtractFields(typeof(Office));
+                        System.Reflection.PropertyInfo labelPropertyInfo = fields.First(x => x.Name == "PrintLabel").PropertyInfo;
                         Group group = Label.Core.ReportProvider.GetOfficeLabelDialog();
                         officeLabel.ShowOfficeAttribution(labelPropertyInfo, true, false, group);
                     }
             });
 
-            uIService.AddGroupToHomePage(InventoryGroup);
+            UIService.AddGroupToHomePage(InventoryGroup);
         }
 
 

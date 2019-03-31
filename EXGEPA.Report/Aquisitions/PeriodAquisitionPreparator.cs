@@ -19,15 +19,15 @@ namespace EXGEPA.Report.Aquisitions
 
         public ReportWrapperViewModel GetReportWrapper(bool onlyInvestissment = true)
         {
-            var reportWrapper = new ReportWrapperViewModel("Etat des immobilisations acquises");
-            using (var scooplogger = new ScoopLogger("Loading Data", this.logger, false))
+            ReportWrapperViewModel reportWrapper = new ReportWrapperViewModel("Etat des immobilisations acquises");
+            using (ScoopLogger scooplogger = new ScoopLogger("Loading Data", this.logger, false))
             {
-                var currentPeriod = AccountingPeriodsService.SelectAll().FirstOrDefault(x => !x.Approved);
-                var items = this.LoadItem(onlyInvestissment).Where(x => x.AquisitionDate.Between(currentPeriod.StartDate, currentPeriod.EndDate, true)).ToList();
-                var report = new PeriodAquisition();
+                AccountingPeriod currentPeriod = AccountingPeriodsService.SelectAll().FirstOrDefault(x => !x.Approved);
+                List<Item> items = this.LoadItem(onlyInvestissment).Where(x => x.AquisitionDate.Between(currentPeriod.StartDate, currentPeriod.EndDate, true)).ToList();
+                PeriodAquisition report = new PeriodAquisition();
                 report.Periode.Text = currentPeriod.Key;
-                var companyName = ParameterProvider.GetValue<string>("CompanyName");
-                var logo = @"C:\SQLIMMO\Images\logo.jpg";
+                string companyName = ParameterProvider.GetValue<string>("CompanyName");
+                string logo = @"C:\SQLIMMO\Images\logo.jpg";
                 report.CompanyName.Text = companyName;
                 report.Logo.ImageUrl = logo;
                 reportWrapper.DocumentSource = report;
@@ -39,7 +39,7 @@ namespace EXGEPA.Report.Aquisitions
 
         private IList<Item> LoadItem(bool onlyInvestissment = true)
         {
-            var items = this.ItemService.SelectAll();
+            IList<Item> items = this.ItemService.SelectAll();
             if (onlyInvestissment)
             {
                 items = items.Where(x => x.GeneralAccount.GeneralAccountType.Type == EGeneralAccountType.Investment).ToList();

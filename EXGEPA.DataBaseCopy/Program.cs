@@ -33,18 +33,18 @@ namespace EXGEPA.DataBaseCopy
 
         public static string GetSelectQuery<T>() where T : KeyRow
         {
-            var fields = GetFields<T>().Where(x => x != null).ToList();
+            List<Field> fields = GetFields<T>().Where(x => x != null).ToList();
             return GetSelectQuery<T>(fields);
         }
 
         public static string GetSelectQuery<T>(List<Field> fields)
         {
-            var type = typeof(T);
+            Type type = typeof(T);
             string tableName = GetTableName(type);
             string query = "Insert into " + tableName + " (" + string.Join(",", fields.Select(f => f.Name)) + ",session_id)";
             query += " SELECT ";
             int i = 1;
-            foreach (var field in fields)
+            foreach (Field field in fields)
             {
                 query = query + "[" + field.Name + "] ,";
                 field.Ordinal = i;
@@ -63,7 +63,7 @@ namespace EXGEPA.DataBaseCopy
 
         public static string GetTableName(Type type)
         {
-            var tableName = type.Name;
+            string tableName = type.Name;
             if (!tableName.EndsWith("s"))
             {
                 tableName += "s";
@@ -73,8 +73,8 @@ namespace EXGEPA.DataBaseCopy
 
         public static List<Field> GetFields<T>() where T : KeyRow
         {
-            var types = QueryBuilder.GetMappedTypes();
-            var baseProperties = typeof(KeyRow).GetProperties().Select(p => p.Name.ToLower()).ToList();
+            List<Type> types = QueryBuilder.GetMappedTypes();
+            List<string> baseProperties = typeof(KeyRow).GetProperties().Select(p => p.Name.ToLower()).ToList();
             baseProperties.Add("SmallDescription".ToLower());
             baseProperties.Add("ProposeToReformCertificate".ToLower());
             return typeof(T).GetProperties().Where(p => !baseProperties.Contains(p.Name.ToLower())).Select(f => f.PropertyToField()).ToList();

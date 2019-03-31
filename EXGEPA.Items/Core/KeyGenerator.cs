@@ -26,19 +26,19 @@ namespace EXGEPA.Items.Core
 
         public string GetCode6()
         {
-            var dbFacade = ServiceLocator.Resolve<IDbFacade>();
+            IDbFacade dbFacade = ServiceLocator.Resolve<IDbFacade>();
             string query = "SELECT ISNULL(MAX(CONVERT(INTEGER,[Key])),0) FROM ITEMS";
-            var result = dbFacade.ExecuteScalaire<int>(query) + 1;
-            var key = KeyLengthNormalizer.Normalize(result.ToString(), 6);
+            int result = dbFacade.ExecuteScalaire<int>(query) + 1;
+            string key = KeyLengthNormalizer.Normalize(result.ToString(), 6);
             return key;
         }
 
         public string GetCode12(params object[] parameters)
         {
-            var reference = parameters[0] as Reference;
-            var key = KeyLengthNormalizer.Normalize(reference.Key, 4);
+            Reference reference = parameters[0] as Reference;
+            string key = KeyLengthNormalizer.Normalize(reference.Key, 4);
             string query = "select ISNULL(MAX(CONVERT(INTEGER,[Key])),0) from items where [Key] like '" + key + "%'";
-            var result = this.dbFacade.ExecuteScalaire<int>(query) + 1;
+            int result = this.dbFacade.ExecuteScalaire<int>(query) + 1;
             return KeyLengthNormalizer.Normalize(result.ToString(), 12);
         }
 

@@ -21,10 +21,10 @@ namespace EXGEPA.Invoice
 
                 Action = () =>
                 {
-                    var view = new InvoiceView();
-                    var invoiceViewModel = new InvoiceViewModel(view);
-                    var page = new Page(invoiceViewModel, view, true);
-                    this.uIService.AddPage(page);
+                    InvoiceView view = new InvoiceView();
+                    InvoiceViewModel invoiceViewModel = new InvoiceViewModel(view);
+                    Page page = new Page(invoiceViewModel, view, true);
+                    this.UIService.AddPage(page);
                     invoiceViewModel.InitData();
                 }
             };
@@ -32,12 +32,12 @@ namespace EXGEPA.Invoice
 
         public override void AddGroups()
         {
-            logger.Info("Start loading Invoice Module...");
-            var invoiceGroup = new Group();
+            Logger.Info("Start loading Invoice Module...");
+            Group invoiceGroup = new Group();
             invoiceGroup.Commands.Add(this.GetHomePageRibbonButton());
-            logger.Info("Adding Invoice Home buttons to Ribbon");
-            uIService.AddGroupToHomePage(invoiceGroup);
-            logger.Info("loading Invoice Module done");
+            Logger.Info("Adding Invoice Home buttons to Ribbon");
+            UIService.AddGroupToHomePage(invoiceGroup);
+            Logger.Info("loading Invoice Module done");
         }
     }
 }

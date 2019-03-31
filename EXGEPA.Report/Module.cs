@@ -25,19 +25,19 @@ namespace EXGEPA.Report
 
         public void LoadModule()
         {
-            var reportGroup = new Group("Editions");
+            Group reportGroup = new Group("Editions");
             reportGroup.AddCommand("Investissments", IconProvider.Article, () =>
                   {
-                      var reportViewModel = new Controls.ReportViewModel("Editions investissements");
-                      var reportView = new Controls.ReportView();
-                      var page = new Page(reportViewModel, reportView, true);
+                      Controls.ReportViewModel reportViewModel = new Controls.ReportViewModel("Editions investissements");
+                      Controls.ReportView reportView = new Controls.ReportView();
+                      Page page = new Page(reportViewModel, reportView, true);
                       this.uIService.AddPage(page);
                   });
             reportGroup.AddCommand("Charges", IconProvider.Article, () =>
             {
-                var editionViewModel = new Controls.EditionViewModel("Editions charges");
-                var editionView = new Controls.EditionView();
-                var page = new Page(editionViewModel, editionView, true);
+                Controls.EditionViewModel editionViewModel = new Controls.EditionViewModel("Editions charges");
+                Controls.EditionView editionView = new Controls.EditionView();
+                Page page = new Page(editionViewModel, editionView, true);
                 this.uIService.AddPage(page);
             });
             this.uIService.AddGroupToHomePage(reportGroup);

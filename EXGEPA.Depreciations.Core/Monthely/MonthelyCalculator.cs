@@ -27,14 +27,14 @@ namespace EXGEPA.Depreciations.Core
         {
             try
             {
-                var monthCount = GetMonthCount(depreciation.StartDate, depreciation.Item.LimiteDate);
+                int monthCount = GetMonthCount(depreciation.StartDate, depreciation.Item.LimiteDate);
                 if (monthCount == 0)
                 {
                     depreciation.Annuity = depreciation.Period = 0;
                 }
                 else
                 {
-                    var monthelyAnnuity = (depreciation.InitialValue / monthCount);
+                    decimal monthelyAnnuity = (depreciation.InitialValue / monthCount);
                     depreciation.Period = GetMonthCount(depreciation.StartDate, depreciation.EndDate);
                     depreciation.Annuity = Math.Round(monthelyAnnuity * depreciation.Period, 2);
                 }
@@ -56,9 +56,9 @@ namespace EXGEPA.Depreciations.Core
             }
             if (endDate > startDate)
             {
-                var targetStartDate = ComputeStartDate(startDate);
-                var targeEndDate = ComputeEndDate(endDate);
-                var count = ((targeEndDate.Year - targetStartDate.Year) * 12) + (targeEndDate.Month + 1 - targetStartDate.Month);
+                DateTime targetStartDate = ComputeStartDate(startDate);
+                DateTime targeEndDate = ComputeEndDate(endDate);
+                int count = ((targeEndDate.Year - targetStartDate.Year) * 12) + (targeEndDate.Month + 1 - targetStartDate.Month);
                 return count;
             }
 
@@ -67,10 +67,10 @@ namespace EXGEPA.Depreciations.Core
 
         private bool IsSameDate(DateTime startDate, DateTime endDate)
         {
-            var sameYear = endDate.Year == startDate.Year;
-            var sameMonth = endDate.Month == startDate.Month;
-            var sameMonthBegining = endDate.Day <= this.monthSplit && startDate.Day <= this.monthSplit;
-            var sameMonthEnding = endDate.Day > this.monthSplit && startDate.Day > this.monthSplit;
+            bool sameYear = endDate.Year == startDate.Year;
+            bool sameMonth = endDate.Month == startDate.Month;
+            bool sameMonthBegining = endDate.Day <= this.monthSplit && startDate.Day <= this.monthSplit;
+            bool sameMonthEnding = endDate.Day > this.monthSplit && startDate.Day > this.monthSplit;
             return sameYear && sameMonth && (sameMonthBegining || sameMonthEnding);
 
         }

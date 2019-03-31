@@ -51,7 +51,7 @@ namespace EXGEPA.Items.Controls
         private string _LeftPanelCaption;
         public string LeftPanelCaption
         {
-            get { return _LeftPanelCaption; }
+            get => _LeftPanelCaption;
             set
             {
                 _LeftPanelCaption = value;
@@ -62,7 +62,7 @@ namespace EXGEPA.Items.Controls
         private string _RightPanelCaption;
         public string RightPanelCaption
         {
-            get { return _RightPanelCaption; }
+            get => _RightPanelCaption;
             set
             {
                 _RightPanelCaption = value;
@@ -73,7 +73,7 @@ namespace EXGEPA.Items.Controls
         private ObservableCollection<Item> _AffectedRows;
         public ObservableCollection<Item> AffectedRows
         {
-            get { return _AffectedRows; }
+            get => _AffectedRows;
             set
             {
                 _AffectedRows = value;
@@ -84,7 +84,7 @@ namespace EXGEPA.Items.Controls
         private ObservableCollection<Item> _AffectedRowsSelection;
         public ObservableCollection<Item> AffectedRowsSelection
         {
-            get { return _AffectedRowsSelection; }
+            get => _AffectedRowsSelection;
             set
             {
                 _AffectedRowsSelection = value;
@@ -133,15 +133,15 @@ namespace EXGEPA.Items.Controls
         {
             StartBackGroundAction(() =>
            {
-               using (var scoopLooger = new ScoopLogger("Loading items", logger))
+               using (ScoopLogger scoopLooger = new ScoopLogger("Loading items", logger))
                {
-                   var allItems = this.DBservice.SelectAll();
+                   IList<Item> allItems = this.DBservice.SelectAll();
                    RepositoryDataProvider.Refresh();
                    scoopLooger.Snap("Loading raw data");
                    RepositoryDataProvider.BindItemFields(allItems);
                    scoopLooger.Snap("Binding data");
-                   var affectedRows = allItems.Where(item => this.Options.Tester(item)).ToList();
-                   var otherRows = allItems.Except(affectedRows).Where(x => x.OutputCertificate == null);
+                   List<Item> affectedRows = allItems.Where(item => this.Options.Tester(item)).ToList();
+                   IEnumerable<Item> otherRows = allItems.Except(affectedRows).Where(x => x.OutputCertificate == null);
                    this.ListOfRows = new ObservableCollection<Item>(otherRows);
                    this.AffectedRows = new ObservableCollection<Item>(affectedRows);
                }
