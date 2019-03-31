@@ -1,9 +1,6 @@
 ﻿using CORESI.IoC;
 using CORESI.WPF;
-using OpenNETCF.Desktop.Communication;
-using System;
 using System.IO;
-using System.Linq;
 using System.Windows;
 
 namespace EXGEPA.Inventory.Core

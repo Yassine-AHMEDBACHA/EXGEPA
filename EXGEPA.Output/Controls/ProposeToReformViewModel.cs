@@ -12,7 +12,7 @@ namespace EXGEPA.Output.Controls
     public class ProposeToReformViewModel : GenericEditableViewModel<ProposeToReformCertificate>
     {
         IUIItemService UIItemService { get; set; }
-        public ProposeToReformViewModel(IExportable exportableView) : base(exportableView)
+        public ProposeToReformViewModel(IExportableGrid exportableView) : base(exportableView)
         {
             this.UIItemService = ServiceLocator.Resolve<IUIItemService>();
             this.DoubleClicAction = this.SetItemAttribute;

@@ -3,7 +3,6 @@ using CORESI.WPF.Controls;
 using CORESI.WPF.Core.Interfaces;
 using EXGEPA.Core.Interfaces;
 using EXGEPA.Model;
-using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using CORESI.WPF.Model;
@@ -38,7 +37,7 @@ namespace EXGEPA.Output.Controls
             return options;
         }
 
-        public CommunOutputViewModel(OutputType outputType, IExportable exportableView) : base(exportableView)
+        public CommunOutputViewModel(OutputType outputType, IExportableGrid exportableView) : base(exportableView)
         {
             UIItemService = ServiceLocator.Resolve<IUIItemService>();
             this.OutputType = outputType;

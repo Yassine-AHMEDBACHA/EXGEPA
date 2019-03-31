@@ -3,7 +3,6 @@ using CORESI.IoC;
 using EXGEPA.Model;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Linq;
 
 namespace EXGEPA.DataAccess.Items
 {

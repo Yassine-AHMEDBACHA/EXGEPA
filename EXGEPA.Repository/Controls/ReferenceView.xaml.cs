@@ -7,16 +7,9 @@ namespace EXGEPA.Repository.Controls
     /// </summary>
     public partial class ReferenceView : ExportableView
     {
-
-
-       
-
         public ReferenceView()
         {
-            InitializeComponent();
-           
+            this.InitializeComponent();
         }
-
-     
     }
 }

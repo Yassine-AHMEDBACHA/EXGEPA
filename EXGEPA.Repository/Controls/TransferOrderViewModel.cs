@@ -28,7 +28,7 @@ namespace EXGEPA.Repository.Controls
         }
 
 
-        public TransferOrderViewModel(IExportable exportableView) : base(exportableView)
+        public TransferOrderViewModel(IExportableGrid exportableView) : base(exportableView)
         {
             this.Caption = "Liste de bons de transfert";
             this.AddNewGroup().AddCommand("Contenu du bon", IconProvider.GreaterThan, DisplayPvContent);

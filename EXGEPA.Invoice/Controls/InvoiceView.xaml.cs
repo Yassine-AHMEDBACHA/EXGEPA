@@ -1,14 +1,13 @@
 ﻿using CORESI.WPF.Core.Interfaces;
 using System.Windows;
 using System.Windows.Controls;
-using System;
 
 namespace EXGEPA.Invoice.Controls
 {
     /// <summary>
     /// Interaction logic for InvoiceView.xaml
     /// </summary>
-    public partial class InvoiceView : UserControl, IExportable
+    public partial class InvoiceView : UserControl, IExportableGrid
     {
         public string DisplayedFilter => this.mainTableView.FilterPanelText;
         

@@ -6,7 +6,7 @@ namespace EXGEPA.Repository.Controls
 {
     public class CurrencyViewModel : GenericEditableViewModel<Currency>
     {
-        public CurrencyViewModel(IExportable exportableView) : base(exportableView)
+        public CurrencyViewModel(IExportableGrid exportableView) : base(exportableView)
         {
             this.Caption = "Lists de devises";
         }

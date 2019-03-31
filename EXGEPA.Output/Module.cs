@@ -1,14 +1,6 @@
-﻿using CORESI.IoC;
-using CORESI.WPF;
-using CORESI.WPF.Core;
-using CORESI.WPF.Core.Interfaces;
+﻿using CORESI.WPF.Core;
 using CORESI.WPF.Model;
-using EXGEPA.Model;
 using EXGEPA.Output.Controls;
-using System;
-using System.Collections.Generic;
-using CORESI.WPF.Controls;
-using System.ComponentModel.Composition;
 
 namespace EXGEPA.Output
 {

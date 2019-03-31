@@ -16,6 +16,7 @@ namespace CORESI.WPF.Core
 
         internal ShellViewModel ShellViewModel { get; set; }
 
+        [Obsolete]
         public UIService()
         {
             logger.Debug("Start Composing UIService...");
@@ -167,6 +168,7 @@ namespace CORESI.WPF.Core
             return Login.LoginViewModel.ShowLoginWindow();
         }
 
+        [Obsolete]
         void Initialize()
         {
             ApplicationInitializer.Initialize();

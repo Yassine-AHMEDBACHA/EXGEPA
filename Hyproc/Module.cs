@@ -1,5 +1,4 @@
-﻿using System;
-using CORESI.IoC;
+﻿using CORESI.IoC;
 using CORESI.WPF;
 using CORESI.WPF.Core;
 using CORESI.WPF.Model;

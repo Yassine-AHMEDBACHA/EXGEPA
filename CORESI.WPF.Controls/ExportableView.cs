@@ -2,22 +2,21 @@
 using DevExpress.Xpf.Grid;
 using System.Windows;
 using System.Windows.Controls;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace CORESI.WPF.Controls
 {
-    public abstract class ExportableView : UserControl, IExportable
+    public abstract class ExportableView : UserControl, IExportableGrid
     {
         public TableView TableView => this.FindName("mainTableView") as TableView;
+
         public string DisplayedFilter => this.TableView.FilterPanelText;
                 
-        public void Print(string documentName)
+        public virtual void Print(string documentName)
         {
             this.TableView.ShowPrintPreviewDialog(Application.Current.MainWindow, documentName);
         }
 
-        public void ExportExcel(string documentName)
+        public virtual void ExportExcel(string documentName)
         {
             Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
             dlg.DefaultExt = ".Xlsx";
@@ -30,7 +29,7 @@ namespace CORESI.WPF.Controls
             }
         }
 
-        public void ExportPDF(string documentName)
+        public virtual void ExportPDF(string documentName)
         {
             Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
             dlg.DefaultExt = ".pdf";

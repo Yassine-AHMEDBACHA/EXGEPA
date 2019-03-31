@@ -1,4 +1,3 @@
-using System;
 using System.Windows.Input;
 using CORESI.Security;
 using CORESI.IoC;
@@ -9,10 +8,10 @@ namespace CORESI.WPF.Core.Login
 {
     public class LoginViewModel : CommonViewModel
     {
-        protected static readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private const int Chance = 3;
 
+        private int chanceCount = Chance;
 
-        int chance = 3;
         public ClientInformation ClientInformation { get; set; }
         public LoginViewModel()
         {
@@ -25,11 +24,11 @@ namespace CORESI.WPF.Core.Login
             });
             ValidateCommand = new Command(TryConnect);
         }
-        
+
         private void TryConnect()
         {
-            logger.Info("Trying to autentifiate User : " + this.Login);
-            if(Login.ToLowerInvariant() =="yassine" && Password.ToLowerInvariant()=="@tetema13")
+            this.Logger.Info("Trying to autentifiate User : " + this.Login);
+            if (Login.ToLowerInvariant() == "yassine" && Password.ToLowerInvariant() == "@tetema13")
             {
                 SetSupperUser();
             }
@@ -41,15 +40,15 @@ namespace CORESI.WPF.Core.Login
             var opertor = LoginManager.OpenSession(Login, Password);
             if (opertor == null)
             {
-                chance--;
-                if (chance == 0)
+                chanceCount--;
+                if (chanceCount == 0)
                 {
                     TryCloseWindow();
                 }
                 else
                 {
-                    BadInformations = true;
-                    Password = string.Empty;
+                    this.BadInformations = true;
+                    this.Password = string.Empty;
                 }
             }
             else
@@ -80,6 +79,7 @@ namespace CORESI.WPF.Core.Login
                 Name = "Yassine Ahmed-Bacha",
                 Role = new Role { Id = 1 }
             };
+
             TryCloseWindow();
         }
 
@@ -116,13 +116,11 @@ namespace CORESI.WPF.Core.Login
 
         public static ClientInformation ShowLoginWindow()
         {
-            logger.Info("Loading loggin window");
             LoginViewModel loginViewModel = new LoginViewModel();
             LoginWindow login = new LoginWindow();
             login.DataContext = loginViewModel;
             loginViewModel.CloseWindow = login.Close;
             login.ShowDialog();
-            
             return loginViewModel.ClientInformation;
         }
 

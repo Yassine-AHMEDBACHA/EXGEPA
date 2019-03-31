@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CORESI.WPF;
+﻿using CORESI.WPF;
 
 namespace EXGEPA.Inventory.Controls
 {

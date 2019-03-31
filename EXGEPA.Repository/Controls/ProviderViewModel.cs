@@ -6,7 +6,7 @@ namespace EXGEPA.Repository.Controls
 {
     public class ProviderViewModel : GenericEditableViewModel<Provider>
     {
-        public ProviderViewModel(IExportable exportableView) : base(exportableView)
+        public ProviderViewModel(IExportableGrid exportableView) : base(exportableView)
         {
             this.Caption = "Liste de fournisseurs";
         }

@@ -1,6 +1,5 @@
 ﻿using CORESI.IoC;
 using System.ComponentModel.Composition;
-using CORESI.Security;
 
 namespace CORESI.WPF
 {

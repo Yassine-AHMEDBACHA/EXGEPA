@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using CORESI.DataAccess.Core.Database;
+﻿using CORESI.DataAccess.Core.Database;
 using EXGEPA.Core.Database;
 using log4net.Config;
 

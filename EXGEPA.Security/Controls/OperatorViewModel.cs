@@ -30,7 +30,7 @@ namespace EXGEPA.Security.Controls
         }
 
 
-        public OperatorViewModel(IExportable view) : base(view,false)
+        public OperatorViewModel(IExportableGrid view) : base(view,false)
 
         {
             this.Caption = "List des utilisateurs";
@@ -97,7 +97,7 @@ namespace EXGEPA.Security.Controls
         {
             if (SelectedRow != null)
             {
-                this.uIMessage.ConfirmeAndTryDoAction(logger, "Est vous sur de vouloir reinitialisé le mot de passe pour l'utilisateur : "
+                this.UIMessage.ConfirmeAndTryDoAction(Logger, "Est vous sur de vouloir reinitialisé le mot de passe pour l'utilisateur : "
                     + SelectedRow.Name + "-" + SelectedRow.Key + "-", () => GetTheNewPassword(SelectedRow.Key));
             }
         }
@@ -105,7 +105,7 @@ namespace EXGEPA.Security.Controls
         private void GetTheNewPassword(string login)
         {
             var newPassword = LoginManager.ResetPassword(login);
-            this.uIMessage.Information("Le nouveau mot de passe est : " + newPassword);
+            this.UIMessage.Information("Le nouveau mot de passe est : " + newPassword);
         }
     }
 }

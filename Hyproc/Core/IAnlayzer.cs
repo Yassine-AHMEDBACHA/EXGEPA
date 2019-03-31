@@ -1,5 +1,4 @@
 ﻿using CORESI.Data;
-using System;
 
 namespace Hyproc.Core
 {

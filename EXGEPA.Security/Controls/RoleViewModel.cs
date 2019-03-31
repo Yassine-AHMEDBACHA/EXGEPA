@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
 using System.Linq;
 using CORESI.Data;
 using CORESI.Data.Tools;
@@ -19,7 +17,7 @@ namespace EXGEPA.Security.Controls
 
         public IDataProvider<Resource> ResourceService { get; private set; }
 
-        public RoleViewModel(IExportable exportableView) : base(exportableView)
+        public RoleViewModel(IExportableGrid exportableView) : base(exportableView)
         {
             this.Caption = "List de roles";
             this.AbilityService = ServiceLocator.Resolve<IDataProvider<Ability>>();
@@ -78,7 +76,7 @@ namespace EXGEPA.Security.Controls
         {
             if (!this.ConcernedRow.Key.IsValidData())
             {
-                this.uIMessage.Error("Nom du role est invalide !");
+                this.UIMessage.Error("Nom du role est invalide !");
                 return;
             }
             this.DisplayDetail = false;

@@ -1,10 +1,7 @@
 ﻿using EXGEPA.Model;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using CORESI.IoC;
 using CORESI.Data;
 

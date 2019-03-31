@@ -1,5 +1,4 @@
-﻿using CORESI.IoC;
-using log4net;
+﻿using log4net;
 using System;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;

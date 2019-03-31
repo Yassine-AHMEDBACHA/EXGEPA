@@ -5,7 +5,6 @@ using DevExpress.Xpf.Editors;
 using System;
 using System.Windows;
 using System.Windows.Input;
-using CORESI.Tools;
 
 namespace CORESI.WPF.Core
 {
@@ -38,6 +37,7 @@ namespace CORESI.WPF.Core
             }
         }
 
+        [Obsolete]
         internal static void Initialize()
         {
             DXGridDataController.DisableThreadingProblemsDetection = true;

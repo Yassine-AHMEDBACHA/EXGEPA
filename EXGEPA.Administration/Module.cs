@@ -1,6 +1,4 @@
-﻿using CORESI.IoC;
-using CORESI.WPF;
-using CORESI.WPF.Core;
+﻿using CORESI.WPF.Core;
 using CORESI.WPF.Model;
 
 namespace EXGEPA.Administration

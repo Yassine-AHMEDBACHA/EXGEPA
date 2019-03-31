@@ -1,14 +1,9 @@
 ﻿using CORESI.Data;
-using CORESI.DataAccess;
-using CORESI.DataAccess.Core;
 using CORESI.IoC;
-using EXGEPA.DataAccess;
 using EXGEPA.Label.Core.Model;
 using EXGEPA.Model;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace EXGEPA.Core
 {

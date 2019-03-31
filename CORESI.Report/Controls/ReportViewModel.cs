@@ -1,7 +1,4 @@
-﻿using System;
-using DevExpress.Mvvm;
-using CORESI.WPF.Core;
-using CORESI.WPF.Core.Interfaces;
+﻿using CORESI.WPF.Core;
 using System.Windows.Media;
 using CORESI.WPF.Core.Framework;
 using CORESI.WPF.Model;

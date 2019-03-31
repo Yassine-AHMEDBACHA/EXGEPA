@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using CORESI.WPF.Core;
+﻿using CORESI.WPF.Core;
 using EXGEPA.Report.Tva;
 
 namespace EXGEPA.Repository.Report

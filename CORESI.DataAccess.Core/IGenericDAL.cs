@@ -1,7 +1,5 @@
 ﻿using CORESI.Data;
-using System;
 using System.Collections.Generic;
-using System.Reflection;
 namespace CORESI.DataAccess.Core
 {
     public interface IGenericDAL<T>

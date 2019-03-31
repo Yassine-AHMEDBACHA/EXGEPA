@@ -9,7 +9,7 @@ namespace EXGEPA.Repository.Controls
     {
         public TransferOrderView()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
     }
 }

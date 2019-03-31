@@ -21,14 +21,14 @@ namespace EXGEPA.Report.Controls
             newAquisition.AddCommand("Charges", this.PeriodNewCharge, isSmall: true);
             this.AddNewGroup().AddCommand("Recap des investissments", this.InvestismentRecap);
             var inventoryGroup = this.AddNewGroup("Inventaire physique");
-            inventoryGroup.AddCommand("Par compte", null, () => this.uIMessage.Information("Etat en cours de developpement"), true);
+            inventoryGroup.AddCommand("Par compte", null, () => this.UIMessage.Information("Etat en cours de developpement"), true);
             var immoGroup = this.AddNewGroup("Les immobilisations");
-            immoGroup.AddCommand("Par compte", null, () => this.uIMessage.Information("Etat en cours de developpement"), true);
+            immoGroup.AddCommand("Par compte", null, () => this.UIMessage.Information("Etat en cours de developpement"), true);
             var outputGroup = this.AddNewGroup("Les sorties");
-            outputGroup.AddCommand("Reformes", null, () => this.uIMessage.Information("Etat en cours de developpement"), true);
-            outputGroup.AddCommand("Cessions", null, () => this.uIMessage.Information("Etat en cours de developpement"), true);
-            outputGroup.AddCommand("Destruction", null, () => this.uIMessage.Information("Etat en cours de developpement"), true);
-            outputGroup.AddCommand("Disparition", null, () => this.uIMessage.Information("Etat en cours de developpement"), true);
+            outputGroup.AddCommand("Reformes", null, () => this.UIMessage.Information("Etat en cours de developpement"), true);
+            outputGroup.AddCommand("Cessions", null, () => this.UIMessage.Information("Etat en cours de developpement"), true);
+            outputGroup.AddCommand("Destruction", null, () => this.UIMessage.Information("Etat en cours de developpement"), true);
+            outputGroup.AddCommand("Disparition", null, () => this.UIMessage.Information("Etat en cours de developpement"), true);
             var others = this.AddNewGroup("Exercice");
         }
 

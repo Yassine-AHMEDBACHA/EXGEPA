@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace CORESI.WPF.Model
+﻿namespace CORESI.WPF.Model
 {
     public abstract class EditSettingRibbon : RibbonButton
     {

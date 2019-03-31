@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using CORESI.Tools.StringTools;
+﻿using CORESI.Tools.StringTools;
 
 namespace EXGEPA.Core.Tools
 {

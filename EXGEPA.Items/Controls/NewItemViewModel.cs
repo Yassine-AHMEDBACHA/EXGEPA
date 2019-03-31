@@ -37,7 +37,7 @@ namespace EXGEPA.Items.Controls
             this.Quantity.Width = 80;
             Enumerable.Range(1, maxQuantityCanBeCreated).ToList().ForEach(x => this.Quantity.ItemsSource.Add(x));
             this.Quantity.EditValue = this.Quantity.ItemsSource.FirstOrDefault();
-            this.uIMessage.TryDoActionAsync(logger, this.InitData);
+            this.UIMessage.TryDoActionAsync(Logger, this.InitData);
             
         }
 
@@ -65,19 +65,18 @@ namespace EXGEPA.Items.Controls
             var result = Core.ItemValidator.CheckItem(this.ConcernedItem);
             if (result != null)
             {
-                this.uIMessage.Error(result);
+                this.UIMessage.Error(result);
                 return;
             }
 
-            if (this._SavePicture != null)
-                this._SavePicture();
+            this._SavePicture?.Invoke();
 
             this.ConcernedItem.Json = JsonConvert.SerializeObject(this.itemExtendedProperties);
             this.InsertItem(this.ConcernedItem);
             if (this.Quantity.EditValue > 1)
             {
                 var ItemsToInsert = Enumerable.Range(0, this.Quantity.EditValue - 1).Select(x => (Item)ConcernedItem.Clone()).ToList();
-                ItemsToInsert.ForEach(item => uIMessage.TryDoAction(logger, () =>
+                ItemsToInsert.ForEach(item => this.UIMessage.TryDoAction(this.Logger, () =>
                  {
                      item.Key = this.keyGenerator.GenerateKey(this.Reference, this.keyLength);
                      this.InsertItem(item);

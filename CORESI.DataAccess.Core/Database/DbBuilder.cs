@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using CORESI.Data;
 using CORESI.Data.Tools;
 using CORESI.DataAccess.Core.SqlTools;

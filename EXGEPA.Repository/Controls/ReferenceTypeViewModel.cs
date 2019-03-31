@@ -6,7 +6,7 @@ namespace EXGEPA.Repository.Controls
 {
     public class ReferenceTypeViewModel : GenericEditableViewModel<ReferenceType>
     {
-        public ReferenceTypeViewModel(IExportable exportableView) : base(exportableView)
+        public ReferenceTypeViewModel(IExportableGrid exportableView) : base(exportableView)
         {
             this.Caption = "Lists de familles de réfèrences";
         }

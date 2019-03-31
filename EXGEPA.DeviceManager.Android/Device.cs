@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System.Windows;
 using MediaDevices;
 
 namespace EXGEPA.DeviceManager.Android

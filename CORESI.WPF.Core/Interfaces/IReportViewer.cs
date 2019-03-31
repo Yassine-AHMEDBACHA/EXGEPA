@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace CORESI.WPF.Core.Interfaces
+﻿namespace CORESI.WPF.Core.Interfaces
 {
     public interface IReportViewer
     {

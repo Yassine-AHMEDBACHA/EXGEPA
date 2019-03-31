@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace CORESI.Data
+﻿namespace CORESI.Data
 {
     public abstract class RowId : IRowId
     {

@@ -2,7 +2,6 @@
 using CORESI.IoC;
 using CORESI.Tools;
 using CORESI.Tools.DateTimeTools;
-using EXGEPA.Core.Interfaces;
 using EXGEPA.Depreciations.Core;
 using EXGEPA.Model;
 using EXGEPA.Report.Commun;

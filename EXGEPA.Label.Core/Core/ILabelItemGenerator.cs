@@ -1,6 +1,5 @@
 ﻿
 using EXGEPA.Label.Core.Model;
-using System;
 using System.Collections.Generic;
 namespace EXGEPA.Core
 {

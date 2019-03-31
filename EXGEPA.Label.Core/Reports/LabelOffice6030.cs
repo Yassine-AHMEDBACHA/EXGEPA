@@ -1,10 +1,4 @@
-﻿using System;
-using System.Drawing;
-using System.Collections;
-using System.ComponentModel;
-using DevExpress.XtraReports.UI;
-
-namespace EXGEPA.Label.Core.Reports
+﻿namespace EXGEPA.Label.Core.Reports
 {
     public partial class LabelOffice6030 : DevExpress.XtraReports.UI.XtraReport
     {

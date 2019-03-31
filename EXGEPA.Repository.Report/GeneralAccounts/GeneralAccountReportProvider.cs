@@ -1,10 +1,5 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
-using CORESI.Data;
+﻿using System.IO;
 using CORESI.IoC;
-using CORESI.WPF.Model;
-using EXGEPA.Core.Interfaces;
 using EXGEPA.Model;
 using EXGEPA.Report;
 

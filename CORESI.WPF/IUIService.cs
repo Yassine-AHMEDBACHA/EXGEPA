@@ -1,6 +1,4 @@
-﻿using System;
-using CORESI.WPF;
-using System.Windows;
+﻿using System.Windows;
 using CORESI.WPF.Model;
 
 namespace CORESI.WPF

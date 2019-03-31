@@ -6,7 +6,7 @@ namespace EXGEPA.Repository.Controls
 {
     public class ReceiveOrderViewModel : GenericEditableViewModel<ReceiveOrder>
     {
-        public ReceiveOrderViewModel(IExportable exportableView) : base(exportableView)
+        public ReceiveOrderViewModel(IExportableGrid exportableView) : base(exportableView)
         {
             this.Caption = "Liste de bons de recéption";
         }

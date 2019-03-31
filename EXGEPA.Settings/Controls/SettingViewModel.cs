@@ -73,7 +73,7 @@ namespace EXGEPA.Settings.Controls
 
         private void Save()
         {
-            this.uIMessage.TryDoActionAsync(logger, () =>
+            this.UIMessage.TryDoActionAsync(logger, () =>
                 {
                     this.parameterProvider.TrySetOrAdd(PicturesDirectoryKey, this.PicturesDirectory);
                     this.parameterProvider.TrySetOrAdd(CompanyNameKey,CompanyName);
@@ -200,7 +200,7 @@ namespace EXGEPA.Settings.Controls
                     var s = this.ImagePath;
                     _SavePicture = () =>
                     {
-                        if (this.uIMessage.Warning("Etes vous sur de vouloir supprimer le logo ?") == System.Windows.MessageBoxResult.Yes)
+                        if (this.UIMessage.Warning("Etes vous sur de vouloir supprimer le logo ?") == System.Windows.MessageBoxResult.Yes)
                         {
                             DeleteImage(s);
                         }

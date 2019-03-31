@@ -6,7 +6,7 @@ namespace EXGEPA.Repository.Controls
 {
     public class InputSheetViewModel : GenericEditableViewModel<InputSheet>
     {
-        public InputSheetViewModel(IExportable exportableView) : base(exportableView)
+        public InputSheetViewModel(IExportableGrid exportableView) : base(exportableView)
         {
             this.Caption = "Liste de fiches d'entrée";
         }

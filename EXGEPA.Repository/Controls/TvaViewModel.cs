@@ -6,7 +6,7 @@ namespace EXGEPA.Repository.Controls
 {
     public class TvaViewModel : GenericEditableViewModel<Tva>
     {
-        public TvaViewModel(IExportable exportableView) : base(exportableView)
+        public TvaViewModel(IExportableGrid exportableView) : base(exportableView)
         {
             this.Caption = "Liste de TVA";
         }

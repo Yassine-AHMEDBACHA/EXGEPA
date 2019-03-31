@@ -13,7 +13,7 @@ namespace EXGEPA.Output.Controls
     {
         IUIItemService UIItemService { get; set; }
 
-        public ReformeCertificateViewModel(IExportable exportableView) : base(exportableView)
+        public ReformeCertificateViewModel(IExportableGrid exportableView) : base(exportableView)
         {
             this.UIItemService = ServiceLocator.Resolve<IUIItemService>();
             this.DoubleClicAction = this.SetItemAttribute;

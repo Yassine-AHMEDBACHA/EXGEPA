@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
-using System.Text;
 using CORESI.IoC;
 using CORESI.WPF.Core;
 using CORESI.WPF.Model;
-using EXGEPA.Core;
 using EXGEPA.Model;
 using EXGEPA.Report;
 using EXGEPA.Report.InputSheet;

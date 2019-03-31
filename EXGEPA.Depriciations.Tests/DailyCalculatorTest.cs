@@ -1,15 +1,11 @@
 ﻿using CORESI.Data;
 using CORESI.IoC;
 using EXGEPA.Core.Interfaces;
-using EXGEPA.DataAccess;
 using EXGEPA.Depreciations.Core;
 using EXGEPA.Model;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
 
 namespace EXGEPA.Depriciations.Tests
 {

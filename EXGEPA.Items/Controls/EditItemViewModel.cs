@@ -55,12 +55,12 @@
 
         public void UpdateItem()
         {
-            this.uIMessage.TryDoAction(logger, () =>
+            this.UIMessage.TryDoAction(Logger, () =>
             {
                 var result = Core.ItemValidator.CheckItem(this.ConcernedItem);
                 if (result != null)
                 {
-                    this.uIMessage.Error(result);
+                    this.UIMessage.Error(result);
                 }
                 else
                 {

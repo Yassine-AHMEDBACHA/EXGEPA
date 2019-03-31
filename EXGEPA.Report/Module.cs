@@ -2,10 +2,6 @@
 using CORESI.WPF;
 using CORESI.WPF.Core;
 using CORESI.WPF.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace EXGEPA.Report
 {

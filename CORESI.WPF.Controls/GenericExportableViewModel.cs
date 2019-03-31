@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using CORESI.Data;
+﻿using System.Linq;
 using CORESI.IoC;
 using CORESI.WPF.Core;
 using CORESI.WPF.Core.Interfaces;
@@ -10,9 +8,9 @@ namespace CORESI.WPF.Controls
 {
     public class GenericExportableViewModel<T> : BasicGridViewModel<T>
     {
-        internal protected IExportable exportableView;
+        internal protected IExportableGrid exportableView;
         public int KeyLength { get; set; }
-        public GenericExportableViewModel(IExportable view = null) : base()
+        public GenericExportableViewModel(IExportableGrid view = null) : base()
         {
             this.exportableView = view;
             if (view != null)
@@ -27,7 +25,7 @@ namespace CORESI.WPF.Controls
 
 
 
-        protected virtual void SetExportGroup(IExportable view, bool AllSmall = false)
+        protected virtual void SetExportGroup(IExportableGrid view, bool AllSmall = false)
         {
             var group = this.AddNewGroup("Export");
             if (AllSmall)
@@ -41,13 +39,13 @@ namespace CORESI.WPF.Controls
             }
         }
 
-        private void AddSmallButtons(IExportable view, Group group)
+        private void AddSmallButtons(IExportableGrid view, Group group)
         {
             group.AddCommand("Excel", IconProvider.XlsxSmall, () => view.ExportExcel(this.Caption), true);
             group.AddCommand("PDF", IconProvider.PDFSmall, () => view.ExportPDF(this.Caption), true);
             group.AddCommand("Imprimer", IconProvider.PrintSmall, () => view.Print(this.Caption), true);
         }
-        private void AddButtons(IExportable view, Group group)
+        private void AddButtons(IExportableGrid view, Group group)
         {
             group.AddCommand("Excel", IconProvider.Xlsx, () => view.ExportExcel(this.Caption));
             group.AddCommand("PDF", IconProvider.PDF, () => view.ExportPDF(this.Caption));

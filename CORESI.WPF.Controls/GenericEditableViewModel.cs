@@ -25,9 +25,7 @@ namespace CORESI.WPF.Controls
 
         public ICommand ValidateCommand { get; set; }
 
-        public ICommand RowDoubleClickCommand { get; private set; }
-
-        public Action DoubleClicAction { get; set; }
+        public new Action DoubleClicAction { get; set; }
 
         public bool HideEditButton { get; set; }
 
@@ -37,7 +35,7 @@ namespace CORESI.WPF.Controls
 
         public Group toolGroup { get; set; }
 
-        public GenericEditableViewModel(IExportable exportableView, bool loadData = true) : this()
+        public GenericEditableViewModel(IExportableGrid exportableView, bool loadData = true) : this()
 
         {
             this.exportableView = exportableView;
@@ -145,11 +143,9 @@ namespace CORESI.WPF.Controls
 
         public virtual void RaiseDataChanged(T value)
         {
-            if (NotifyUpdate != null)
-            {
-                NotifyUpdate(this, ConcernedRow);
-            }
+            NotifyUpdate?.Invoke(this, ConcernedRow);
         }
+
         public virtual void EditItem()
         {
             if (this.SelectedRow != null)
@@ -188,19 +184,19 @@ namespace CORESI.WPF.Controls
                     FinalAction();
                 }
             };
-            this.uIMessage.TryDoActionAsync(logger, actionTodDo, actionToDoInTheEnd);
+            this.UIMessage.TryDoActionAsync(this.Logger, actionTodDo, actionToDoInTheEnd);
         }
 
         public void StartUIBackGroundAction(Action actionTodDo, bool showLoadingPanel = true)
         {
             this.ShowLoadingPanel = true;
-            this.uIMessage.TryDoUIActionAsync(logger, actionTodDo, () => this.ShowLoadingPanel = false);
+            this.UIMessage.TryDoUIActionAsync(this.Logger, actionTodDo, () => this.ShowLoadingPanel = false);
         }
 
         public void ConfirmeAndStartBackGroundAction(string ConfirmationMessage, Action actionTodDo, bool showLoadingPanel = true)
         {
             this.ShowLoadingPanel = showLoadingPanel;
-            this.uIMessage.ConfirmeAndTryDoAction(logger, ConfirmationMessage, actionTodDo, true, () =>
+            this.UIMessage.ConfirmeAndTryDoAction(this.Logger, ConfirmationMessage, actionTodDo, true, () =>
             {
                 this.ShowLoadingPanel = false;
             });
@@ -256,7 +252,7 @@ namespace CORESI.WPF.Controls
             });
         }
 
-        protected virtual void InitilizeRibbonGroup(IExportable view = null)
+        protected virtual void InitilizeRibbonGroup(IExportableGrid view = null)
         {
             this.SetToolGroup();
             if (view != null)

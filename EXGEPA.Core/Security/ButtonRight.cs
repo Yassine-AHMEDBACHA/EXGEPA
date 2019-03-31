@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using CORESI.IoC;
+﻿using CORESI.IoC;
 using CORESI.Security;
 using CORESI.WPF;
 

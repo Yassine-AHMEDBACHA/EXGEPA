@@ -1,5 +1,4 @@
-﻿using System;
-namespace CORESI.Security
+﻿namespace CORESI.Security
 {
     public interface IStringCryptor
     {

@@ -137,9 +137,9 @@
     <Compile Include="DXSplashScreen\SplashScreen.xaml.cs">
       <DependentUpon>SplashScreen.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Interfaces\IExportable.cs" />
-    <Compile Include="Framework\ViewModel.cs" />
+    <Compile Include="Framework\PageViewModel.cs" />
     <Compile Include="IconProvider.cs" />
+    <Compile Include="Interfaces\IExportableGrid.cs" />
     <Compile Include="Interfaces\IReportViewer.cs" />
     <Compile Include="Interfaces\IRibbonCommand.cs" />
     <Compile Include="Login\ChangePasswordView.xaml.cs">

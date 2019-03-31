@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace EXGEPA.Label.Core.Model
+﻿namespace EXGEPA.Label.Core.Model
 {
     public class ItemLabel
     {

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using CORESI.Data;
-using Newtonsoft.Json;
 
 namespace EXGEPA.Model
 {

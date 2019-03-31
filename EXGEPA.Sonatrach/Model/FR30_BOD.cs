@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace EXGEPA.Sonatrach.Model
+﻿namespace EXGEPA.Sonatrach.Model
 {
-   public class FR30_BOD
+    public class FR30_BOD
     {
         public string E_JRNL { get; set; }
         public string E_CART { get; set; }

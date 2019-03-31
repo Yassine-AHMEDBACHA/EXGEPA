@@ -1,6 +1,5 @@
 ﻿using CORESI.IoC;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 
 namespace CORESI.Data
 {

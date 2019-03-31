@@ -7,7 +7,7 @@ namespace EXGEPA.Items.Controls
     public class ItemHistoViewModel : GenericEditableViewModel<Item>
     {
         public int Id { get; set; }
-        public ItemHistoViewModel(IExportable view, int id)
+        public ItemHistoViewModel(IExportableGrid view, int id)
         {
             this.Id = id;
             this.AutoWidth = false;

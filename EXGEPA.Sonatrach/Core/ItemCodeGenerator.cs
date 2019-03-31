@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using CORESI.Data;
+﻿using CORESI.Data;
 using CORESI.IoC;
-using EXGEPA.Core.Interfaces;
 using EXGEPA.Core.Tools;
 
 namespace EXGEPA.Sonatrach.Core

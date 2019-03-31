@@ -2,9 +2,7 @@
 using CORESI.DataAccess.Core.SqlTools;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 
 namespace CORESI.DataAccess.Core
 {

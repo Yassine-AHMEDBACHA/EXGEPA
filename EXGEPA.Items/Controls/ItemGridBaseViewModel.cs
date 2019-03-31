@@ -15,7 +15,7 @@ namespace EXGEPA.Items
 
         IRepositoryDataProvider repositoryDataProvider;
         
-        public ItemGridBaseViewModel(Predicate<Item> filter, IExportable view, Action<IEnumerable<Item>> report) : base()
+        public ItemGridBaseViewModel(Predicate<Item> filter, IExportableGrid view, Action<IEnumerable<Item>> report) : base()
         {
             this.displayFilter = filter;
             ServiceLocator.Resolve(out this.repositoryDataProvider);

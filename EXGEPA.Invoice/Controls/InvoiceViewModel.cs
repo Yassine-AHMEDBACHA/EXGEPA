@@ -21,7 +21,7 @@ namespace EXGEPA.Invoice.Controls
 
         IParameterProvider ParametreProvider { get; set; }
 
-        public InvoiceViewModel(IExportable view) : base(view)
+        public InvoiceViewModel(IExportableGrid view) : base(view)
         {
             this.Caption = "List des factures";
             this.ParametreProvider = ServiceLocator.Resolve<IParameterProvider>();
@@ -33,7 +33,7 @@ namespace EXGEPA.Invoice.Controls
             {
                 if (this.SelectedRow != null)
                 {
-                    this.uIMessage.ConfirmeAndTryDoAction(logger,
+                    this.UIMessage.ConfirmeAndTryDoAction(Logger,
                         $"Etes vous sûr de vouloir valider la facture N°{this.SelectedRow.Key}",
                         () => this.ValidateInvoice(this.SelectedRow),
                         false, () => button.IsChecked = this.SelectedRow?.IsValidated ?? false);
@@ -127,7 +127,7 @@ namespace EXGEPA.Invoice.Controls
             this.ConcernedRow = new Model.Invoice() { Date = DateTime.Today, Key = this.GetTemporaryKey(), Currency = localCurrency };
             this.ValidateCommand = new Command(() =>
             {
-                this.uIMessage.TryDoAction(logger, () =>
+                this.UIMessage.TryDoAction(Logger, () =>
                 {
                     string message = "Veuillez completer les informations suivantes SVP : ";
                     bool error = false;
@@ -162,13 +162,13 @@ namespace EXGEPA.Invoice.Controls
                     }
                     if (error)
                     {
-                        this.uIMessage.Error(message);
+                        this.UIMessage.Error(message);
                         return;
                     }
 
                     if (localCurrency?.Id == ConcernedRow.Currency?.Id && ConcernedRow.Forex != 1)
                     {
-                        this.uIMessage.Error("le taux de change doit etre egale à 1 si c'est la devise local");
+                        this.UIMessage.Error("le taux de change doit etre egale à 1 si c'est la devise local");
                         return;
                     }
 
@@ -202,7 +202,7 @@ namespace EXGEPA.Invoice.Controls
             {
                 //this.ValidateInvoice(invoice);
                 //button.IsChecked = invoice.IsValidated;
-                this.uIMessage.ConfirmeAndTryDoAction(logger,
+                this.UIMessage.ConfirmeAndTryDoAction(Logger,
                         $"Etes vous sûr de vouloir valider la facture N°{invoice.Key}",
                         () => this.ValidateInvoice(invoice),
                         false, () => button.IsChecked = invoice?.IsValidated ?? false);
@@ -231,7 +231,7 @@ namespace EXGEPA.Invoice.Controls
             }
             if (!invoice.IsValidated)
             {
-                this.uIMessage.Error("Le montant de la facture est différent du total du montant des articles");
+                this.UIMessage.Error("Le montant de la facture est différent du total du montant des articles");
             }
         }
 

@@ -25,7 +25,7 @@ namespace CORESI.WPF.Core
 
         protected void AddPage<TView, TViewModel>()
             where TViewModel : IPageSetter
-            where TView : System.Windows.Controls.UserControl, IExportable
+            where TView : System.Windows.Controls.UserControl, IExportableGrid
         {
             var view = Activator.CreateInstance<TView>();
             var viewModel = (IPageSetter)Activator.CreateInstance(typeof(TViewModel), new[] { view });

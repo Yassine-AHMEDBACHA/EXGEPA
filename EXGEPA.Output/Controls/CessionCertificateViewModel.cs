@@ -16,7 +16,7 @@ namespace EXGEPA.Output.Controls
 
         IDataProvider<AnalyticalAccountType> analyticalAccountTypeService;
 
-        public CessionCertificateViewModel(IExportable exportableView) : base(OutputType.Cession, exportableView)
+        public CessionCertificateViewModel(IExportableGrid exportableView) : base(OutputType.Cession, exportableView)
         {
             this.Caption = "Liste de PV de cession";
             ServiceLocator.Resolve(out this.analyticalAccountService);

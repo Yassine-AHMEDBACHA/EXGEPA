@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using CORESI.Data;
 
 namespace EXGEPA.Model
 {
-   public class InventoryArchiveRow : RowId
+    public class InventoryArchiveRow : RowId
     {
         public string Code { get; set; }
         public string Ancien_Code { get; set; }

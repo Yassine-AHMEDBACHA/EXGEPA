@@ -3,10 +3,7 @@ using EXGEPA.Depreciations.Core;
 using EXGEPA.Model;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using NSubstitute;
 
 namespace EXGEPA.Depriciations.Tests
 {

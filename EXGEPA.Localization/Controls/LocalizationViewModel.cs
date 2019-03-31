@@ -70,7 +70,7 @@ namespace EXGEPA.Localization.Controls
 
         private void InitData()
         {
-            this.uIMessage.TryDoActionAsync(logger, () =>
+            this.UIMessage.TryDoActionAsync(Logger, () =>
             {
                 this.ShowLoadingPanel = true;
                 this.AnalyticalAccountService = ServiceLocator.Resolve<IDataProvider<AnalyticalAccount>>();
@@ -97,7 +97,7 @@ namespace EXGEPA.Localization.Controls
         private void PrintPhysicalInventory()
         {
             this.ShowLoadingPanel = true;
-            this.uIMessage.TryDoUIActionAsync(logger, () =>
+            this.UIMessage.TryDoUIActionAsync(Logger, () =>
              {
                  IList<Item> items = null;
                  var offices = SelectedOffices.ToDictionary(x => x.Key);
@@ -371,7 +371,7 @@ namespace EXGEPA.Localization.Controls
             var old = this.ConecernedSite;
             ValidateSiteCommand = new Command(() =>
             {
-                this.uIMessage.TryDoAction(logger, () =>
+                this.UIMessage.TryDoAction(Logger, () =>
                     {
                         this.ConecernedSite.Code = LoacalizationTools.NormelizeCode(this.ConecernedSite.Code);
                         this.ConecernedSite.Key = this.CurrentRegion.Key + this.ConecernedSite.Code;
@@ -399,10 +399,10 @@ namespace EXGEPA.Localization.Controls
         public void DeleteSite()
         {
 
-            var result = this.uIMessage.Warning("Etes vous sur de vouloir supprimer ce site ?");
+            var result = this.UIMessage.Warning("Etes vous sur de vouloir supprimer ce site ?");
             if (result == System.Windows.MessageBoxResult.Yes)
             {
-                this.uIMessage.TryDoAction(logger, () =>
+                this.UIMessage.TryDoAction(Logger, () =>
                 {
                     SiteService.Delete(this.ConecernedSite);
                     this.ListOfRows.Remove(this.ConecernedSite);
@@ -420,7 +420,7 @@ namespace EXGEPA.Localization.Controls
             this.DisplaySiteDetail = true;
             this.ValidateSiteCommand = new Command(() =>
                 {
-                    this.uIMessage.TryDoAction(logger, () =>
+                    this.UIMessage.TryDoAction(Logger, () =>
                     {
                         SiteService.Update(this.ConecernedSite);
                         this.DisplaySiteDetail = false;
@@ -446,7 +446,7 @@ namespace EXGEPA.Localization.Controls
 
             ValidateBuildingCommand = new Command(() =>
             {
-                this.uIMessage.TryDoAction(logger, () =>
+                this.UIMessage.TryDoAction(Logger, () =>
                 {
                     this.ConecernedBuilding.Code = LoacalizationTools.NormelizeCode(this.ConecernedBuilding.Code);
                     this.ConecernedBuilding.Key = this.ConecernedSite.Code + this.ConecernedBuilding.Code;
@@ -469,10 +469,10 @@ namespace EXGEPA.Localization.Controls
 
         public void DeleteBuilding()
         {
-            var result = this.uIMessage.Warning("Etes vous sur de vouloir supprimer ce batiement ?");
+            var result = this.UIMessage.Warning("Etes vous sur de vouloir supprimer ce batiement ?");
             if (result == System.Windows.MessageBoxResult.Yes)
             {
-                this.uIMessage.TryDoAction(logger, () =>
+                this.UIMessage.TryDoAction(Logger, () =>
                 {
                     BuildingService.Delete(this.ConecernedBuilding);
                     this.ConecernedSite.Buildings.Remove(this.ConecernedBuilding);
@@ -488,7 +488,7 @@ namespace EXGEPA.Localization.Controls
             this.DisplayBuildingDetail = true;
             this.ValidateBuildingCommand = new Command(() =>
             {
-                this.uIMessage.TryDoAction(logger, () =>
+                this.UIMessage.TryDoAction(Logger, () =>
                 {
                     BuildingService.Update(this.ConecernedBuilding);
                     this.DisplayBuildingDetail = false;
@@ -513,7 +513,7 @@ namespace EXGEPA.Localization.Controls
 
             ValidateLevelCommand = new Command(() =>
             {
-                this.uIMessage.TryDoAction(logger, () =>
+                this.UIMessage.TryDoAction(Logger, () =>
                     {
                         this.DisplayLevelDetail = false;
                         this.ConecernedLevel.Code = LoacalizationTools.NormelizeCode(this.ConecernedLevel.Code);
@@ -538,10 +538,10 @@ namespace EXGEPA.Localization.Controls
 
         public void DeleteLevel()
         {
-            var result = this.uIMessage.Warning("Etes vous sur de vouloir supprimer cet etage ?");
+            var result = this.UIMessage.Warning("Etes vous sur de vouloir supprimer cet etage ?");
             if (result == System.Windows.MessageBoxResult.Yes)
             {
-                this.uIMessage.TryDoAction(logger, () =>
+                this.UIMessage.TryDoAction(Logger, () =>
                 {
                     LevelService.Delete(this.ConecernedLevel);
                     this.ConecernedBuilding.Levels.Remove(this.ConecernedLevel);
@@ -558,7 +558,7 @@ namespace EXGEPA.Localization.Controls
             this.DisplayLevelDetail = true;
             this.ValidateLevelCommand = new Command(() =>
             {
-                this.uIMessage.TryDoAction(logger, () =>
+                this.UIMessage.TryDoAction(Logger, () =>
                 {
                     LevelService.Update(this.ConecernedLevel);
                     this.DisplayLevelDetail = false;
@@ -571,13 +571,13 @@ namespace EXGEPA.Localization.Controls
         {
             if ((ListOfAnalyticalAccount == null) || (ListOfAnalyticalAccount.Count == 0))
             {
-                this.uIMessage.Error("Veuiller creer un compte analytique avant de continuer SVP");
+                this.UIMessage.Error("Veuiller creer un compte analytique avant de continuer SVP");
                 return;
             }
 
             if (ConecernedLevel == null)
             {
-                this.uIMessage.Error("Veuillez Selectionner un niveau SVP");
+                this.UIMessage.Error("Veuillez Selectionner un niveau SVP");
                 return;
             }
 
@@ -602,11 +602,11 @@ namespace EXGEPA.Localization.Controls
 
             ValidateOfficeCommand = new Command(() =>
             {
-                this.uIMessage.TryDoAction(logger, () =>
+                this.UIMessage.TryDoAction(Logger, () =>
                     {
                         if (ConecernedOffice.AnalyticalAccount == null)
                         {
-                            this.uIMessage.Error("Veuillez selectionner un compte analytique SVP ");
+                            this.UIMessage.Error("Veuillez selectionner un compte analytique SVP ");
                         }
                         else
                         {
@@ -632,10 +632,10 @@ namespace EXGEPA.Localization.Controls
 
         public void DeleteOffice()
         {
-            var result = this.uIMessage.Warning("Etes vous sur de vouloir supprimer ce local ?");
+            var result = this.UIMessage.Warning("Etes vous sur de vouloir supprimer ce local ?");
             if (result == System.Windows.MessageBoxResult.Yes)
             {
-                this.uIMessage.TryDoAction(logger, () =>
+                this.UIMessage.TryDoAction(Logger, () =>
                 {
                     OfficeService.Delete(this.ConecernedOffice);
                     this.ConecernedLevel.Offices.Remove(this.ConecernedOffice);
@@ -651,7 +651,7 @@ namespace EXGEPA.Localization.Controls
                 this.DisplayOfficeDetail = true;
                 this.ValidateOfficeCommand = new Command(() =>
                 {
-                    this.uIMessage.TryDoAction(logger, () =>
+                    this.UIMessage.TryDoAction(Logger, () =>
                     {
                         OfficeService.Update(this.ConecernedOffice);
                         this.DisplayOfficeDetail = false;

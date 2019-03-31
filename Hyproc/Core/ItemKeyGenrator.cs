@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using CORESI.Data;
 using CORESI.IoC;
 using CORESI.WPF.Controls;

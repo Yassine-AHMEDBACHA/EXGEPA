@@ -1,5 +1,4 @@
-﻿using CORESI.Data;
-using CORESI.WPF.Core;
+﻿using CORESI.WPF.Core;
 using CORESI.WPF.Model;
 
 namespace CORESI.WPF.Controls

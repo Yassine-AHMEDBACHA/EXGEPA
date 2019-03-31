@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.Composition;
 using System.Reflection;
 using System.Windows.Media;
-using CORESI.Tools;
 using CORESI.WPF.Core;
 using CORESI.WPF.Model;
 using EXGEPA.Core.Interfaces;

@@ -7,7 +7,6 @@ using CORESI.WPF.Model;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System;
 
 namespace Hyproc.Controls
 {
@@ -56,7 +55,7 @@ namespace Hyproc.Controls
 
         private void ShowOptionWindow()
         {
-            var result = this.uIService.ShowLoginWindow();
+            var result = this.UIService.ShowLoginWindow();
             if (result != null)
                 if (result.Login.ToLower()      == "admin")
                 {
@@ -69,7 +68,7 @@ namespace Hyproc.Controls
                     view.ShowDialog();
                 }
                 else
-                    this.uIMessage.Information("Vous n'avez pas les droits pour continuer !");
+                    this.UIMessage.Information("Vous n'avez pas les droits pour continuer !");
         }
 
         private void sync()
@@ -86,24 +85,24 @@ namespace Hyproc.Controls
         private void testConnextion()
         {
 
-            this.uIMessage.TryDoAction(logger, () =>
+            this.UIMessage.TryDoAction(Logger, () =>
             {
                 var dbFacade = ServiceLocator.Resolve<IDbFacade>();
                 var connextionString = this.GetConnextionString(this.DataBase);
                 if (dbFacade.TestConnection(connextionString))
                 {
                     var remotedbFacade = dbFacade.ChangeDB(connextionString);
-                    this.uIMessage.Information("Test reussit");
+                    this.UIMessage.Information("Test reussit");
                     this.AvailableDataBase = remotedbFacade.ExecuteReader<string>("SELECT name  FROM sys.databases  where database_id>4 ", (dr) => dr["name"].ToString());
                 }
                 else
-                    this.uIMessage.Error("Test echoué");
+                    this.UIMessage.Error("Test echoué");
             });
         }
 
         private void AskForSync(IDbFacade dbFacade, string connextionString)
         {
-            this.uIMessage.ConfirmeAndTryDoAction(logger, "Est vous sur de vouloir lancer la synchronisation avec la base distante ?",
+            this.UIMessage.ConfirmeAndTryDoAction(Logger, "Est vous sur de vouloir lancer la synchronisation avec la base distante ?",
                                 () =>
                                 {
                                     this.ProgressBarVisible = true;

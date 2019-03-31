@@ -17,13 +17,10 @@ namespace CORESI.WPF.Core.Shell
 
         public bool CanExecute(object parameter)
         {
+            this?.CanExecuteChanged(this, new EventArgs());
             return true;
         }
 
-        public void Execute(object parameter)
-        {
-            if (Action != null)
-                Action((Page)parameter);
-        }
+        public void Execute(object parameter) => Action?.Invoke((Page)parameter);
     }
 }

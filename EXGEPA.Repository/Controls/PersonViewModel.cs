@@ -6,7 +6,7 @@ namespace EXGEPA.Repository.Controls
 {
     public class PersonViewModel : GenericEditableViewModel<Person>
     {
-        public PersonViewModel(IExportable exportableView) : base(exportableView)
+        public PersonViewModel(IExportableGrid exportableView) : base(exportableView)
         {
             this.Caption = "Liste de Personnel";
         }

@@ -4,29 +4,40 @@
 
 namespace CORESI.WPF.Core.Framework
 {
+    using CORESI.IoC;
+    using CORESI.WPF.Model;
+    using log4net;
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using CORESI.IoC;
-    using CORESI.WPF.Model;
+    using System.Reflection;
 
     public class PageViewModel : UiNotifier, IPageSetter
     {
-        protected static readonly log4net.ILog Logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
-        protected readonly IUIMessage uIMessage;
-        protected readonly IUIService uIService;
+        private readonly IUIService uIService;
 
         public PageViewModel()
         {
-            ServiceLocator.GetDefault(out this.uIMessage);
+            this.UIMessage = ServiceLocator.GetDefault<IUIMessage>();
             ServiceLocator.Resolve(out this.uIService);
-            this.Groups = new ObservableCollection<Group>();
+            Groups = new ObservableCollection<Group>();
         }
+
+        protected IUIMessage UIMessage { get; }
+
+        protected ILog Logger { get; } = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public string Caption { get; set; }
 
+        public Action ClosePage { get; set; }
+
+        public bool IsSelected { get; set; }
+
+        public Categorie Categorie { get; set; }
+
         public ObservableCollection<Group> Groups { get; set; }
+
+        protected IUIService UIService => uIService;
 
         public Group AddNewGroup(string caption = null, IList<RibbonButton> buttons = null)
         {
@@ -42,11 +53,5 @@ namespace CORESI.WPF.Core.Framework
                 this.Groups.Add(group);
             }
         }
-
-        public Action ClosePage { get; set; }
-
-        public bool IsSelected { get; set; }
-
-        public Categorie Categorie { get; set; }
     }
 }

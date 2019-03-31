@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using CORESI.Data;
 using CORESI.IoC;
 using CORESI.WPF.Controls;
@@ -15,7 +12,7 @@ namespace EXGEPA.Repository.Controls
     {
         private IDataProvider<OrderDocumentType> _OrderDocumentTypeTypeService;
 
-        public OrderDocumentViewModel(IExportable exportableView) : base(exportableView)
+        public OrderDocumentViewModel(IExportableGrid exportableView) : base(exportableView)
         {
             this.Caption = "Liste de documents de base";
             ServiceLocator.Resolve(out this._OrderDocumentTypeTypeService);

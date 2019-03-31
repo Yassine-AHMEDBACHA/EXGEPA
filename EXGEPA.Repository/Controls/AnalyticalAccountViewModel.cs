@@ -23,7 +23,7 @@ namespace EXGEPA.Repository.Controls
             }
         }
 
-        public AnalyticalAccountViewModel(IExportable exportableView) : base(exportableView)
+        public AnalyticalAccountViewModel(IExportableGrid exportableView) : base(exportableView)
         {
             ServiceLocator.Resolve(out this.analyticalAccountTypeService);
             this.Caption = "Lists de comptes analytiques";

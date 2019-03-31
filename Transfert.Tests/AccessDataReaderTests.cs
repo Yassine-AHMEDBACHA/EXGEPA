@@ -1,12 +1,9 @@
 ﻿using EXGEPA.DataLoader.Access;
 using EXGEPA.Model;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 
 namespace Transfert.Tests
 {

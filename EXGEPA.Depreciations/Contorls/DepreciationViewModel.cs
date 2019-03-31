@@ -1,6 +1,5 @@
 ﻿using CORESI.Data;
 using CORESI.IoC;
-using CORESI.WPF;
 using CORESI.WPF.Controls;
 using CORESI.WPF.Core;
 using CORESI.WPF.Model;
@@ -62,7 +61,7 @@ namespace EXGEPA.Depreciations.Contorls
             Monthely = new MonthelyCalculator(accountingPeriodHelper);
             this.Caption = pageCaption;
 
-            this.uIMessage.TryDoAction(logger, () =>
+            this.UIMessage.TryDoAction(logger, () =>
                 {
                     _RepositoryDataProvider = ServiceLocator.Resolve<IRepositoryDataProvider>();
                     ItemService = ServiceLocator.Resolve<IDataProvider<Item>>();
@@ -76,8 +75,8 @@ namespace EXGEPA.Depreciations.Contorls
                 });
             var processName = parameterProvider.GetAndSetIfMissing("DepreciationReport", "simulation.exe");
 
-            this.Reports = this.AddNewGroup().AddCommand("Etats", () => this.uIMessage.TryDoAction(logger, ()=> ExternalProcess.StartProcess(processName)));
-            this.uIMessage.TryDoActionAsync(logger, () =>
+            this.Reports = this.AddNewGroup().AddCommand("Etats", () => this.UIMessage.TryDoAction(logger, ()=> ExternalProcess.StartProcess(processName)));
+            this.UIMessage.TryDoActionAsync(logger, () =>
              {
                  this.Reports.IsEnabled = Simulation.Any();
              });
@@ -90,7 +89,7 @@ namespace EXGEPA.Depreciations.Contorls
 
         public override void InitData()
         {
-            this.uIMessage.TryDoActionAsync(logger, () =>
+            this.UIMessage.TryDoActionAsync(logger, () =>
             {
                 logger.Info("Starting computing depreciation for periode between : " + startDateEditRibbon.Date.ToShortDateString() + " and " + endDateEditRibbon.Date.ToShortDateString());
                 if (endDateEditRibbon.Date <= this.startDateEditRibbon.Date)
@@ -136,7 +135,7 @@ namespace EXGEPA.Depreciations.Contorls
                     }
                     else
                     {
-                        this.uIMessage.Warning("Votre simulation ne concerne pas l'exercice en cours, l'archivage automatique est déscativé !");
+                        this.UIMessage.Warning("Votre simulation ne concerne pas l'exercice en cours, l'archivage automatique est déscativé !");
                     }
                 }
 

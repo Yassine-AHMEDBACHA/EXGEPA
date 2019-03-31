@@ -1,14 +1,6 @@
-﻿using CORESI.IoC;
-using CORESI.WPF;
-using CORESI.WPF.Core;
+﻿using CORESI.WPF.Core;
 using CORESI.WPF.Model;
-using DevExpress.Mvvm;
 using EXGEPA.Invoice.Controls;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.Linq;
-using System.Text;
 
 namespace EXGEPA.Invoice
 {

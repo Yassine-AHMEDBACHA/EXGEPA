@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace CORESI.Tools
 {
-   public  class PropertyTools
+    public  class PropertyTools
     {
         public static string GetPropertyName<T>(System.Linq.Expressions.Expression<Func<T, object>> property)
         {

@@ -1,6 +1,6 @@
 ﻿namespace CORESI.WPF.Core.Interfaces
 {
-    public interface IExportable
+    public interface IExportableGrid
     {
         string DisplayedFilter { get; }
         void Print(string documentName);

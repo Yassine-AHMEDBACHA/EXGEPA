@@ -9,7 +9,7 @@ namespace EXGEPA.Output.Controls
 {
     public class OutputViewModel : CommunOutputViewModel
     {
-        public OutputViewModel(OutputType outputType, IExportable exportableView) : base(outputType, exportableView)
+        public OutputViewModel(OutputType outputType, IExportableGrid exportableView) : base(outputType, exportableView)
         { }
 
         private ObservableCollection<NamedKeyRow> _ListOfTakers;

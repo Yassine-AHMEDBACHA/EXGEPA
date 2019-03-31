@@ -27,7 +27,7 @@ namespace EXGEPA.Items.Controls
         IUIItemService UIItemService { get; set; }
         IRepositoryDataProvider RepositoryDataProvider { get; set; }
 
-        public ItemGridViewModel(IExportable exportableView) : base(exportableView, false)
+        public ItemGridViewModel(IExportableGrid exportableView) : base(exportableView, false)
         {
             logger.Info("Initiating ItemGridViewModel ...");
             logger.Debug("Start composing ItemGridViewModel ...");
@@ -82,7 +82,7 @@ namespace EXGEPA.Items.Controls
                     var view = new ItemHistoView();
                     var vm = new ItemHistoViewModel(view, this.SelectedRow.Id);
                     var page = new Page(vm, view, true);
-                    this.uIService.AddPage(page);
+                    this.UIService.AddPage(page);
                 }
             });
         }
@@ -124,7 +124,7 @@ namespace EXGEPA.Items.Controls
                 });
 
 
-                group.AddCommand("Details", () => this.uIMessage.TryDoAction(logger, () => ExternalProcess.StartProcess("EQUIPCOMPTE.exe")));
+                group.AddCommand("Details", () => this.UIMessage.TryDoAction(logger, () => ExternalProcess.StartProcess("EQUIPCOMPTE.exe")));
 
                 return group;
             }

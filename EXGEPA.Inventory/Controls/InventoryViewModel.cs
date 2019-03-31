@@ -21,8 +21,6 @@ namespace EXGEPA.Inventory.Controls
 {
     public class InventoryViewModel : GenericEditableViewModel<InventoryData>
     {
-        readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         private readonly IParameterProvider parameterProvider;
 
         private readonly IDataProvider<Item> itemService;
@@ -37,7 +35,7 @@ namespace EXGEPA.Inventory.Controls
 
         private ADeviceFileManager DeviceFileManager { get; set; }
 
-        public InventoryViewModel(IExportable view)
+        public InventoryViewModel(IExportableGrid view)
         {
             ServiceLocator.Resolve(out this.repositoryDataProvider);
 
@@ -108,7 +106,7 @@ namespace EXGEPA.Inventory.Controls
                 //    itemByCompteProvider.PrintImmobilisationByAccount(select, "Etat des inventaire physique par compte");
                 //});
 
-                group.AddCommand("Details", () => this.uIMessage.TryDoAction(this.logger, () => ExternalProcess.StartProcess("INVCOMPTE.exe")));
+                group.AddCommand("Details", () => this.UIMessage.TryDoAction(this.Logger, () => ExternalProcess.StartProcess("INVCOMPTE.exe")));
 
                 //group.AddCommand("Récap", () =>
                 //{
@@ -131,12 +129,12 @@ namespace EXGEPA.Inventory.Controls
 
             if (this.parameterProvider.GetValue<bool>("UseAndroidDevice", false))
             {
-                logger.Info("Loading android device manager");
+                this.Logger.Info("Loading android device manager");
                 this.DeviceFileManager = new AndroidFileManager();
             }
             else
             {
-                logger.Info("Loading WinCE device manager");
+                this.Logger.Info("Loading WinCE device manager");
                 this.DeviceFileManager = new WindowsCEFileManager();
             }
         }
@@ -150,7 +148,7 @@ namespace EXGEPA.Inventory.Controls
                 }
                 else
                 {
-                    uIMessage.Information("Aucun item correspandant a ce code n'a été trouvé !");
+                    this.UIMessage.Information("Aucun item correspandant a ce code n'a été trouvé !");
                 }
         }
 
@@ -158,10 +156,8 @@ namespace EXGEPA.Inventory.Controls
         {
             StartBackGroundAction(() =>
             {
-                using (var scoopLogger = new ScoopLogger("Initializing inventory module", this.logger))
+                using (var scoopLogger = new ScoopLogger("Initializing inventory module", this.Logger))
                 {
-
-
                     var inventoryRows = this.inventoryService.SelectAll();
                     scoopLogger.Snap("To load inventorys");
                     var Items = this.itemService.SelectAll();
@@ -266,7 +262,7 @@ namespace EXGEPA.Inventory.Controls
             }
         }
 
-        protected override void InitilizeRibbonGroup(IExportable view = null)
+        protected override void InitilizeRibbonGroup(IExportableGrid view = null)
         {
             base.InitilizeRibbonGroup(view);
             SetGapTraitementGroup();
@@ -369,7 +365,7 @@ namespace EXGEPA.Inventory.Controls
 
         private void DisplayArchive()
         {
-            this.uIMessage.TryDoAction(this.logger, () =>
+            this.UIMessage.TryDoAction(this.Logger, () =>
              ExternalProcess.StartProcess("ArchiveINV.exe"));
         } 
 
@@ -400,7 +396,7 @@ namespace EXGEPA.Inventory.Controls
 
         private void ClearInvent()
         {
-            uIMessage.TryDoUIActionAsync(this.logger, () =>
+            this.UIMessage.TryDoUIActionAsync(this.Logger, () =>
             {
                 var vm = new Wind1VM();
 

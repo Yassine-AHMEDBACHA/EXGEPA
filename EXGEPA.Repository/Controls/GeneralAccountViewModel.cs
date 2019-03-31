@@ -10,7 +10,7 @@ namespace EXGEPA.Repository.Controls
 {
     public class GeneralAccountViewModel : GenericEditableViewModel<GeneralAccount>
     {
-        public GeneralAccountViewModel(IExportable exportableView) : base(exportableView)
+        public GeneralAccountViewModel(IExportableGrid exportableView) : base(exportableView)
         {
             this.Caption = "Liste de comptes généraux";
             this.IsInvestmentAccount = true;

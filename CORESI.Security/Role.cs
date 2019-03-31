@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using CORESI.Data;
-using CORESI.Security;
 
 namespace CORESI.Security
 {

@@ -22,7 +22,7 @@ namespace EXGEPA.Repository.Controls
 
         private ObservableCollection<ReferenceType> _ListOfReferenceType;
 
-        public ReferenceViewModel(IExportable exportableView) : base(exportableView, false)
+        public ReferenceViewModel(IExportableGrid exportableView) : base(exportableView, false)
         {
             this.Caption = "Liste de réfèrences";
             ServiceLocator.Resolve(out this.parameterProvider);
@@ -186,24 +186,24 @@ namespace EXGEPA.Repository.Controls
         {
             if (this.ConcernedRow?.ReferenceType == null)
             {
-                uIMessage.Error($"Vous devez selectionner une famille");
+                UIMessage.Error($"Vous devez selectionner une famille");
                 return false;
             }
 
             if (!this.ConcernedRow.Caption.IsValidData())
             {
-                uIMessage.Error($"Vous devez saisir une libellé");
+                UIMessage.Error($"Vous devez saisir une libellé");
                 return false;
             }
 
             if (!this.ConcernedRow.Key.IsValidData() || !this.ConcernedRow.Key.StartsWith(this.ConcernedRow.ReferenceType.Key))
             {
-                uIMessage.Error($"Code non valide, le code doit commencer par {this.ConcernedRow.ReferenceType?.Key}");
+                UIMessage.Error($"Code non valide, le code doit commencer par {this.ConcernedRow.ReferenceType?.Key}");
                 return false;
             }
             if (this.ConcernedRow.InvestmentAccount == null)
             {
-                uIMessage.Error($"Vous devez selectionner un compte investissment");
+                UIMessage.Error($"Vous devez selectionner un compte investissment");
                 return false;
             }
 
