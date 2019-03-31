@@ -5,7 +5,7 @@
         public ItemByCompte()
         {
             InitializeComponent();
-         
+
         }
 
     }

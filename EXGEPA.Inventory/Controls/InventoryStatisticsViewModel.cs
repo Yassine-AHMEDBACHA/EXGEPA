@@ -6,7 +6,7 @@ namespace EXGEPA.Inventory.Controls
     {
         public InventoryStatisticsViewModel()
         {
-            this.Caption = "Statistiques"; 
+            this.Caption = "Statistiques";
         }
     }
 }

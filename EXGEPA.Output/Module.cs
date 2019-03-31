@@ -17,8 +17,8 @@ namespace EXGEPA.Output
         {
             var outputGroup = new Group("Sorties");
 
-            outputGroup.AddCommand("Proposés à la reforme", IconProvider.Reforme, AddPage<OutputView, ProposeToReformViewModel>,true);
-            outputGroup.AddCommand("Reforme", IconProvider.Reforme, AddPage<OutputView, ReformeCertificateViewModel>,true);
+            outputGroup.AddCommand("Proposés à la reforme", IconProvider.Reforme, AddPage<OutputView, ProposeToReformViewModel>, true);
+            outputGroup.AddCommand("Reforme", IconProvider.Reforme, AddPage<OutputView, ReformeCertificateViewModel>, true);
             outputGroup.AddCommand("Vente", IconProvider.Download, AddPage<OutputView, SaleCertificateViewModel>, true);
             outputGroup.AddCommand("Cession", IconProvider.CessionSmall, AddPage<OutputView, CessionCertificateViewModel>, true);
             outputGroup.AddCommand("Disparition", IconProvider.DisparitionSmall, AddPage<OutputView, DisparitionCertificateViewModel>, true);

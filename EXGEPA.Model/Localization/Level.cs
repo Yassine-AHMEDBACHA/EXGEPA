@@ -8,7 +8,7 @@ namespace EXGEPA.Model
         [DataAttribute(IsList = true)]
         public virtual IList<Office> Offices { get; set; }
 
-        
+
         public virtual Building Building { get; set; }
     }
 }

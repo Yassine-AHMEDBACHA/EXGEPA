@@ -33,15 +33,17 @@ namespace EXGEPA.Output.Controls
             var reformeCertificate = this.SelectedRow;
             if (reformeCertificate == null)
                 return;
-            var options = new ItemAttributionOptions();
-            options.PageCaption = "PV N°:" + reformeCertificate.Key;
-            options.SetConfirmationMessage = "Etes vous sûr de vouloir reformer ces articles et les inclure dans le PV N° " + reformeCertificate.Key;
-            options.ResetConfirmationMessage = "Etes vous sûr de vouloir retirer ces articles du PV N° " + reformeCertificate.Key;
-            options.RightPanelCaption = "Contenu du PV de reforme N° " + reformeCertificate.Key;
-            options.Tester = (item) => item.ReformeCertificate?.Id == reformeCertificate.Id;
-            options.Setter = (item) => item.ReformeCertificate = reformeCertificate;
-            options.Resetter = (item) => item.ReformeCertificate = null;
-            options.Categorie = new Categorie("PV de Reforme", Colors.Tomato);
+            var options = new ItemAttributionOptions
+            {
+                PageCaption = "PV N°:" + reformeCertificate.Key,
+                SetConfirmationMessage = "Etes vous sûr de vouloir reformer ces articles et les inclure dans le PV N° " + reformeCertificate.Key,
+                ResetConfirmationMessage = "Etes vous sûr de vouloir retirer ces articles du PV N° " + reformeCertificate.Key,
+                RightPanelCaption = "Contenu du PV de reforme N° " + reformeCertificate.Key,
+                Tester = (item) => item.ReformeCertificate?.Id == reformeCertificate.Id,
+                Setter = (item) => item.ReformeCertificate = reformeCertificate,
+                Resetter = (item) => item.ReformeCertificate = null,
+                Categorie = new Categorie("PV de Reforme", Colors.Tomato)
+            };
             UIItemService.ShowItemAttribution(options);
         }
     }

@@ -22,8 +22,7 @@ namespace Hyproc.Core
         {
             Wrapper<TData> data = null;
             var key = keySelector(x);
-            TData slaveItem;
-            if (slaveDictionary.TryGetValue(key, out slaveItem))
+            if (slaveDictionary.TryGetValue(key, out TData slaveItem))
             {
                 x.Id = slaveItem.Id;
                 if ((int)x.Tag > (int)slaveItem.Tag)

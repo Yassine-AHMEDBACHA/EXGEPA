@@ -47,7 +47,7 @@ namespace EXGEPA.Security.Controls
             {
                 this.ConcernedRow = (Role)SelectedRow.Clone();
                 this.DisplayDetail = true;
-               
+
                 this.ValidateCommand = new Command(UpdateRole);
                 RaisePropertyChangedForEditionPanel();
                 RaisePropertyChanged("Abilities");

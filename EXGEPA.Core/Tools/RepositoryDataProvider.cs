@@ -1,19 +1,20 @@
-﻿using CORESI.Data;
-using CORESI.IoC;
-using CORESI.WPF;
-using EXGEPA.Core.Interfaces;
-using EXGEPA.Model;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using CORESI.Data;
+using CORESI.IoC;
+using CORESI.Tools.Collections;
+using CORESI.WPF;
+using EXGEPA.Core.Interfaces;
+using EXGEPA.Model;
 
 namespace EXGEPA.Core
 {
     [Export(typeof(IRepositoryDataProvider)), PartCreationPolicy(CreationPolicy.NonShared)]
-    
+
     public class RepositoryDataProvider : UiNotifier, IRepositoryDataProvider
     {
         static readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
@@ -72,6 +73,9 @@ namespace EXGEPA.Core
         [Import(typeof(IDataProvider<ReferenceType>))]
         IDataProvider<ReferenceType> ReferenceTypeService { get; set; }
 
+        [Import(typeof(IDataProvider<Item>))]
+        IDataProvider<Item> ItemService { get; set; }
+
         ManualResetEventSlim _ManualResetEventSlim;
         public RepositoryDataProvider()
         {
@@ -112,9 +116,8 @@ namespace EXGEPA.Core
             }
         }
 
-
-
         private ObservableCollection<Tva> _ListOfTva;
+
         public ObservableCollection<Tva> ListOfTva
         {
             get { return _ListOfTva; }
@@ -262,6 +265,7 @@ namespace EXGEPA.Core
         public void FillRepositories()
         {
             _ManualResetEventSlim.Reset();
+            AllItems = new ObservableCollection<Item>(ItemService.SelectAll());
             ListOfStats = new ObservableCollection<ItemState>(ItemStateService.SelectAll());
             ListOfProposeToReformCertificate = new ObservableCollection<ProposeToReformCertificate>(ProposeToReformCertificateService.SelectAll());
             ListOfAccountingPeriod = new ObservableCollection<AccountingPeriod>(AccountingPeriodService.SelectAll());
@@ -273,7 +277,7 @@ namespace EXGEPA.Core
             this.ListOfReferenceType = new ObservableCollection<ReferenceType>(ReferenceTypeService.SelectAll());
             ListOfReference = new ObservableCollection<Reference>(ReferenceService.SelectAll());
             OrderDocuments = new ObservableCollection<OrderDocument>(OrderDocumentService.SelectAll());
-            ListOfReference.ToList().ForEach(reference =>
+            ListOfReference.ForEach(reference =>
             {
                 reference.ChargeAccount = ListOfGeneralAccount.FirstOrDefault(x => x.Id == reference.ChargeAccount?.Id);
                 reference.InvestmentAccount = ListOfGeneralAccount.FirstOrDefault(x => x.Id == reference.InvestmentAccount?.Id);
@@ -284,33 +288,37 @@ namespace EXGEPA.Core
             ListOfInvoice = new ObservableCollection<Invoice>(InvoiceService.SelectAll());
             ListOfInputSheet = new ObservableCollection<InputSheet>(InputSheetService.SelectAll());
             ListOfReceiveOrder = new ObservableCollection<ReceiveOrder>(ReceiveOrderService.SelectAll());
-            ListOfInvoice.ToList().ForEach(invoice =>
+            Invoices = ListOfInvoice.ApplyOnAll(invoice =>
             {
                 invoice.Provider = ListOfProvider.FirstOrDefault(provider => provider.Id == invoice.Provider?.Id);
                 invoice.InputSheet = ListOfInputSheet.FirstOrDefault(inputSheet => inputSheet.Id == invoice.InputSheet?.Id);
                 invoice.HoldbackGeneralAccount = ListOfGeneralAccount.FirstOrDefault(x => x.Id == invoice.HoldbackGeneralAccount?.Id);
                 invoice.TvaGeneralAccount = ListOfGeneralAccount.FirstOrDefault(x => x.Id == invoice.TvaGeneralAccount?.Id);
-                
                 invoice.OrderDocument = OrderDocuments.FirstOrDefault(x => x.Id == invoice.OrderDocument?.Id);
-            });
-            Invoices = ListOfInvoice.ToDictionary(x => x.Id);
+            }).ToDictionary(x => x.Id);
             ListOfAnalyticalAccount = new ObservableCollection<AnalyticalAccount>(AnalyticalAccountService.SelectAll());
             ListOfDepreciation = new ObservableCollection<Depreciation>();
             ListOfTva = new ObservableCollection<Tva>(TvaService.SelectAll());
             var ListOfOffices = OfficeService.SelectAll();
             ListOfOffice = new ObservableCollection<Office>(ListOfOffices);
-            Parallel.ForEach(ListOfOffices, office =>
+            ListOfOffices.ParallelForEach(office =>
             {
                 var x = office.AnalyticalAccount?.Id;
                 office.AnalyticalAccount = ListOfAnalyticalAccount.FirstOrDefault(analyticalAccount => analyticalAccount.Id == office.AnalyticalAccount?.Id);
             });
+
             Offices = ListOfOffices.ToDictionary(x => x.Id);
         }
 
         public Dictionary<int, Invoice> Invoices { get; set; }
+
         public Dictionary<int, Reference> References { get; set; }
+
         public Dictionary<int, Office> Offices { get; set; }
+
         IUIMessage UIMessage { get; set; }
+
+        public ObservableCollection<Item> AllItems { get; set; }
 
         public void BindItemFields(Item item)
         {
@@ -320,17 +328,17 @@ namespace EXGEPA.Core
             item.GeneralAccount = ListOfGeneralAccount.FirstOrDefault(account => account.Id == item.GeneralAccount?.Id);
             if (item.Reference != null)
             {
-                Reference reference;
-                References.TryGetValue(item.Reference.Id, out reference);
+                References.TryGetValue(item.Reference.Id, out Reference reference);
                 item.Reference = reference;
             }
 
             if (item.Invoice != null)
             {
-                Invoice invoice;
-                Invoices.TryGetValue(item.Invoice.Id, out invoice);
+                Invoices.TryGetValue(item.Invoice.Id, out Invoice invoice);
                 item.Invoice = invoice;
             }
+
+            item.Owner = AllItems.FirstOrDefault(x => x.Id == item.Owner?.Id);
 
             item.Person = ListOfPerson.FirstOrDefault(person => person.Id == item.Person?.Id);
 
@@ -343,17 +351,16 @@ namespace EXGEPA.Core
             item.TransferOrder = ListOfTransferOrder.FirstOrDefault(transferOrder => transferOrder.Id == item.TransferOrder?.Id);
             if (item.Office != null)
             {
-                Office office;
-                Offices.TryGetValue(item.Office.Id, out office);
+                Offices.TryGetValue(item.Office.Id, out Office office);
                 item.Office = office;
             }
 
             item.ReformeCertificate = ListOfReformeCertificate.FirstOrDefault(reformeCertificate => reformeCertificate.Id == item.ReformeCertificate?.Id);
-            
+
             item.OutputCertificate = ListOfOutputCertificate.FirstOrDefault(outputCertificate => outputCertificate.Id == item.OutputCertificate?.Id);
-            
+
             item.AccountingPeriod = ListOfAccountingPeriod.FirstOrDefault(accountingPeriod => accountingPeriod.Id == item.AccountingPeriod?.Id);
-            
+
             item.ItemState = ListOfStats.FirstOrDefault(state => state.Id == item.ItemState?.Id);
         }
 

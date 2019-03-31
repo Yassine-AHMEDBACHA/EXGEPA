@@ -24,11 +24,11 @@ namespace EXGEPA.Sonatrach.Core
 
         public void Serialize()
         {
-           
+
         }
 
         public void SerializeInvoice(Invoice invoice)
-        {      
+        {
             var header = this.GetCGFRA_FR30_BOD(invoice);
             var itemRows = this.GetCGFRA_FR32(invoice.Items);
             var stringBuilder = new StringBuilder();
@@ -64,8 +64,7 @@ namespace EXGEPA.Sonatrach.Core
 
         private FR30_BOD GenerateCGFRA_FR30_BOD(Certificate certificate)
         {
-            var invoice = certificate as Invoice;
-            if (invoice != null)
+            if (certificate is Invoice invoice)
                 return invoice.ToFR32_BOD();
             else
                 throw new NotImplementedException();

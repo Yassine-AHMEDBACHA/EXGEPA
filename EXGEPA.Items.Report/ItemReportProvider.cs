@@ -7,7 +7,7 @@ namespace EXGEPA.Items.Report
 {
     public class ItemReportProvider : IReportPreviwer<Item>
     {
-        public  Group GetGroupForReportBottons()
+        public Group GetGroupForReportBottons()
         {
             var group = new Group("Editions");
             group.AddCommand<RibbonButton>();
@@ -16,7 +16,7 @@ namespace EXGEPA.Items.Report
 
         public void SetPreviewReportGroup(IPageSetter pageSetter)
         {
-           
+
         }
     }
 }

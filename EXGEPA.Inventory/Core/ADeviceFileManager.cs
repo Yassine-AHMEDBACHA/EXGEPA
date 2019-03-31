@@ -14,21 +14,21 @@ namespace EXGEPA.Inventory.Core
         protected const string tempFile = @"temp.txt";
         protected const string backupFile = @"buckup.txt";
 
-        
+
         public IUIMessage UIMessage { get; private set; }
         public ADeviceFileManager()
         {
             this.UIMessage = ServiceLocator.GetPriorizedInstance<IUIMessage>();
-            
+
         }
 
         public abstract bool DownloadFile(string destinationPath = tempFile);
 
-       
+
 
         public bool UpdateInventFile()
         {
-           
+
             bool updateStatus = false;
             if (File.Exists(targetPath))
             {
@@ -62,6 +62,6 @@ pour quitter appuyez sur Annuler", MessageBoxButton.YesNoCancel);
         }
 
 
-        
+
     }
 }

@@ -1,5 +1,6 @@
 ﻿using CORESI.Data;
 using CORESI.IoC;
+using CORESI.Tools.Collections;
 using EXGEPA.Model;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,7 @@ namespace EXGEPA.Depreciations.Core
             this._Factor = 12 / factor;
             if (loadHistory)
             {
-                AccountingPeriodService.SelectAll().ToList().ForEach(x =>
+                AccountingPeriodService.SelectAll().ForEach(x =>
                     {
                         AccountingPeriods.Add(x.StartDate, x);
                         x.Key = x.StartDate.Year.ToString();
@@ -36,8 +37,7 @@ namespace EXGEPA.Depreciations.Core
             startDate = new DateTime(startDate.Year, 01, 01);
             do
             {
-                AccountingPeriod currentPeriod;
-                if (AccountingPeriods.TryGetValue(startDate.Date, out currentPeriod))
+                if (AccountingPeriods.TryGetValue(startDate.Date, out AccountingPeriod currentPeriod))
                 {
                     startDate = startDate.AddMonths(_Factor);
                 }

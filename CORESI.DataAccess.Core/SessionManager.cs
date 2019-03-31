@@ -20,7 +20,7 @@ namespace CORESI.DataAccess.Core
 
         Session currentSession;
         public Session CurrentSession => this.currentSession;
-        
+
 
         public void CloseSession()
         {
@@ -59,7 +59,7 @@ namespace CORESI.DataAccess.Core
 
         public void SetApplicationName(string name)
         {
-          
+
             var query = "Update Sessions set [ApplicationName] = '" + name + "' where id =" + this.currentSession.Id.ToString();
             _DbFacade.ExecuteNonQuery(query);
         }

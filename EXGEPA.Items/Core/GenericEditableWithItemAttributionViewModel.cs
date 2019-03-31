@@ -5,9 +5,9 @@ using System;
 
 namespace EXGEPA.Items.Core
 {
-    public class GenericEditableWithItemAttributionViewModel<T> : GenericEditableViewModel<T> where T :KeyRow, ICloneable
+    public class GenericEditableWithItemAttributionViewModel<T> : GenericEditableViewModel<T> where T : KeyRow, ICloneable
     {
-        
+
         //public override Page GetModulePage<Tview>(string pageTitle,string propertyName = null)
         //{
 

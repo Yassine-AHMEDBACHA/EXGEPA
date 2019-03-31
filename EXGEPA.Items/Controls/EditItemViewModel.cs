@@ -64,8 +64,7 @@
                 }
                 else
                 {
-                    if (this._SavePicture != null)
-                        this._SavePicture();
+                    this._SavePicture?.Invoke();
                     this.ConcernedItem.Json = JsonConvert.SerializeObject(this.itemExtendedProperties);
                     itemService.Update(this.ConcernedItem);
                     this.ClosePage();

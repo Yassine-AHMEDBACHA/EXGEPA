@@ -1,56 +1,62 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
-using System.Runtime.CompilerServices;
+﻿// <copyright file="DependancyManager.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace CORESI.Tools
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Reflection;
+    using System.Runtime.CompilerServices;
+
     public static class DependancyManager
     {
-        static readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly log4net.ILog Logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        public static Dictionary<string, Assembly> AlreadyLoadedAssemblies { get; set; }
+        private static readonly object Locker = new object();
+
         static DependancyManager()
         {
             AlreadyLoadedAssemblies = new Dictionary<string, Assembly>();
         }
 
+        public static Dictionary<string, Assembly> AlreadyLoadedAssemblies { get; set; }
 
         public static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
+            Logger.Debug("Resolving : " + args.RequestingAssembly);
 
-            logger.Debug("Resolving : " + args.RequestingAssembly);
             // var strTempAssmbPath = @"C:\Program Files (x86)\DevExpress 15.2\Components\Bin\Framework\" + args.Name + ".dll";
             var strTempAssmbPath = args.Name + ".dll";
             Assembly resolvedAssembly = null;
             if (File.Exists(strTempAssmbPath))
             {
-
-                logger.Info(strTempAssmbPath);
+                Logger.Info(strTempAssmbPath);
                 resolvedAssembly = Assembly.LoadFrom(strTempAssmbPath);
-
             }
             else
             {
-                logger.Error("Failed to resolve : " + args.Name + "Requested by" + args.RequestingAssembly.FullName);
+                Logger.Error("Failed to resolve : " + args.Name + "Requested by" + args.RequestingAssembly.FullName);
             }
+
             return resolvedAssembly;
         }
-        static object locker = new object();
+
         public static void RunTypeInitializers(Assembly assembly)
         {
-            lock (locker)
+            lock (Locker)
             {
-                logger.Debug("preloading " + assembly.FullName);
+                Logger.Debug("preloading " + assembly.FullName);
                 if (AlreadyLoadedAssemblies.ContainsKey(assembly.FullName))
                 {
                     return;
                 }
+
                 AlreadyLoadedAssemblies[assembly.FullName] = assembly;
             }
 
-            using (var scooplogger = new ScoopLogger("Loading " + assembly.FullName, logger))
+            using (var scooplogger = new ScoopLogger("Loading " + assembly.FullName, Logger))
             {
                 foreach (var type in assembly.GetExportedTypes())
                 {
@@ -63,10 +69,10 @@ namespace CORESI.Tools
         {
             RunTypeInitializers(Assembly.GetAssembly(type));
         }
+
         public static void RunTypeInitializers<T>()
         {
             RunTypeInitializers(typeof(T));
         }
-
     }
 }

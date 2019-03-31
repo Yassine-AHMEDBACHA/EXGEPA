@@ -23,7 +23,7 @@ namespace EXGEPA.Settings.Controls
         private const string DirectionNameKey = "DirectionName";
 
         private const string ThemeKey = "Theme";
-        
+
         private const string LogoFileNameKey = "LogoFileName";
 
         private const string PicturesDirectoryKey = "PicturesDirectory";
@@ -76,8 +76,8 @@ namespace EXGEPA.Settings.Controls
             this.UIMessage.TryDoActionAsync(logger, () =>
                 {
                     this.parameterProvider.TrySetOrAdd(PicturesDirectoryKey, this.PicturesDirectory);
-                    this.parameterProvider.TrySetOrAdd(CompanyNameKey,CompanyName);
-                    this.parameterProvider.TrySetOrAdd(DepartmentNameKey,DepartmentName);
+                    this.parameterProvider.TrySetOrAdd(CompanyNameKey, CompanyName);
+                    this.parameterProvider.TrySetOrAdd(DepartmentNameKey, DepartmentName);
                     this.parameterProvider.TrySetOrAdd(DirectionNameKey, DirectionName);
                     if (_SavePicture != null)
                     {

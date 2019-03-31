@@ -43,7 +43,7 @@ namespace CORESI.WPF.Core
 
         public bool AddGroupToHomePage(Group group)
         {
-            var closegroupe = ShellViewModel.HomePage.Groups.LastOrDefault();
+            _ = ShellViewModel.HomePage.Groups.LastOrDefault();
             ShellViewModel.HomePage.Groups.Insert(0, group);
             return true;
         }
@@ -63,7 +63,7 @@ namespace CORESI.WPF.Core
         public bool AddPage(Page page, bool includeCloseButton = true)
         {
             logger.Info("Adding Page to Shell Ribbon : " + page.Caption);
-            
+
             if (includeCloseButton)
             {
                 IncludeCloseButton(page);
@@ -93,7 +93,7 @@ namespace CORESI.WPF.Core
             return true;
         }
 
-    
+
 
 
         public bool RemovePage(Page page)
@@ -141,7 +141,7 @@ namespace CORESI.WPF.Core
         public bool IsWaintingCursor
         {
             get
-            { 
+            {
                 return ShellViewModel.IsWaintingCursor;
             }
             set
@@ -167,14 +167,6 @@ namespace CORESI.WPF.Core
         {
             return Login.LoginViewModel.ShowLoginWindow();
         }
-
-        [Obsolete]
-        void Initialize()
-        {
-            ApplicationInitializer.Initialize();
-        }
-
-
 
         public void SetTheme(string themeName)
         {

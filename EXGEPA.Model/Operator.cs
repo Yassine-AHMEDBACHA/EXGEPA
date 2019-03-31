@@ -17,6 +17,6 @@ namespace EXGEPA.Model
         public Person Person { get; set; }
 
         [DataAttribute(IsNullable = false)]
-        public Role Role { get; set; }   
+        public Role Role { get; set; }
     }
 }

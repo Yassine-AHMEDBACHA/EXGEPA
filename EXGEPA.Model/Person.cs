@@ -11,6 +11,6 @@ namespace EXGEPA.Model
         public string BirthPlace { get; set; }
         public string Function { get; set; }
 
-       
+
     }
 }

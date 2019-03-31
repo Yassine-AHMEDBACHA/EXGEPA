@@ -9,7 +9,7 @@ namespace EXGEPA.Report.Controls
     {
         public ReportView()
         {
-           
+
             InitializeComponent();
         }
     }

@@ -27,7 +27,7 @@ namespace EXGEPA.Repository
             repository.AddCommand("Devises", IconProvider.CurrencySmall, this.AddPage<CurrencyView, CurrencyViewModel>, true);
             repository.AddCommand("TVA", IconProvider.PercentageSmall, this.AddPage<TvaView, TvaViewModel>, true);
             repository.AddCommand("References", IconProvider.ReferenceSmall, this.AddPage<ReferenceView, ReferenceViewModel>, true);
-            repository.AddCommand("familles", IconProvider.Reference, this.AddPage<ReferenceTypeView, ReferenceTypeViewModel>,true);
+            repository.AddCommand("familles", IconProvider.Reference, this.AddPage<ReferenceTypeView, ReferenceTypeViewModel>, true);
             repository.AddCommand("Projets", IconProvider.Properties, this.AddPage<ProjectView, ProjectViewModel>, true);
 
             repository.AddCommand("Pcs base", IconProvider.PropertiesSmall, this.AddPage<OrderDocumentView, OrderDocumentViewModel>, true);
@@ -39,7 +39,7 @@ namespace EXGEPA.Repository
             logger.Info("loading Repository Module done");
         }
 
-       
-    
+
+
     }
 }

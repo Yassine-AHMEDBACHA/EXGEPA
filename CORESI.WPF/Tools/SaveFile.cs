@@ -8,10 +8,12 @@ namespace CORESI.WPF.Tools
         public static string ShowDialog(string fileName, string Filter)
         {
             string path = null;
-            var dlg = new SaveFileDialog();
-            dlg.FileName = "Document"; // Default file name
-            dlg.DefaultExt = ".text"; // Default file extension
-            dlg.Filter = "Text documents (.txt)|*.txt"; // Filter files by extension
+            var dlg = new SaveFileDialog
+            {
+                FileName = "Document", // Default file name
+                DefaultExt = ".text", // Default file extension
+                Filter = "Text documents (.txt)|*.txt" // Filter files by extension
+            };
 
             // Show save file dialog box
             var result = dlg.ShowDialog();

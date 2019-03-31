@@ -42,7 +42,7 @@ namespace EXGEPA.Report.Aquisitions
             var items = this.ItemService.SelectAll();
             if (onlyInvestissment)
             {
-                items = items.Where(x => x.GeneralAccount.GeneralAccountType.Type== EGeneralAccountType.Investment).ToList();
+                items = items.Where(x => x.GeneralAccount.GeneralAccountType.Type == EGeneralAccountType.Investment).ToList();
             }
             else
             {

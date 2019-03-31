@@ -31,15 +31,17 @@ namespace EXGEPA.Output.Controls
             var proposeToReformCertificate = this.SelectedRow;
             if (proposeToReformCertificate == null)
                 return;
-            var options = new ItemAttributionOptions();
-            options.PageCaption = "PV N°:" + proposeToReformCertificate.Key;
-            options.SetConfirmationMessage = "Etes vous sûr de vouloir affecter ces articles au PV N° " + proposeToReformCertificate.Key;
-            options.ResetConfirmationMessage = "Etes vous sûr de vouloir retirer ces articles du PV N° " + proposeToReformCertificate.Key;
-            options.RightPanelCaption = "Contenu du PV de proposition à la reforme N° " + proposeToReformCertificate.Key;
-            options.Tester = (item) => item.ProposeToReformCertificate?.Id == proposeToReformCertificate.Id;
-            options.Setter = (item) => item.ProposeToReformCertificate = proposeToReformCertificate;
-            options.Resetter = (item) => item.ProposeToReformCertificate = null;
-            options.Categorie = new Categorie("PV de Proposition à la Reforme", Colors.Tomato);
+            var options = new ItemAttributionOptions
+            {
+                PageCaption = "PV N°:" + proposeToReformCertificate.Key,
+                SetConfirmationMessage = "Etes vous sûr de vouloir affecter ces articles au PV N° " + proposeToReformCertificate.Key,
+                ResetConfirmationMessage = "Etes vous sûr de vouloir retirer ces articles du PV N° " + proposeToReformCertificate.Key,
+                RightPanelCaption = "Contenu du PV de proposition à la reforme N° " + proposeToReformCertificate.Key,
+                Tester = (item) => item.ProposeToReformCertificate?.Id == proposeToReformCertificate.Id,
+                Setter = (item) => item.ProposeToReformCertificate = proposeToReformCertificate,
+                Resetter = (item) => item.ProposeToReformCertificate = null,
+                Categorie = new Categorie("PV de Proposition à la Reforme", Colors.Tomato)
+            };
             UIItemService.ShowItemAttribution(options);
         }
     }

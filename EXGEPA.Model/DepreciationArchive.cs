@@ -5,7 +5,7 @@ namespace EXGEPA.Model
 {
     public class DepreciationArchive : RowId
     {
-        
+
         public string Code { get; set; }
 
         public string Exercice { get; set; }
@@ -23,5 +23,5 @@ namespace EXGEPA.Model
         public decimal VNC { get; set; }
 
         public string SimulationOwner { get; set; }
-}
+    }
 }

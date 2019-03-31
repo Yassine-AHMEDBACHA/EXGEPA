@@ -64,7 +64,7 @@ namespace EXGEPA.Depreciations.Core
             return result;
         }
 
-        protected void ComputeDep(List<Depreciation> result, Depreciation first)
+        public virtual void ComputeDep(List<Depreciation> result, Depreciation first)
         {
             SetDepriciationValues(first);
             for (int i = 1; i < result.Count; i++)

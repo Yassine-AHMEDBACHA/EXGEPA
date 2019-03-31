@@ -1,5 +1,5 @@
-﻿// <copyright file="StringHelper.cs" company="PlaceholderCompany">
-// Copyright (c) CORESI. All rights reserved.
+﻿// <copyright file="AdditionnalCharPosition.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
 namespace CORESI.Tools.StringTools

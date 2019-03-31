@@ -1,4 +1,8 @@
-﻿namespace CORESI.Tools.Communication
+﻿// <copyright file="IBus.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace CORESI.Tools.Communication
 {
     public interface IBus
     {

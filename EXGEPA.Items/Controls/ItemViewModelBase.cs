@@ -441,7 +441,7 @@
                 RaisePropertyChanged("StartServiceDate");
             }
         }
-               
+
         private void UpdateOfficeAffectationDate()
         {
             if (this.StartServiceDate > this.OfficeAssignmentStartDate)
@@ -540,7 +540,7 @@
         {
             get
             {
-               return (this.Invoice?.IsValidated) ?? false;
+                return (this.Invoice?.IsValidated) ?? false;
             }
         }
 
@@ -734,10 +734,7 @@
         }
         protected void Notify(Item item)
         {
-            if (ItemGridViewModel.NotifyUpdate != null)
-            {
-                ItemGridViewModel.NotifyUpdate(this, item);
-            }
+            ItemGridViewModel.NotifyUpdate?.Invoke(this, item);
         }
 
         private ObservableCollection<GeneralAccount> _ListOfGeneralAccount;

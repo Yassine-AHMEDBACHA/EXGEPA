@@ -72,7 +72,7 @@ namespace EXGEPA.DataAccess.Service
     [Export(typeof(IDataProvider<AnalyticalAccountType>)), PartCreationPolicy(CreationPolicy.Shared)]
     public class AnalyticalAccountTypeService : DbService<AnalyticalAccountType> { }
 
-        
+
     [Export(typeof(IDataProvider<OrderDocumentType>)), PartCreationPolicy(CreationPolicy.Shared)]
     public class OrderDocumentTypeService : DbService<OrderDocumentType> { }
 }

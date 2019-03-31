@@ -18,7 +18,7 @@ namespace CORESI.DataAccess.Core
             SettingsService = new GenericDAL<Parameter>();
         }
 
-        public T GetValue<T>(string parameterName, T defaultValue = default(T))
+        public T GetValue<T>(string parameterName, T defaultValue = default)
         {
             var paramter = this.Get(parameterName);
             if (paramter != null)

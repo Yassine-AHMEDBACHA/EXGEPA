@@ -58,12 +58,12 @@ namespace EXGEPA.Model
         public string ImagePath { get; set; }
         public List<Depreciation> Depreciations { get; set; }
         public Item Owner { get; set; }
-        
+
         public string Relation { get; set; }
 
         public List<Repair> Repairs { get; set; }
 
-        [DataAttribute(Ignore =true)]
+        [DataAttribute(Ignore = true)]
         public ItemExtendedProperties ItemExtendedProperties { get; set; }
     }
 

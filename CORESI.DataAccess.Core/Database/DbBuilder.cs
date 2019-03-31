@@ -15,7 +15,7 @@ namespace CORESI.DataAccess.Core.Database
         public static List<string> GetAllDataBase(IDbFacade dbFacade)
         {
             var query = "SELECT [name],[dbid],[sid] ,[mode] ,[status] ,[status2] ,[crdate] ,[reserved] ,[category] ,[cmptlevel],[filename],[version]FROM [master].[sys].[sysdatabases]";
-            
+
             return dbFacade.ExecuteReader(query, (dr) => $"{dr["name"]}");
         }
 

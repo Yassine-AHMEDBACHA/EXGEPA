@@ -80,7 +80,7 @@ namespace EXGEPA.Security
 
         public bool UpdatePassword(string login, string password)
         {
-            return this.UpdatePassword(login, password,false);
+            return this.UpdatePassword(login, password, false);
         }
     }
 }

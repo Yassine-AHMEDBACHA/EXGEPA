@@ -81,8 +81,7 @@ namespace CORESI.WPF
             }
             finally
             {
-                if (finallyAction != null)
-                    finallyAction();
+                finallyAction?.Invoke();
             }
         }
 
@@ -110,8 +109,7 @@ namespace CORESI.WPF
             }
             else
             {
-                if (finallyAction != null)
-                    finallyAction();
+                finallyAction?.Invoke();
             }
         }
 

@@ -9,17 +9,19 @@ namespace CORESI.DataAccess
         public static IDbCommand GetDBCommand(string commandText, bool isStoredProcedure = false)
         {
             IDbCommand dBCommand;
-            dBCommand = new SqlCommand();
-            //if (DBConnectionFactory.ProviderType == DataProviderType.MSSQLSERVER)
-            //{
-               
-            //}
-            //else
-            //{
-            //    dBCommand = new OracleCommand();
-            //}
-            dBCommand.CommandType = isStoredProcedure ? CommandType.StoredProcedure : CommandType.Text;
-            dBCommand.CommandText = commandText;
+            dBCommand = new SqlCommand
+            {
+                //if (DBConnectionFactory.ProviderType == DataProviderType.MSSQLSERVER)
+                //{
+
+                //}
+                //else
+                //{
+                //    dBCommand = new OracleCommand();
+                //}
+                CommandType = isStoredProcedure ? CommandType.StoredProcedure : CommandType.Text,
+                CommandText = commandText
+            };
             return dBCommand;
         }
 

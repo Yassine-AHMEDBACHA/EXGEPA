@@ -5,7 +5,7 @@
         public InventorySheet()
         {
             InitializeComponent();
-         
+
         }
 
     }

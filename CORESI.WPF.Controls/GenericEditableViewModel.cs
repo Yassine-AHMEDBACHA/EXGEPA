@@ -11,11 +11,49 @@ using EXGEPA.Core.Tools;
 
 namespace CORESI.WPF.Controls
 {
-    public abstract class GenericEditableViewModel<T> : GenericExportableViewModel<T> where T : KeyRow, ICloneable
+    public abstract class GenericEditableViewModel<T> : GenericExportableViewModel<T>
+        where T : KeyRow, ICloneable
     {
         static IButtonRights ButtonRights = ServiceLocator.GetDefault<IButtonRights>();
 
-        public static Action<object, T> NotifyUpdate;
+        public GenericEditableViewModel(IExportableGrid exportableView, bool loadData = true)
+            : this()
+        {
+            this.exportableView = exportableView;
+            this.InitilizeRibbonGroup(exportableView);
+
+            if (loadData)
+            {
+                this.InitData();
+            }
+        }
+
+        public GenericEditableViewModel()
+            : base()
+        {
+            this.ToolGroup = this.AddNewGroup("Outils");
+            var parameterProvider = ServiceLocator.Resolve<IParameterProvider>();
+            this.DBservice = ServiceLocator.Resolve<IDataProvider<T>>();
+            this.KeyLength = parameterProvider.GetValue(typeof(T).Name + "KeyLength", 6);
+            ConcernedRow = default;
+            CancelCommand = new Command(() =>
+            {
+                this.DisplayDetail = false;
+            });
+            this.ListOfRows = new ObservableCollection<T>();
+            DoubleClicAction = EditItem;
+            var command = new Command(() =>
+            {
+                if ((DoubleClicAction) != null)
+                    DoubleClicAction();
+            });
+
+            command.SetAbility<T>("Modifier");
+            RowDoubleClickCommand = command;
+            NotifyUpdate += this.Refresh;
+        }
+
+        public static Action<object, T> NotifyUpdate { get; set; }
 
         public IKeyGenerator<T> KeyGenerator { get; private set; }
 
@@ -33,43 +71,9 @@ namespace CORESI.WPF.Controls
 
         public bool HideDeleteButton { get; set; }
 
-        public Group toolGroup { get; set; }
+        public Group ToolGroup { get; set; }
 
-        public GenericEditableViewModel(IExportableGrid exportableView, bool loadData = true) : this()
 
-        {
-            this.exportableView = exportableView;
-            this.InitilizeRibbonGroup(exportableView);
-
-            if (loadData)
-            {
-                this.InitData();
-            }
-        }
-
-        public GenericEditableViewModel() : base()
-        {
-            this.toolGroup = this.AddNewGroup("Outils");
-            var parameterProvider = ServiceLocator.Resolve<IParameterProvider>();
-            this.DBservice = ServiceLocator.Resolve<IDataProvider<T>>();
-            this.KeyLength = parameterProvider.GetValue(typeof(T).Name + "KeyLength", 6);
-            ConcernedRow = default(T);
-            CancelCommand = new Command(() =>
-            {
-                this.DisplayDetail = false;
-            });
-            this.ListOfRows = new ObservableCollection<T>();
-            DoubleClicAction = EditItem;
-            var command = new Command(() =>
-             {
-                 if ((DoubleClicAction) != null)
-                     DoubleClicAction();
-             });
-
-            command.SetAbility<T>("Modifier");
-            RowDoubleClickCommand = command;
-            NotifyUpdate += this.Refresh;
-        }
 
         public virtual void InitData()
         {
@@ -175,21 +179,20 @@ namespace CORESI.WPF.Controls
 
         public void StartBackGroundAction(Action actionTodDo, Action FinalAction = null, bool showLoadingPanel = true)
         {
-            this.ShowLoadingPanel = true;
-            Action actionToDoInTheEnd = () =>
-            {
-                this.ShowLoadingPanel = false;
-                if (FinalAction != null)
+            this.ShowLoadingPanel = showLoadingPanel;
+            this.UIMessage.TryDoActionAsync(
+                this.Logger,
+                actionTodDo,
+                () =>
                 {
-                    FinalAction();
-                }
-            };
-            this.UIMessage.TryDoActionAsync(this.Logger, actionTodDo, actionToDoInTheEnd);
+                    this.ShowLoadingPanel = false;
+                    FinalAction?.Invoke();
+                });
         }
 
         public void StartUIBackGroundAction(Action actionTodDo, bool showLoadingPanel = true)
         {
-            this.ShowLoadingPanel = true;
+            this.ShowLoadingPanel = showLoadingPanel;
             this.UIMessage.TryDoUIActionAsync(this.Logger, actionTodDo, () => this.ShowLoadingPanel = false);
         }
 
@@ -215,8 +218,7 @@ namespace CORESI.WPF.Controls
             var newInstance = Activator.CreateInstance<T>();
             newInstance.Key = this.GetTemporaryKey();
 
-            var databaleInstance = newInstance as IDatable;
-            if (databaleInstance != null)
+            if (newInstance is IDatable databaleInstance)
             {
                 databaleInstance.Date = DateTime.Today;
             }
@@ -265,15 +267,15 @@ namespace CORESI.WPF.Controls
 
         protected virtual void SetToolGroup()
         {
-            this.toolGroup.AddCommand("Refresh", IconProvider.Refresh, this.InitData).SetAbility<T>();
-            this.toolGroup.AddCommand("Filtre", IconProvider.Filtre, () => this.ShowColumnFilter = !ShowColumnFilter).SetAbility<T>();
-            this.toolGroup.AddCommand("Groupement", IconProvider.GroupRows, () => this.ShowGroupPanel = !ShowGroupPanel).SetAbility<T>();
+            this.ToolGroup.AddCommand("Refresh", IconProvider.Refresh, this.InitData).SetAbility<T>();
+            this.ToolGroup.AddCommand("Filtre", IconProvider.Filtre, () => this.ShowColumnFilter = !ShowColumnFilter).SetAbility<T>();
+            this.ToolGroup.AddCommand("Groupement", IconProvider.GroupRows, () => this.ShowGroupPanel = !ShowGroupPanel).SetAbility<T>();
             if (this.EnableTotalSumary)
             {
                 this.TryAddSummaryButton();
             }
 
-            toolGroup.AddCommand(new CheckedRibbonButton()
+            ToolGroup.AddCommand(new CheckedRibbonButton()
             {
                 IsChecked = this.AutoWidth,
                 Caption = "Largeur automatique",
@@ -281,12 +283,12 @@ namespace CORESI.WPF.Controls
                 Action = () => this.AutoWidth = !AutoWidth
             }).SetAbility<T>();
 
-            toolGroup.AddCommand<CheckedRibbonButton>("System ID", IconProvider.FindByID, () => this.ShowSysIdColumn = !ShowSysIdColumn).SetAbility<T>();
+            ToolGroup.AddCommand<CheckedRibbonButton>("System ID", IconProvider.FindByID, () => this.ShowSysIdColumn = !ShowSysIdColumn).SetAbility<T>();
         }
 
         public void TryAddSummaryButton()
         {
-            this.toolGroup.AddCommand<CheckedRibbonButton>("Totaux", IconProvider.Summary, () => this.ShowTotalSummary = !ShowTotalSummary).IsChecked = ShowTotalSummary;
+            this.ToolGroup.AddCommand<CheckedRibbonButton>("Totaux", IconProvider.Summary, () => this.ShowTotalSummary = !ShowTotalSummary).IsChecked = ShowTotalSummary;
         }
 
         public virtual string GetTemporaryKey()

@@ -40,9 +40,11 @@ namespace EXGEPA
             if (result != null)
             {
                 logger.Info("Loggin : " + result.Login + " ID : " + result.Id);
-                var app = new Application();
-                //app.Startup += App_Startup;
-                app.MainWindow = uIService.CreateShell();
+                var app = new Application
+                {
+                    //app.Startup += App_Startup;
+                    MainWindow = uIService.CreateShell()
+                };
                 uIService.InitShellInformation(result);
                 var sessionManager = ServiceLocator.Resolve<ISessionManager>();
                 if (sessionManager.CurrentSession != null)
@@ -73,8 +75,7 @@ namespace EXGEPA
 
         private static bool CanStartNewApplicationInstance(string applicationName)
         {
-            bool isNewMutex;
-            var mutex = new Mutex(true, applicationName, out isNewMutex);
+            var mutex = new Mutex(true, applicationName, out bool isNewMutex);
             if (!isNewMutex)
             {
                 MessageBox.Show("Another instance is already running.");

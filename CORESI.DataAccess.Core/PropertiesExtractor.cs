@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using CORESI.Tools;
+using CORESI.Tools.Collections;
 
 namespace CORESI.DataAccess.Core
 {
@@ -68,7 +69,7 @@ namespace CORESI.DataAccess.Core
         public static IEnumerable<Field> ExtractAllFields(Type type)
         {
             int i = 1;
-            return type.GetAllFields().Where(f => !f.IsPrimeryKey).ApplyOnAll(x=>x.Ordinal = i++);
+            return type.GetAllFields().Where(f => !f.IsPrimeryKey).ApplyOnAll(x => x.Ordinal = i++);
         }
 
     }

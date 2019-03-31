@@ -25,8 +25,7 @@ namespace CORESI.WPF.Controls
             this.AutoWidth = true;
             RowDoubleClickCommand = new Command(() =>
             {
-                if (DoubleClicAction != null)
-                    DoubleClicAction(SelectedRow);
+                DoubleClicAction?.Invoke(SelectedRow);
             });
         }
         #region Properties

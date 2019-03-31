@@ -77,9 +77,8 @@ namespace EXGEPA.Output.Controls
         {
             get
             {
-                decimal amount;
-                decimal.TryParse(this.ConcernedRow?.Json, out amount);
-                return amount;   
+                decimal.TryParse(this.ConcernedRow?.Json, out decimal amount);
+                return amount;
             }
             set
             {

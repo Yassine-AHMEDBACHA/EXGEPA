@@ -10,7 +10,7 @@ namespace CORESI.WPF.Controls
         public TableView TableView => this.FindName("mainTableView") as TableView;
 
         public string DisplayedFilter => this.TableView.FilterPanelText;
-                
+
         public virtual void Print(string documentName)
         {
             this.TableView.ShowPrintPreviewDialog(Application.Current.MainWindow, documentName);
@@ -18,10 +18,12 @@ namespace CORESI.WPF.Controls
 
         public virtual void ExportExcel(string documentName)
         {
-            Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
-            dlg.DefaultExt = ".Xlsx";
-            dlg.Filter = "(.Xlsx)|*.Xlsx";
-            dlg.FileName = documentName;
+            Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog
+            {
+                DefaultExt = ".Xlsx",
+                Filter = "(.Xlsx)|*.Xlsx",
+                FileName = documentName
+            };
             if (dlg.ShowDialog() == true)
             {
                 string filename = dlg.FileName;
@@ -31,10 +33,12 @@ namespace CORESI.WPF.Controls
 
         public virtual void ExportPDF(string documentName)
         {
-            Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
-            dlg.DefaultExt = ".pdf";
-            dlg.Filter = " (.pdf)|*.pdf";
-            dlg.FileName = documentName;
+            Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog
+            {
+                DefaultExt = ".pdf",
+                Filter = " (.pdf)|*.pdf",
+                FileName = documentName
+            };
             if (dlg.ShowDialog() == true)
             {
                 string filename = dlg.FileName;

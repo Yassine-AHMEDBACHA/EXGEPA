@@ -4,7 +4,7 @@
     {
         Investment = 1,
         Charge,
-        Depreciation, 
+        Depreciation,
         Endowment
     }
 }

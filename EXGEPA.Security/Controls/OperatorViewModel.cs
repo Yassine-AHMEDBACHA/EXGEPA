@@ -30,7 +30,7 @@ namespace EXGEPA.Security.Controls
         }
 
 
-        public OperatorViewModel(IExportableGrid view) : base(view,false)
+        public OperatorViewModel(IExportableGrid view) : base(view, false)
 
         {
             this.Caption = "List des utilisateurs";
@@ -53,7 +53,7 @@ namespace EXGEPA.Security.Controls
                 {
                     u.Person = persons.FirstOrDefault(p => p.Id == u.Person.Id);
                 }
-                if(u.Role != null)
+                if (u.Role != null)
                 {
                     u.Role = ListOfRoles.FirstOrDefault(p => p.Id == u.Role.Id);
                 }

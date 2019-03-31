@@ -3,7 +3,7 @@ using System;
 
 namespace EXGEPA.Model
 {
-    public class AssignmentPerson :KeyRow
+    public class AssignmentPerson : KeyRow
     {
         public Person Person { get; set; }
         public DateTime UserAssignmentStartDate { get; set; }

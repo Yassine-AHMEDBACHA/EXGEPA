@@ -1,7 +1,11 @@
-﻿using System;
+﻿// <copyright file="Bus.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace CORESI.Tools.Communication
 {
+    using System;
+
     internal class Bus : IBus
     {
         public void RaiseEvent(object sender, object args)

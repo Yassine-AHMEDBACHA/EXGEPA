@@ -8,7 +8,7 @@ namespace EXGEPA.Inventory.Core
 {
     public class WindowsCEFileManager : ADeviceFileManager
     {
-        
+
         public RAPI RemoteAPI { get; set; }
         public WindowsCEFileManager() : base()
         {
@@ -42,7 +42,7 @@ namespace EXGEPA.Inventory.Core
                 if (RemoteAPI.Connected)
                     if (RemoteAPI.DeviceFileExists(remoteFileName))
                     {
-                       
+
                         File.Delete(destinationPath);
                         RemoteAPI.CopyFileFromDevice(destinationPath, remoteFileName);
                         RemoteAPI.DeleteDeviceFile(remoteFileName);

@@ -9,7 +9,7 @@ namespace EXGEPA.Repository.Controls
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            
+
             if (value != null)
             {
                 var source = value.ToString();
@@ -20,15 +20,14 @@ namespace EXGEPA.Repository.Controls
                     return new BitmapImage(uri);
                 }
                 else return null;
-                
+
             }
             else return null;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            var bitmap = value as BitmapImage;
-            if (bitmap != null)
+            if (value is BitmapImage bitmap)
             {
                 return bitmap.UriSource.LocalPath;
             }

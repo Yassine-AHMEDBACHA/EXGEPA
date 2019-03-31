@@ -21,18 +21,18 @@ namespace Hyproc.Core
             master.Take(5).ToList().ForEach(x =>
             {
                 x.Caption = "master update";
-              //  ((int)x.SysVersion)++;
+                //  ((int)x.SysVersion)++;
             });
 
-            //master.Skip(7).Take(2).ToList().ForEach(x => { x.IsDeleted = true; x.SysVersion++; }
+            //master.Skip(7).Take(2).ForEach(x => { x.IsDeleted = true; x.SysVersion++; }
             //);
-            //master.Take(1).ToList().ForEach(x =>
+            //master.Take(1).ForEach(x =>
             //{
             //    x.Account = "mas";
             //    x.Caption = "master Add";
             //    x.Id = master.Count;
             //});
-         //   var result1 = Comparator<string, GeneralAccount>.Compare(master, slave, (x) => x.Account);
+            //   var result1 = Comparator<string, GeneralAccount>.Compare(master, slave, (x) => x.Account);
         }
 
         public static string BackupDataBase(IDbFacade dbfacade = null)
@@ -80,19 +80,21 @@ namespace Hyproc.Core
 
         internal static List<IAnlayzer> GetListOfAnalyzer()
         {
-            List<IAnlayzer> list = new List<IAnlayzer>();
-            list.Add(new TableAnalyzer<string, Operator>((instance) => instance.Key));
-            list.Add(new TableAnalyzer<string, Person>((instance) => instance.Key));
-            list.Add(new TableAnalyzer<string, GeneralAccount>((instance) => instance.Key));
-            list.Add(new TableAnalyzer<string, AnalyticalAccount>((instance) => instance.Key));
-            list.Add(new TableAnalyzer<string, Site>((instance) => instance.Code));
-            list.Add(new TableAnalyzer<int, Building>((instance) => instance.Id));
-            list.Add(new TableAnalyzer<int, Level>((instance) => instance.Id));
-            list.Add(new TableAnalyzer<string, Office>((instance) => instance.Code));
-            list.Add(new TableAnalyzer<string, Reference>((instance) => instance.Key));
-            list.Add(new TableAnalyzer<string, Invoice>((instance) => instance.Key));
-            list.Add(new TableAnalyzer<string, Item>((instance) => instance.Key));
-            list.Add(new TableAnalyzer<string, InventoryRow>((instance) => instance.Key));
+            List<IAnlayzer> list = new List<IAnlayzer>
+            {
+                new TableAnalyzer<string, Operator>((instance) => instance.Key),
+                new TableAnalyzer<string, Person>((instance) => instance.Key),
+                new TableAnalyzer<string, GeneralAccount>((instance) => instance.Key),
+                new TableAnalyzer<string, AnalyticalAccount>((instance) => instance.Key),
+                new TableAnalyzer<string, Site>((instance) => instance.Code),
+                new TableAnalyzer<int, Building>((instance) => instance.Id),
+                new TableAnalyzer<int, Level>((instance) => instance.Id),
+                new TableAnalyzer<string, Office>((instance) => instance.Code),
+                new TableAnalyzer<string, Reference>((instance) => instance.Key),
+                new TableAnalyzer<string, Invoice>((instance) => instance.Key),
+                new TableAnalyzer<string, Item>((instance) => instance.Key),
+                new TableAnalyzer<string, InventoryRow>((instance) => instance.Key)
+            };
 
             return list;
         }
@@ -104,12 +106,6 @@ namespace Hyproc.Core
             var dbFacade = ServiceLocator.Resolve<IDbFacade>();
             DbFacade = dbFacade.ChangeDB(connectionString);
 
-        }
-        public void LoadDataBase(string connectionString)
-        {
-          //  var dbFacade = new DBFacade(connectionString);
-          //   var tables = QueryBuilder.GetMappedTypes("EXGEPA.Model");
-          //  var selectQuerys = tables.ToDictionary(x => x, x => QueryBuilder.GetSelectQuery(x));
         }
         public Dictionary<string, Type> GetDbTables()
         {

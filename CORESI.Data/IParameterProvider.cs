@@ -8,7 +8,7 @@ namespace CORESI.Data
 
         T GetValue<T>(string parameterName);
 
-        T GetAndSetIfMissing<T>(string parameterName,T value);
+        T GetAndSetIfMissing<T>(string parameterName, T value);
 
         string GetStringValue(string parameterName);
         bool TrySetOrAdd(string key, object value);

@@ -6,9 +6,11 @@ namespace CORESI.WPF.Model
 {
     public class Command : ICommand
     {
-        static IButtonRights ButtonRights = ServiceLocator.GetDefault<IButtonRights>();
+        private static readonly IButtonRights ButtonRights = ServiceLocator.GetDefault<IButtonRights>();
 
         Action Action { get; set; }
+
+        private bool canExecuteAction;
 
         public string Ability { get; set; }
         bool FullAccess { get; set; }
@@ -32,8 +34,14 @@ namespace CORESI.WPF.Model
         {
             if (FullAccess)
                 return false;
-            var canExecute = ButtonRights.CanDoAction(Ability);
-            return canExecute;
+
+            if (this.canExecuteAction != ButtonRights.CanDoAction(Ability))
+            {
+                this.canExecuteAction = !this.canExecuteAction;
+                this.CanExecuteChanged?.Invoke(this, new EventArgs());
+            }
+
+            return this.canExecuteAction;
         }
 
         public event EventHandler CanExecuteChanged;

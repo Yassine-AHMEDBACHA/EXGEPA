@@ -29,7 +29,7 @@ namespace EXGEPA.Repository.Controls
             this.Caption = "Lists de comptes analytiques";
         }
 
-        
+
 
         public override void InitData()
         {

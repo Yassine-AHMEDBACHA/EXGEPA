@@ -19,7 +19,7 @@ namespace EXGEPA.DeviceManager.Android
             return this.devices;
         }
 
-        
+
 
 
 

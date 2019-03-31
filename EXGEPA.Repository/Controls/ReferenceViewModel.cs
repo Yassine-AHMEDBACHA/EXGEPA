@@ -218,10 +218,7 @@ namespace EXGEPA.Repository.Controls
                 return;
             }
 
-            if (_SavePicture != null)
-            {
-                _SavePicture();
-            }
+            _SavePicture?.Invoke();
 
             base.AddItem(RowToInsert);
         }
@@ -233,10 +230,7 @@ namespace EXGEPA.Repository.Controls
                 return;
             }
 
-            if (_SavePicture != null)
-            {
-                _SavePicture();
-            }
+            _SavePicture?.Invoke();
 
             base.UpdateItem();
         }

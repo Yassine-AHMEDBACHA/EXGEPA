@@ -23,7 +23,7 @@ namespace EXGEPA.DeviceManager.Android
             mediaDevice.DeleteFile(path);
         }
 
-      
+
 
 
     }

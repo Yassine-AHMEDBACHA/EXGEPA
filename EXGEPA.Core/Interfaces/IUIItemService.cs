@@ -12,6 +12,6 @@ namespace EXGEPA.Core.Interfaces
         void ShowPrintLabelPanel();
         void ShowItemAttribution(ItemAttributionOptions itemAttributionOptions);
 
-        void DisplayItems(Predicate<Item> filter, string pageCaption, Action<IEnumerable< Item>> report);
+        void DisplayItems(Predicate<Item> filter, string pageCaption, Action<IEnumerable<Item>> report);
     }
 }

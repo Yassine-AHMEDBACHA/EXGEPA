@@ -13,11 +13,13 @@ namespace EXGEPA.Depriciations.Tests
         [Test]
         public void GetMonthelyDepreciationsStandardTest()
         {
-            var item = new Item();
-            item.Amount = 1000;
-            item.FiscalRate = 100;
-            item.AquisitionDate = new DateTime(2015, 01, 01);
-            item.LimiteDate = new DateTime(2015, 12, 31);
+            var item = new Item
+            {
+                Amount = 1000,
+                FiscalRate = 100,
+                AquisitionDate = new DateTime(2015, 01, 01),
+                LimiteDate = new DateTime(2015, 12, 31)
+            };
             ICalculator calculator = new MonthelyCalculator(new AccountingPeriodHelper(loadHistory: false));
             var result = calculator.GetDepriciations(item, new DateTime(2010, 01, 01), new DateTime(2015, 12, 31));
             Assert.IsNotNull(result);

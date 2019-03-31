@@ -9,7 +9,7 @@ namespace EXGEPA.Items.Controls
     {
         public ItemGridView()
         {
-            InitializeComponent(); 
+            InitializeComponent();
         }
     }
 }

@@ -43,8 +43,7 @@ namespace EXGEPA.Core.Security.DataAccess
                                         .ToDictionary(g => g.Key, x => x.ToList());
             Parallel.ForEach(allRows, role =>
             {
-                List<Ability> roleAbility;
-                if (abilities.TryGetValue(role.Id, out roleAbility))
+                if (abilities.TryGetValue(role.Id, out List<Ability> roleAbility))
                 {
                     role.Abilities = roleAbility;
                     Parallel.ForEach(role.Abilities, ability => ability.Role = role);
@@ -89,13 +88,11 @@ namespace EXGEPA.Core.Security.DataAccess
             var resources = ResourceService.SelectAll().ToDictionary(x => x.Id);
             Parallel.ForEach(allRows, row =>
             {
-                Operation operation;
-                if (operations.TryGetValue(row.Operation.Id, out operation))
+                if (operations.TryGetValue(row.Operation.Id, out Operation operation))
                 {
                     row.Operation = operation;
                 }
-                Resource resource;
-                if (resources.TryGetValue(row.Resource.Id, out resource))
+                if (resources.TryGetValue(row.Resource.Id, out Resource resource))
                 {
                     row.Resource = resource;
                 }

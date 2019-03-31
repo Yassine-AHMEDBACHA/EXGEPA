@@ -27,7 +27,7 @@ namespace Hyproc.Core
             this.maxGeneratedItemKey = this.parameterProvider.GetAndSetIfMissing("MaxGeneratedItemKey", 500000);
             this.KeyLength = this.parameterProvider.GetAndSetIfMissing("ItemKeyLength", 12);
         }
-        
+
         public bool CheckKey(string key)
         {
             return key.Length == 6 + prefix.Length;

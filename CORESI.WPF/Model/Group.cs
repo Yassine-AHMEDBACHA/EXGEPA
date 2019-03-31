@@ -26,7 +26,7 @@ namespace CORESI.WPF.Model
             }
         }
 
-      
+
 
         public RibbonButton AddCommand(string caption, Action actionToDo = null, bool isSmall = false)
         {

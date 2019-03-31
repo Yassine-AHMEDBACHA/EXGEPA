@@ -35,8 +35,10 @@ namespace CORESI.DataAccess.Core
             var targetFiels = fields.Where(x => !x.IsAutomatique).ToList();
             foreach (var field in targetFiels)
             {
-                SqlParameter sqlParameter = new SqlParameter();
-                sqlParameter.ParameterName = field.GetSqlParameterName();
+                SqlParameter sqlParameter = new SqlParameter
+                {
+                    ParameterName = field.GetSqlParameterName()
+                };
                 if (field.Type == typeof(DateTime))
                     sqlParameter.SqlDbType = SqlDbType.Date;
                 var value = field.GetValue(instance);

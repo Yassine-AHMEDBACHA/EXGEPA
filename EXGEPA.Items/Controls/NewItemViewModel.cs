@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using CORESI.Tools.Collections;
 using CORESI.WPF.Core;
 using CORESI.WPF.Model;
 using EXGEPA.Model;
@@ -9,7 +10,6 @@ namespace EXGEPA.Items.Controls
 {
     public class NewItemViewModel : ItemViewModelBase
     {
-        private int maxQuantityCanBeCreated = 3000;
         public static Categorie NewItemRibbonCategorie { get; private set; }
         static NewItemViewModel()
         {
@@ -35,10 +35,10 @@ namespace EXGEPA.Items.Controls
             this.AccountingPeriods = group.AddCommand<ComboBoxRibbon<string>>("Exercice");
             this.Quantity = group.AddCommand<ComboBoxRibbon<int>>("Quantité");
             this.Quantity.Width = 80;
-            Enumerable.Range(1, maxQuantityCanBeCreated).ToList().ForEach(x => this.Quantity.ItemsSource.Add(x));
+            var maxQuantityCanBeCreated = parameterProvider.GetAndSetIfMissing("MaxQuantityCanBeCreated", 100);
+            Enumerable.Range(1, maxQuantityCanBeCreated).ForEach(x => this.Quantity.ItemsSource.Add(x));
             this.Quantity.EditValue = this.Quantity.ItemsSource.FirstOrDefault();
             this.UIMessage.TryDoActionAsync(Logger, this.InitData);
-            
         }
 
         private void InitData()
@@ -89,10 +89,7 @@ namespace EXGEPA.Items.Controls
         {
             if (Reference != null && !this.IsOldItem)
             {
-                if (ManageChargeAccount != null)
-                {
-                    ManageChargeAccount();
-                }
+                ManageChargeAccount?.Invoke();
 
                 this.Description = this.Reference.Caption;
                 this.SmallDescription = this.Description;

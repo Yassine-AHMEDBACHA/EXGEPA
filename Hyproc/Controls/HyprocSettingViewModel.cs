@@ -22,8 +22,7 @@ namespace Hyproc.Controls
         {
             ParameterProvider.TrySetOrAdd("SyncShare", this.SyncPath);
             ParameterProvider.TrySetOrAdd("prefix", this.Prefix);
-            if (this.CloseWindow != null)
-                this.CloseWindow();
+            this.CloseWindow?.Invoke();
         }
 
         public Command Validate { get; set; }

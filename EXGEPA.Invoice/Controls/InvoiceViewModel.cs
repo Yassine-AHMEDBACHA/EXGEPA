@@ -134,30 +134,30 @@ namespace EXGEPA.Invoice.Controls
 
                     if (!ConcernedRow.Key.IsValidData())
                     {
-                        message = message + "\n\t-Numéro de facture";
+                        message += "\n\t-Numéro de facture";
                         error = true;
                     }
 
                     if (ConcernedRow.Provider == null)
                     {
-                        message = message + "\n\t-Fournisseur";
+                        message += "\n\t-Fournisseur";
                         error = true;
                     }
 
                     if (ConcernedRow.InputSheet == null)
                     {
-                        message = message + "\n\t-Fiche d'entrée";
+                        message += "\n\t-Fiche d'entrée";
                         error = true;
                     }
 
                     if (ConcernedRow.Amount == 0)
                     {
-                        message = message + "\n\t-montant";
+                        message += "\n\t-montant";
                         error = true;
                     }
                     if (ConcernedRow.Date.Year < 1950)
                     {
-                        message = message + "\n\t-Date facture";
+                        message += "\n\t-Date facture";
                         error = true;
                     }
                     if (error)
@@ -187,15 +187,17 @@ namespace EXGEPA.Invoice.Controls
             if (invoice == null)
                 return;
 
-            var options = new ItemAttributionOptions();
-            options.PageCaption = "Facture N°:" + invoice.Key;
-            options.SetConfirmationMessage = "Etes vous sûr de vouloir affecter ces articles à la facture N° " + invoice.Key;
-            options.ResetConfirmationMessage = "Etes vous sûr de vouloir retirer ces articles de la facture N° " + invoice.Key;
-            options.RightPanelCaption = "Contenu de la facture N° " + invoice.Key;
-            options.Tester = (item) => item.Invoice?.Id == invoice.Id;
-            options.Setter = (item) => Setter(item, invoice);
-            options.Resetter = (item) => item.Invoice = null;
-            options.Categorie = new Categorie("Contenu Facture", Colors.AliceBlue);
+            var options = new ItemAttributionOptions
+            {
+                PageCaption = "Facture N°:" + invoice.Key,
+                SetConfirmationMessage = "Etes vous sûr de vouloir affecter ces articles à la facture N° " + invoice.Key,
+                ResetConfirmationMessage = "Etes vous sûr de vouloir retirer ces articles de la facture N° " + invoice.Key,
+                RightPanelCaption = "Contenu de la facture N° " + invoice.Key,
+                Tester = (item) => item.Invoice?.Id == invoice.Id,
+                Setter = (item) => Setter(item, invoice),
+                Resetter = (item) => item.Invoice = null,
+                Categorie = new Categorie("Contenu Facture", Colors.AliceBlue)
+            };
             var Group = new Group();
             var button = Group.AddCommand<CheckedRibbonButton>("Validée", IconProvider.Task);
             button.Action = () =>

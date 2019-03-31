@@ -29,8 +29,10 @@ namespace Hyproc
                 Action = () =>
                 {
                     var viewModel = new DbSyncViewModel();
-                    var view = new DbSyncView();
-                    view.DataContext = viewModel;
+                    var view = new DbSyncView
+                    {
+                        DataContext = viewModel
+                    };
                     var page = new Page(viewModel, view);
                     uIService.AddPage(page);
                 }

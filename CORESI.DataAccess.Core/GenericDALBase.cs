@@ -5,7 +5,7 @@ using CORESI.IoC;
 
 namespace CORESI.DataAccess.Core
 {
-    public static class GenericDALBase 
+    public static class GenericDALBase
     {
         public static Session Session { get; set; }
 
@@ -32,6 +32,6 @@ namespace CORESI.DataAccess.Core
             sessionManager.CloseSession();
         }
 
-        
+
     }
 }

@@ -17,7 +17,7 @@ namespace Hyproc.Controls
             this.Caption = "Hyproc";
             this.DataSource = "Localhost";
             this.UseWindowsAutentification = true;
-           this.TestConnexionString = new Command(testConnextion);
+            this.TestConnexionString = new Command(testConnextion);
             LaunchSync = new Command(sync);
             var saveDbGroup = new Group("Sauvgarde");
             var restorDbGroup = new Group("Restoration");
@@ -49,7 +49,7 @@ namespace Hyproc.Controls
             });
 
             this.AddNewGroup().AddCommand("Options", IconProvider.Settings, this.ShowOptionWindow);
-            
+
 
         }
 
@@ -57,7 +57,7 @@ namespace Hyproc.Controls
         {
             var result = this.UIService.ShowLoginWindow();
             if (result != null)
-                if (result.Login.ToLower()      == "admin")
+                if (result.Login.ToLower() == "admin")
                 {
                     var viewModel = new HyprocSettingViewModel();
                     var view = new HyprocSettings()
@@ -165,7 +165,7 @@ namespace Hyproc.Controls
             foreach (var item in tables)
             {
                 item.UpdateDatabase(dbFacade);
-                ProgressValue = ProgressValue + step;
+                ProgressValue += step;
             }
         }
 

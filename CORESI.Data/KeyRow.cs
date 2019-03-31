@@ -5,7 +5,7 @@
         [DataAttribute(IsUnique = true, Ordinal = 1)]
         public string Key { get; set; }
 
-        
+
 
     }
 }

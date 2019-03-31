@@ -28,8 +28,7 @@ namespace CORESI.Security
         public bool HasAccess(string actionName)
         {
             var key = string.Join("-", actionName.Split('-').Select(x => Transcode(x)));
-            bool hasRight;
-            if (!Rights.TryGetValue(key, out hasRight))
+            if (!Rights.TryGetValue(key, out bool hasRight))
                 return true;
             return hasRight;
         }
@@ -42,8 +41,7 @@ namespace CORESI.Security
 
         public static string Transcode(string code)
         {
-            string transcodedCode;
-            if (Transcoder.TryGetValue(code, out transcodedCode))
+            if (Transcoder.TryGetValue(code, out string transcodedCode))
             {
                 return transcodedCode;
             }

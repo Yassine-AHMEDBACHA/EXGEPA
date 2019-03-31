@@ -2,7 +2,7 @@
 {
     public static class FieldTools
     {
-        public static object GetValue(this Field field,object instance)
+        public static object GetValue(this Field field, object instance)
         {
             var value = field.PropertyInfo.GetValue(instance, null);
             return value;

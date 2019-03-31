@@ -20,7 +20,7 @@ namespace EXGEPA.Inventory.Core
             var parameterProvider = ServiceLocator.Resolve<IParameterProvider>();
 
             int codeLength = parameterProvider.GetValue($"{typeof(Item).Name}KeyLength", 6);
-            
+
             var Allinventory = inventoryService.SelectAll().ToDictionary(x => x.Key);
             var rowsToInsert = new Dictionary<string, InventoryRow>();
             var rowsToUpdate = new Dictionary<string, InventoryRow>();
@@ -30,8 +30,7 @@ namespace EXGEPA.Inventory.Core
             {
                 string code = textRow.Substring(13, codeLength).ToUpper();
                 string localization = textRow.Substring(0, 13).ToUpper();
-                InventoryRow inventory;
-                if (Allinventory.TryGetValue(code, out inventory))
+                if (Allinventory.TryGetValue(code, out InventoryRow inventory))
                 {
                     inventory.Localization = localization;
                     var toUpdate = inventory;

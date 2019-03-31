@@ -14,7 +14,7 @@ namespace EXGEPA.Items
         Predicate<Item> displayFilter;
 
         IRepositoryDataProvider repositoryDataProvider;
-        
+
         public ItemGridBaseViewModel(Predicate<Item> filter, IExportableGrid view, Action<IEnumerable<Item>> report) : base()
         {
             this.displayFilter = filter;
@@ -31,7 +31,7 @@ namespace EXGEPA.Items
             var items = this.DBservice.SelectAll().Where(x => displayFilter(x)).ToList();
             repositoryDataProvider.BindItemFields(items);
             this.ListOfRows = new System.Collections.ObjectModel.ObservableCollection<Item>(items);
-            this.Selection =new System.Collections.ObjectModel.ObservableCollection<Item>(ListOfRows.Take(1));
+            this.Selection = new System.Collections.ObjectModel.ObservableCollection<Item>(ListOfRows.Take(1));
         }
     }
 }

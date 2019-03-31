@@ -58,9 +58,9 @@ namespace CORESI.WPF.Core
         public static readonly ImageSource XlsxSmall = GetImageSource("ExportToXLSX", true);
 
         public static readonly ImageSource PDF = GetImageSource("ExportToPDF");
-        public static readonly ImageSource PDFSmall = GetImageSource("ExportToPDF",true);
+        public static readonly ImageSource PDFSmall = GetImageSource("ExportToPDF", true);
         public static readonly ImageSource Print = GetImageSource("Print");
-        public static readonly ImageSource PrintSmall = GetImageSource("Print",true);
+        public static readonly ImageSource PrintSmall = GetImageSource("Print", true);
         public static readonly ImageSource Inventory = GetImageSource("ConvertToRange");
         public static readonly ImageSource CloseDetail = GetImageSource("DeleteList2");
         public static readonly ImageSource Localization = GetImageSource("GeoPointMap");

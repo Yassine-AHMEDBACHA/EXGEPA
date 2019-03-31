@@ -157,7 +157,7 @@ new Currency{Key = "ZAR",Caption = "Rand sud-africain"},
 new Currency{Key = "ZMW",Caption = "Kwacha zambien"}
             };
             result.ForEach(x => x.Caption = x.Caption.ToUpperInvariant());
-            return result.OrderBy(x => x.Key).ToList() ;
+            return result.OrderBy(x => x.Key).ToList();
         }
     }
 }

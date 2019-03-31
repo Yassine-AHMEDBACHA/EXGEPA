@@ -13,14 +13,14 @@ namespace CORESI.WPF.Core.Login
         public LoginWindow()
         {
             this.Loaded += Shell_Loaded;
-        //    DXSplashScreen.Show<CORESI.WPF.Core.SplashScreen>();
+            //    DXSplashScreen.Show<CORESI.WPF.Core.SplashScreen>();
             InitializeComponent();
         }
 
         void Shell_Loaded(object sender, RoutedEventArgs e)
         {
             logger.Info("Login window loaded");
-        //    DXSplashScreen.Close();
+            //    DXSplashScreen.Close();
             this.Loaded -= Shell_Loaded;
             ApplicationInitializer.SetTheme();
         }

@@ -4,6 +4,6 @@ namespace EXGEPA.Model
 {
     public class GeneralAccountType : KeyRow
     {
-        public  EGeneralAccountType Type { get; set; }
+        public EGeneralAccountType Type { get; set; }
     }
 }

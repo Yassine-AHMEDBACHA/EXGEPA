@@ -63,7 +63,7 @@ namespace CORESI.DataAccess.Core.SqlTools
             var tableName = type.IsInterface ? type.Name.Substring(1) : type.Name;
             if (!tableName.EndsWith("s"))
             {
-                tableName = tableName + "s";
+                tableName += "s";
             }
 
             return tableName;

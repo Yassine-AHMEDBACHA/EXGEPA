@@ -19,7 +19,7 @@ namespace CORESI.DataAccess.Core.SqlTools
         {
             var foreignKey = Fields.Where(f => f.IsReference).ToList();
             var constaints = foreignKey.Select(x => "CONSTRAINT[FK_" + this.TableName + "_" + x.Name + "_" + x.Type.GetTableName() + "] FOREIGN KEY(" + x.GetSqlColumnName() + ") REFERENCES [" + x.Type.GetTableName() + "] ([Id])");
-            var script = string.Join(";", constaints.Where(x => x != null).Select(c => " Alter Table [" + this.TableName + "] Add " + c ));
+            var script = string.Join(";", constaints.Where(x => x != null).Select(c => " Alter Table [" + this.TableName + "] Add " + c));
             return script;
         }
 

@@ -4,7 +4,7 @@ using EXGEPA.Model;
 
 namespace EXGEPA.Repository.Controls
 {
-    public class ProjectViewModel :  GenericEditableViewModel<Project>
+    public class ProjectViewModel : GenericEditableViewModel<Project>
     {
         public ProjectViewModel(IExportableGrid exportableView) : base(exportableView)
         {

@@ -50,7 +50,7 @@ namespace EXGEPA.Depreciations.Model
             {
                 return false;
             }
-            
+
         }
     }
 }

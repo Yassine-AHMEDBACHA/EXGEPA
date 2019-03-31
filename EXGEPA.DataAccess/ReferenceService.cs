@@ -25,7 +25,7 @@ namespace EXGEPA.DataAccess
             this.DataAccessor.Fill<Reference>(list);
             UpdateListOfReference<Reference>(list);
             return list;
-        }    
+        }
 
         private void UpdateListOfReference<V>(IList<V> list) where V : Reference
         {

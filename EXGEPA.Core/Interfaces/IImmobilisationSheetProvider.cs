@@ -11,6 +11,6 @@ namespace EXGEPA.Core.Interfaces
 
         void PrintExploitationStartupSheet(IEnumerable<Item> items, string title = "");
 
-        void PrintOutputSheet(IEnumerable<Item> items,bool isCession , string title = null);
+        void PrintOutputSheet(IEnumerable<Item> items, bool isCession, string title = null);
     }
 }

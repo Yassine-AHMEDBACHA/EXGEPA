@@ -59,7 +59,7 @@ namespace CORESI.DataAccess.Core.SqlTools
 
             subQuery.Add(string.Join(fieldsSeparator, this.Fields.Select(f => f.GetColumnDefinition())));
             subQuery.Add("[VersionDate] [DateTime]  DEFAULT(getdate()) NOT NULL");
-            
+
             // subQuery.Add(this.GetForeignKey());
             subQuery.Add(GetConstraint());
             script += string.Join(fieldsSeparator, subQuery.Where(s => !string.IsNullOrEmpty(s)));
@@ -103,6 +103,6 @@ namespace CORESI.DataAccess.Core.SqlTools
             script += fieldsSeparator + "[VersionDate] [DateTime] NOT NULL) \n";
             return script;
         }
-        
+
     }
 }

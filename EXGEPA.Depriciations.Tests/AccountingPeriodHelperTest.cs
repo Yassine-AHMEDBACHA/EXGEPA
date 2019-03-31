@@ -20,7 +20,7 @@ namespace EXGEPA.Depriciations.Tests
         [Test]
         public void SplitYearBy2()
         {
-            AccountingPeriodHelper helper = new AccountingPeriodHelper(2,false);
+            AccountingPeriodHelper helper = new AccountingPeriodHelper(2, false);
             var result = helper.GetAccountingPeriodToDate(new DateTime(2010, 01, 01), new DateTime(2010, 12, 31));
             Assert.AreEqual(result.Count, 2);
             Assert.AreEqual(result.First().StartDate.ToString("yyMMdd"), "100101");
@@ -40,8 +40,8 @@ namespace EXGEPA.Depriciations.Tests
         [Test]
         public void SplitYearBy3()
         {
-            var accountingPeriodHelper = new AccountingPeriodHelper(3,false);
-            
+            var accountingPeriodHelper = new AccountingPeriodHelper(3, false);
+
             var result = accountingPeriodHelper.GetAccountingPeriodToDate(new DateTime(2010, 01, 01), new DateTime(2010, 12, 31));
             Assert.AreEqual(3, result.Count);
             Assert.AreEqual("100101", result[0].StartDate.ToString("yyMMdd"));
@@ -55,7 +55,7 @@ namespace EXGEPA.Depriciations.Tests
         [Test]
         public void QuarterlyAccountingPeriod()
         {
-            var result = (new AccountingPeriodHelper(4,false)).GetAccountingPeriodToDate(new DateTime(2010, 01, 01), new DateTime(2010, 12, 31));
+            var result = (new AccountingPeriodHelper(4, false)).GetAccountingPeriodToDate(new DateTime(2010, 01, 01), new DateTime(2010, 12, 31));
             Assert.AreEqual(4, result.Count);
 
             Assert.AreEqual("100101", result[0].StartDate.ToString("yyMMdd"));
@@ -74,7 +74,7 @@ namespace EXGEPA.Depriciations.Tests
         [Test]
         public void MonthelyAccountingPeriod()
         {
-            var result = (new AccountingPeriodHelper(12,false)).GetAccountingPeriodToDate(new DateTime(2016, 01, 01), new DateTime(2016, 12, 31));
+            var result = (new AccountingPeriodHelper(12, false)).GetAccountingPeriodToDate(new DateTime(2016, 01, 01), new DateTime(2016, 12, 31));
             Assert.AreEqual(12, result.Count);
 
             Assert.AreEqual("0101", result[0].StartDate.ToString("MMdd"));
@@ -89,7 +89,7 @@ namespace EXGEPA.Depriciations.Tests
             Assert.AreEqual("0401", result[3].StartDate.ToString("MMdd"));
             Assert.AreEqual("0430", result[3].EndDate.ToString("MMdd"));
 
-            result = (new AccountingPeriodHelper(12,false)).GetAccountingPeriodToDate(new DateTime(2010, 01, 01), new DateTime(2010, 12, 31));
+            result = (new AccountingPeriodHelper(12, false)).GetAccountingPeriodToDate(new DateTime(2010, 01, 01), new DateTime(2010, 12, 31));
             Assert.AreEqual(12, result.Count);
 
             Assert.AreEqual("0101", result[0].StartDate.ToString("MMdd"));
@@ -111,7 +111,7 @@ namespace EXGEPA.Depriciations.Tests
             var startDate = new DateTime(2011, 04, 17);
             var endDate = new DateTime(2016, 12, 15);
             var count = Math.Round((endDate - startDate).TotalDays / 365.25, 0);
-            var resutl = (new AccountingPeriodHelper(loadHistory:false)).GetAccountingPeriodToDate(startDate, endDate);
+            var resutl = (new AccountingPeriodHelper(loadHistory: false)).GetAccountingPeriodToDate(startDate, endDate);
             Assert.AreEqual(count, resutl.Count());
             Assert.IsTrue(resutl.First().StartDate <= startDate);
             Assert.IsTrue(resutl.Last().EndDate >= endDate);
@@ -123,7 +123,7 @@ namespace EXGEPA.Depriciations.Tests
             var startDate = new DateTime(2011, 01, 17);
             var endDate = new DateTime(2011, 12, 15);
             var count = 12;
-            var resutl = (new AccountingPeriodHelper(12,false)).GetAccountingPeriodToDate(startDate, endDate);
+            var resutl = (new AccountingPeriodHelper(12, false)).GetAccountingPeriodToDate(startDate, endDate);
             Assert.AreEqual(count, resutl.Count());
             Assert.IsTrue(resutl.First().StartDate <= startDate);
             Assert.IsTrue(resutl.Last().EndDate >= endDate);

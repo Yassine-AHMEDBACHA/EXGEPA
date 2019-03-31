@@ -25,15 +25,17 @@ namespace EXGEPA.Output.Controls
 
         public virtual ItemAttributionOptions GetItemAttributionOptions(OutputCertificate outputCertificate)
         {
-            var options = new ItemAttributionOptions();
-            options.PageCaption = "PV N°:" + outputCertificate.Key;
-            options.SetConfirmationMessage = "Etes vous sûr de vouloir rajouter ces articles au PV N° " + outputCertificate.Key;
-            options.ResetConfirmationMessage = "Etes vous sûr de vouloir retirer ces articles du PV N° " + outputCertificate.Key;
-            options.RightPanelCaption = "Contenu du PV N° " + outputCertificate.Key;
-            options.Tester = (item) => item.OutputCertificate?.Id == outputCertificate.Id;
-            options.Setter = (item) => item.OutputCertificate = outputCertificate;
-            options.Resetter = (item) => item.OutputCertificate = null;
-            options.Categorie = new Categorie("Les Sorties", Colors.IndianRed);
+            var options = new ItemAttributionOptions
+            {
+                PageCaption = "PV N°:" + outputCertificate.Key,
+                SetConfirmationMessage = "Etes vous sûr de vouloir rajouter ces articles au PV N° " + outputCertificate.Key,
+                ResetConfirmationMessage = "Etes vous sûr de vouloir retirer ces articles du PV N° " + outputCertificate.Key,
+                RightPanelCaption = "Contenu du PV N° " + outputCertificate.Key,
+                Tester = (item) => item.OutputCertificate?.Id == outputCertificate.Id,
+                Setter = (item) => item.OutputCertificate = outputCertificate,
+                Resetter = (item) => item.OutputCertificate = null,
+                Categorie = new Categorie("Les Sorties", Colors.IndianRed)
+            };
             return options;
         }
 

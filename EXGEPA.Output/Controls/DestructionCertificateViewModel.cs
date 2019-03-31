@@ -9,5 +9,5 @@ namespace EXGEPA.Output.Controls
         {
             this.Caption = "Liste de PV de destruction";
         }
-    } 
+    }
 }

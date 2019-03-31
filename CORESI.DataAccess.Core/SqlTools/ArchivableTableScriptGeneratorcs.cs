@@ -4,15 +4,15 @@ using System.Collections.Generic;
 
 namespace CORESI.DataAccess.Core.SqlTools
 {
-    public class ArchivableTableScriptGeneratorcs 
+    public class ArchivableTableScriptGeneratorcs
     {
         string HistoTableName { get; set; }
         string TableName { get; set; }
-        private string UpdateTriggerName { get;  set; }
-        private string DeleteTriggerName { get;  set; }
+        private string UpdateTriggerName { get; set; }
+        private string DeleteTriggerName { get; set; }
         public IDbFacade DBFacade { get; private set; }
 
-        public ArchivableTableScriptGeneratorcs(string tableName,string histoTableName) 
+        public ArchivableTableScriptGeneratorcs(string tableName, string histoTableName)
         {
             this.TableName = tableName;
             this.HistoTableName = histoTableName;
@@ -47,8 +47,8 @@ namespace CORESI.DataAccess.Core.SqlTools
 
         private string GetScriptForUpdateTrigger()
         {
-           
-           var script = "Create trigger [" + UpdateTriggerName + "] on [dbo].[" + this.TableName + "]  after Update \nas \nbegin \nSET NOCOUNT ON;";
+
+            var script = "Create trigger [" + UpdateTriggerName + "] on [dbo].[" + this.TableName + "]  after Update \nas \nbegin \nSET NOCOUNT ON;";
             script += "insert into [dbo].[" + this.HistoTableName + "] select * from deleted; ";
             script += "update [dbo].[" + this.TableName + "]  set VersionDate = GetDate() from deleted where [dbo].[" + this.TableName + "].Id = deleted.Id end";
             return script;
@@ -63,8 +63,8 @@ namespace CORESI.DataAccess.Core.SqlTools
 
         private string GetScriptForDeleteTrigger()
         {
-          
-           var script = "Create trigger [" + DeleteTriggerName + "] on [dbo].[" + this.TableName + "]  after delete \nas \nBEGIN \nSET NOCOUNT ON;\n";
+
+            var script = "Create trigger [" + DeleteTriggerName + "] on [dbo].[" + this.TableName + "]  after delete \nas \nBEGIN \nSET NOCOUNT ON;\n";
             script += "insert into [dbo].[" + this.HistoTableName + "] select * from deleted END";
             return script;
         }
@@ -76,7 +76,7 @@ namespace CORESI.DataAccess.Core.SqlTools
             return script;
         }
 
-        private  string GetScriptToDropTrigger(string triggerName)
+        private string GetScriptToDropTrigger(string triggerName)
         {
             var query = "IF OBJECT_ID ('" + triggerName + "', 'TR') IS NOT NULL\nBEGIN \n\tDROP TRIGGER " + triggerName + " \nEND\n";
             return query;

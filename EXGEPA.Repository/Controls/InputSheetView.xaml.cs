@@ -7,8 +7,8 @@ namespace EXGEPA.Repository.Controls
     /// </summary>
     public partial class InputSheetView : ExportableView
     {
-        
-    
+
+
         public InputSheetView()
         {
             InitializeComponent();

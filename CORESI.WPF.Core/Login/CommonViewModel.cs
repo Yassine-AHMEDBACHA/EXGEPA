@@ -29,7 +29,7 @@ namespace CORESI.WPF.Core.Login
             }
         }
 
-        
+
         public bool TopMost
         {
             get

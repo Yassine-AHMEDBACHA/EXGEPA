@@ -6,9 +6,9 @@ namespace EXGEPA.Sonatrach.Core
     {
         public DepreciationSerializer()
         {
-                
+
         }
-        
+
         public void Serialize()
         {
             throw new NotImplementedException();

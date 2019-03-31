@@ -24,6 +24,6 @@ namespace EXGEPA.Core.Security
             return this.rightManager.HasAccess(actionName);
         }
 
-        
+
     }
 }

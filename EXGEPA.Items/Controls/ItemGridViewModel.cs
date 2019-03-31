@@ -16,27 +16,20 @@ namespace EXGEPA.Items.Controls
 {
     public class ItemGridViewModel : GenericEditableViewModel<Item>
     {
-        static readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
-        static Categorie itemLabelCategory = new Categorie()
-        {
-            Caption = "Etiquette des Items",
-            Color = Colors.Chocolate
-        };
-
         IUIItemService UIItemService { get; set; }
+
         IRepositoryDataProvider RepositoryDataProvider { get; set; }
 
         public ItemGridViewModel(IExportableGrid exportableView) : base(exportableView, false)
         {
-            logger.Info("Initiating ItemGridViewModel ...");
-            logger.Debug("Start composing ItemGridViewModel ...");
+            this.Logger.Info("Initiating ItemGridViewModel ...");
+            this.Logger.Debug("Start composing ItemGridViewModel ...");
             this.Caption = "Liste des immobilisations";
             this.AutoWidth = false;
             this.TryAddSummaryButton();
             RepositoryDataProvider = ServiceLocator.Resolve<IRepositoryDataProvider>();
             UIItemService = ServiceLocator.Resolve<IUIItemService>();
-            logger.Debug("ItemGridViewModel Composition Done");
+            this.Logger.Debug("ItemGridViewModel Composition Done");
             var MenthlyCalculator = new Depreciations.Core.MonthelyCalculator(new Depreciations.Core.AccountingPeriodHelper());
             var immoSheetGroup = this.AddNewGroup("Fiches immo");
             immoSheetGroup.AddCommand("Mensuelle", () => this.StartUIBackGroundAction(() =>
@@ -124,7 +117,7 @@ namespace EXGEPA.Items.Controls
                 });
 
 
-                group.AddCommand("Details", () => this.UIMessage.TryDoAction(logger, () => ExternalProcess.StartProcess("EQUIPCOMPTE.exe")));
+                group.AddCommand("Details", () => this.UIMessage.TryDoAction(this.Logger, () => ExternalProcess.StartProcess("EQUIPCOMPTE.exe")));
 
                 return group;
             }
@@ -145,7 +138,7 @@ namespace EXGEPA.Items.Controls
         {
             StartBackGroundAction(() =>
             {
-                using (var scoopLogger = new ScoopLogger("Loading Data", logger, true))
+                using (var scoopLogger = new ScoopLogger("Loading Data", this.Logger, true))
                 {
                     var list = DBservice.SelectAll();
                     scoopLogger.Snap("Loading Data ");

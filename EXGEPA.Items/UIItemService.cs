@@ -109,11 +109,13 @@ namespace EXGEPA.Items
         public void DisplayItems(Predicate<Item> filter, string pageCaption, Action<IEnumerable<Item>> report)
         {
             var view = new ItemGridView();
-            var viewModel = new ItemGridBaseViewModel(filter, view, report);
-            viewModel.Caption = pageCaption;
+            var viewModel = new ItemGridBaseViewModel(filter, view, report)
+            {
+                Caption = pageCaption
+            };
             var page = new Page(viewModel, view, true);
             UIService.AddPage(page, true);
-            
+
             viewModel.InitData();
         }
     }

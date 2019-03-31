@@ -19,6 +19,6 @@ namespace EXGEPA.Report.Commun
             RepositoryDataProvider = ServiceLocator.Resolve<IRepositoryDataProvider>();
         }
 
-        
+
     }
 }

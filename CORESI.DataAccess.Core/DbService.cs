@@ -151,8 +151,7 @@ namespace CORESI.DataAccess.Core
                 foreach (var item in allElement)
                 {
                     var referenceId = ((IRowId)field.GetValue(item))?.Id ?? -1;
-                    V value;
-                    if (dico.TryGetValue(referenceId, out value))
+                    if (dico.TryGetValue(referenceId, out V value))
                     {
                         field.SetValue(item, value);
                     }
@@ -164,12 +163,12 @@ namespace CORESI.DataAccess.Core
         public IList<T> GetHistoric(int id)
         {
             return this.DataAccessor.GetHistoric(id);
-            
+
         }
 
         public List<Field> Fields
         {
-            get { return DataAccessor.Fields;}
+            get { return DataAccessor.Fields; }
         }
 
 

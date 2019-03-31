@@ -11,7 +11,7 @@ namespace CORESI.WPF.Core.Login
 
         public string OldPassword { get; set; }
 
-        public ChangePasswordViewModel(string login,string oldPassword)
+        public ChangePasswordViewModel(string login, string oldPassword)
         {
             this.Logger.Debug("Loading ChangePasswordViewModel ...");
             this.Login = login;
@@ -26,7 +26,7 @@ namespace CORESI.WPF.Core.Login
             UIMessage.TryDoAction(this.Logger, () =>
             {
                 BadInformations = false;
-                
+
                 if (Password == OldPassword || Password != Confirmation)
                 {
                     BadInformations = true;
@@ -60,12 +60,14 @@ namespace CORESI.WPF.Core.Login
                 RaisePropertyChanged("Confirmation");
             }
         }
-        
+
         public static void ShowChangePasswordViewModel(string login, string oldPassword)
         {
             var changePasswordViewModel = new ChangePasswordViewModel(login, oldPassword);
-            var changePasswordView = new ChangePasswordView();
-            changePasswordView.DataContext = changePasswordViewModel;
+            var changePasswordView = new ChangePasswordView
+            {
+                DataContext = changePasswordViewModel
+            };
             changePasswordViewModel.CloseWindow = changePasswordView.Close;
             changePasswordView.ShowDialog();
         }

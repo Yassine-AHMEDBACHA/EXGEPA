@@ -10,7 +10,7 @@ namespace EXGEPA.Invoice.Controls
     public partial class InvoiceView : UserControl, IExportableGrid
     {
         public string DisplayedFilter => this.mainTableView.FilterPanelText;
-        
+
 
         public void Print(string documentName)
         {
@@ -19,10 +19,12 @@ namespace EXGEPA.Invoice.Controls
 
         public void ExportExcel(string documentName)
         {
-            Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
-            dlg.DefaultExt = ".Xlsx";
-            dlg.Filter = "(.Xlsx)|*.Xlsx";
-            dlg.FileName = documentName;
+            Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog
+            {
+                DefaultExt = ".Xlsx",
+                Filter = "(.Xlsx)|*.Xlsx",
+                FileName = documentName
+            };
             if (dlg.ShowDialog() == true)
             {
                 string filename = dlg.FileName;
@@ -32,10 +34,12 @@ namespace EXGEPA.Invoice.Controls
 
         public void ExportPDF(string documentName)
         {
-            Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
-            dlg.DefaultExt = ".pdf";
-            dlg.Filter = " (.pdf)|*.pdf";
-            dlg.FileName = documentName;
+            Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog
+            {
+                DefaultExt = ".pdf",
+                Filter = " (.pdf)|*.pdf",
+                FileName = documentName
+            };
             if (dlg.ShowDialog() == true)
             {
                 string filename = dlg.FileName;

@@ -223,11 +223,9 @@ namespace EXGEPA.Inventory.Controls
                 ItemState = repositoryDataProvider.ListOfStats.FirstOrDefault(x => x.Id == inventoryRow.ItemState?.Id)
             };
 
-            Office office;
-            AllOffices.TryGetValue(inventoryRow.Localization, out office);
+            AllOffices.TryGetValue(inventoryRow.Localization, out Office office);
             inventory.Office = office;
-            Item item;
-            if (allItems.TryGetValue(inventoryRow.Key, out item))
+            if (allItems.TryGetValue(inventoryRow.Key, out Item item))
             {
                 allItems.Remove(inventoryRow.Key);
             }
@@ -281,14 +279,13 @@ namespace EXGEPA.Inventory.Controls
             gapTraitement.AddCommand("Physique", IconProvider.Redo, this.AdjustToNewPosition);
         }
 
-        void AdjustPostion(bool toNewPosition = true)
+        private void AdjustPostion(bool toNewPosition = true)
         {
             var rowToUpdate = this.Selection.Where(x => x.InventoryRow != null).ToList();
             foreach (var item in rowToUpdate)
             {
                 var localisationToswitch = toNewPosition ? item.Localization : item?.Item.Office.Key;
-                Office office;
-                AllOffices.TryGetValue(localisationToswitch, out office);
+                AllOffices.TryGetValue(localisationToswitch, out Office office);
                 if (office != null)
                 {
                     item.Item.Office = office;
@@ -304,8 +301,7 @@ namespace EXGEPA.Inventory.Controls
             var rowToUpdate = this.Selection.Where(x => x.InventoryRow != null).ToList();
             foreach (var item in rowToUpdate)
             {
-                Office office;
-                AllOffices.TryGetValue(item.Localization, out office);
+                AllOffices.TryGetValue(item.Localization, out Office office);
                 if (office != null)
                 {
                     item.Item.Office = office;
@@ -353,7 +349,7 @@ namespace EXGEPA.Inventory.Controls
             {
                 inventToolsGroup.AddCommand("Charger fichier", IconProvider.DownloadSmall, this.LoadFileFromDisk, true);
             }
-            
+
             inventToolsGroup.AddCommand("Archives inventaire", IconProvider.DownloadSmall, this.DisplayArchive, true);
 
             inventToolsGroup.AddCommand("Recolter", IconProvider.DownloadSmall, this.LoadFileFromPDA, true);
@@ -367,7 +363,7 @@ namespace EXGEPA.Inventory.Controls
         {
             this.UIMessage.TryDoAction(this.Logger, () =>
              ExternalProcess.StartProcess("ArchiveINV.exe"));
-        } 
+        }
 
         private void LoadFileFromPDA()
         {
@@ -400,14 +396,16 @@ namespace EXGEPA.Inventory.Controls
             {
                 var vm = new Wind1VM();
 
-                var v = new Window1();
-                v.DataContext = vm;
+                var v = new Window1
+                {
+                    DataContext = vm
+                };
                 v.ShowDialog();
                 this.SaveAll(vm.Comment ?? $"Inventaire du : {DateTime.Today.ToShortDateString()}");
                 this.inventoryService.DeleteAll();
                 this.InitData();
             });
-            
+
         }
 
         private void SaveAll(string comment)
@@ -418,7 +416,7 @@ namespace EXGEPA.Inventory.Controls
                 Code = x.Key,
                 Ancien_Code = x.Item?.OldCode,
                 Type_ecart = x.GapType,
-               
+
                 Nom_inventaire = comment,
                 Date_archive = archiveDate,
                 Compte_analytique = x.Item?.AnalyticalAccount?.Key,

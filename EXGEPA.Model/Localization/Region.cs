@@ -6,7 +6,7 @@ namespace EXGEPA.Model
     public class Region : NamedKeyRow
     {
 
-        [DataAttribute(IsList=true)]
+        [DataAttribute(IsList = true)]
         public virtual IList<Site> Sites { get; set; }
 
     }

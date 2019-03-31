@@ -14,7 +14,7 @@ namespace EXGEPA.Depreciations.Core
         public MonthelyCalculator(IAccountingPeriodHelper accountingPeriodHelper)
             : base(accountingPeriodHelper)
         {
-           this.monthSplit =  this.parameterProvider.GetAndSetIfMissing("MonthlyDepreciationDateSplie", 15);
+            this.monthSplit = this.parameterProvider.GetAndSetIfMissing("MonthlyDepreciationDateSplie", 15);
         }
 
 
@@ -48,7 +48,7 @@ namespace EXGEPA.Depreciations.Core
             }
         }
 
-                public int GetMonthCount(DateTime startDate, DateTime endDate)
+        public int GetMonthCount(DateTime startDate, DateTime endDate)
         {
             if (IsSameDate(startDate, endDate))
             {
@@ -68,7 +68,7 @@ namespace EXGEPA.Depreciations.Core
         private bool IsSameDate(DateTime startDate, DateTime endDate)
         {
             var sameYear = endDate.Year == startDate.Year;
-            var sameMonth =  endDate.Month == startDate.Month;
+            var sameMonth = endDate.Month == startDate.Month;
             var sameMonthBegining = endDate.Day <= this.monthSplit && startDate.Day <= this.monthSplit;
             var sameMonthEnding = endDate.Day > this.monthSplit && startDate.Day > this.monthSplit;
             return sameYear && sameMonth && (sameMonthBegining || sameMonthEnding);

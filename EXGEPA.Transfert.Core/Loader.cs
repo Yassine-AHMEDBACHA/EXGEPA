@@ -171,13 +171,11 @@ namespace EXGEPA.Transfert.Core
                 Assignment assig = assignements.FirstOrDefault(x => x.Key == item.Key);
                 if (assig != null)
                 {
-                    Person person;
-                    allPersons.TryGetValue(assig.Person.Key, out person);
+                    allPersons.TryGetValue(assig.Person.Key, out Person person);
                     item.Person = person;
                     item.UserAssignmentStartDate = assig.StartDate;
                 }
-                Office office;
-                if (allOffices.TryGetValue(item.Office.Key.ToUpper(), out office))
+                if (allOffices.TryGetValue(item.Office.Key.ToUpper(), out Office office))
                 {
                     item.Office = office;
                 }
@@ -199,15 +197,13 @@ namespace EXGEPA.Transfert.Core
 
                 if (item.Invoice != null)
                 {
-                    Invoice invoice;
-                    allInvoices.TryGetValue(item.Invoice.Key, out invoice);
+                    allInvoices.TryGetValue(item.Invoice.Key, out Invoice invoice);
                     item.Invoice = invoice;
                 }
 
                 if (item.Provider != null)
                 {
-                    Provider provider;
-                    allProviders.TryGetValue(item.Provider.Key, out provider);
+                    allProviders.TryGetValue(item.Provider.Key, out Provider provider);
                     item.Provider = provider;
                 }
 
@@ -272,7 +268,7 @@ namespace EXGEPA.Transfert.Core
                 }
             }
             return DbInitializer.InsertData(offices);
-        }   
+        }
 
         private static List<Level> LoadLevels(IDataBaseTransfertEngin dataBaseTransfertEngin, List<Building> buildings)
         {

@@ -5,7 +5,7 @@ namespace CORESI.Data
 {
     public abstract class Row : ArchivableRow, ICloneable
     {
-        [DataAttribute( Ordinal = 100)]
+        [DataAttribute(Ordinal = 100)]
         public object Tag { get; set; }
 
         [DataAttribute(Ordinal = 99)]

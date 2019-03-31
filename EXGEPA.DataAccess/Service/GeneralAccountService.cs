@@ -22,16 +22,16 @@ namespace EXGEPA.DataAccess.Service
         {
             var allAccounts = base.SelectAll();
             var types = generalAccountTypeServices.SelectAll();
-            
+
             foreach (var item in allAccounts)
             {
                 item.GeneralAccountType = types.Single(x => x.Id == item.GeneralAccountType?.Id);
-                if(item.Children != null)
+                if (item.Children != null)
                 {
                     item.Children = allAccounts.Single(x => x.Id == item.Children.Id);
                 }
             }
-                        
+
             return allAccounts;
         }
     }

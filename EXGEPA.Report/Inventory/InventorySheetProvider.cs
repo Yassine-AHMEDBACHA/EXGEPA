@@ -18,7 +18,7 @@ namespace EXGEPA.Report.Inventory
         public IUIMessage uIMessage;
 
         public void PrintInventorySheet(IList<Item> items, bool isTheorical = true)
-        {   
+        {
             if (items == null || items.Count == 0)
             {
                 this.uIMessage.Information("Acune fiche à imprimer !");

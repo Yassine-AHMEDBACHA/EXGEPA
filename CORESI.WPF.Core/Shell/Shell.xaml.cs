@@ -21,7 +21,7 @@ namespace CORESI.WPF.Core.Shell
             var applicationID = CurrentEnvirenement.ApplicationName;
             ShellHelper.TryCreateShortcut(applicationID, applicationID);
         }
-        
+
         void Shell_Loaded(object sender, RoutedEventArgs e)
         {
             DXSplashScreen.Close();

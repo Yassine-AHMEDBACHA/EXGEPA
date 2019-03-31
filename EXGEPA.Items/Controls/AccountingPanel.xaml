@@ -98,7 +98,7 @@
         </dxlc:LayoutGroup>
         <dxlc:LayoutGroup View="GroupBox" Orientation="Vertical">
             <dxlc:LayoutItem Label="Code Parent">
-                <dxg:LookUpEdit SelectedItem="{Binding Owner, UpdateSourceTrigger=PropertyChanged}" AssignNullValueOnClearingEditText="True" PopupHeight="300" PopupWidth="500" ItemsSource="{Binding ListOfItems}" DisplayMember="Key" AutoPopulateColumns="False" 
+                <dxg:LookUpEdit SelectedItem="{Binding Owner, UpdateSourceTrigger=PropertyChanged}" AssignNullValueOnClearingEditText="True" PopupHeight="300" PopupWidth="500" ItemsSource="{Binding RepositoryDataProvider.AllItems}" DisplayMember="Key" AutoPopulateColumns="False" 
                                 IsReadOnly="{Binding IsAccountingInformationLocked}">
                     <dxg:LookUpEdit.PopupContentTemplate>
                         <ControlTemplate>

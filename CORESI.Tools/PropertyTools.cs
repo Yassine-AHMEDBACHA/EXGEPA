@@ -1,20 +1,23 @@
-﻿using System;
+﻿// <copyright file="PropertyTools.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace CORESI.Tools
 {
-    public  class PropertyTools
+    using System;
+
+    public class PropertyTools
     {
         public static string GetPropertyName<T>(System.Linq.Expressions.Expression<Func<T, object>> property)
         {
             var lambda = (System.Linq.Expressions.LambdaExpression)property;
             System.Linq.Expressions.MemberExpression memberExpression;
 
-            if (lambda.Body is System.Linq.Expressions.UnaryExpression)
+            if (lambda.Body is System.Linq.Expressions.UnaryExpression unaryExpression)
             {
-                System.Linq.Expressions.UnaryExpression unaryExpression = (System.Linq.Expressions.UnaryExpression)(lambda.Body);
                 if (unaryExpression.Operand is System.Linq.Expressions.MemberExpression)
                 {
-                    memberExpression = (System.Linq.Expressions.MemberExpression)(unaryExpression.Operand);
+                    memberExpression = (System.Linq.Expressions.MemberExpression)unaryExpression.Operand;
                 }
                 else
                 {
@@ -23,10 +26,10 @@ namespace CORESI.Tools
             }
             else
             {
-                memberExpression = (System.Linq.Expressions.MemberExpression)(lambda.Body);
+                memberExpression = (System.Linq.Expressions.MemberExpression)lambda.Body;
             }
 
-            return memberExpression.ToString() ;
+            return memberExpression.ToString();
         }
     }
 }

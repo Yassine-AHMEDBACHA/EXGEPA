@@ -57,7 +57,7 @@ namespace CORESI.WPF.Model
         public string Caption { get; set; }
         public ObservableCollection<Group> Groups { get; set; }
 
-        private System.Windows.Controls.UserControl _UserControl;  
+        private System.Windows.Controls.UserControl _UserControl;
 
         public System.Windows.Controls.UserControl UserControl
         {

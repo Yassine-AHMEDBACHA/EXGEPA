@@ -9,7 +9,7 @@ using EXGEPA.Model;
 namespace EXGEPA.DataAccess.Service
 {
     [Export(typeof(IDataProvider<OrderDocument>)), PartCreationPolicy(CreationPolicy.Shared)]
-    public class OrderDocumentService : DbService<OrderDocument> 
+    public class OrderDocumentService : DbService<OrderDocument>
     {
         private IDataProvider<OrderDocumentType> _OrderDocumentTypeService;
         public OrderDocumentService()

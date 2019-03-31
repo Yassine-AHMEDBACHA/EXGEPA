@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace EXGEPA.DataAccess
 {
-    public abstract class AFilterdService<T> : DbService<T> where T:KeyRow
+    public abstract class AFilterdService<T> : DbService<T> where T : KeyRow
     {
         public AFilterdService() : base()
         {

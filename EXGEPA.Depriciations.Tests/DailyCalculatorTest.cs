@@ -15,10 +15,12 @@ namespace EXGEPA.Depriciations.Tests
         [Test]
         public void GetDepreciationsStandardTest()
         {
-            var item = new Item();
-            item.Amount = 1000;
-            item.FiscalRate = 100;
-            item.AquisitionDate = new DateTime(2015, 01, 01);
+            var item = new Item
+            {
+                Amount = 1000,
+                FiscalRate = 100,
+                AquisitionDate = new DateTime(2015, 01, 01)
+            };
             DailyCalculator calculator = new DailyCalculator(new AccountingPeriodHelper(loadHistory: false));
             var result = calculator.GetDepriciations(item, new DateTime(2010, 01, 01), new DateTime(2015, 12, 31));
             Assert.IsNotNull(result);
@@ -71,14 +73,14 @@ namespace EXGEPA.Depriciations.Tests
         }
 
         [Test]
-      //  [Ignore("Long time to Run")]
+        //  [Ignore("Long time to Run")]
         public void AllItemsTest()
         {
             var Items = (ServiceLocator.Resolve<IDataProvider<Item>>()).SelectAll().ToList();
-            var calculator = new DailyCalculator(new AccountingPeriodHelper(loadHistory:false));
+            var calculator = new DailyCalculator(new AccountingPeriodHelper(loadHistory: false));
             var result = calculator.GetDepriciation(Items, new DateTime(1950, 01, 01), new DateTime(2080, 12, 31));
             Assert.AreNotEqual(null, result);
-            Assert.IsTrue(result.Count>0);
+            Assert.IsTrue(result.Count > 0);
 
         }
 

@@ -31,7 +31,7 @@ namespace EXGEPA.Report.InvestismentRecap
                 var currentPeriod = AccountingPeriodsService.SelectAll().FirstOrDefault(x => !x.Approved);
                 this.RepositoryDataProvider.Refresh();
                 scooplogger.Snap("Refreshing repository");
-              
+
                 scooplogger.Snap("getting min value");
                 var Items = this.ItemService.SelectAll().Where(item => item.GeneralAccount.GeneralAccountType.Type == EGeneralAccountType.Investment && item.AquisitionDate <= currentPeriod.EndDate).ToList();
 

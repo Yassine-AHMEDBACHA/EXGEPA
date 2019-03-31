@@ -41,8 +41,7 @@ namespace CORESI.DataAccess.Core
                 var row = dataTable.NewRow();
                 referenceFields.ForEach(referenceField =>
                 {
-                    var value = referenceField.GetValue(instance) as RowId;
-                    if (value != null)
+                    if (referenceField.GetValue(instance) is RowId value)
                         row[referenceField.Name] = value.Id;
                 });
                 simpleFields.ForEach(simpleField =>
@@ -72,7 +71,7 @@ namespace CORESI.DataAccess.Core
 
             return succes;
         }
-        
+
 
         public static bool InsertBulk<T>(IEnumerable<T> instances, string tableName = null) where T : Row
         {
@@ -107,8 +106,7 @@ namespace CORESI.DataAccess.Core
                 var row = dataTable.NewRow();
                 referenceFields.ForEach(referenceField =>
                     {
-                        var value = referenceField.GetValue(instance) as RowId;
-                        if (value != null)
+                        if (referenceField.GetValue(instance) is RowId value)
                             row[referenceField.Name] = value.Id;
                     });
                 simpleFields.ForEach(simpleField =>

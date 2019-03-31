@@ -117,8 +117,10 @@ namespace CORESI.WPF.Core.Login
         public static ClientInformation ShowLoginWindow()
         {
             LoginViewModel loginViewModel = new LoginViewModel();
-            LoginWindow login = new LoginWindow();
-            login.DataContext = loginViewModel;
+            LoginWindow login = new LoginWindow
+            {
+                DataContext = loginViewModel
+            };
             loginViewModel.CloseWindow = login.Close;
             login.ShowDialog();
             return loginViewModel.ClientInformation;

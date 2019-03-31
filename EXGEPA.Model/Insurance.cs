@@ -1,7 +1,7 @@
 ﻿namespace EXGEPA.Model
 {
-    public class Insurance 
+    public class Insurance
     {
-        
+
     }
 }

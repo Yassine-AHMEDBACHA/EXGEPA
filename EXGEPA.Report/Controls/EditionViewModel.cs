@@ -4,9 +4,9 @@ namespace EXGEPA.Report.Controls
 {
     public class EditionViewModel : PageViewModel
     {
-        public EditionViewModel(string caption):base()
+        public EditionViewModel(string caption) : base()
         {
             this.Caption = caption;
         }
-}
+    }
 }

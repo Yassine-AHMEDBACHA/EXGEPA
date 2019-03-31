@@ -5,12 +5,12 @@ namespace CORESI.WPF.Model
     public class DateEditRibbon : EditSettingRibbon
     {
 
-       
+
 
         public DateEditRibbon(string caption = "")
             : base(caption)
         {
-          
+
         }
 
         private DateTime _Date;

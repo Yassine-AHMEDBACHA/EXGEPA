@@ -10,7 +10,7 @@ namespace CORESI.DataAccess.Core.SqlTools
             return "[" + field.Name + "]";
         }
 
-        
+
 
         public static string GetSqlParameterName(this Field field)
         {
@@ -35,7 +35,7 @@ namespace CORESI.DataAccess.Core.SqlTools
             return "NULL";
         }
 
-        
+
 
         public static string GetColumnDefinition(this Field field)
         {

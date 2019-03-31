@@ -17,7 +17,7 @@ namespace CORESI.WPF.Controls
             {
                 this.SetExportGroup(view);
             }
-           
+
             ServiceLocator.Resolve<IReportPreviwer<T>>()?.SetPreviewReportGroup(this);
         }
 

@@ -17,7 +17,7 @@ namespace CORESI.WPF
             page.Groups.Add(group);
         }
 
-    
+
 
     }
 }

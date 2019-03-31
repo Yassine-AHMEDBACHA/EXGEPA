@@ -15,7 +15,7 @@ namespace CORESI.DataAccess.Core.Tests
         {
             var fields = typeof(Reference).GetAllFields();
             var properties = typeof(Reference).GetProperties().ToList();
-            Assert.AreEqual(properties.Count-1, fields.Count);
+            Assert.AreEqual(properties.Count - 1, fields.Count);
         }
 
         [Test]
@@ -46,14 +46,14 @@ namespace CORESI.DataAccess.Core.Tests
         [Test]
         public void Should_tte()
         {
-           var typeR = typeof(IDataProvider<Item>);
+            var typeR = typeof(IDataProvider<Item>);
 
-           var type = typeof(IDataProvider<>);
+            var type = typeof(IDataProvider<>);
             type = type.MakeGenericType(typeof(Item));
 
             Assert.AreEqual(typeR, type);
-           var instance = ServiceLocator.Resolve(type);
-           Assert.IsNotInstanceOf(typeof(IDataProvider<Item>), instance);
+            var instance = ServiceLocator.Resolve(type);
+            Assert.IsNotInstanceOf(typeof(IDataProvider<Item>), instance);
         }
 
     }

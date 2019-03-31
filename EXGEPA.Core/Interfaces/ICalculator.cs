@@ -9,6 +9,6 @@ namespace EXGEPA.Core.Interfaces
         Dictionary<Item, List<Depreciation>> GetDepriciation(List<Item> source, DateTime startDate, DateTime endDate);
         List<Depreciation> GetDepriciations(Item item, DateTime startDate, DateTime endDate);
 
-    
+
     }
 }

@@ -11,25 +11,29 @@ namespace EXGEPA.DataBaseCopy
     {
         static void Main(string[] args)
         {
-            Item i = new Item();
+            if (args == null)
+            {
+                throw new ArgumentNullException(nameof(args));
+            }
 
-            var select = GetSelectQuery<GeneralAccount>();
+            _ = new Item();
+            _ = GetSelectQuery<GeneralAccount>();
 
             //var types = QueryBuilder.GetMappedTypes();
             //var baseProperties = typeof(Row).GetProperties().Select(p=>p.Name).ToList();
             //var tables = types.ToDictionary(x => x, x => x.GetProperties().Where(p => !baseProperties.Contains(p.Name)).ToList());
 
 
-           
+
 
 
 
         }
 
-      
-        public static string GetSelectQuery<T>()where T:KeyRow
+
+        public static string GetSelectQuery<T>() where T : KeyRow
         {
-            var fields = GetFields<T>().Where(x => x != null).ToList() ;
+            var fields = GetFields<T>().Where(x => x != null).ToList();
             return GetSelectQuery<T>(fields);
         }
 
@@ -37,7 +41,7 @@ namespace EXGEPA.DataBaseCopy
         {
             var type = typeof(T);
             string tableName = GetTableName(type);
-            string query = "Insert into "+tableName+" ("+string.Join(",",fields.Select(f=>f.Name))+",session_id)";
+            string query = "Insert into " + tableName + " (" + string.Join(",", fields.Select(f => f.Name)) + ",session_id)";
             query += " SELECT ";
             int i = 1;
             foreach (var field in fields)
@@ -50,7 +54,7 @@ namespace EXGEPA.DataBaseCopy
             query = query.TrimEnd(',');
             query = query + ",1 FROM GIMMO..[" + tableName + "]";
 
-            
+
 
 
             query += " ";
@@ -62,7 +66,7 @@ namespace EXGEPA.DataBaseCopy
             var tableName = type.Name;
             if (!tableName.EndsWith("s"))
             {
-                tableName = tableName + "s";
+                tableName += "s";
             }
             return tableName;
         }

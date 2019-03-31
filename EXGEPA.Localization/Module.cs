@@ -86,10 +86,14 @@ namespace EXGEPA.Localization
         public void ShowOfficeAttribution(PropertyInfo property, object value, object defaultValue, Group group = null)
         {
             var view = new Controls.OfficeAttribution();
-            var viewModel = new Controls.OfficeAttributionViewModel(property, true, false);
-            viewModel.Caption = "Locaux";
-            var page = new Page(viewModel, view);
-            page.Categorie = printeLabelCategorie;
+            var viewModel = new Controls.OfficeAttributionViewModel(property, true, false)
+            {
+                Caption = "Locaux"
+            };
+            var page = new Page(viewModel, view)
+            {
+                Categorie = printeLabelCategorie
+            };
             if (group != null)
                 page.Groups.Add(group);
             uIService.AddPage(page);
@@ -98,8 +102,8 @@ namespace EXGEPA.Localization
 
         public override void InitializeModule()
         {
-                DXControlInitializer.LoadComponent<Controls.OfficeAttribution>();
-                DXControlInitializer.LoadComponent<Controls.LocalizationControl>();
+            DXControlInitializer.LoadComponent<Controls.OfficeAttribution>();
+            DXControlInitializer.LoadComponent<Controls.LocalizationControl>();
         }
     }
 }

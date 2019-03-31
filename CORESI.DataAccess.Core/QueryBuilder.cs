@@ -52,7 +52,7 @@ namespace CORESI.DataAccess.Core
                 query = query + field.GetSqlColumnName() + " = " + field.GetSqlParameterName() + " ,";
             }
             query = query.TrimEnd(',');
-            query = query + "WHERE  [Id] = @Id";
+            query += "WHERE  [Id] = @Id";
             return $"BEGIN TRANSACTION  {query}  COMMIT TRANSACTION";
         }
 
@@ -104,7 +104,7 @@ namespace CORESI.DataAccess.Core
             var tableName = type.Name;
             if (!tableName.EndsWith("s"))
             {
-                tableName = tableName + "s";
+                tableName += "s";
             }
             return tableName;
         }

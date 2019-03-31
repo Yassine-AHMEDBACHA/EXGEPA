@@ -10,12 +10,10 @@ namespace EXGEPA.Depreciations.Core
 
         public DailyCalculator(AccountingPeriodHelper accountingPeriodHelper)
             : base(accountingPeriodHelper)
-        { }
+        {
+        }
 
-       
-
-        
-        protected void ComputeDep(List<Depreciation> result, Depreciation first)
+        public override void ComputeDep(List<Depreciation> result, Depreciation first)
         {
             SetDepriciationValues(first);
             for (int i = 1; i < result.Count; i++)
@@ -25,7 +23,7 @@ namespace EXGEPA.Depreciations.Core
             }
         }
 
-      
+
 
         private List<Depreciation> LoadPrevieousDepriciation(Item item, DateTime targetDate)
         {
@@ -38,7 +36,6 @@ namespace EXGEPA.Depreciations.Core
             ComputeDep(result, result.First());
             return result;
         }
-
 
         protected override void SetDepriciationValues(Depreciation depriciation)
         {

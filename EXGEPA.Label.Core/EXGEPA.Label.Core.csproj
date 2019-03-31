@@ -152,9 +152,8 @@
       <SpecificVersion>False</SpecificVersion>
       <Private>True</Private>
     </Reference>
-    <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\packages\log4net.2.0.5\lib\net40-full\log4net.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
@@ -212,6 +211,10 @@
     <ProjectReference Include="..\CORESI.Report\CORESI.Report.csproj">
       <Project>{64e9f215-bf65-4533-822e-eb09181401f8}</Project>
       <Name>CORESI.Report</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CORESI.Tools\CORESI.Tools.csproj">
+      <Project>{3d84e36e-574e-4f12-ad62-49578cb4d651}</Project>
+      <Name>CORESI.Tools</Name>
     </ProjectReference>
     <ProjectReference Include="..\CORESI.WPF.Core\CORESI.WPF.Core.csproj">
       <Project>{e8e75679-cd86-44f0-a2b5-b43809063a37}</Project>

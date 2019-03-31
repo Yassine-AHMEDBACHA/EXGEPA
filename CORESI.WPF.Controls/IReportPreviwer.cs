@@ -3,7 +3,7 @@
 namespace CORESI.WPF.Controls
 {
     [InheritedExport]
-    public interface IReportPreviwer<T> 
+    public interface IReportPreviwer<T>
     {
         void SetPreviewReportGroup(IPageSetter pageSetter);
     }

@@ -7,7 +7,7 @@ namespace EXGEPA.Repository.Controls
     /// </summary>
     public partial class CurrencyView : ExportableView
     {
-        
+
         public CurrencyView()
         {
             InitializeComponent();

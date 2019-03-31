@@ -71,8 +71,7 @@ namespace CORESI.WPF.Core
         {
             FocusNavigationDirection focusDirection = FocusNavigationDirection.Next;
             TraversalRequest request = new TraversalRequest(focusDirection);
-            UIElement elementWithFocus = Keyboard.FocusedElement as UIElement;
-            if (elementWithFocus != null)
+            if (Keyboard.FocusedElement is UIElement elementWithFocus)
             {
                 if (elementWithFocus.MoveFocus(request)) e.Handled = true;
             }

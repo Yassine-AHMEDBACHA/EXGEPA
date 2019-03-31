@@ -17,7 +17,7 @@ namespace CORESI.DataAccess
 
         public static string ConnectionString = GetConnectionStrings();
 
-       
+
         public static IDbConnection GetDbConnection(string connectionString)
         {
             IDbConnection dBConnection;

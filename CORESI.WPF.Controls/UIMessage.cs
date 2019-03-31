@@ -17,7 +17,7 @@ namespace CORESI.WPF.Controls
         {
             var parameterProvider = ServiceLocator.Resolve<IParameterProvider>();
             var useWinUIMessageStyle = parameterProvider.GetValue("UseWinUIMessageStyle", true);
-            if(useWinUIMessageStyle)
+            if (useWinUIMessageStyle)
             {
                 this.ShowMessage = WinUIMessageBox.Show;
             }

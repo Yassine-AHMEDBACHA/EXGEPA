@@ -1,5 +1,6 @@
 ﻿using CORESI.Data;
 using CORESI.IoC;
+using CORESI.Tools.Collections;
 using CORESI.WPF.Controls;
 using CORESI.WPF.Model;
 using EXGEPA.Model;
@@ -22,7 +23,7 @@ namespace EXGEPA.Localization.Controls
         public ICommand ResetCommand { get; set; }
         public ICommand ResetAllCommand { get; set; }
 
-        
+
 
         public Func<Office, bool> ItemTester { get; set; }
 
@@ -52,9 +53,9 @@ namespace EXGEPA.Localization.Controls
 
         public OfficeAttributionViewModel(PropertyInfo property, object value, object defaultValue)
         {
-            
+
             this.DBservice = ServiceLocator.Resolve<IDataProvider<Office>>();
-          
+
             this.InitilizeRibbonGroup();
             this.TryAddSummaryButton();
             object locker = new object();
@@ -81,6 +82,7 @@ namespace EXGEPA.Localization.Controls
                 property.SetValue(Office, value, null);
                 return DBservice.Update(Office) > 0;
             };
+
             Func<Office, bool> reset = (Office) =>
             {
 
@@ -178,7 +180,7 @@ namespace EXGEPA.Localization.Controls
                         this.AffectedRows.Add(office);
                     }
                 }
-                AffectedRows.ToList().ForEach(item =>
+                AffectedRows.ForEach(item =>
                     {
                         list.Remove(item);
                     });

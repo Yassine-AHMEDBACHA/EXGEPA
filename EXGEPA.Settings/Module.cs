@@ -24,6 +24,6 @@ namespace EXGEPA.Settings
             uIService.AddPage(page);
         }
 
-        
+
     }
 }

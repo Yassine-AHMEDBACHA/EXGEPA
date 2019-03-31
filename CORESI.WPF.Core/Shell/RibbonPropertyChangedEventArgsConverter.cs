@@ -11,9 +11,8 @@ namespace CORESI.WPF.Core.Shell
             object page = null;
             if (args != null)
             {
-                var ribbonPage = args.NewValue as RibbonPage;
                 {
-                    if (ribbonPage != null)
+                    if (args.NewValue is RibbonPage ribbonPage)
                     {
                         page = ribbonPage.DataContext;
                     }
@@ -22,7 +21,7 @@ namespace CORESI.WPF.Core.Shell
             return page;
         }
 
-      
+
     }
 
 }

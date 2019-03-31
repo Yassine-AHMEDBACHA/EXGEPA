@@ -108,11 +108,9 @@ namespace EXGEPA.Localization.Controls
                      var allItems = items.Where(x => x.OutputCertificate == null).ToDictionary(x => x.Key, x => x);
                      items = inventoryRows.Select(x =>
                     {
-                        Item item;
-                        if (allItems.TryGetValue(x.Key, out item))
+                        if (allItems.TryGetValue(x.Key, out Item item))
                         {
-                            Office office;
-                            offices.TryGetValue(x.Localization, out office);
+                            offices.TryGetValue(x.Localization, out Office office);
                             item.Office = office;
                             item.ItemState = x.ItemState;
                         }

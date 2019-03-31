@@ -22,7 +22,7 @@ namespace EXGEPA.DataAccess
             this.BuildingService = ServiceLocator.Resolve<IDataProvider<Building>>();
             this.SiteService = ServiceLocator.Resolve<IDataProvider<Site>>();
             this.RegionService = ServiceLocator.Resolve<IDataProvider<Region>>();
-                   }
+        }
 
 
 

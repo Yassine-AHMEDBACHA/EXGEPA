@@ -6,6 +6,6 @@ namespace CORESI.WPF.Core.Interfaces
     public interface IRibbonCommand
     {
         List<Page> GetPages();
-        List<Categorie> GetCategories(); 
+        List<Categorie> GetCategories();
     }
 }

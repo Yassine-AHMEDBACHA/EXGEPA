@@ -63,8 +63,10 @@ namespace CORESI.WPF.Controls
                 return;
             }
 
-            var dlg = new OpenFileDialog();
-            dlg.Filter = EditorLocalizer.GetString(EditorStringId.ImageEdit_OpenFileFilter);
+            var dlg = new OpenFileDialog
+            {
+                Filter = EditorLocalizer.GetString(EditorStringId.ImageEdit_OpenFileFilter)
+            };
             if (dlg.ShowDialog() == true)
             {
                 string path = dlg.FileName;
