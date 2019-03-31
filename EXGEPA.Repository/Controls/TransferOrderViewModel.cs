@@ -63,15 +63,18 @@ namespace EXGEPA.Repository.Controls
             this.ListOfRows = new ObservableCollection<TransferOrder>(allrows);
         }
 
+        private bool IsMatchingSelectedRowId(Item item)
+        {
+            return item.TransferOrder?.Id == this.SelectedRow?.Id;
+        }
+
         private void DisplayPvContent()
         {
-            this.uIItemService.DisplayItems(
-            x => x.TransferOrder?.Id == this.SelectedRow.Id,
-             $"Contenu du bon de transfert {this.SelectedRow?.Key}",
-             (items) =>
+            var title = this.ParameterProvider.GetAndSetIfMissing("TransferOrderReportTitle", "Fiche de transfert");
+            this.uIItemService.DisplayItems(this.IsMatchingSelectedRowId, $"Contenu du bon de transfert {this.SelectedRow?.Key}", (items) =>
             {
                 IImmobilisationSheetProvider reports = ServiceLocator.Resolve<IImmobilisationSheetProvider>();
-                reports.PrintOutputSheet(items, false, "Fiche de transfert");
+                reports.PrintOutputSheet(items, false, title);
             });
         }
     }

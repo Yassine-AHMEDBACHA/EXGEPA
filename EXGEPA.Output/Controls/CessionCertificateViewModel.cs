@@ -36,15 +36,18 @@ namespace EXGEPA.Output.Controls
             this.AddNewGroup().AddCommand("Contenu du PV", IconProvider.GreaterThan, this.DisplayPvContent);
         }
 
+        private bool IsMatchingSelectedRowId(Item item)
+        {
+            return item.OutputCertificate?.Id == this.SelectedRow?.Id;
+        }
+
         private void DisplayPvContent()
         {
-            this.UIItemService.DisplayItems(
-                 x => x.OutputCertificate?.Id == this.SelectedRow.Id,
-                 $"Contenu du PV de cession {this.SelectedRow?.Key}",
-                 (items) =>
+            var title = this.ParameterProvider.GetAndSetIfMissing("CessionCertificateReportTitle", "Fiche de cession");
+            this.UIItemService.DisplayItems(this.IsMatchingSelectedRowId, $"Contenu du PV de cession {this.SelectedRow?.Key}", (items) =>
             {
                 IImmobilisationSheetProvider reports = ServiceLocator.Resolve<IImmobilisationSheetProvider>();
-                reports.PrintOutputSheet(items, true, "Fiche de cession");
+                reports.PrintOutputSheet(items, true, title);
             });
         }
     }
