@@ -25,7 +25,6 @@
 
         public ItemExtendedProperties itemExtendedProperties;
 
-        protected int keyLength { get; set; }
         public ItemViewModelBase()
         {
             ServiceLocator.Resolve(out this.itemService);
@@ -36,11 +35,13 @@
             MonthelyCalculator = new MonthelyCalculator(accountingPeriodHelper);
             DailyCalculator = new DailyCalculator(accountingPeriodHelper);
             this.MinAmount = parameterProvider.GetValue("ItemInvestismentMinAmount", 30000);
-            this.keyLength = parameterProvider.GetValue<int>("ItemKeyLength");
+            this.KeyLength = parameterProvider.GetValue<int>("ItemKeyLength");
             this.AddNewGroup().AddCommand("Refresh", IconProvider.Refresh, this.BindFields);
             Task.Factory.StartNew(() => this.ListOfItems = new ObservableCollection<Item>(this.itemService.SelectAll()));
 
         }
+
+        protected int KeyLength { get; }
 
         internal void BindFields()
         {
@@ -116,7 +117,7 @@
 
         private void UpdateKey(Reference value)
         {
-            this.Key = value == null ? string.Empty : keyGenerator.GenerateKey(value, this.keyLength);
+            this.Key = value == null ? string.Empty : keyGenerator.GenerateKey(value, this.KeyLength);
         }
 
         public virtual void UpdateGeneralAccount(Reference reference)

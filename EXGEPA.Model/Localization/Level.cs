@@ -1,8 +1,12 @@
-﻿using CORESI.Data;
-using System.Collections.Generic;
+﻿// <copyright file="Level.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace EXGEPA.Model
 {
+    using System.Collections.Generic;
+    using CORESI.Data;
+
     public class Level : ALocalization
     {
         [DataAttribute(IsList = true)]

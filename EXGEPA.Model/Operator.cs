@@ -1,8 +1,11 @@
-﻿using CORESI.Data;
-using CORESI.Security;
+﻿// <copyright file="Operator.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace EXGEPA.Model
 {
+    using CORESI.Data;
+    using CORESI.Security;
 
     public class Operator : KeyRow, IOperator
     {
@@ -13,7 +16,9 @@ namespace EXGEPA.Model
 
         [DataAttribute(IsNullable = false)]
         public string Password { get; set; }
+
         public bool ExpiredPassword { get; set; }
+
         public Person Person { get; set; }
 
         [DataAttribute(IsNullable = false)]

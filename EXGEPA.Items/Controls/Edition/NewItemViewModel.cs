@@ -78,7 +78,7 @@ namespace EXGEPA.Items.Controls
                 var ItemsToInsert = Enumerable.Range(0, this.Quantity.EditValue - 1).Select(x => (Item)ConcernedItem.Clone()).ToList();
                 ItemsToInsert.ForEach(item => this.UIMessage.TryDoAction(this.Logger, () =>
                  {
-                     item.Key = this.keyGenerator.GenerateKey(this.Reference, this.keyLength);
+                     item.Key = this.keyGenerator.GenerateKey(this.Reference, this.KeyLength);
                      this.InsertItem(item);
                  }));
             }
