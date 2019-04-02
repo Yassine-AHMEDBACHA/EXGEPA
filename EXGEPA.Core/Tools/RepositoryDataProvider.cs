@@ -1,23 +1,33 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel.Composition;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using CORESI.Data;
-using CORESI.IoC;
-using CORESI.Tools.Collections;
-using CORESI.WPF;
-using EXGEPA.Core.Interfaces;
-using EXGEPA.Model;
-
-namespace EXGEPA.Core
+﻿namespace EXGEPA.Core
 {
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.ComponentModel.Composition;
+    using System.Linq;
+    using System.Threading;
+    using CORESI.Data;
+    using CORESI.DataAccess.Core.Tools;
+    using CORESI.IoC;
+    using CORESI.Tools.Collections;
+    using CORESI.WPF;
+    using EXGEPA.Core.Interfaces;
+    using EXGEPA.Model;
+
     [Export(typeof(IRepositoryDataProvider)), PartCreationPolicy(CreationPolicy.NonShared)]
 
-    public class RepositoryDataProvider : UiNotifier, IRepositoryDataProvider
+    public sealed class RepositoryDataProvider : UiNotifier, IRepositoryDataProvider
     {
-        static readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+        private readonly ManualResetEventSlim manualResetEventSlim;
+
+        public RepositoryDataProvider()
+        {
+            this.manualResetEventSlim = new ManualResetEventSlim();
+            ServiceLocator.ComposeParts(this);
+            this.UIMessage = ServiceLocator.GetPriorizedInstance<IUIMessage>();
+            Refresh();
+        }
 
         [Import(typeof(IDataProvider<Person>))]
         IDataProvider<Person> PersonService { get; set; }
@@ -76,18 +86,9 @@ namespace EXGEPA.Core
         [Import(typeof(IDataProvider<Item>))]
         IDataProvider<Item> ItemService { get; set; }
 
-        ManualResetEventSlim _ManualResetEventSlim;
-        public RepositoryDataProvider()
-        {
-            ServiceLocator.ComposeParts(this);
-            this.UIMessage = ServiceLocator.GetPriorizedInstance<IUIMessage>();
-            Refresh();
-        }
-
         public void Refresh()
         {
-            _ManualResetEventSlim = new ManualResetEventSlim();
-            UIMessage.TryDoActionAsync(logger, loadData, _ManualResetEventSlim.Set);
+            UIMessage.TryDoActionAsync(logger, loadData, manualResetEventSlim.Set);
         }
 
         #region Data Providers
@@ -100,7 +101,7 @@ namespace EXGEPA.Core
             set
             {
                 _ListOfStats = value;
-                RaisePropertyChanged("ListOfStats");
+                this.RaisePropertyChanged(nameof(this.ListOfStats));
             }
         }
 
@@ -128,178 +129,77 @@ namespace EXGEPA.Core
             }
         }
 
-        private ObservableCollection<ReformeCertificate> _ListOfReformeCertificate;
-        public ObservableCollection<ReformeCertificate> ListOfReformeCertificate
-        {
-            get => _ListOfReformeCertificate;
-            set => _ListOfReformeCertificate = value;
-        }
+        public ObservableCollection<ReformeCertificate> ListOfReformeCertificate { get; set; }
+        public ObservableCollection<OutputCertificate> ListOfOutputCertificate { get; set; }
+        public ObservableCollection<GeneralAccount> ListOfGeneralAccount { get; set; }
+        public ObservableCollection<Reference> ListOfReference { get; set; }
+        public ObservableCollection<ReferenceType> ListOfReferenceType { get; set; }
+        public ObservableCollection<Invoice> ListOfInvoice { get; set; }
+        public ObservableCollection<TransferOrder> ListOfTransferOrder { get; set; }
+        public ObservableCollection<Provider> ListOfProvider { get; set; }
+        public ObservableCollection<OrderDocument> OrderDocuments { get; set; }
+        public ObservableCollection<AnalyticalAccount> ListOfAnalyticalAccount { get; set; }
+        public ObservableCollection<Office> ListOfOffice { get; set; }
+        public ObservableCollection<Depreciation> ListOfDepreciation { get; set; }
 
-        private ObservableCollection<OutputCertificate> _ListOfOutputCertificate;
-        public ObservableCollection<OutputCertificate> ListOfOutputCertificate
-        {
-            get => _ListOfOutputCertificate;
-            set => _ListOfOutputCertificate = value;
-        }
+        public ObservableCollection<InputSheet> ListOfInputSheet { get; set; }
 
-        private ObservableCollection<GeneralAccount> _ListOfGeneralAccount;
-        public ObservableCollection<GeneralAccount> ListOfGeneralAccount
-        {
-            get => _ListOfGeneralAccount;
-            set => _ListOfGeneralAccount = value;
-        }
+        public ObservableCollection<ReceiveOrder> ListOfReceiveOrder { get; set; }
 
-        private ObservableCollection<Reference> _ListOfReference;
-        public ObservableCollection<Reference> ListOfReference
-        {
-            get => _ListOfReference;
-            set => _ListOfReference = value;
-        }
+        public ObservableCollection<Person> ListOfPerson { get; set; }
 
-        private ObservableCollection<ReferenceType> _ListOfReferenceType;
-        public ObservableCollection<ReferenceType> ListOfReferenceType
-        {
-            get => _ListOfReferenceType;
-            set => _ListOfReferenceType = value;
-        }
-
-        private ObservableCollection<Invoice> _ListOfInvoice;
-        public ObservableCollection<Invoice> ListOfInvoice
-        {
-            get => _ListOfInvoice;
-            set => _ListOfInvoice = value;
-        }
-
-        private ObservableCollection<TransferOrder> _ListOfTransferOrder;
-        public ObservableCollection<TransferOrder> ListOfTransferOrder
-        {
-            get => _ListOfTransferOrder;
-            set => _ListOfTransferOrder = value;
-        }
-
-
-
-        private ObservableCollection<Provider> _ListOfProvider;
-        public ObservableCollection<Provider> ListOfProvider
-        {
-            get => _ListOfProvider;
-            set => _ListOfProvider = value;
-        }
-
-        private ObservableCollection<OrderDocument> _OrderDocuments;
-        public ObservableCollection<OrderDocument> OrderDocuments
-        {
-            get => _OrderDocuments;
-            set => _OrderDocuments = value;
-        }
-
-        private ObservableCollection<AnalyticalAccount> _ListOfAnalyticalAccount;
-        public ObservableCollection<AnalyticalAccount> ListOfAnalyticalAccount
-        {
-            get => _ListOfAnalyticalAccount;
-            set => _ListOfAnalyticalAccount = value;
-        }
-
-        private ObservableCollection<Office> _ListOfOffice;
-        public ObservableCollection<Office> ListOfOffice
-        {
-            get => _ListOfOffice;
-            set => _ListOfOffice = value;
-        }
-
-        private ObservableCollection<Depreciation> _ListOfDepreciation;
-        public ObservableCollection<Depreciation> ListOfDepreciation
-        {
-            get => _ListOfDepreciation;
-            set => _ListOfDepreciation = value;
-        }
-
-        private ObservableCollection<InputSheet> _ListOfInputSheet;
-
-        public ObservableCollection<InputSheet> ListOfInputSheet
-        {
-            get => _ListOfInputSheet;
-            set => _ListOfInputSheet = value;
-        }
-
-        private ObservableCollection<ReceiveOrder> _ListOfReceiveOrder;
-
-        public ObservableCollection<ReceiveOrder> ListOfReceiveOrder
-        {
-            get => _ListOfReceiveOrder;
-            set => _ListOfReceiveOrder = value;
-        }
-
-        private ObservableCollection<Person> _ListOfPerson;
-
-        public ObservableCollection<Person> ListOfPerson
-        {
-            get => _ListOfPerson;
-            set => _ListOfPerson = value;
-        }
-
-        private ObservableCollection<AccountingPeriod> _ListOfAccountingPeriod;
-
-        public ObservableCollection<AccountingPeriod> ListOfAccountingPeriod
-        {
-            get => _ListOfAccountingPeriod;
-            set => _ListOfAccountingPeriod = value;
-        }
+        public ObservableCollection<AccountingPeriod> ListOfAccountingPeriod { get; set; }
 
         #endregion
 
         public void loadData()
         {
             FillRepositories();
-            RaisePropertyChanged("");
+            RaisePropertyChanged(string.Empty);
         }
 
         public void FillRepositories()
         {
-            _ManualResetEventSlim.Reset();
-            AllItems = new ObservableCollection<Item>(ItemService.SelectAll());
-            ListOfStats = new ObservableCollection<ItemState>(ItemStateService.SelectAll());
-            ListOfProposeToReformCertificate = new ObservableCollection<ProposeToReformCertificate>(ProposeToReformCertificateService.SelectAll());
-            ListOfAccountingPeriod = new ObservableCollection<AccountingPeriod>(AccountingPeriodService.SelectAll());
-            ListOfReformeCertificate = new ObservableCollection<ReformeCertificate>(ReformeCertificateService.SelectAll());
-            ListOfOutputCertificate = new ObservableCollection<OutputCertificate>(OutputCertificateService.SelectAll());
-            ListOfPerson = new ObservableCollection<Person>(PersonService.SelectAll());
-            ListOfTransferOrder = new ObservableCollection<EXGEPA.Model.TransferOrder>(TransferOrderService.SelectAll());
-            ListOfGeneralAccount = new ObservableCollection<GeneralAccount>(GeneralAccountService.SelectAll());
-            this.ListOfReferenceType = new ObservableCollection<ReferenceType>(ReferenceTypeService.SelectAll());
-            ListOfReference = new ObservableCollection<Reference>(ReferenceService.SelectAll());
-            OrderDocuments = new ObservableCollection<OrderDocument>(OrderDocumentService.SelectAll());
-            ListOfReference.ForEach(reference =>
-            {
-                reference.ChargeAccount = ListOfGeneralAccount.FirstOrDefault(x => x.Id == reference.ChargeAccount?.Id);
-                reference.InvestmentAccount = ListOfGeneralAccount.FirstOrDefault(x => x.Id == reference.InvestmentAccount?.Id);
-                reference.ReferenceType = ListOfReferenceType.FirstOrDefault(x => x.Id == reference.ReferenceType?.Id);
-            });
-            References = ListOfReference.ToDictionary(x => x.Id);
-            ListOfProvider = new ObservableCollection<Provider>(ProviderService.SelectAll());
-            ListOfInvoice = new ObservableCollection<Invoice>(InvoiceService.SelectAll());
-            ListOfInputSheet = new ObservableCollection<InputSheet>(InputSheetService.SelectAll());
-            ListOfReceiveOrder = new ObservableCollection<ReceiveOrder>(ReceiveOrderService.SelectAll());
-            Invoices = ListOfInvoice.ApplyOnAll(invoice =>
-            {
-                invoice.Provider = ListOfProvider.FirstOrDefault(provider => provider.Id == invoice.Provider?.Id);
-                invoice.InputSheet = ListOfInputSheet.FirstOrDefault(inputSheet => inputSheet.Id == invoice.InputSheet?.Id);
-                invoice.HoldbackGeneralAccount = ListOfGeneralAccount.FirstOrDefault(x => x.Id == invoice.HoldbackGeneralAccount?.Id);
-                invoice.TvaGeneralAccount = ListOfGeneralAccount.FirstOrDefault(x => x.Id == invoice.TvaGeneralAccount?.Id);
-                invoice.OrderDocument = OrderDocuments.FirstOrDefault(x => x.Id == invoice.OrderDocument?.Id);
-            }).ToDictionary(x => x.Id);
-            ListOfAnalyticalAccount = new ObservableCollection<AnalyticalAccount>(AnalyticalAccountService.SelectAll());
-            ListOfDepreciation = new ObservableCollection<Depreciation>();
-            ListOfTva = new ObservableCollection<Tva>(TvaService.SelectAll());
-            IList<Office> ListOfOffices = OfficeService.SelectAll();
-            ListOfOffice = new ObservableCollection<Office>(ListOfOffices);
-            ListOfOffices.ParallelForEach(office =>
-            {
-                int? x = office.AnalyticalAccount?.Id;
-                office.AnalyticalAccount = ListOfAnalyticalAccount.FirstOrDefault(analyticalAccount => analyticalAccount.Id == office.AnalyticalAccount?.Id);
-            });
+            this.manualResetEventSlim.Reset();
+            this.AllItems = this.ItemService.All.ToObservable();
+            this.ListOfStats = this.ItemStateService.All.ToObservable();
+            this.ListOfProposeToReformCertificate = this.ProposeToReformCertificateService.All.ToObservable();
+            this.ListOfAccountingPeriod = this.AccountingPeriodService.All.ToObservable();
+            this.ListOfReformeCertificate = ReformeCertificateService.All.ToObservable();
+            this.ListOfOutputCertificate = OutputCertificateService.All.ToObservable();
+            this.ListOfPerson = PersonService.All.ToObservable();
+            this.ListOfAnalyticalAccount = AnalyticalAccountService.All.ToObservable();
+            this.ListOfTransferOrder = TransferOrderService.All
+                .ApplyOnAll(x => x.SetProperties(this.ListOfAnalyticalAccount))
+                .ToObservable();
 
-            Offices = ListOfOffices.ToDictionary(x => x.Id);
+            this.ListOfGeneralAccount = GeneralAccountService.All.ToObservable();
+
+            this.ListOfReferenceType = ReferenceTypeService.All.ToObservable();
+            OrderDocuments = OrderDocumentService.All.ToObservable();
+
+            this.ListOfReference = ReferenceService.All
+                .ApplyOnAll(x => x.SetProperties(this.ListOfGeneralAccount))
+                .ApplyOnAll(x => x.SetProperties(this.ListOfReferenceType))
+                .ToObservable();
+
+            References = ListOfReference.ToDictionary(x => x.Id);
+            ListOfProvider = this.ProviderService.All.ToObservable();
+            ListOfInvoice = this.InvoiceService.All.ToObservable();
+            ListOfInputSheet = this.InputSheetService.All.ToObservable();
+            ListOfReceiveOrder = this.ReceiveOrderService.All.ToObservable();
+            this.Invoices = ListOfInvoice.ApplyOnAll(invoice =>
+            {
+                invoice.SetProperties(this.ListOfProvider);
+                invoice.SetProperties(this.ListOfInputSheet);
+                invoice.SetProperties(this.ListOfGeneralAccount);
+                invoice.SetProperties(this.OrderDocuments);
+            }).ToDictionary(x => x.Id);
+
+            ListOfTva = this.TvaService.All.ToObservable();
+            ListOfOffice = OfficeService.All.ToObservable();
+            ListOfOffice.ParallelForEach(office => office.SetProperties(this.ListOfAnalyticalAccount));
+            Offices = ListOfOffice.ToDictionary(x => x.Id);
         }
 
         public Dictionary<int, Invoice> Invoices { get; set; }
@@ -314,54 +214,30 @@ namespace EXGEPA.Core
 
         public void BindItemFields(Item item)
         {
-            _ManualResetEventSlim.Wait();
-            item.ProposeToReformCertificate = ListOfProposeToReformCertificate.FirstOrDefault(certificate => certificate.Id == item.ProposeToReformCertificate?.Id);
-            item.AnalyticalAccount = ListOfAnalyticalAccount.FirstOrDefault(account => account.Id == item.AnalyticalAccount?.Id);
-            item.GeneralAccount = ListOfGeneralAccount.FirstOrDefault(account => account.Id == item.GeneralAccount?.Id);
-            if (item.Reference != null)
-            {
-                References.TryGetValue(item.Reference.Id, out Reference reference);
-                item.Reference = reference;
-            }
-
-            if (item.Invoice != null)
-            {
-                Invoices.TryGetValue(item.Invoice.Id, out Invoice invoice);
-                item.Invoice = invoice;
-            }
-
-            item.Owner = AllItems.FirstOrDefault(x => x.Id == item.Owner?.Id);
-
-            item.Person = ListOfPerson.FirstOrDefault(person => person.Id == item.Person?.Id);
-
-            item.Provider = ListOfProvider.FirstOrDefault(provider => provider.Id == item.Provider?.Id);
-
-            item.InputSheet = ListOfInputSheet.FirstOrDefault(inputSheet => inputSheet.Id == item.InputSheet?.Id);
-
-            item.ReceiveOrder = ListOfReceiveOrder.FirstOrDefault(receiveOrder => receiveOrder.Id == item.ReceiveOrder?.Id);
-
-            item.TransferOrder = ListOfTransferOrder.FirstOrDefault(transferOrder => transferOrder.Id == item.TransferOrder?.Id);
-            if (item.Office != null)
-            {
-                Offices.TryGetValue(item.Office.Id, out Office office);
-                item.Office = office;
-            }
-
-            item.ReformeCertificate = ListOfReformeCertificate.FirstOrDefault(reformeCertificate => reformeCertificate.Id == item.ReformeCertificate?.Id);
-
-            item.OutputCertificate = ListOfOutputCertificate.FirstOrDefault(outputCertificate => outputCertificate.Id == item.OutputCertificate?.Id);
-
-            item.AccountingPeriod = ListOfAccountingPeriod.FirstOrDefault(accountingPeriod => accountingPeriod.Id == item.AccountingPeriod?.Id);
-
-            item.ItemState = ListOfStats.FirstOrDefault(state => state.Id == item.ItemState?.Id);
+            manualResetEventSlim.Wait();
+            item.SetProperties(this.ListOfProposeToReformCertificate);
+            item.SetProperties(this.ListOfAnalyticalAccount);
+            item.SetProperties(this.ListOfGeneralAccount);
+            item.SetProperties(this.References);
+            item.SetProperties(this.Invoices);
+            item.SetProperties(this.AllItems);
+            item.SetProperties(this.ListOfPerson);
+            item.SetProperties(this.ListOfProvider);
+            item.SetProperties(this.ListOfInputSheet);
+            item.SetProperties(this.ListOfReceiveOrder);
+            item.SetProperties(this.ListOfTransferOrder);
+            item.SetProperties(Offices);
+            item.SetProperties(this.ListOfReformeCertificate);
+            item.SetProperties(this.ListOfOutputCertificate);
+            item.SetProperties(this.ListOfAccountingPeriod);
+            item.SetProperties(this.ListOfStats);
         }
 
         public void BindItemFields(IList<Item> items)
         {
-            Parallel.ForEach(items, item =>
-             {
-                 this.BindItemFields(item);
-             });
+            items.ParallelForEach(item => this.BindItemFields(item));
         }
+
+
     }
 }

@@ -19,13 +19,15 @@ namespace EXGEPA.Items
     {
         readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         IUIService UIService { get; set; }
-        IDataProvider<Item> ItemService { get; set; }
+
+        private readonly IDataProvider<Item> itemService;
+
         public UIItemService()
         {
             logger.Debug("Starting composing UIItemService...");
             this.UIMessage = ServiceLocator.GetPriorizedInstance<IUIMessage>();
             this.UIService = ServiceLocator.Resolve<IUIService>();
-            this.ItemService = ServiceLocator.Resolve<IDataProvider<Item>>();
+           ServiceLocator.Resolve(out this.itemService);
             logger.Info("UIItemService is ready for use");
         }
 
@@ -108,12 +110,13 @@ namespace EXGEPA.Items
 
         public void DisplayItems(Predicate<Item> filter, string pageCaption, Action<IEnumerable<Item>> report)
         {
-            ItemGridView view = new ItemGridView();
-            ItemGridBaseViewModel viewModel = new ItemGridBaseViewModel(filter, view, report)
+            var view = new ItemGridView();
+            var viewModel = new ItemGridBaseViewModel(filter, view, report)
             {
                 Caption = pageCaption
             };
-            Page page = new Page(viewModel, view, true);
+
+            var page = new Page(viewModel, view, true);
             UIService.AddPage(page, true);
 
             viewModel.InitData();

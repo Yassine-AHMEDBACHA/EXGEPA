@@ -6,6 +6,7 @@ namespace CORESI.Tools.Collections
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Threading.Tasks;
 
     public static class IEnumerableExtensions
@@ -30,6 +31,11 @@ namespace CORESI.Tools.Collections
                 action(item);
                 yield return item;
             }
+        }
+
+        public static ObservableCollection<T> ToObservable<T>(this IEnumerable<T> enumerable)
+        {
+            return new ObservableCollection<T>(enumerable);
         }
     }
 }

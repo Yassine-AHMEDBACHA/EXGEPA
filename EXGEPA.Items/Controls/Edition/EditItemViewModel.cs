@@ -27,7 +27,7 @@
         public EditItemViewModel(Item item) : base()
         {
             this.IsKeyReadOnly = true;
-            this.IsBaseDepreciationReadOnly = this.parameterProvider.GetAndSetIfMissing("IsBaseDepreciationReadOnlyInEdition", true);
+            this.IsBaseDepreciationReadOnly = this.ParameterProvider.GetAndSetIfMissing("IsBaseDepreciationReadOnlyInEdition", true);
             this.Categorie = OldItemRibbonCategorie;
             InitialItem = item;
             this.ConcernedItem = (Item)item.Clone();
@@ -66,7 +66,7 @@
                 {
                     this._SavePicture?.Invoke();
                     this.ConcernedItem.Json = JsonConvert.SerializeObject(this.itemExtendedProperties);
-                    itemService.Update(this.ConcernedItem);
+                    this.ItemService.Update(this.ConcernedItem);
                     this.ClosePage();
                     this.Notify(this.ConcernedItem);
                 }

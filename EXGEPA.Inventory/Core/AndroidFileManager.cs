@@ -25,9 +25,9 @@ namespace EXGEPA.Inventory.Core
                 {
                     foreach (string file in item.EnumerateFiles(folder))
                     {
-                        if (file.ToLowerInvariant().Equals(targetPath.ToLowerInvariant()))
+                        if (file.ToLowerInvariant().Equals(TargetPath.ToLowerInvariant()))
                         {
-                            FileStream stream = File.Open(targetPath, FileMode.OpenOrCreate);
+                            FileStream stream = File.Open(TargetPath, FileMode.OpenOrCreate);
                             string path = Path.Combine(folder, file);
                             item.DownloadFile(path, stream);
                             stream.Close();

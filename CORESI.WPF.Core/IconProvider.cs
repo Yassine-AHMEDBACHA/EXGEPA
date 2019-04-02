@@ -11,11 +11,9 @@ namespace CORESI.WPF.Core
 {
     public static class IconProvider
     {
-        static readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        static readonly DXImageServicesImp dXImageServicesImp = new DXImageServicesImp();
 
-        static DXImageServicesImp dXImageServicesImp = new DXImageServicesImp();
-        static IEnumerable<IDXImageInfo> Images = dXImageServicesImp.GetAllImages().Where(x => x.ImageType == ImageType.Colored);
-
+        static readonly IEnumerable<IDXImageInfo> Images = dXImageServicesImp.GetAllImages().Where(x => x.ImageType == ImageType.Colored).ToList();
 
         public static ImageSource GetImageSource(string source, bool isSmall = false)
         {

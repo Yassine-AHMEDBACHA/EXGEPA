@@ -260,14 +260,20 @@
     <Compile Include="NamedKeyRepositoryReport.Designer.cs">
       <DependentUpon>NamedKeyRepositoryReport.cs</DependentUpon>
     </Compile>
-    <Compile Include="Outputs\OutputSheet.cs">
+    <Compile Include="Outputs\CessionSheet.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Outputs\OutputSheet.Designer.cs">
-      <DependentUpon>OutputSheet.cs</DependentUpon>
+    <Compile Include="Outputs\CessionSheet.Designer.cs">
+      <DependentUpon>CessionSheet.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReportProvider.cs" />
+    <Compile Include="Repository\TransfertOrderSheet.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Repository\TransfertOrderSheet.Designer.cs">
+      <DependentUpon>TransfertOrderSheet.cs</DependentUpon>
+    </Compile>
     <Compile Include="Test.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -321,10 +327,13 @@
     <EmbeddedResource Include="NamedKeyRepositoryReport.resx">
       <DependentUpon>NamedKeyRepositoryReport.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Outputs\OutputSheet.resx">
-      <DependentUpon>OutputSheet.cs</DependentUpon>
+    <EmbeddedResource Include="Outputs\CessionSheet.resx">
+      <DependentUpon>CessionSheet.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="Repository\TransfertOrderSheet.resx">
+      <DependentUpon>TransfertOrderSheet.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Test.resx">
       <DependentUpon>Test.cs</DependentUpon>
     </EmbeddedResource>

@@ -354,7 +354,7 @@ namespace EXGEPA.Inventory.Controls
             {
                 if (this.DeviceFileManager.UpdateInventFile())
                 {
-                    DataImporter.LoadFile(this.DeviceFileManager.targetPath);
+                    DataImporter.LoadFile(this.DeviceFileManager.TargetPath);
                     this.InitData();
                 }
             });

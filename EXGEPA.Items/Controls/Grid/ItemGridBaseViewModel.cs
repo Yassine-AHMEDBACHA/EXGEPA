@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using CORESI.IoC;
+using CORESI.Tools.Collections;
 using CORESI.WPF.Controls;
 using CORESI.WPF.Core.Interfaces;
 using EXGEPA.Core.Interfaces;
@@ -9,7 +10,7 @@ using EXGEPA.Model;
 
 namespace EXGEPA.Items
 {
-    class ItemGridBaseViewModel : GenericEditableViewModel<Item>
+    internal class ItemGridBaseViewModel : GenericEditableViewModel<Item>
     {
         Predicate<Item> displayFilter;
 
@@ -28,10 +29,10 @@ namespace EXGEPA.Items
 
         public override void InitData()
         {
-            List<Item> items = this.DBservice.SelectAll().Where(x => displayFilter(x)).ToList();
+            var items = this.DBservice.SelectAll().Where(x => displayFilter(x)).ToList();
             repositoryDataProvider.BindItemFields(items);
-            this.ListOfRows = new System.Collections.ObjectModel.ObservableCollection<Item>(items);
-            this.Selection = new System.Collections.ObjectModel.ObservableCollection<Item>(ListOfRows.Take(1));
+            this.ListOfRows = items.ToObservable();
+            this.Selection = this.ListOfRows.Take(1).ToObservable();
         }
     }
 }

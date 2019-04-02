@@ -25,8 +25,8 @@ namespace EXGEPA.Items.Controls
         {
             this.Caption = "Nouvel Article";
             this.itemExtendedProperties = new ItemExtendedProperties();
-            this.IsKeyReadOnly = this.parameterProvider.GetValue("IsItemKeyReadOnlyAtCreation", true);
-            this.IsBaseDepreciationReadOnly = this.parameterProvider.GetAndSetIfMissing("IsBaseDepreciationReadOnlyAtCreation", false);
+            this.IsKeyReadOnly = this.ParameterProvider.GetValue("IsItemKeyReadOnlyAtCreation", true);
+            this.IsBaseDepreciationReadOnly = this.ParameterProvider.GetAndSetIfMissing("IsBaseDepreciationReadOnlyAtCreation", false);
             this.Categorie = NewItemRibbonCategorie;
             this.IsSelected = true;
             Group group = this.AddNewGroup();
@@ -35,7 +35,7 @@ namespace EXGEPA.Items.Controls
             this.AccountingPeriods = group.AddCommand<ComboBoxRibbon<string>>("Exercice");
             this.Quantity = group.AddCommand<ComboBoxRibbon<int>>("Quantité");
             this.Quantity.Width = 80;
-            int maxQuantityCanBeCreated = parameterProvider.GetAndSetIfMissing("MaxQuantityCanBeCreated", 100);
+            int maxQuantityCanBeCreated = ParameterProvider.GetAndSetIfMissing("ItemMaxQuantityCanBeCreated", 100);
             Enumerable.Range(1, maxQuantityCanBeCreated).ForEach(x => this.Quantity.ItemsSource.Add(x));
             this.Quantity.EditValue = this.Quantity.ItemsSource.FirstOrDefault();
             this.UIMessage.TryDoActionAsync(Logger, this.InitData);
@@ -78,7 +78,7 @@ namespace EXGEPA.Items.Controls
                 System.Collections.Generic.List<Item> ItemsToInsert = Enumerable.Range(0, this.Quantity.EditValue - 1).Select(x => (Item)ConcernedItem.Clone()).ToList();
                 ItemsToInsert.ForEach(item => this.UIMessage.TryDoAction(this.Logger, () =>
                  {
-                     item.Key = this.keyGenerator.GenerateKey(this.Reference, this.KeyLength);
+                     item.Key = this.KeyGenerator.GenerateKey(this.Reference, this.KeyLength);
                      this.InsertItem(item);
                  }));
             }
@@ -102,7 +102,7 @@ namespace EXGEPA.Items.Controls
                   .ListOfAccountingPeriod
                   .FirstOrDefault(x => this.AccountingPeriods.EditValue == x.Key);
 
-            itemService.Add(item);
+            this.ItemService.Add(item);
             this.Notify(item);
         }
 

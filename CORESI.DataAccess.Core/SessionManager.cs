@@ -18,13 +18,12 @@ namespace CORESI.DataAccess.Core
             this._DbFacade = ServiceLocator.Resolve<IDbFacade>();
         }
 
-        Session currentSession;
-        public Session CurrentSession => this.currentSession;
+        public Session CurrentSession { get; private set; }
 
 
         public void CloseSession()
         {
-            string query = "Update Sessions set [CloseDate] = GetDate() where id =" + this.currentSession.Id.ToString();
+            string query = "Update Sessions set [CloseDate] = GetDate() where id =" + this.CurrentSession.Id.ToString();
             _DbFacade.ExecuteNonQuery(query);
         }
 
@@ -34,7 +33,7 @@ namespace CORESI.DataAccess.Core
             {
                 applicationName = AppDomain.CurrentDomain.FriendlyName;
             }
-            this.currentSession = new Session()
+            this.CurrentSession = new Session()
             {
                 ApplicationName = applicationName,
                 ApplicationLogin = applicationLogin,
@@ -43,24 +42,24 @@ namespace CORESI.DataAccess.Core
             };
             System.Collections.Generic.List<Field> fields = PropertiesExtractor.ExtractFields(typeof(Session)).Where(f => !(f.IsIdentity || f.IsAutomatique)).ToList();
             string query = QueryBuilder.GetInsertQuery(typeof(Session), fields);
-            System.Collections.Generic.List<System.Data.IDataParameter> parameters = DbParameterFactory.BuildParametersFromTypeOfInstance(currentSession, fields);
+            System.Collections.Generic.List<System.Data.IDataParameter> parameters = DbParameterFactory.BuildParametersFromTypeOfInstance(CurrentSession, fields);
 
             System.Data.IDbCommand dBCommand = CommandFactory.GetDBCommand(query, false);
 
             parameters.ForEach(parameter => dBCommand.Parameters.Add(parameter));
 
 
-            currentSession.Id = _DbFacade.ExecuteScalaire<int>(dBCommand);
-            GenericDALBase.Session = currentSession;
+            CurrentSession.Id = _DbFacade.ExecuteScalaire<int>(dBCommand);
+            GenericDALBase.Session = CurrentSession;
 
-            return currentSession;
+            return CurrentSession;
 
         }
 
         public void SetApplicationName(string name)
         {
 
-            string query = "Update Sessions set [ApplicationName] = '" + name + "' where id =" + this.currentSession.Id.ToString();
+            string query = "Update Sessions set [ApplicationName] = '" + name + "' where id =" + this.CurrentSession.Id.ToString();
             _DbFacade.ExecuteNonQuery(query);
         }
     }

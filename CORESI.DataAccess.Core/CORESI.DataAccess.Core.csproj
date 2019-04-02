@@ -114,6 +114,7 @@
     <Compile Include="SessionManager.cs" />
     <Compile Include="Settings\Parameter.cs" />
     <Compile Include="SqlHelper.cs" />
+    <Compile Include="Tools\RowExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CORESI.Data\CORESI.Data.csproj">

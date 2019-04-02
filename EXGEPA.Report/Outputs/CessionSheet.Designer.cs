@@ -1,6 +1,6 @@
 ﻿namespace EXGEPA.Report.Outputs
 {
-    partial class OutputSheet
+    partial class CessionSheet
     {
         /// <summary>
         /// Required designer variable.
@@ -53,7 +53,7 @@
             this.SheetTitle = new DevExpress.XtraReports.UI.XRLabel();
             this.xrPageInfo3 = new DevExpress.XtraReports.UI.XRPageInfo();
             this.Periode = new DevExpress.XtraReports.UI.XRLabel();
-            this.xrLabel13 = new DevExpress.XtraReports.UI.XRLabel();
+            this.reportLabel = new DevExpress.XtraReports.UI.XRLabel();
             this.Header = new DevExpress.XtraReports.UI.XRLabel();
             this.SubHeader = new DevExpress.XtraReports.UI.XRLabel();
             this.CompanyName = new DevExpress.XtraReports.UI.XRLabel();
@@ -137,7 +137,7 @@
             this.SheetTitle,
             this.xrPageInfo3,
             this.Periode,
-            this.xrLabel13,
+            this.reportLabel,
             this.Header,
             this.SubHeader,
             this.CompanyName,
@@ -395,7 +395,7 @@
             // 
             this.SenderUnit.Borders = DevExpress.XtraPrinting.BorderSide.None;
             this.SenderUnit.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[TransferOrder].[Sender].[Key]")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "Concat(\'Unité expéditrice :\', [TransferOrder].[Sender].[Key])")});
             this.SenderUnit.Font = new System.Drawing.Font("Times New Roman", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SenderUnit.LocationFloat = new DevExpress.Utils.PointFloat(10.00001F, 199.8318F);
             this.SenderUnit.Name = "SenderUnit";
@@ -447,19 +447,19 @@
             this.Periode.StylePriority.UseTextAlignment = false;
             this.Periode.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
             // 
-            // xrLabel13
+            // reportLabel
             // 
-            this.xrLabel13.Borders = DevExpress.XtraPrinting.BorderSide.None;
-            this.xrLabel13.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrLabel13.LocationFloat = new DevExpress.Utils.PointFloat(603.6065F, 0.1574834F);
-            this.xrLabel13.Name = "xrLabel13";
-            this.xrLabel13.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel13.SizeF = new System.Drawing.SizeF(145.78F, 23.62205F);
-            this.xrLabel13.StylePriority.UseBorders = false;
-            this.xrLabel13.StylePriority.UseFont = false;
-            this.xrLabel13.StylePriority.UseTextAlignment = false;
-            this.xrLabel13.Text = "IMP(PR.G.DPMG/01)";
-            this.xrLabel13.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+            this.reportLabel.Borders = DevExpress.XtraPrinting.BorderSide.None;
+            this.reportLabel.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.reportLabel.LocationFloat = new DevExpress.Utils.PointFloat(603.6065F, 0.1574834F);
+            this.reportLabel.Name = "reportLabel";
+            this.reportLabel.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.reportLabel.SizeF = new System.Drawing.SizeF(145.78F, 23.62205F);
+            this.reportLabel.StylePriority.UseBorders = false;
+            this.reportLabel.StylePriority.UseFont = false;
+            this.reportLabel.StylePriority.UseTextAlignment = false;
+            this.reportLabel.Text = "IMP(PR.G.DPMG/01)";
+            this.reportLabel.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
             // 
             // Header
             // 
@@ -795,7 +795,7 @@
             // 
             this.bindingSource1.DataSource = typeof(EXGEPA.Model.Item);
             // 
-            // OutputSheet
+            // CessionSheet
             // 
             this.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
             this.Detail,
@@ -825,7 +825,7 @@
         private DevExpress.XtraReports.UI.GroupHeaderBand GroupHeader1;
         private DevExpress.XtraReports.UI.XRPageInfo xrPageInfo3;
         public DevExpress.XtraReports.UI.XRLabel Periode;
-        public DevExpress.XtraReports.UI.XRLabel xrLabel13;
+        public DevExpress.XtraReports.UI.XRLabel reportLabel;
         public DevExpress.XtraReports.UI.XRLabel Header;
         public DevExpress.XtraReports.UI.XRLabel SubHeader;
         public DevExpress.XtraReports.UI.XRLabel CompanyName;

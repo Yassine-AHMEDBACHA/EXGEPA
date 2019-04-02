@@ -14,10 +14,11 @@ namespace CORESI.DataAccess.Core
             this.DataAccessor = new GenericDAL<T>();
         }
 
+        public IList<T> All => this.SelectAll();
+
         public Dictionary<int, T> Values { get; set; }
 
         public IGenericDAL<T> DataAccessor { get; set; }
-
 
         public virtual int Add(T instance)
         {
@@ -37,7 +38,7 @@ namespace CORESI.DataAccess.Core
         public virtual IList<T> SelectAll(bool mapReferences)
         {
 
-            IList<T> allRows = this.SelectAll();
+           var allRows = this.SelectAll();
             //if (mapReferences)
             //{
             //    var references = this.DataAccessor.Fields.Where(x => x.IsReference);

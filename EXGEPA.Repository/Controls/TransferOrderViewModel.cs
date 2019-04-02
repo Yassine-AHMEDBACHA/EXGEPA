@@ -4,11 +4,11 @@
 
 namespace EXGEPA.Repository.Controls
 {
-    using System;
     using System.Collections.ObjectModel;
     using System.Linq;
     using CORESI.Data;
     using CORESI.IoC;
+    using CORESI.Tools.Collections;
     using CORESI.WPF.Controls;
     using CORESI.WPF.Core;
     using CORESI.WPF.Core.Interfaces;
@@ -22,11 +22,13 @@ namespace EXGEPA.Repository.Controls
         private ObservableCollection<AnalyticalAccount> listOfAnalyticalAccount;
 
         public TransferOrderViewModel(IExportableGrid exportableView)
-            : base(exportableView)
+            : base(exportableView, false)
         {
             this.Caption = "Liste de bons de transfert";
             this.AddNewGroup().AddCommand("Contenu du bon", IconProvider.GreaterThan, this.DisplayPvContent);
             ServiceLocator.Resolve(out this.uIItemService);
+            this.AnalyticalAccountService = ServiceLocator.Resolve<IDataProvider<AnalyticalAccount>>();
+            this.InitData();
         }
 
         public ObservableCollection<AnalyticalAccount> ListOfAnalyticalAccount
@@ -39,27 +41,20 @@ namespace EXGEPA.Repository.Controls
             }
         }
 
+        protected IDataProvider<AnalyticalAccount> AnalyticalAccountService { get; }
+
         public override void InitData()
         {
-            int externalAccountId = ServiceLocator
+            var externalAccountId = ServiceLocator
                 .Resolve<IDataProvider<AnalyticalAccountType>>()
                 .SelectAll()
                 .Single(x => x.Key == "External")
                 .Id;
 
-            System.Collections.Generic.List<AnalyticalAccount> allAccounts = ServiceLocator
-                .Resolve<IDataProvider<AnalyticalAccount>>()
-                .SelectAll()
-                .Where(x => x.AnalyticalAccountType?.Id == externalAccountId)
-                .ToList();
+            var allAccounts = this.AnalyticalAccountService.SelectAll();
 
-            this.ListOfAnalyticalAccount = new ObservableCollection<AnalyticalAccount>(allAccounts);
-            System.Collections.Generic.IList<TransferOrder> allrows = this.DBservice.SelectAll();
-            foreach (TransferOrder item in allrows)
-            {
-                item.Sender = allAccounts.FirstOrDefault(x => x.Id == item.Sender?.Id);
-            }
-
+            this.ListOfAnalyticalAccount = new ObservableCollection<AnalyticalAccount>(allAccounts.Where(x => x.AnalyticalAccountType?.Id == externalAccountId));
+            var allrows = this.DBservice.SelectAll().ApplyOnAll(item => item.Sender = allAccounts.FirstOrDefault(x => x.Id == item.Sender?.Id));
             this.ListOfRows = new ObservableCollection<TransferOrder>(allrows);
         }
 
@@ -73,7 +68,7 @@ namespace EXGEPA.Repository.Controls
             var title = this.ParameterProvider.GetAndSetIfMissing("TransferOrderReportTitle", "Fiche de transfert");
             this.uIItemService.DisplayItems(this.IsMatchingSelectedRowId, $"Contenu du bon de transfert {this.SelectedRow?.Key}", (items) =>
             {
-                IImmobilisationSheetProvider reports = ServiceLocator.Resolve<IImmobilisationSheetProvider>();
+                var reports = ServiceLocator.Resolve<IImmobilisationSheetProvider>();
                 reports.PrintOutputSheet(items, false, title);
             });
         }

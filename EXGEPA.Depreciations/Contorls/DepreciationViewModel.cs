@@ -23,7 +23,6 @@ namespace EXGEPA.Depreciations.Contorls
         protected readonly IParameterProvider parameterProvider;
 
         IDataProvider<Item> ItemService { get; set; }
-        ICalculator Calculator { get; set; }
 
         public DateEditRibbon StartDateEditRibbon { get; set; }
 

@@ -5,7 +5,6 @@
     using System.Collections.ObjectModel;
     using System.IO;
     using System.Linq;
-    using System.Threading.Tasks;
     using CORESI.Data;
     using CORESI.IoC;
     using CORESI.WPF.Controls;
@@ -16,30 +15,31 @@
     using EXGEPA.Depreciations.Core;
     using EXGEPA.Model;
 
-
     public abstract class ItemViewModelBase : PageViewModel
     {
-        protected readonly IParameterProvider parameterProvider;
-
-        protected readonly IKeyGenerator<Item> keyGenerator;
-
         public ItemExtendedProperties itemExtendedProperties;
+
+        private string oldCodeCaption;
 
         public ItemViewModelBase()
         {
-            ServiceLocator.Resolve(out this.itemService);
-            ServiceLocator.Resolve(out this.parameterProvider);
-            ServiceLocator.GetDefault(out this.keyGenerator);
-            this.PicturesDirectory = parameterProvider.GetValue("PicturesDirectory", @"C:\SQLIMMO\Images");
+            this.ParameterProvider =  ServiceLocator.Resolve<IParameterProvider>();
+            this.ItemService = ServiceLocator.Resolve<IDataProvider<Item>>();
+            this.KeyGenerator = ServiceLocator.GetDefault<IKeyGenerator<Item>>();
+            this.PicturesDirectory = ParameterProvider.GetValue("PicturesDirectory", @"C:\SQLIMMO\Images");
             AccountingPeriodHelper accountingPeriodHelper = new AccountingPeriodHelper(loadHistory: true);
             MonthelyCalculator = new MonthelyCalculator(accountingPeriodHelper);
             DailyCalculator = new DailyCalculator(accountingPeriodHelper);
-            this.MinAmount = parameterProvider.GetValue("ItemInvestismentMinAmount", 30000);
-            this.KeyLength = parameterProvider.GetValue<int>("ItemKeyLength");
+            this.MinAmount = ParameterProvider.GetValue("ItemInvestismentMinAmount", 30000);
+            this.KeyLength = ParameterProvider.GetValue<int>("ItemKeyLength");
             this.AddNewGroup().AddCommand("Refresh", IconProvider.Refresh, this.BindFields);
-            Task.Factory.StartNew(() => this.ListOfItems = new ObservableCollection<Item>(this.itemService.SelectAll()));
-
         }
+
+        protected IParameterProvider ParameterProvider { get; }
+
+        protected IDataProvider<Item> ItemService { get; }
+
+        protected IKeyGenerator<Item> KeyGenerator { get; }
 
         protected int KeyLength { get; }
 
@@ -80,9 +80,20 @@
             this.SmallDescription = this.Description = reference?.Caption ?? string.Empty;
         }
 
-        protected readonly IDataProvider<Item> itemService;
+        
         public ICalculator MonthelyCalculator { get; set; }
         public ICalculator DailyCalculator { get; set; }
+
+        public string OldCodeCaption
+        {
+            get => this.oldCodeCaption;
+            set
+            {
+                this.oldCodeCaption = value;
+                RaisePropertyChanged(nameof(this.OldCodeCaption));
+            }
+        }
+
 
         public string VehicleNumber
         {
@@ -111,7 +122,7 @@
 
         private void UpdateKey(Reference value)
         {
-            this.Key = value == null ? string.Empty : keyGenerator.GenerateKey(value, this.KeyLength);
+            this.Key = value == null ? string.Empty : KeyGenerator.GenerateKey(value, this.KeyLength);
         }
 
         public virtual void UpdateGeneralAccount(Reference reference)
@@ -348,17 +359,6 @@
             {
                 ConcernedItem.Owner = value;
                 RaisePropertyChanged("Owner");
-            }
-        }
-
-        private ObservableCollection<Item> _ListOfItems;
-        public ObservableCollection<Item> ListOfItems
-        {
-            get => _ListOfItems;
-            set
-            {
-                _ListOfItems = value;
-                RaisePropertyChanged("ListOfItems");
             }
         }
 
