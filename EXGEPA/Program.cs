@@ -17,7 +17,7 @@ namespace EXGEPA
 {
     public static class Program
     {
-        static readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         [STAThread]
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
@@ -62,7 +62,7 @@ namespace EXGEPA
                 Task.Factory.StartNew(() =>
                 {
                     IDbFacade dbFacade = ServiceLocator.Resolve<IDbFacade>();
-                    string CompanyName = ServiceLocator.Resolve<IParameterProvider>().GetAndSetIfMissing("CompanyName", "CORESI");
+                    string CompanyName = ServiceLocator.Resolve<IParameterProvider>().TryGet("CompanyName", "CORESI");
                     string exercice = dbFacade.ExecuteScalaire<string>("SELECT [KEY] FROM [AccountingPeriods] where Approved=0");
                     uIService.SetApplicationTitle(CompanyName + " - " + exercice);
                 });

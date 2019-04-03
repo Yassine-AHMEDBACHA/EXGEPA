@@ -1,23 +1,24 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Windows;
-using OpenNETCF.Desktop.Communication;
-
-namespace EXGEPA.Inventory.Core
+﻿namespace EXGEPA.Inventory.Core
 {
+    using System;
+    using System.IO;
+    using System.Windows;
+    using OpenNETCF.Desktop.Communication;
+
     public class WindowsCEFileManager : ADeviceFileManager
     {
+        private static readonly log4net.ILog Logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public WindowsCEFileManager()
             : base()
         {
             try
             {
-                this.RemoteAPI = new RAPI();
+                this.RemoteAPI = default;
             }
             catch (Exception ex)
             {
-
+                Logger.Error(ex);
             }
         }
 
@@ -26,7 +27,6 @@ namespace EXGEPA.Inventory.Core
         bool CheckConnexionWithDevice()
         {
             System.Reflection.Assembly[] s = AppDomain.CurrentDomain.GetAssemblies();
-            System.Reflection.Assembly[] t = s.ToArray();
 
             bool connexionStatus = false;
             while (!RemoteAPI.DevicePresent)

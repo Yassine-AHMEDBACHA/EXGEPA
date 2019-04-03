@@ -65,7 +65,7 @@ namespace EXGEPA.Repository.Controls
 
         private void DisplayPvContent()
         {
-            var title = this.ParameterProvider.GetAndSetIfMissing("TransferOrderReportTitle", "Fiche de transfert");
+            var title = this.ParameterProvider.TryGet("TransferOrderReportTitle", "Fiche de transfert");
             this.uIItemService.DisplayItems(this.IsMatchingSelectedRowId, $"Contenu du bon de transfert {this.SelectedRow?.Key}", (items) =>
             {
                 var reports = ServiceLocator.Resolve<IImmobilisationSheetProvider>();

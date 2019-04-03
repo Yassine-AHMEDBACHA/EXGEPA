@@ -53,13 +53,13 @@ namespace EXGEPA.Settings.Controls
                 Action = Save
             });
             this.Groups.Add(group);
-            this.CompanyName = this.parameterProvider.GetAndSetIfMissing(CompanyNameKey, "");
-            this.DepartmentName = this.parameterProvider.GetAndSetIfMissing(DepartmentNameKey, "");
-            this.DirectionName = this.parameterProvider.GetAndSetIfMissing(DirectionNameKey, "");
+            this.CompanyName = this.parameterProvider.TryGet(CompanyNameKey, "");
+            this.DepartmentName = this.parameterProvider.TryGet(DepartmentNameKey, "");
+            this.DirectionName = this.parameterProvider.TryGet(DirectionNameKey, "");
             this.AvaibleTheme = GetAvailableThemes();
             this.Theme = this.parameterProvider.GetValue<string>(ThemeKey);
             this.LogoFileName = this.parameterProvider.GetValue<string>(LogoFileNameKey);
-            this.PicturesDirectory = this.parameterProvider.GetAndSetIfMissing(PicturesDirectoryKey, @"C:\SQLIMMO\Images");
+            this.PicturesDirectory = this.parameterProvider.TryGet(PicturesDirectoryKey, @"C:\SQLIMMO\Images");
         }
 
         private static List<string> GetAvailableThemes()
@@ -83,6 +83,7 @@ namespace EXGEPA.Settings.Controls
                     {
                         this._SavePicture();
                     }
+
                     this.parameterProvider.TrySetOrAdd(LogoFileNameKey, this.LogoFileName);
                     this.parameterProvider.TrySetOrAdd(ThemeKey, this.Theme);
                 });

@@ -27,7 +27,7 @@
         public EditItemViewModel(Item item) : base()
         {
             this.IsKeyReadOnly = true;
-            this.IsBaseDepreciationReadOnly = this.ParameterProvider.GetAndSetIfMissing("IsBaseDepreciationReadOnlyInEdition", true);
+            this.IsBaseDepreciationReadOnly = this.ParameterProvider.TryGet("IsBaseDepreciationReadOnlyInEdition", true);
             this.Categorie = OldItemRibbonCategorie;
             InitialItem = item;
             this.ConcernedItem = (Item)item.Clone();

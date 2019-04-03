@@ -14,7 +14,7 @@ namespace EXGEPA.Depreciations.Core
         public MonthelyCalculator(IAccountingPeriodHelper accountingPeriodHelper)
             : base(accountingPeriodHelper)
         {
-            this.monthSplit = this.parameterProvider.GetAndSetIfMissing("MonthlyDepreciationDateSplie", 15);
+            this.monthSplit = this.parameterProvider.TryGet("MonthlyDepreciationDateSplie", 15);
         }
 
 

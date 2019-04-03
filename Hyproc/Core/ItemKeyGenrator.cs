@@ -22,10 +22,10 @@ namespace Hyproc.Core
         {
             ServiceLocator.Resolve(out this.parameterProvider);
             ServiceLocator.Resolve(out this.dbFacade);
-            this.prefix = this.parameterProvider.GetAndSetIfMissing("Prefix", "ADM");
-            this.minGeneratedItemKey = this.parameterProvider.GetAndSetIfMissing("MinGeneratedItemKey", 0);
-            this.maxGeneratedItemKey = this.parameterProvider.GetAndSetIfMissing("MaxGeneratedItemKey", 500000);
-            this.KeyLength = this.parameterProvider.GetAndSetIfMissing("ItemKeyLength", 12);
+            this.prefix = this.parameterProvider.TryGet("Prefix", "ADM");
+            this.minGeneratedItemKey = this.parameterProvider.TryGet("MinGeneratedItemKey", 0);
+            this.maxGeneratedItemKey = this.parameterProvider.TryGet("MaxGeneratedItemKey", 500000);
+            this.KeyLength = this.parameterProvider.TryGet("ItemKeyLength", 12);
         }
 
         public bool CheckKey(string key)

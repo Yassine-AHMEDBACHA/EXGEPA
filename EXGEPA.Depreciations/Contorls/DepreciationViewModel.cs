@@ -74,7 +74,7 @@ namespace EXGEPA.Depreciations.Contorls
 
 
                 });
-            string processName = parameterProvider.GetAndSetIfMissing("DepreciationReport", "simulation.exe");
+            string processName = parameterProvider.TryGet("DepreciationReport", "simulation.exe");
 
             this.Reports = this.AddNewGroup().AddCommand("Etats", () => this.UIMessage.TryDoAction(logger, () => ExternalProcess.StartProcess(processName)));
             this.UIMessage.TryDoActionAsync(logger, () =>
@@ -128,7 +128,7 @@ namespace EXGEPA.Depreciations.Contorls
                     Duration = x.Value.Sum(d => d.Period)
                 }).ToList();
 
-                if (parameterProvider.GetAndSetIfMissing("AllowDepreciationDump", true))
+                if (parameterProvider.TryGet("AllowDepreciationDump", true))
                 {
                     if (this.ShouldSaveDepreciation())
                     {

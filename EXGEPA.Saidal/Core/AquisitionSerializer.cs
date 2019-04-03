@@ -34,8 +34,8 @@ namespace EXGEPA.Saidal.Core
         public AquisitionSerializer()
         {
             ServiceLocator.Resolve(out this.parameterProvider);
-            this.separator = this.parameterProvider.GetAndSetIfMissing("InterfaceSerializerSeparator", ",");
-            this.additionalCharacter = this.parameterProvider.GetAndSetIfMissing("InterfaceAdditionalCharacter", " ");
+            this.separator = this.parameterProvider.TryGet("InterfaceSerializerSeparator", ",");
+            this.additionalCharacter = this.parameterProvider.TryGet("InterfaceAdditionalCharacter", " ");
             ServiceLocator.GetDefault(out this.uIMessage);
             this.fieldAligner = new List<Func<string, string>>()
             {
@@ -113,13 +113,13 @@ namespace EXGEPA.Saidal.Core
                 if (invoice.Holdback > 0)
                 {
                     i++;
-                    stringBuilder.AppendLine(this.Align(string.Join(";", firstPart, i, invoice.Date.ToString("dd"), "404020", " ", invoice.Holdback.ToString(CultureInfo.InvariantCulture), "C", lastPart)));
+                    stringBuilder.AppendLine(this.Align(string.Join(";", firstPart, i, invoice.Date.ToString("dd"), "404020", invoice.Provider.ThirdPartyAccount, invoice.Holdback.ToString(CultureInfo.InvariantCulture), "C", lastPart)));
                 }
             }
 
-            var outputDirectory = this.parameterProvider.GetAndSetIfMissing("InterfaceOutputDirectory", @"C:\SQLIMMO\");
-            var fileNamePattern = this.parameterProvider.GetAndSetIfMissing("InterfaceFileNamePattern", "Dump");
-            var fileExtension = this.parameterProvider.GetAndSetIfMissing("InterfaceFileExtension", ".csv");
+            var outputDirectory = this.parameterProvider.TryGet("InterfaceOutputDirectory", @"C:\SQLIMMO\");
+            var fileNamePattern = this.parameterProvider.TryGet("InterfaceFileNamePattern", "Dump");
+            var fileExtension = this.parameterProvider.TryGet("InterfaceFileExtension", ".csv");
             var fileName = Path.Combine(outputDirectory, $"{fileNamePattern}_{DateTime.Now.ToString("yyyyMMdd_HHmmssfff")}.{fileExtension.Replace(".", string.Empty)}");
             this.logger.Info($"FileName = {fileName}");
             TextAppender.Append(fileName, stringBuilder.ToString(), true);

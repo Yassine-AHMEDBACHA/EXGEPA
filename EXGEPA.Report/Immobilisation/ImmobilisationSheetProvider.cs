@@ -96,7 +96,7 @@ namespace EXGEPA.Report.Immobilisation
                 rpt.DatePV.ExpressionBindings[0].Expression = "Concat('Date du PV :',FormatString('{0:dd/MM/yyyy}',[OutputCertificate].[Date]))";
                 rpt.SenderUnit.ExpressionBindings[0].Expression = "Concat(\'Unité expéditrice :\',[Office].[Level].[Building].[Levels].[Building].[Site].[Region].[Caption])";
                 rpt.RecieverUnit.ExpressionBindings[0].Expression = "Concat(\'Unité réceptrice :\',[OutputCertificate].[Tag])";
-                rpt.reportLabel.Text = this.ParameterProvider.GetAndSetIfMissing("CessionCertificateReportLabel", "IMP(PR.G.DPMG/01)");
+                rpt.reportLabel.Text = this.ParameterProvider.TryGet("CessionCertificateReportLabel", "IMP(PR.G.DPMG/01)");
             }
             else
             {
@@ -104,7 +104,7 @@ namespace EXGEPA.Report.Immobilisation
                 rpt.DatePV.ExpressionBindings[0].Expression = "Concat('Date du PV :',FormatString('{0:dd/MM/yyyy}',[TransferOrder].[Date]))";
                 rpt.SenderUnit.ExpressionBindings[0].Expression = "Concat(\'Unité expéditrice :\',[TransferOrder].[Sender].[Key])";
                 rpt.RecieverUnit.ExpressionBindings[0].Expression = "Concat(\'Unité réceptrice :\',[Office].[Level].[Building].[Levels].[Building].[Site].[Region].[Caption])";
-                rpt.reportLabel.Text = this.ParameterProvider.GetAndSetIfMissing("TransferOrderReportLabel", "Transfert Order");
+                rpt.reportLabel.Text = this.ParameterProvider.TryGet("TransferOrderReportLabel", "Transfert Order");
             }
         }
 

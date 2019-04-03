@@ -43,7 +43,7 @@ namespace EXGEPA.Output.Controls
 
         private void DisplayPvContent()
         {
-            var title = this.ParameterProvider.GetAndSetIfMissing("CessionCertificateReportTitle", "Fiche de cession");
+            var title = this.ParameterProvider.TryGet("CessionCertificateReportTitle", "Fiche de cession");
             this.UIItemService.DisplayItems(this.IsMatchingSelectedRowId, $"Contenu du PV de cession {this.SelectedRow?.Key}", (items) =>
             {
                 IImmobilisationSheetProvider reports = ServiceLocator.Resolve<IImmobilisationSheetProvider>();
