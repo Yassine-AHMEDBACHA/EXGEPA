@@ -17,15 +17,13 @@ namespace EXGEPA.Invoice.Controls
 {
     public class InvoiceViewModel : GenericEditableViewModel<Model.Invoice>
     {
-        IUIItemService UIItemService { get; set; }
-
-        IParameterProvider ParametreProvider { get; set; }
+        private readonly bool shouldIncludeInputSheetInInvoice;
 
         public InvoiceViewModel(IExportableGrid view) : base(view)
         {
             this.Caption = "List des factures";
             this.ParametreProvider = ServiceLocator.Resolve<IParameterProvider>();
-            UIItemService = ServiceLocator.Resolve<IUIItemService>();
+            this.UIItemService = ServiceLocator.Resolve<IUIItemService>();
             DoubleClicAction = ItemAttribution;
             this.AddNewGroup().AddCommand("Items", IconProvider.GreaterThan, ItemAttribution);
             CheckedRibbonButton button = this.AddNewGroup().AddCommand<CheckedRibbonButton>("Validée", IconProvider.Task);
@@ -39,10 +37,13 @@ namespace EXGEPA.Invoice.Controls
                         false, () => button.IsChecked = this.SelectedRow?.IsValidated ?? false);
                 }
             };
-
+            this.shouldIncludeInputSheetInInvoice = this.ParameterProvider.GetAndSetIfMissing("ShouldIncludeInputSheetInInvoice", true);
             this.AddNewGroup().AddCommand("Borecep", IconProvider.Reading, () => this.StartBackGroundAction(() => ExternalProcess.StartProcess("borecep.exe")));
 
         }
+        protected IParameterProvider ParametreProvider { get; }
+
+        protected IUIItemService UIItemService { get; }
 
         private ObservableCollection<GeneralAccount> _ListOfGeneralAccount;
 
@@ -138,7 +139,7 @@ namespace EXGEPA.Invoice.Controls
                         error = true;
                     }
 
-                    if (ConcernedRow.InputSheet == null)
+                    if (this.shouldIncludeInputSheetInInvoice && ConcernedRow.InputSheet == null)
                     {
                         message += "\n\t-Fiche d'entrée";
                         error = true;
