@@ -152,8 +152,8 @@
             </dxlc:LayoutGroup>
 
             <dxlc:LayoutGroup View="Group"  Orientation="Vertical">
-                <dxlc:LayoutItem Label="Ancien Code">
-                    <dxe:TextEdit    CharacterCasing="Upper" Text="{Binding OldCode, UpdateSourceTrigger=PropertyChanged}"  IsReadOnly="{Binding IsAccountingInformationLocked}"/>
+                <dxlc:LayoutItem Label="{Binding OldCodeCaption}">
+                    <dxe:TextEdit CharacterCasing="Upper" Text="{Binding OldCode, UpdateSourceTrigger=PropertyChanged}"  IsReadOnly="{Binding IsAccountingInformationLocked}"/>
                 </dxlc:LayoutItem>
             </dxlc:LayoutGroup>
             <dxlc:LayoutGroup Header="Code à bar" View="GroupBox">

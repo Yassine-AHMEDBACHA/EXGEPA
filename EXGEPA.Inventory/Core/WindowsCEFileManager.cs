@@ -8,12 +8,21 @@ namespace EXGEPA.Inventory.Core
 {
     public class WindowsCEFileManager : ADeviceFileManager
     {
+        public WindowsCEFileManager()
+            : base()
+        {
+            try
+            {
+                this.RemoteAPI = new RAPI();
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
 
         public RAPI RemoteAPI { get; set; }
-        public WindowsCEFileManager() : base()
-        {
-            this.RemoteAPI = new RAPI();
-        }
+
         bool CheckConnexionWithDevice()
         {
             System.Reflection.Assembly[] s = AppDomain.CurrentDomain.GetAssemblies();

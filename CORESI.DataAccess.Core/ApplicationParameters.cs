@@ -83,8 +83,8 @@ namespace CORESI.DataAccess.Core
 
         public bool TrySetOrAdd(string key, object value)
         {
-            string stringValue = value.ToString();
-            Parameter parameter = Get(key);
+            var stringValue = value.ToString();
+            var parameter = Get(key);
             if (parameter != null)
             {
                 if (ValuesAreSame(parameter.Value, stringValue))
@@ -121,20 +121,45 @@ namespace CORESI.DataAccess.Core
             return SettingsService.SelectAll().ToDictionary(x => x.Key, x => x.Value);
         }
 
-        public string GetStringValue(string parameterName)
+        public string GetStringValue(string key)
         {
-            return this.Get(parameterName)?.Value;
+            return this.Get(key)?.Value;
         }
 
-        public T GetAndSetIfMissing<T>(string parameterName, T value)
+        public T GetAndSetIfMissing<T>(string key, T defaultValue)
         {
-            Parameter parameter = this.Get(parameterName);
+            Parameter parameter = this.Get(key);
             if (parameter != null)
             {
                 return GetValue<T>(parameter);
             }
-            this.TrySetOrAdd(parameterName, value);
-            return value;
+            this.TrySetOrAdd(key, defaultValue);
+            return defaultValue;
         }
+
+        public T TryGet<T>(string key, T defaultValue)
+        {
+            var parameter = this.Get(key);
+            if (parameter != null)
+            {
+                return GetValue<T>(parameter);
+            }
+
+            this.TrySet(key, defaultValue);
+            return defaultValue;
+        }
+
+        public bool TrySet<T>(string key, T value)
+        {
+            var stringValue = value.ToString();
+            var parameter = new Parameter()
+            {
+                Key = key,
+                Value = stringValue,
+            };
+
+            return Add(parameter) > 0;
+        }
+
     }
 }

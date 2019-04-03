@@ -16,6 +16,8 @@ namespace EXGEPA.Items.Controls
 {
     public class ItemGridViewModel : GenericEditableViewModel<Item>
     {
+        private string oldCodeCaption;
+
         IUIItemService UIItemService { get; set; }
 
         IRepositoryDataProvider RepositoryDataProvider { get; set; }
@@ -78,6 +80,18 @@ namespace EXGEPA.Items.Controls
                     this.UIService.AddPage(page);
                 }
             });
+
+            this.OldCodeCaption = this.ParameterProvider.TryGet("OldCodeCaption", "IMMO");
+        }
+
+        public string OldCodeCaption
+        {
+            get => this.oldCodeCaption;
+            set
+            {
+                this.oldCodeCaption = value;
+                RaisePropertyChanged(nameof(this.OldCodeCaption));
+            }
         }
 
 

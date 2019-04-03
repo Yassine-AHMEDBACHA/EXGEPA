@@ -1,17 +1,23 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 
 namespace CORESI.Data
 {
     public interface IParameterProvider
     {
-        T GetValue<T>(string parameterName, T defaultValue);
+        T GetValue<T>(string key, T defaultValue);
 
-        T GetValue<T>(string parameterName);
+        T GetValue<T>(string key);
 
-        T GetAndSetIfMissing<T>(string parameterName, T value);
+        [Obsolete]
+        T GetAndSetIfMissing<T>(string key, T value);
 
-        string GetStringValue(string parameterName);
+        T TryGet<T>(string key, T defaultValue);
+
+        string GetStringValue(string key);
+
         bool TrySetOrAdd(string key, object value);
+
         IDictionary GetAllParameters();
     }
 }

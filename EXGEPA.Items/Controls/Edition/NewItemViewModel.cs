@@ -26,7 +26,7 @@ namespace EXGEPA.Items.Controls
             this.Caption = "Nouvel Article";
             this.itemExtendedProperties = new ItemExtendedProperties();
             this.IsKeyReadOnly = this.ParameterProvider.GetValue("IsItemKeyReadOnlyAtCreation", true);
-            this.IsBaseDepreciationReadOnly = this.ParameterProvider.GetAndSetIfMissing("IsBaseDepreciationReadOnlyAtCreation", false);
+            this.IsBaseDepreciationReadOnly = this.ParameterProvider.TryGet("IsBaseDepreciationReadOnlyAtCreation", false);
             this.Categorie = NewItemRibbonCategorie;
             this.IsSelected = true;
             Group group = this.AddNewGroup();
@@ -35,7 +35,7 @@ namespace EXGEPA.Items.Controls
             this.AccountingPeriods = group.AddCommand<ComboBoxRibbon<string>>("Exercice");
             this.Quantity = group.AddCommand<ComboBoxRibbon<int>>("Quantité");
             this.Quantity.Width = 80;
-            int maxQuantityCanBeCreated = ParameterProvider.GetAndSetIfMissing("ItemMaxQuantityCanBeCreated", 100);
+            int maxQuantityCanBeCreated = ParameterProvider.TryGet("ItemMaxQuantityCanBeCreated", 100);
             Enumerable.Range(1, maxQuantityCanBeCreated).ForEach(x => this.Quantity.ItemsSource.Add(x));
             this.Quantity.EditValue = this.Quantity.ItemsSource.FirstOrDefault();
             this.UIMessage.TryDoActionAsync(Logger, this.InitData);

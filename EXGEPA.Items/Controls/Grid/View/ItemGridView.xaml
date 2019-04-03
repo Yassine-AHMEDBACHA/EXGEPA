@@ -18,7 +18,7 @@ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             <dxg:GridControl  ItemsSource="{Binding ListOfRows}" ShowLoadingPanel="{Binding ShowLoadingPanel}" FilterString="{Binding Filter,Mode=TwoWay}" SelectionMode="Row">
                 <dxg:GridControl.Columns>
                     <dxg:GridColumn FieldName="Key" Header="Code" AllowBestFit="True" AllowEditing="False" Visible="True" Fixed="Left"/>
-                    <dxg:GridColumn FieldName="OldCode" Header="Ancien code" AllowBestFit="True" AllowEditing="False" Visible="True" Fixed="Left"/>
+                    <dxg:GridColumn FieldName="OldCode" Header="{Binding OldCodeCaption}" AllowBestFit="True" AllowEditing="False" Visible="True" Fixed="Left"/>
                     <dxg:GridColumn FieldName="Reference.Key" Header="Reference" AllowEditing="False"  />
                     <dxg:GridColumn FieldName="Reference.Caption" Header="Designation reference"  AllowEditing="False" Visible="False"/>
                     <dxg:GridColumn FieldName="Description" Header="Designation"  AllowEditing="False" />

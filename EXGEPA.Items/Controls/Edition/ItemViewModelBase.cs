@@ -33,6 +33,7 @@
             this.MinAmount = ParameterProvider.GetValue("ItemInvestismentMinAmount", 30000);
             this.KeyLength = ParameterProvider.GetValue<int>("ItemKeyLength");
             this.AddNewGroup().AddCommand("Refresh", IconProvider.Refresh, this.BindFields);
+            this.OldCodeCaption = this.ParameterProvider.TryGet("OldCodeCaption", "IMMO");
         }
 
         protected IParameterProvider ParameterProvider { get; }

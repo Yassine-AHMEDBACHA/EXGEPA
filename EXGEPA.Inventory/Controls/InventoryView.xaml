@@ -16,7 +16,7 @@
         <dxg:GridControl ItemsSource="{Binding ListOfRows}" ShowLoadingPanel="{Binding ShowLoadingPanel}" FilterString="{Binding Filter,Mode=TwoWay}" Grid.Column="1">
             <dxg:GridControl.Columns>
                 <dxg:GridColumn FieldName="Key" Header="Code" AllowBestFit="True" AllowEditing="False" Visible="True" />
-                <dxg:GridColumn FieldName="OldCode" Header="Ancien Code" AllowBestFit="True" AllowEditing="False" Visible="True" />
+                <dxg:GridColumn FieldName="OldCode" Header="{Binding OldCodeCaption}" AllowBestFit="True" AllowEditing="False" Visible="True" />
                 <dxg:GridColumn FieldName="GapType" Header="Type d'ecart" AllowBestFit="True" AllowEditing="False" Visible="True" />
                 <dxg:GridColumn FieldName="Item.Reference.Key" Header="Reference" AllowEditing="False"  />
                 <dxg:GridColumn FieldName="Item.Reference.Caption" Header="Désignation référence"  AllowEditing="False" />

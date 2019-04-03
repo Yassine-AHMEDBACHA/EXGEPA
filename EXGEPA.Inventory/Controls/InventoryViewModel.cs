@@ -31,6 +31,8 @@ namespace EXGEPA.Inventory.Controls
 
         private readonly IUIItemService uIItemService;
 
+        private string oldCodeCaption;
+
         Dictionary<string, Office> AllOffices { get; set; }
 
         private ADeviceFileManager DeviceFileManager { get; set; }
@@ -61,6 +63,17 @@ namespace EXGEPA.Inventory.Controls
             IItemByCompteProvider itemByCompteProvider = ServiceLocator.Resolve<IItemByCompteProvider>();
             Group group = GetReportGroup(itemByCompteProvider);
             this.AddGroup(group);
+            this.OldCodeCaption = this.ParameterProvider.TryGet("OldCodeCaption", "IMMO");
+        }
+
+        public string OldCodeCaption
+        {
+            get => this.oldCodeCaption;
+            set
+            {
+                this.oldCodeCaption = value;
+                RaisePropertyChanged(nameof(this.OldCodeCaption));
+            }
         }
 
         private Group GetReportGroup(IItemByCompteProvider itemByCompteProvider)

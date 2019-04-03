@@ -37,7 +37,7 @@ namespace EXGEPA.Invoice.Controls
                         false, () => button.IsChecked = this.SelectedRow?.IsValidated ?? false);
                 }
             };
-            this.shouldIncludeInputSheetInInvoice = this.ParameterProvider.GetAndSetIfMissing("ShouldIncludeInputSheetInInvoice", true);
+            this.shouldIncludeInputSheetInInvoice = this.ParameterProvider.TryGet("ShouldIncludeInputSheetInInvoice", true);
             this.AddNewGroup().AddCommand("Borecep", IconProvider.Reading, () => this.StartBackGroundAction(() => ExternalProcess.StartProcess("borecep.exe")));
 
         }
