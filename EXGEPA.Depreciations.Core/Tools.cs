@@ -7,36 +7,55 @@ namespace EXGEPA.Depreciations.Core
     {
         public static DateTime GetStartComputationDate(Item item, DateTime startDate)
         {
-            DateTime itemStartDate = item.TransferOrder?.Date ?? GetDefaultStartDate(item);
-            return itemStartDate > startDate ? itemStartDate : startDate;
+            DateTime dateTime = GetPreviouseDepreciationDate(item) ?? GetDefaultStartDate(item);
+            if (!(dateTime > startDate))
+            {
+                return startDate;
+            }
+            return dateTime;
         }
 
         public static DateTime GetDefaultStartDate(Item item)
         {
-            return item.StartDepreciationDate == StartDepreciationDate.AqusitionDate ? item.AquisitionDate : item.StartServiceDate;
+            if (item.StartDepreciationDate != StartDepreciationDate.AqusitionDate)
+            {
+                return item.StartServiceDate;
+            }
+            return item.AquisitionDate;
         }
 
         public static DateTime GetEndComputationDate(Item item, DateTime endDate)
         {
-            DateTime itemEndLife = GetEndComputationDate(item);
-            return itemEndLife > endDate ? endDate : itemEndLife;
+            DateTime endComputationDate = GetEndComputationDate(item);
+            if (!(endComputationDate > endDate))
+            {
+                return endComputationDate;
+            }
+            return endDate;
         }
 
         public static DateTime GetEndComputationDate(Item item)
         {
-            DateTime? date = (item?.ReformeCertificate?.Date ?? item?.OutputCertificate?.Date);
-            if (date.HasValue && date < item.LimiteDate)
+            DateTime? t = item?.ReformeCertificate?.Date ?? item?.OutputCertificate?.Date;
+            if (t.HasValue && t < item.LimiteDate)
             {
-                return date.Value;
+                return t.Value;
             }
-
             return item.LimiteDate;
         }
 
         public static DateTime GetStartComputationDate(Item item)
         {
             return item.TransferOrder?.Date ?? GetDefaultStartDate(item);
+        }
 
+        private static DateTime? GetPreviouseDepreciationDate(Item item)
+        {
+            if (item.PreviousDepreciation > decimal.Zero && item.ExtendedProperties?.PreviouseDepreciationDate > GetDefaultStartDate(item))
+            {
+                return item.ExtendedProperties.PreviouseDepreciationDate;
+            }
+            return null;
         }
     }
 }

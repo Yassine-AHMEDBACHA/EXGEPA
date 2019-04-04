@@ -4,8 +4,12 @@
 
 namespace EXGEPA.Model
 {
+    using System;
+
     public class ItemExtendedProperties
     {
         public string VehicleNumber { get; set; }
+
+        public DateTime PreviouseDepreciationDate { get; set; }
     }
 }

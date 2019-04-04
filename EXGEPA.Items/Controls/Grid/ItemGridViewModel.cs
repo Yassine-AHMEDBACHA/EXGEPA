@@ -161,7 +161,7 @@ namespace EXGEPA.Items.Controls
                         RepositoryDataProvider.BindItemFields(item);
                         if (JsonHelper.TryDeserialize(item.Json, out ItemExtendedProperties itemExtendedProperties))
                         {
-                            item.ItemExtendedProperties = itemExtendedProperties;
+                            item.ExtendedProperties = itemExtendedProperties;
                         }
                     });
                     ListOfRows = new ObservableCollection<Item>(list);

@@ -91,7 +91,7 @@
             set
             {
                 this.oldCodeCaption = value;
-                RaisePropertyChanged(nameof(this.OldCodeCaption));
+                RaisePropertyChanged();
             }
         }
 
@@ -102,7 +102,7 @@
             set
             {
                 this.itemExtendedProperties.VehicleNumber = value;
-                RaisePropertyChanged(VehicleNumber);
+                RaisePropertyChanged();
             }
         }
 
@@ -142,7 +142,7 @@
             set
             {
                 _RepositoryDataProvider = value;
-                RaisePropertyChanged("RepositoryDataProvider");
+                RaisePropertyChanged();
             }
         }
 
@@ -156,7 +156,7 @@
             set
             {
                 ConcernedItem.ExcludedFromInventory = value;
-                RaisePropertyChanged("ExcludedFromInventory");
+                RaisePropertyChanged();
             }
         }
         public decimal MinAmount { get; set; }
@@ -168,7 +168,7 @@
             set
             {
                 _ListOfDailyDepreciation = value;
-                RaisePropertyChanged("ListOfDailyDepreciation");
+                RaisePropertyChanged();
             }
         }
         private ObservableCollection<Depreciation> _ListOfMonthelyDepreciation;
@@ -178,10 +178,9 @@
             set
             {
                 _ListOfMonthelyDepreciation = value;
-                RaisePropertyChanged("ListOfMonthelyDepreciation");
+                RaisePropertyChanged();
             }
         }
-
 
         public decimal PreviousDepreciation
         {
@@ -190,7 +189,7 @@
             {
                 this.ConcernedItem.PreviousDepreciation = value;
                 this.UpdateDepreciationBase();
-                RaisePropertyChanged("PreviousDepreciation");
+                RaisePropertyChanged();
             }
         }
 
@@ -201,7 +200,7 @@
             {
                 this.UpdateFiscaleRate(value);
                 this.ConcernedItem.GeneralAccount = value;
-                RaisePropertyChanged("GeneralAccount");
+                RaisePropertyChanged();
             }
         }
 
@@ -220,7 +219,7 @@
             set
             {
                 ConcernedItem.ItemState = value;
-                RaisePropertyChanged("ItemState");
+                RaisePropertyChanged();
             }
 
         }
@@ -231,7 +230,7 @@
             set
             {
                 _Quantity = value;
-                RaisePropertyChanged("Quantity");
+                RaisePropertyChanged();
             }
 
         }
@@ -247,7 +246,7 @@
                 ConcernedItem.Office = value;
                 if (value != null)
                 {
-                    AnalyticalAccount = ConcernedItem.Office.AnalyticalAccount;
+                    this.AnalyticalAccount = ConcernedItem.Office.AnalyticalAccount;
                 }
 
                 RaisePropertyChanged("Office");
@@ -270,7 +269,9 @@
             get
             {
                 if (string.IsNullOrEmpty(ConcernedItem?.ImagePath))
+                {
                     return null;
+                }
                 else
                     return PicturesDirectory + ConcernedItem.ImagePath;
             }
@@ -301,7 +302,7 @@
             set
             {
                 _IsOldItem = value;
-                RaisePropertyChanged("IsOldItem");
+                RaisePropertyChanged();
             }
         }
 
@@ -596,7 +597,7 @@
             set
             {
                 ConcernedItem.AnalyticalAccount = value;
-                RaisePropertyChanged("AnalyticalAccount");
+                RaisePropertyChanged();
             }
         }
 

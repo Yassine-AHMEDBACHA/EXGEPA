@@ -16,8 +16,6 @@ namespace EXGEPA.Depreciations.Core
 
         protected IParameterProvider parameterProvider;
 
-        //protected bool UsePreviouseDepreciation;
-
         Dictionary<Item, List<Depreciation>> Stock { get; set; }
         protected IAccountingPeriodHelper AccountingPeriodHelper;
 
@@ -93,15 +91,13 @@ namespace EXGEPA.Depreciations.Core
 
         private void SetStartingComputeParameters(Item item, DateTime startComputationDate, Depreciation firstPeriod)
         {
-            if (Tools.GetDefaultStartDate(item) < startComputationDate && item.PreviousDepreciation == 0)
+            if (Tools.GetDefaultStartDate(item) < startComputationDate && item.PreviousDepreciation == decimal.Zero)
             {
-                List<Depreciation> previous = LoadPrevieousDepriciation(item, startComputationDate.AddDays(-1));
-                Depreciation lastComputationResult = previous.LastOrDefault();
-
-                if (lastComputationResult != null)
+                Depreciation depreciation = LoadPrevieousDepriciation(item, startComputationDate.AddDays(-1.0)).LastOrDefault();
+                if (depreciation != null)
                 {
-                    firstPeriod.InitialValue = lastComputationResult.AccountingNetValue;
-                    firstPeriod.PreviousDepreciation = lastComputationResult.PreviousDepreciation + lastComputationResult.Annuity;
+                    firstPeriod.InitialValue = depreciation.AccountingNetValue;
+                    firstPeriod.PreviousDepreciation = depreciation.PreviousDepreciation + depreciation.Annuity;
                 }
                 else
                 {
@@ -131,20 +127,19 @@ namespace EXGEPA.Depreciations.Core
 
         private decimal GetInitialValue(Item item)
         {
-            if (item.DepreciationBase == 0 && item.Amount != 0 && item.PreviousDepreciation == 0)
+            if (item.DepreciationBase == decimal.Zero && item.Amount != decimal.Zero && item.PreviousDepreciation == decimal.Zero)
             {
                 return item.Amount;
             }
-            if (item.DepreciationBase == 0 && item.Amount != 0 && item.PreviousDepreciation != 0)
+            if (item.DepreciationBase == decimal.Zero && item.Amount != decimal.Zero && item.PreviousDepreciation != decimal.Zero)
             {
                 item.DepreciationBase = item.Amount - item.PreviousDepreciation;
                 return item.DepreciationBase;
             }
-            if (item.DepreciationBase != 0)
+            if (item.DepreciationBase != decimal.Zero)
             {
                 return item.DepreciationBase;
             }
-
             return item.Amount;
         }
 

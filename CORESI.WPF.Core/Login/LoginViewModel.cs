@@ -91,7 +91,7 @@ namespace CORESI.WPF.Core.Login
             set
             {
                 _Login = value;
-                RaisePropertyChanged("Login");
+                RaisePropertyChanged();
             }
         }
         private string _Password;

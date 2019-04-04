@@ -110,7 +110,7 @@ namespace EXGEPA.Model
         public List<Repair> Repairs { get; set; }
 
         [DataAttribute(Ignore = true)]
-        public ItemExtendedProperties ItemExtendedProperties { get; set; }
+        public ItemExtendedProperties ExtendedProperties { get; set; }
     }
 
     public enum StartDepreciationDate
