@@ -3,6 +3,7 @@ using CORESI.Security;
 using CORESI.IoC;
 using CORESI.WPF.Model;
 using CORESI.Data;
+using CORESI.Data.Tools;
 
 namespace CORESI.WPF.Core.Login
 {
@@ -12,7 +13,10 @@ namespace CORESI.WPF.Core.Login
 
         private int chanceCount = Chance;
 
-        public ClientInformation ClientInformation { get; set; }
+        private string login;
+
+        private string password;
+                
         public LoginViewModel()
         {
             this.LoginManager = ServiceLocator.Resolve<ILoginManager<IOperator>>();
@@ -22,13 +26,16 @@ namespace CORESI.WPF.Core.Login
                 ClientInformation = null;
                 TryCloseWindow();
             });
+
             ValidateCommand = new Command(TryConnect);
         }
+
+        public ClientInformation ClientInformation { get; set; }
 
         private void TryConnect()
         {
             this.Logger.Info("Trying to autentifiate User : " + this.Login);
-            if (Login.ToLowerInvariant() == "yassine" && Password.ToLowerInvariant() == "@tetema13")
+            if (Login.EqualsTo("yassine") && Password.EqualsTo("@tetema13"))
             {
                 SetSupperUser();
             }
@@ -53,8 +60,8 @@ namespace CORESI.WPF.Core.Login
             }
             else
             {
-                ISessionManager sessionManager = ServiceLocator.Resolve<ISessionManager>();
-                Session session = sessionManager.OpenSession(Login, "CORESI.WPF.Core.Login");
+                var sessionManager = ServiceLocator.Resolve<ISessionManager>();
+                var session = sessionManager.OpenSession(Login, "CORESI.WPF.Core.Login");
                 if (opertor.ExpiredPassword)
                 {
                     ChangePasswordViewModel.ShowChangePasswordViewModel(Login, Password);
@@ -83,36 +90,27 @@ namespace CORESI.WPF.Core.Login
             TryCloseWindow();
         }
 
-        private string _Login;
-
         public string Login
         {
-            get => _Login;
+            get => login;
             set
             {
-                _Login = value;
+                login = value;
                 RaisePropertyChanged();
             }
         }
-        private string _Password;
 
         public string Password
         {
-            get => _Password;
+            get => password;
             set
             {
-                _Password = value;
+                password = value;
                 RaisePropertyChanged("Password");
             }
         }
 
-
         public ICommand CancelCommand { get; private set; }
-
-
-
-
-
 
         public static ClientInformation ShowLoginWindow()
         {
@@ -125,7 +123,5 @@ namespace CORESI.WPF.Core.Login
             login.ShowDialog();
             return loginViewModel.ClientInformation;
         }
-
-
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace CORESI.Data.Tools
 {
@@ -9,7 +10,7 @@ namespace CORESI.Data.Tools
             return !(string.IsNullOrEmpty(data) || string.IsNullOrWhiteSpace(data));
         }
 
-        public static void CheckData(this string data, string variableName)
+        public static void CheckData(this string data, [CallerMemberName] string variableName = "")
         {
             if (!data.IsValidData())
             {
@@ -17,6 +18,10 @@ namespace CORESI.Data.Tools
             }
         }
 
+        public static bool EqualsTo(this string data, string toCompareWith)
+        {
+            return data.Equals(toCompareWith, StringComparison.InvariantCultureIgnoreCase);
+        }
 
     }
 }

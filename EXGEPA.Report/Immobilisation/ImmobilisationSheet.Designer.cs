@@ -44,7 +44,7 @@
             this.CompanyName = new DevExpress.XtraReports.UI.XRLabel();
             this.SubHeader = new DevExpress.XtraReports.UI.XRLabel();
             this.Header = new DevExpress.XtraReports.UI.XRLabel();
-            this.xrLabel13 = new DevExpress.XtraReports.UI.XRLabel();
+            this.reportLabel = new DevExpress.XtraReports.UI.XRLabel();
             this.DepriciationType = new DevExpress.XtraReports.UI.XRLabel();
             this.Periode = new DevExpress.XtraReports.UI.XRLabel();
             this.xrTable1 = new DevExpress.XtraReports.UI.XRTable();
@@ -209,7 +209,7 @@
             this.CompanyName,
             this.SubHeader,
             this.Header,
-            this.xrLabel13,
+            this.reportLabel,
             this.DepriciationType,
             this.Periode,
             this.xrTable1,
@@ -279,18 +279,20 @@
             // 
             // xrLabel13
             // 
-            this.xrLabel13.Borders = DevExpress.XtraPrinting.BorderSide.None;
-            this.xrLabel13.Dpi = 254F;
-            this.xrLabel13.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrLabel13.LocationFloat = new DevExpress.Utils.PointFloat(1522.698F, 0F);
-            this.xrLabel13.Name = "xrLabel13";
-            this.xrLabel13.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 5, 0, 0, 254F);
-            this.xrLabel13.SizeF = new System.Drawing.SizeF(370.2813F, 60F);
-            this.xrLabel13.StylePriority.UseBorders = false;
-            this.xrLabel13.StylePriority.UseFont = false;
-            this.xrLabel13.StylePriority.UseTextAlignment = false;
-            this.xrLabel13.Text = "Indice : FM MC 024 00";
-            this.xrLabel13.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+            this.reportLabel.Borders = DevExpress.XtraPrinting.BorderSide.None;
+            this.reportLabel.CanGrow = false;
+            this.reportLabel.Dpi = 254F;
+            this.reportLabel.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.reportLabel.LocationFloat = new DevExpress.Utils.PointFloat(1522.698F, 0F);
+            this.reportLabel.Name = "xrLabel13";
+            this.reportLabel.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 5, 0, 0, 254F);
+            this.reportLabel.SizeF = new System.Drawing.SizeF(370.2813F, 60F);
+            this.reportLabel.StylePriority.UseBorders = false;
+            this.reportLabel.StylePriority.UseFont = false;
+            this.reportLabel.StylePriority.UseTextAlignment = false;
+            this.reportLabel.Text = "Indice : FM MC 024 00";
+            this.reportLabel.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+            this.reportLabel.WordWrap = false;
             // 
             // DepriciationType
             // 
@@ -738,7 +740,7 @@
             this.PaperKind = System.Drawing.Printing.PaperKind.A4;
             this.ReportUnit = DevExpress.XtraReports.UI.ReportUnit.TenthsOfAMillimeter;
             this.SnapGridSize = 25F;
-            this.Version = "17.2";
+            this.Version = "18.2";
             ((System.ComponentModel.ISupportInitialize)(this.xrTable2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
@@ -785,7 +787,7 @@
         private DevExpress.XtraReports.UI.XRLabel xrLabel10;
         private DevExpress.XtraReports.UI.XRLabel xrLabel11;
         private DevExpress.XtraReports.UI.XRLabel xrLabel1;
-        public DevExpress.XtraReports.UI.XRLabel xrLabel13;
+        public DevExpress.XtraReports.UI.XRLabel reportLabel;
         private DevExpress.XtraReports.UI.XRLabel xrLabel17;
         private DevExpress.XtraReports.UI.XRLabel xrLabel16;
         private DevExpress.XtraReports.UI.XRLabel xrLabel15;

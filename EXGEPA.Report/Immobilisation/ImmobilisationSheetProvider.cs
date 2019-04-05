@@ -36,6 +36,7 @@ namespace EXGEPA.Report.Immobilisation
                 resport.SheetTitle.Text = title ?? "Carte d'immobilisation";
                 resport.DataSource = Depreciations;
                 resport.CompanyName.Text = this.ParameterProvider.GetValue<string>("CompanyName");
+                resport.reportLabel.Text = this.ParameterProvider.TryGet("ImmobilisationSheetReportLabel", "Indice: FM MC 024 00");
                 resport.Logo.ImageUrl = this.GetLogoPath();
                 resport.Periode.Text = this.GetEffectiveDateText();
                 DispalyReport(resport, resport.SheetTitle.Text);
@@ -51,8 +52,9 @@ namespace EXGEPA.Report.Immobilisation
             if (items != null)
             {
                 ExploitationStartupSheet resport = new ExploitationStartupSheet();
-                resport.SheetTitle.Text = "Fiche de mise en exploitation des investissements";
+                resport.SheetTitle.Text = title ?? "Fiche de mise en exploitation des investissements";
                 resport.DataSource = items;
+                resport.reportLabel.Text = this.ParameterProvider.TryGet("ExploitationStartupSheetReportLabel", "IMP(PR.G.DPMG/01)");
                 resport.CompanyName.Text = this.ParameterProvider.GetValue<string>("CompanyName");
                 resport.Logo.ImageUrl = this.GetLogoPath();
                 resport.Periode.Text = this.GetEffectiveDateText();
