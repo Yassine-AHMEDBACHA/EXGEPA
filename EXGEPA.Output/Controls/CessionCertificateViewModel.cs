@@ -5,13 +5,16 @@
 namespace EXGEPA.Output.Controls
 {
     using System;
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
     using CORESI.Data;
     using CORESI.IoC;
+    using CORESI.Tools.Collections;
     using CORESI.WPF.Core;
     using CORESI.WPF.Core.Interfaces;
     using EXGEPA.Core.Interfaces;
+    using EXGEPA.Depreciations.Core;
     using EXGEPA.Model;
 
     public class CessionCertificateViewModel : OutputViewModel
@@ -46,8 +49,25 @@ namespace EXGEPA.Output.Controls
             var title = this.ParameterProvider.TryGet("CessionCertificateReportTitle", "Fiche de cession");
             this.UIItemService.DisplayItems(this.IsMatchingSelectedRowId, $"Contenu du PV de cession {this.SelectedRow?.Key}", (items) =>
             {
-                IImmobilisationSheetProvider reports = ServiceLocator.Resolve<IImmobilisationSheetProvider>();
+                this.SetTotalDepreciationInTag(items);
+                var reports = ServiceLocator.Resolve<IImmobilisationSheetProvider>();
                 reports.PrintOutputSheet(items, true, title);
+            });
+        }
+
+        private void SetTotalDepreciationInTag(IEnumerable<Item> items)
+        {
+            var deprectiationTypeDaily = this.ParameterProvider.TryGet("IsDefaultDepreciationTypeDaily", false);
+            ICalculator calculator = new MonthelyCalculator(null);
+            if (deprectiationTypeDaily)
+            {
+                calculator = new DailyCalculator();
+            }
+
+            items.ForEach(x =>
+            {
+                var endDate = x.OutputCertificate?.Date ?? x.LimiteDate;
+                x.Tag = calculator.GetDepriciations(x, x.AquisitionDate, endDate).LastOrDefault();
             });
         }
     }

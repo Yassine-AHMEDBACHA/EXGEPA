@@ -33,6 +33,8 @@
             this.TopMargin = new DevExpress.XtraReports.UI.TopMarginBand();
             this.BottomMargin = new DevExpress.XtraReports.UI.BottomMarginBand();
             this.GroupHeader1 = new DevExpress.XtraReports.UI.GroupHeaderBand();
+            this.depreciationLabel = new DevExpress.XtraReports.UI.XRLabel();
+            this.vNCLabel = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel8 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel6 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel1 = new DevExpress.XtraReports.UI.XRLabel();
@@ -117,6 +119,8 @@
             // GroupHeader1
             // 
             this.GroupHeader1.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
+            this.depreciationLabel,
+            this.vNCLabel,
             this.xrLabel8,
             this.xrLabel6,
             this.xrLabel1,
@@ -144,10 +148,41 @@
             this.Logo});
             this.GroupHeader1.GroupFields.AddRange(new DevExpress.XtraReports.UI.GroupField[] {
             new DevExpress.XtraReports.UI.GroupField("Key", DevExpress.XtraReports.UI.XRColumnSortOrder.Ascending)});
-            this.GroupHeader1.HeightF = 575F;
+            this.GroupHeader1.HeightF = 588.5417F;
             this.GroupHeader1.KeepTogether = true;
             this.GroupHeader1.Name = "GroupHeader1";
             this.GroupHeader1.PageBreak = DevExpress.XtraReports.UI.PageBreak.BeforeBand;
+            // 
+            // depreciationLabel
+            // 
+            this.depreciationLabel.Borders = DevExpress.XtraPrinting.BorderSide.None;
+            this.depreciationLabel.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "Concat(\'Valeur d\'\'aquisition : \',FormatString(\'{0:n2}\',[Amount]))")});
+            this.depreciationLabel.Font = new System.Drawing.Font("Times New Roman", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.depreciationLabel.LocationFloat = new DevExpress.Utils.PointFloat(10.4006F, 563.4188F);
+            this.depreciationLabel.Name = "depreciationLabel";
+            this.depreciationLabel.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.depreciationLabel.SizeF = new System.Drawing.SizeF(378.5157F, 23.62207F);
+            this.depreciationLabel.StylePriority.UseBorders = false;
+            this.depreciationLabel.StylePriority.UseFont = false;
+            this.depreciationLabel.StylePriority.UseTextAlignment = false;
+            this.depreciationLabel.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
+            // 
+            // vNCLabel
+            // 
+            this.vNCLabel.Borders = DevExpress.XtraPrinting.BorderSide.None;
+            this.vNCLabel.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "Concat(\'Valeur nette comptable: \',FormatString(\'{0:n2}\',[Tag].[AccountingNetValue" +
+                    "]))")});
+            this.vNCLabel.Font = new System.Drawing.Font("Times New Roman", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.vNCLabel.LocationFloat = new DevExpress.Utils.PointFloat(10.4006F, 539.7967F);
+            this.vNCLabel.Name = "vNCLabel";
+            this.vNCLabel.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.vNCLabel.SizeF = new System.Drawing.SizeF(378.5157F, 23.62207F);
+            this.vNCLabel.StylePriority.UseBorders = false;
+            this.vNCLabel.StylePriority.UseFont = false;
+            this.vNCLabel.StylePriority.UseTextAlignment = false;
+            this.vNCLabel.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
             // 
             // xrLabel8
             // 
@@ -876,5 +911,7 @@
         public DevExpress.XtraReports.UI.XRLabel xrLabel5;
         public DevExpress.XtraReports.UI.XRLabel xrLabel6;
         public DevExpress.XtraReports.UI.XRLabel xrLabel8;
+        public DevExpress.XtraReports.UI.XRLabel depreciationLabel;
+        public DevExpress.XtraReports.UI.XRLabel vNCLabel;
     }
 }

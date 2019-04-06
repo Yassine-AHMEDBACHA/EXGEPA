@@ -17,6 +17,7 @@ namespace EXGEPA.Depreciations.Core
         protected IParameterProvider parameterProvider;
 
         Dictionary<Item, List<Depreciation>> Stock { get; set; }
+
         protected IAccountingPeriodHelper AccountingPeriodHelper;
 
         public Calculator()
@@ -39,7 +40,7 @@ namespace EXGEPA.Depreciations.Core
         protected Calculator(IAccountingPeriodHelper accountingPeriodHelper)
             : this()
         {
-            this.AccountingPeriodHelper = accountingPeriodHelper ?? throw new Exception("accountingPeriodHelper must not be null");
+            this.AccountingPeriodHelper = accountingPeriodHelper ?? new AccountingPeriodHelper();
         }
 
         public Dictionary<Item, List<Depreciation>> GetDepriciation(List<Item> source, DateTime startDate, DateTime endDate)

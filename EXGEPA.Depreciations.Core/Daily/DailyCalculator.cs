@@ -8,7 +8,7 @@ namespace EXGEPA.Depreciations.Core
     public class DailyCalculator : Calculator
     {
 
-        public DailyCalculator(AccountingPeriodHelper accountingPeriodHelper)
+        public DailyCalculator(AccountingPeriodHelper accountingPeriodHelper = null)
             : base(accountingPeriodHelper)
         {
         }

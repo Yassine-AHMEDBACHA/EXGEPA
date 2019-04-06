@@ -284,6 +284,10 @@
       <Project>{92de82bc-fed0-4e42-acb4-c411cf530064}</Project>
       <Name>EXGEPA.DataAccess</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EXGEPA.Depreciations.Core\EXGEPA.Depreciations.Core.csproj">
+      <Project>{B9485348-2275-41DA-87E9-F504C4154650}</Project>
+      <Name>EXGEPA.Depreciations.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EXGEPA.Model\EXGEPA.Model.csproj">
       <Project>{3f0d2c86-6076-44ca-b9a1-6949cbaf6c36}</Project>
       <Name>EXGEPA.Model</Name>

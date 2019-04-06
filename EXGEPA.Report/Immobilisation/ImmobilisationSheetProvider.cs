@@ -99,6 +99,7 @@ namespace EXGEPA.Report.Immobilisation
                 rpt.SenderUnit.ExpressionBindings[0].Expression = "Concat(\'Unité expéditrice :\',[Office].[Level].[Building].[Levels].[Building].[Site].[Region].[Caption])";
                 rpt.RecieverUnit.ExpressionBindings[0].Expression = "Concat(\'Unité réceptrice :\',[OutputCertificate].[Tag])";
                 rpt.reportLabel.Text = this.ParameterProvider.TryGet("CessionCertificateReportLabel", "IMP(PR.G.DPMG/01)");
+                rpt.depreciationLabel.ExpressionBindings[0].Expression = "Concat('Cumul amortissement : ',FormatString('{0:n2}',[Tag].[PreviousDepreciation]+[Tag].[Annuity]))";
             }
             else
             {
@@ -107,6 +108,7 @@ namespace EXGEPA.Report.Immobilisation
                 rpt.SenderUnit.ExpressionBindings[0].Expression = "Concat(\'Unité expéditrice :\',[TransferOrder].[Sender].[Key])";
                 rpt.RecieverUnit.ExpressionBindings[0].Expression = "Concat(\'Unité réceptrice :\',[Office].[Level].[Building].[Levels].[Building].[Site].[Region].[Caption])";
                 rpt.reportLabel.Text = this.ParameterProvider.TryGet("TransferOrderReportLabel", "Transfert Order");
+                rpt.depreciationLabel.ExpressionBindings[0].Expression = "Concat('Amortissement antérieur : ',FormatString('{0:n2}',[Tag].[PreviousDepreciation]))";
             }
         }
 

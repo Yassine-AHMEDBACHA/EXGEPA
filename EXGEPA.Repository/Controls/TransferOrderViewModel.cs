@@ -4,6 +4,7 @@
 
 namespace EXGEPA.Repository.Controls
 {
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
     using CORESI.Data;
@@ -13,6 +14,7 @@ namespace EXGEPA.Repository.Controls
     using CORESI.WPF.Core;
     using CORESI.WPF.Core.Interfaces;
     using EXGEPA.Core.Interfaces;
+    using EXGEPA.Depreciations.Core;
     using EXGEPA.Model;
 
     public class TransferOrderViewModel : GenericEditableViewModel<TransferOrder>
@@ -69,7 +71,24 @@ namespace EXGEPA.Repository.Controls
             this.uIItemService.DisplayItems(this.IsMatchingSelectedRowId, $"Contenu du bon de transfert {this.SelectedRow?.Key}", (items) =>
             {
                 var reports = ServiceLocator.Resolve<IImmobilisationSheetProvider>();
+                this.SetTotalDepreciationInTag(items);
                 reports.PrintOutputSheet(items, false, title);
+            });
+        }
+
+        private void SetTotalDepreciationInTag(IEnumerable<Item> items)
+        {
+            var deprectiationTypeDaily = this.ParameterProvider.TryGet("IsDefaultDepreciationTypeDaily", false);
+            ICalculator calculator = new MonthelyCalculator(null);
+            if (deprectiationTypeDaily)
+            {
+                calculator = new DailyCalculator();
+            }
+
+            items.ForEach(x =>
+            {
+                var endDate = x.OutputCertificate?.Date ?? x.LimiteDate;
+                x.Tag = calculator.GetDepriciations(x, x.AquisitionDate, endDate).LastOrDefault();
             });
         }
     }

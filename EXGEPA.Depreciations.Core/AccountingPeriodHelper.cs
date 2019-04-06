@@ -9,13 +9,14 @@ using System.Linq;
 
 namespace EXGEPA.Depreciations.Core
 {
-    [Export]
+    [Export(typeof(IAccountingPeriodHelper))]
     public class AccountingPeriodHelper : IAccountingPeriodHelper
     {
 
         private static IDataProvider<AccountingPeriod> AccountingPeriodService { get; set; }
 
         readonly int _Factor;
+
         public AccountingPeriodHelper(int factor = 1, bool loadHistory = true)
         {
             AccountingPeriodService = ServiceLocator.Resolve<IDataProvider<AccountingPeriod>>();
