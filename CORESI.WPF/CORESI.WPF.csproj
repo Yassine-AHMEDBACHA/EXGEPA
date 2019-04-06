@@ -130,6 +130,10 @@
       <Project>{3ef0b9b7-f6f9-4538-8496-fc870be455aa}</Project>
       <Name>CORESI.Security</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CORESI.Tools\CORESI.Tools.csproj">
+      <Project>{3D84E36E-574E-4F12-AD62-49578CB4D651}</Project>
+      <Name>CORESI.Tools</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Command\" />

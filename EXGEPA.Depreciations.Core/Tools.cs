@@ -26,7 +26,8 @@ namespace EXGEPA.Depreciations.Core
 
         public static DateTime GetEndComputationDate(Item item, DateTime endDate)
         {
-            DateTime endComputationDate = GetEndComputationDate(item);
+            var endComputationDate = GetEndComputationDate(item);
+
             if (!(endComputationDate > endDate))
             {
                 return endComputationDate;
@@ -36,11 +37,12 @@ namespace EXGEPA.Depreciations.Core
 
         public static DateTime GetEndComputationDate(Item item)
         {
-            DateTime? t = item?.ReformeCertificate?.Date ?? item?.OutputCertificate?.Date;
+            var t = item?.ReformeCertificate?.Date ?? item?.OutputCertificate?.Date;
             if (t.HasValue && t < item.LimiteDate)
             {
                 return t.Value;
             }
+
             return item.LimiteDate;
         }
 

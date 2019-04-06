@@ -10,18 +10,18 @@ namespace CORESI.Tools
 
     public static class JsonHelper
     {
-        public static T Deserialize<T>(this string json)
+        public static void Deserialize<T>(this string json, out T deserializedObject) 
             where T : class
         {
             if (json.IsValidData())
             {
-                return JsonConvert.DeserializeObject<T>(json);
+                deserializedObject = JsonConvert.DeserializeObject<T>(json);
             }
 
             throw new ArgumentException("Invalid Input !");
         }
 
-        public static bool TryDeserialize<T>(this string json, out T deserializedObject)
+        public static bool TryDeserialize<T>(this string json, out T deserializedObject) 
             where T : class
         {
             deserializedObject = null;
@@ -35,6 +35,11 @@ namespace CORESI.Tools
             }
 
             return false;
+        }
+
+        public static string Serialize<T>(T instanceToSerialize)
+        {
+            return JsonConvert.SerializeObject(instanceToSerialize);
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Linq;
 using CORESI.Tools.Collections;
 using CORESI.WPF.Core;
 using CORESI.WPF.Model;
+using EXGEPA.Items.Core;
 using EXGEPA.Model;
 using Newtonsoft.Json;
 
@@ -43,21 +44,19 @@ namespace EXGEPA.Items.Controls
 
         private void InitData()
         {
+            AccountingPeriods.ItemsSource.Clear();
             InitialItem = new Item { PrintLabel = true };
             ConcernedItem = (Item)InitialItem.Clone();
+            base.ConcernedItem.SetExtendedProperties();
             this.AquisitionDate = DateTime.Today;
-            BindFields();
-            this.AccountingPeriods.ItemsSource.Clear();
-            foreach (string item in this.RepositoryDataProvider.ListOfAccountingPeriod.Where(x => !x.Approved).OrderBy(x => x.StartDate).Select(x => x.Key))
-            {
-                this.AccountingPeriods.ItemsSource.Add(item);
-            }
-
-            this.AccountingPeriods.EditValue = this.AccountingPeriods
-                .ItemsSource
-                .FirstOrDefault();
             this.IsTvaDepreciatible = true;
-            this.RaisePropertyChanged();
+            BindFields();
+
+            var source = this.RepositoryDataProvider.ListOfAccountingPeriod
+                .Where(x => !x.Approved)
+                .OrderBy(x => x.StartDate)
+                .Select(x => x.Key);
+            AccountingPeriods.SetSource(source);
         }
 
         private void AddNewItem()
@@ -116,7 +115,8 @@ namespace EXGEPA.Items.Controls
                 _AccountingPeriods = value;
                 RaisePropertyChanged("AccountingPeriods");
             }
-
         }
+
+        
     }
 }

@@ -1,4 +1,7 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using CORESI.Tools.Collections;
 
 namespace CORESI.WPF.Model
 {
@@ -37,7 +40,11 @@ namespace CORESI.WPF.Model
             }
         }
 
-
+        public void SetSource(IEnumerable<T> collection)
+        {
+            ItemsSource = collection.ToObservable();
+            EditValue = ItemsSource.FirstOrDefault();
+        }
 
 
     }

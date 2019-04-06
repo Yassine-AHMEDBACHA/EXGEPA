@@ -517,7 +517,7 @@
 
         protected void UpdateDepreciations()
         {
-            if (this.ConcernedItem != null)
+            if (ConcernedItem != null && AquisitionDate <= LimiteDate)
             {
                 this.ListOfMonthelyDepreciation = this.MonthelyCalculator.GetDepriciations(this.ConcernedItem, this.AquisitionDate, this.LimiteDate)
                     .ToObservable();
