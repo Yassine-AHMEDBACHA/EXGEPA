@@ -43,14 +43,16 @@
 
             group.AddCommand("Sauver & Fermer", IconProvider.SaveAndClose, this.UpdateItem);
             BindFields();
-            IImmobilisationSheetProvider immobilisationSheetProvider = ServiceLocator.Resolve<IImmobilisationSheetProvider>();
-            if (immobilisationSheetProvider != null)
+            IImmobilisationSheetProvider immoShtPdr = ServiceLocator.Resolve<IImmobilisationSheetProvider>();
+            if (immoShtPdr != null)
             {
-                Group immobilisationSheetGroup = this.AddNewGroup("Fiche immobilisation");
-                immobilisationSheetGroup.AddCommand("Mensuel", () => immobilisationSheetProvider.PrintImmobilisationSheet(this.ListOfMonthelyDepreciation.ToList(), "Mensuel"));
-                immobilisationSheetGroup.AddCommand("Journalier", () => immobilisationSheetProvider.PrintImmobilisationSheet(this.ListOfDailyDepreciation.ToList(), "Journalier"));
-                immobilisationSheetGroup.AddCommand("Fiche d'exploitation", () => immobilisationSheetProvider.PrintExploitationStartupSheet(new[] { item }));
+                Group immoShtGrp = this.AddNewGroup("Fiche immobilisation");
+                immoShtGrp.AddCommand("Mensuel", () => immoShtPdr.PrintImmobilisationSheet(this.ListOfMonthelyDepreciation.ToList(), "Mensuel"));
+                immoShtGrp.AddCommand("Journalier", () => immoShtPdr.PrintImmobilisationSheet(this.ListOfDailyDepreciation.ToList(), "Journalier"));
+                immoShtGrp.AddCommand("Fiche d'exploitation", () => immoShtPdr.PrintExploitationStartupSheet(new[] { item }));
             }
+
+            this.UpdateDepreciations();
         }
 
         public void UpdateItem()

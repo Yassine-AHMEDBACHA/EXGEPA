@@ -233,7 +233,7 @@ namespace EXGEPA.Inventory.Controls
                 InventoryRow = inventoryRow,
                 Localization = inventoryRow.Localization,
                 ImportDate = inventoryRow.OpertationDate,
-                ItemState = repositoryDataProvider.ListOfStats.FirstOrDefault(x => x.Id == inventoryRow.ItemState?.Id)
+                ItemState = repositoryDataProvider.AllStats.FirstOrDefault(x => x.Id == inventoryRow.ItemState?.Id)
             };
 
             AllOffices.TryGetValue(inventoryRow.Localization, out Office office);

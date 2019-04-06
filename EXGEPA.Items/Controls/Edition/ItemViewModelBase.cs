@@ -7,6 +7,7 @@
     using System.Linq;
     using CORESI.Data;
     using CORESI.IoC;
+    using CORESI.Tools.Collections;
     using CORESI.WPF.Controls;
     using CORESI.WPF.Core;
     using CORESI.WPF.Core.Framework;
@@ -23,7 +24,7 @@
 
         public ItemViewModelBase()
         {
-            this.ParameterProvider =  ServiceLocator.Resolve<IParameterProvider>();
+            this.ParameterProvider = ServiceLocator.Resolve<IParameterProvider>();
             this.ItemService = ServiceLocator.Resolve<IDataProvider<Item>>();
             this.KeyGenerator = ServiceLocator.GetDefault<IKeyGenerator<Item>>();
             this.PicturesDirectory = ParameterProvider.GetValue("PicturesDirectory", @"C:\SQLIMMO\Images");
@@ -51,7 +52,7 @@
             RepositoryDataProvider = ServiceLocator.Resolve<IRepositoryDataProvider>();
             RepositoryDataProvider.Refresh();
             RepositoryDataProvider.BindItemFields(ConcernedItem);
-            foreach (GeneralAccount item in RepositoryDataProvider.ListOfGeneralAccount)
+            foreach (GeneralAccount item in RepositoryDataProvider.AllGeneralAccounts)
             {
                 item.GeneralAccountType = Types.FirstOrDefault(x => x.Id == item.GeneralAccountType.Id);
             }
@@ -65,11 +66,11 @@
             IEnumerable<GeneralAccount> accounts;
             if (this.Amount >= this.MinAmount)
             {
-                accounts = RepositoryDataProvider?.ListOfGeneralAccount.Where(x => x.GeneralAccountType.Type == EGeneralAccountType.Investment);
+                accounts = RepositoryDataProvider?.AllGeneralAccounts.Where(x => x.GeneralAccountType.Type == EGeneralAccountType.Investment);
             }
             else
             {
-                accounts = RepositoryDataProvider?.ListOfGeneralAccount.Where(x => x.GeneralAccountType.Type == EGeneralAccountType.Charge);
+                accounts = RepositoryDataProvider?.AllGeneralAccounts.Where(x => x.GeneralAccountType.Type == EGeneralAccountType.Charge);
             }
             this.ListOfGeneralAccount = new ObservableCollection<GeneralAccount>(accounts ?? Enumerable.Empty<GeneralAccount>());
         }
@@ -81,7 +82,7 @@
             this.SmallDescription = this.Description = reference?.Caption ?? string.Empty;
         }
 
-        
+
         public ICalculator MonthelyCalculator { get; set; }
         public ICalculator DailyCalculator { get; set; }
 
@@ -132,6 +133,7 @@
             {
                 this.GeneralAccount = this.Amount < this.MinAmount ? reference.ChargeAccount : reference.InvestmentAccount;
             }
+
             this.SetAccoutToDisplay();
         }
 
@@ -312,12 +314,19 @@
                 Directory.CreateDirectory(PicturesDirectory);
             File.Copy(sourcePath, PicturesDirectory + target, true);
         }
+
         private void DeleteImage(string path)
         {
             File.Delete(path);
         }
 
-
+        public void UpdatePreviouseDepreciationDate(DateTime limiteDate)
+        {
+            if (PreviouseDepreciationDate < AquisitionDate || PreviouseDepreciationDate >= limiteDate)
+            {
+                PreviouseDepreciationDate = AquisitionDate;
+            }
+        }
 
         public decimal FiscaleRate
         {
@@ -332,7 +341,9 @@
 
         public void UpdateLimiteDate(decimal rate)
         {
-            this.LimiteDate = DepriciationHelper.GetLimiteDate(rate, this.AquisitionDate);
+            var limiteDate = DepriciationHelper.GetLimiteDate(rate, AquisitionDate);
+            UpdatePreviouseDepreciationDate(limiteDate);
+            this.LimiteDate = limiteDate;
         }
 
         public string Comment
@@ -504,13 +515,22 @@
             }
         }
 
-        private void UpdateDepreciations()
+        protected void UpdateDepreciations()
         {
             if (this.ConcernedItem != null)
             {
-                this.ListOfMonthelyDepreciation = new ObservableCollection<Depreciation>(MonthelyCalculator.GetDepriciations(this.ConcernedItem, this.AquisitionDate, this.LimiteDate));
-                this.ListOfDailyDepreciation = new ObservableCollection<Depreciation>(DailyCalculator.GetDepriciations(this.ConcernedItem, this.AquisitionDate, this.LimiteDate));
+                this.ListOfMonthelyDepreciation = this.MonthelyCalculator.GetDepriciations(this.ConcernedItem, this.AquisitionDate, this.LimiteDate)
+                    .ToObservable();
+
+                this.ListOfDailyDepreciation = this.DailyCalculator.GetDepriciations(this.ConcernedItem, this.AquisitionDate, this.LimiteDate)
+                    .ToObservable(); ;
             }
+            else
+            {
+                this.ListOfMonthelyDepreciation?.Clear();
+                this.ListOfDailyDepreciation?.Clear();
+            }
+                   
         }
 
         public string Key
@@ -552,6 +572,21 @@
                 RaisePropertyChanged("TransferOrder");
             }
         }
+
+        public DateTime PreviouseDepreciationDate
+        {
+            get
+            {
+                return ConcernedItem.ExtendedProperties.PreviouseDepreciationDate;
+            }
+            set
+            {
+                ConcernedItem.ExtendedProperties.PreviouseDepreciationDate = value;
+                UpdateDepreciations();
+                RaisePropertyChanged("PreviouseDepreciationDate");
+            }
+        }
+
         public Person Person
         {
             get => ConcernedItem.Person;
@@ -724,5 +759,7 @@
         }
 
         #endregion
+
+       
     }
 }

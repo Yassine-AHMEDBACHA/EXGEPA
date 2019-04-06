@@ -124,7 +124,7 @@ namespace EXGEPA.Items.Controls
                 group.AddCommand("Récap", () =>
                 {
                     System.Collections.Generic.List<Item> items = this.ListOfRows.Where(x => x.GeneralAccount.GeneralAccountType.Type == EGeneralAccountType.Investment).ToList();
-                    System.Collections.Generic.IEnumerable<GeneralAccount> others = RepositoryDataProvider.ListOfGeneralAccount.Where(x => x.GeneralAccountType.Id == 3);
+                    System.Collections.Generic.IEnumerable<GeneralAccount> others = RepositoryDataProvider.AllGeneralAccounts.Where(x => x.GeneralAccountType.Id == 3);
                     System.Collections.Generic.IEnumerable<int> availableaccounts = items.GroupBy(g => g.GeneralAccount.Id).Select(g => g.First().Id);
                     System.Collections.Generic.List<Item> otherItems = others.Where(x => availableaccounts.Any(a => a == x.Id)).Select(t => new Item() { GeneralAccount = t }).ToList();
                     itemByCompteProvider.PrintRecapByAccount(items.Union(otherItems).ToList(), "Etat récapitulatif des investissements par compte.");

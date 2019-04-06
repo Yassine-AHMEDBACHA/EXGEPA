@@ -86,60 +86,47 @@
         [Import(typeof(IDataProvider<Item>))]
         IDataProvider<Item> ItemService { get; set; }
 
+        [Import(typeof(IDataProvider<GeneralAccountType>))]
+        IDataProvider<GeneralAccountType> GeneralAccountTypeService { get; set; }
+
         public void Refresh()
         {
-            UIMessage.TryDoActionAsync(logger, loadData, manualResetEventSlim.Set);
+            this.manualResetEventSlim.Reset();
+            this.UIMessage.TryDoActionAsync(logger, loadData, manualResetEventSlim.Set);
         }
 
         #region Data Providers
 
-        private ObservableCollection<ItemState> _ListOfStats;
+        public ObservableCollection<ItemState> AllStats { get; set; }
 
-        public ObservableCollection<ItemState> ListOfStats
-        {
-            get => _ListOfStats;
-            set
-            {
-                _ListOfStats = value;
-                this.RaisePropertyChanged(nameof(this.ListOfStats));
-            }
-        }
+        public ObservableCollection<ProposeToReformCertificate> ListOfProposeToReformCertificate { get; set; }
 
-        private ObservableCollection<ProposeToReformCertificate> _ListOfProposeToReformCertificate;
-
-        public ObservableCollection<ProposeToReformCertificate> ListOfProposeToReformCertificate
-        {
-            get => _ListOfProposeToReformCertificate;
-            set
-            {
-                _ListOfProposeToReformCertificate = value;
-                RaisePropertyChanged("ListOfProposeToReformCertificate");
-            }
-        }
-
-        private ObservableCollection<Tva> _ListOfTva;
-
-        public ObservableCollection<Tva> ListOfTva
-        {
-            get => _ListOfTva;
-            set
-            {
-                _ListOfTva = value;
-                RaisePropertyChanged("ListOfTva");
-            }
-        }
+        public ObservableCollection<Tva> ListOfTva { get; set; }
 
         public ObservableCollection<ReformeCertificate> ListOfReformeCertificate { get; set; }
+
         public ObservableCollection<OutputCertificate> ListOfOutputCertificate { get; set; }
-        public ObservableCollection<GeneralAccount> ListOfGeneralAccount { get; set; }
+
+        public ObservableCollection<GeneralAccountType> AllGeneralAccountTypes { get; set; }
+
+        public ObservableCollection<GeneralAccount> AllGeneralAccounts { get; set; }
+
         public ObservableCollection<Reference> ListOfReference { get; set; }
+
         public ObservableCollection<ReferenceType> ListOfReferenceType { get; set; }
+
         public ObservableCollection<Invoice> ListOfInvoice { get; set; }
+
         public ObservableCollection<TransferOrder> ListOfTransferOrder { get; set; }
+
         public ObservableCollection<Provider> ListOfProvider { get; set; }
+
         public ObservableCollection<OrderDocument> OrderDocuments { get; set; }
+
         public ObservableCollection<AnalyticalAccount> ListOfAnalyticalAccount { get; set; }
+
         public ObservableCollection<Office> ListOfOffice { get; set; }
+
         public ObservableCollection<Depreciation> ListOfDepreciation { get; set; }
 
         public ObservableCollection<InputSheet> ListOfInputSheet { get; set; }
@@ -162,7 +149,9 @@
         {
             this.manualResetEventSlim.Reset();
             this.AllItems = this.ItemService.All.ToObservable();
-            this.ListOfStats = this.ItemStateService.All.ToObservable();
+            this.AllGeneralAccountTypes = this.GeneralAccountTypeService.All
+                .ToObservable();
+            this.AllStats = this.ItemStateService.All.ToObservable();
             this.ListOfProposeToReformCertificate = this.ProposeToReformCertificateService.All.ToObservable();
             this.ListOfAccountingPeriod = this.AccountingPeriodService.All.ToObservable();
             this.ListOfReformeCertificate = ReformeCertificateService.All.ToObservable();
@@ -173,13 +162,15 @@
                 .ApplyOnAll(x => x.SetProperties(this.ListOfAnalyticalAccount))
                 .ToObservable();
 
-            this.ListOfGeneralAccount = GeneralAccountService.All.ToObservable();
+            this.AllGeneralAccounts = GeneralAccountService.All
+                .ApplyOnAll(x => x.SetProperties(this.AllGeneralAccountTypes))
+                .ToObservable();
 
             this.ListOfReferenceType = ReferenceTypeService.All.ToObservable();
             OrderDocuments = OrderDocumentService.All.ToObservable();
 
             this.ListOfReference = ReferenceService.All
-                .ApplyOnAll(x => x.SetProperties(this.ListOfGeneralAccount))
+                .ApplyOnAll(x => x.SetProperties(this.AllGeneralAccounts))
                 .ApplyOnAll(x => x.SetProperties(this.ListOfReferenceType))
                 .ToObservable();
 
@@ -192,7 +183,7 @@
             {
                 invoice.SetProperties(this.ListOfProvider);
                 invoice.SetProperties(this.ListOfInputSheet);
-                invoice.SetProperties(this.ListOfGeneralAccount);
+                invoice.SetProperties(this.AllGeneralAccounts);
                 invoice.SetProperties(this.OrderDocuments);
             }).ToDictionary(x => x.Id);
 
@@ -208,7 +199,7 @@
 
         public Dictionary<int, Office> Offices { get; set; }
 
-        IUIMessage UIMessage { get; set; }
+        public IUIMessage UIMessage { get; set; }
 
         public ObservableCollection<Item> AllItems { get; set; }
 
@@ -217,7 +208,7 @@
             manualResetEventSlim.Wait();
             item.SetProperties(this.ListOfProposeToReformCertificate);
             item.SetProperties(this.ListOfAnalyticalAccount);
-            item.SetProperties(this.ListOfGeneralAccount);
+            item.SetProperties(this.AllGeneralAccounts);
             item.SetProperties(this.References);
             item.SetProperties(this.Invoices);
             item.SetProperties(this.AllItems);
@@ -230,14 +221,12 @@
             item.SetProperties(this.ListOfReformeCertificate);
             item.SetProperties(this.ListOfOutputCertificate);
             item.SetProperties(this.ListOfAccountingPeriod);
-            item.SetProperties(this.ListOfStats);
+            item.SetProperties(this.AllStats);
         }
 
         public void BindItemFields(IList<Item> items)
         {
             items.ParallelForEach(item => this.BindItemFields(item));
         }
-
-
     }
 }

@@ -55,7 +55,9 @@
         </dxlc:LayoutItem>
         <dxlc:LayoutGroup Header="Compte general" View="GroupBox" Orientation="Vertical">
             <dxlc:LayoutItem Label="Compte">
-                <dxg:LookUpEdit x:Name="GeneralAccountLookUpEdit" SelectedItem="{Binding GeneralAccount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PopupHeight="300" PopupWidth="600" ItemsSource="{Binding ListOfGeneralAccount}" DisplayMember="Key" AutoPopulateColumns="False" 
+                <dxg:LookUpEdit x:Name="GeneralAccountLookUpEdit" SelectedItem="{Binding GeneralAccount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                PopupHeight="300" PopupWidth="600" ItemsSource="{Binding ListOfGeneralAccount}" 
+                                DisplayMember="Key" AutoPopulateColumns="False" 
                                 IsReadOnly="{Binding IsAccountingInformationLocked}">
                     <dxg:LookUpEdit.PopupContentTemplate>
                         <ControlTemplate>

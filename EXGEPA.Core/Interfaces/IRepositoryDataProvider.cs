@@ -8,11 +8,11 @@ namespace EXGEPA.Core.Interfaces
     {
         ObservableCollection<Office> ListOfOffice { get; set; }
 
-        ObservableCollection<ItemState> ListOfStats { get; set; }
+        ObservableCollection<ItemState> AllStats { get; set; }
 
         ObservableCollection<AccountingPeriod> ListOfAccountingPeriod { get; set; }
 
-        ObservableCollection<GeneralAccount> ListOfGeneralAccount { get; set; }
+        ObservableCollection<GeneralAccount> AllGeneralAccounts { get; set; }
 
         ObservableCollection<Item> AllItems { get; set; }
 
