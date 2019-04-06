@@ -44,9 +44,14 @@
         <dxlc:LayoutItem Label="Taux amort">
             <dxe:TextEdit EditValue="{Binding FiscaleRate}" Mask="P" MaskUseAsDisplayFormat="True" MaskType="Numeric" IsReadOnly="{Binding IsAccountingInformationLocked}" />
         </dxlc:LayoutItem>
-        <dxlc:LayoutItem Label="Amort anterieur">
-            <dxe:SpinEdit EditValue="{Binding PreviousDepreciation, UpdateSourceTrigger=PropertyChanged}" Mask="n2" MaskType="Numeric" MaskUseAsDisplayFormat="True" ShowEditorButtons="False" MinValue="0" MaxValue="{Binding Amount}" HorizontalContentAlignment="Left" Increment="0" IsReadOnly="{Binding IsAccountingInformationLocked}" />
-        </dxlc:LayoutItem>
+        <dxlc:LayoutGroup>
+            <dxlc:LayoutItem Label="Amort anterieur">
+                <dxe:SpinEdit EditValue="{Binding PreviousDepreciation, UpdateSourceTrigger=PropertyChanged}" Mask="n2" MaskType="Numeric" MaskUseAsDisplayFormat="True" ShowEditorButtons="False" MinValue="0" MaxValue="{Binding Amount}" HorizontalContentAlignment="Left" Increment="0" IsReadOnly="{Binding IsAccountingInformationLocked}" />
+            </dxlc:LayoutItem>
+            <dxlc:LayoutItem Label="Dat A.A">
+                <dxe:DateEdit DateTime="{Binding PreviouseDepreciationDate, UpdateSourceTrigger=PropertyChanged}" Name="previouseDepreciationDateControle"  IsReadOnly="{Binding IsAccountingInformationLocked}"/>
+            </dxlc:LayoutItem>
+        </dxlc:LayoutGroup>
         <dxlc:LayoutItem Label="Base amortissement">
             <dxe:SpinEdit EditValue="{Binding DepreciationBase, UpdateSourceTrigger=PropertyChanged}" CharacterCasing="Upper" MaskBeepOnError="True" Mask="n2" MaskType="Numeric" MaskUseAsDisplayFormat="True" ShowEditorButtons="False" MinValue="0" MaxValue="{Binding Amount}" HorizontalContentAlignment="Left" Increment="0" IsReadOnly="{Binding IsAccountingInformationLocked}" />
         </dxlc:LayoutItem>

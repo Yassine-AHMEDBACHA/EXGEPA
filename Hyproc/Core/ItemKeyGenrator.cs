@@ -35,20 +35,19 @@ namespace Hyproc.Core
 
         public string GenerateKey(params object[] parameters)
         {
-            int maxId = this.GetMaxKeyInDb() + 1;
-            string Key = KeyLengthNormalizer.Normalize(maxId.ToString(), this.KeyLength);
+            var maxId = this.GetMaxKeyInDb() + 1;
+            var length = this.KeyLength - this.prefix.Length;
+            string Key = KeyLengthNormalizer.Normalize(maxId.ToString(), length);
             return $"{prefix}{Key}";
         }
 
         private int GetMaxKeyInDb()
         {
-            string query = "select [Key] from items";
-            System.Collections.Generic.List<int> avialableItemKeys = dbFacade.ExecuteReader(query, dr => int.Parse(dr["Key"].ToString().Replace(prefix, "")))
+            var query = "select [Key] from items";
+            var avialableItemKeys = dbFacade.ExecuteReader(query, dr => int.Parse(dr["Key"].ToString().Replace(prefix, "")))
                 .Where(x => x >= minGeneratedItemKey && x < maxGeneratedItemKey)
                 .ToList();
-            if (avialableItemKeys.Count > 0)
-                return avialableItemKeys.Max();
-            return minGeneratedItemKey;
+            return avialableItemKeys.Count > 0 ? avialableItemKeys.Max() : minGeneratedItemKey;
         }
     }
 }

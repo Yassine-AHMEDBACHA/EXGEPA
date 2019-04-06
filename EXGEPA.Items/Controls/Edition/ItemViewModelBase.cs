@@ -544,13 +544,7 @@
             }
         }
 
-        public bool IsAccountingInformationLocked
-        {
-            get
-            {
-                return (this.Invoice?.IsValidated) ?? false;
-            }
-        }
+        public bool IsAccountingInformationLocked => (this.Invoice?.IsValidated) ?? false;
 
         public Invoice Invoice
         {

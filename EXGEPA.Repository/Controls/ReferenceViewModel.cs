@@ -12,6 +12,7 @@ namespace EXGEPA.Repository.Controls
     using CORESI.Data;
     using CORESI.Data.Tools;
     using CORESI.IoC;
+    using CORESI.Tools.StringTools;
     using CORESI.WPF.Controls;
     using CORESI.WPF.Core.Interfaces;
     using EXGEPA.Model;
@@ -23,6 +24,8 @@ namespace EXGEPA.Repository.Controls
         private readonly IDataProvider<ReferenceType> referenceTypeService;
 
         private readonly IDataProvider<GeneralAccountType> generalAccountTypeService;
+
+        private readonly int referenceTypeKeyLength;
 
         private Action savePicture;
 
@@ -39,7 +42,8 @@ namespace EXGEPA.Repository.Controls
             ServiceLocator.Resolve(out this.generalAccountService);
             ServiceLocator.Resolve(out this.generalAccountTypeService);
             ServiceLocator.Resolve(out this.referenceTypeService);
-            this.PicturesDirectory = this.ParameterProvider.GetValue("PicturesDirectory", @"C:\SQLIMMO\Images");
+            this.PicturesDirectory = this.ParameterProvider.TryGet("PicturesDirectory", @"C:\SQLIMMO\Images");
+            this.referenceTypeKeyLength = this.ParameterProvider.GetValue(typeof(ReferenceType).Name + "KeyLength", 2);
             this.InitData();
         }
 
@@ -229,13 +233,9 @@ namespace EXGEPA.Repository.Controls
         {
             if (newItem != null && this.OldValues == null)
             {
-                string count = this.ListOfRows.Count(x => x.ReferenceType.Id == newItem.Id).ToString();
-                while (count.Length < 3)
-                {
-                    count = "0" + count;
-                }
-
-                this.Key = $"{newItem.Key}{count}";
+                var count = this.ListOfRows.Count(x => x.ReferenceType.Id == newItem.Id);
+                var length = this.KeyLength - this.referenceTypeKeyLength;
+                this.Key = $"{newItem.Key}{count.ToAlignedString(length, "0")}";
             }
         }
 

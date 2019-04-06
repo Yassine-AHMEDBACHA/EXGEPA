@@ -32,5 +32,10 @@ namespace CORESI.Tools.StringTools
 
             return str;
         }
+
+        public static string ToAlignedString(this object obj, int lenght, string ch, AdditionnalCharPosition additionnalCharPosition = AdditionnalCharPosition.Left)
+        {
+            return obj.ToString().Align(lenght, ch, additionnalCharPosition);
+        }
     }
 }
