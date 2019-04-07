@@ -50,8 +50,7 @@ namespace EXGEPA.Items.Controls
             base.ConcernedItem.SetExtendedProperties();
             this.AquisitionDate = DateTime.Today;
             this.IsTvaDepreciatible = true;
-            BindFields();
-
+            this.BindFields();
             var source = this.RepositoryDataProvider.ListOfAccountingPeriod
                 .Where(x => !x.Approved)
                 .OrderBy(x => x.StartDate)

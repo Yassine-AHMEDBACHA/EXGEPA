@@ -36,7 +36,7 @@
             this.dailyCalculator = new DailyCalculator();
             this.MinAmount = ParameterProvider.GetValue("ItemInvestismentMinAmount", 30000);
             this.KeyLength = ParameterProvider.GetValue<int>("ItemKeyLength");
-            this.AddNewGroup().AddCommand("Refresh", IconProvider.Refresh, this.BindFields);
+            this.AddNewGroup().AddCommand("Refresh", IconProvider.Refresh, this.RefreshView);
             this.OldCodeCaption = this.ParameterProvider.TryGet("OldCodeCaption", "IMMO");
         }
 
@@ -50,12 +50,17 @@
 
         protected int KeyLength { get; }
 
-        internal void BindFields()
+        private void RefreshView()
         {
             RepositoryDataProvider.Refresh();
+            this.BindFields();
+            RaisePropertyChanged(string.Empty);
+        }
+
+        protected void BindFields()
+        {
             RepositoryDataProvider.BindItemFields(ConcernedItem);
             SetAccoutToDisplay();
-            RaisePropertyChanged(string.Empty);
         }
 
         public virtual void SetAccoutToDisplay()

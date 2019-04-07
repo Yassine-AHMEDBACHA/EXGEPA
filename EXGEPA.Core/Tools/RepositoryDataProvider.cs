@@ -26,7 +26,7 @@
             this.manualResetEventSlim = new ManualResetEventSlim();
             ServiceLocator.ComposeParts(this);
             this.UIMessage = ServiceLocator.GetPriorizedInstance<IUIMessage>();
-            Refresh();
+            this.Refresh();
         }
 
         [Import(typeof(IDataProvider<Person>))]
