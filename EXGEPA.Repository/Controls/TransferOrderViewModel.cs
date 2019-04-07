@@ -87,8 +87,10 @@ namespace EXGEPA.Repository.Controls
 
             items.ForEach(x =>
             {
-                var endDate = x.OutputCertificate?.Date ?? x.LimiteDate;
-                x.Tag = calculator.GetDepriciations(x, x.AquisitionDate, endDate).LastOrDefault();
+                var startDate = Tools.GetStartComputationDate(x);
+                var endDate = Tools.GetEndComputationDate(x, x.TransferOrder.Date);
+                var rows = calculator.GetDepriciations(x, startDate, endDate);
+                x.Tag = rows.LastOrDefault();
             });
         }
     }
