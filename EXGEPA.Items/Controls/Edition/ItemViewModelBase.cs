@@ -1,7 +1,6 @@
 ﻿namespace EXGEPA.Items.Controls
 {
     using System;
-    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.IO;
     using System.Linq;
@@ -20,22 +19,28 @@
     {
         public ItemExtendedProperties itemExtendedProperties;
 
-        private string oldCodeCaption;
+        protected Action manageChargeAccount;
+
+        private readonly ICalculator monthelyCalculator;
+
+        private readonly ICalculator dailyCalculator;
 
         public ItemViewModelBase()
         {
             this.ParameterProvider = ServiceLocator.Resolve<IParameterProvider>();
             this.ItemService = ServiceLocator.Resolve<IDataProvider<Item>>();
             this.KeyGenerator = ServiceLocator.GetDefault<IKeyGenerator<Item>>();
+            this.RepositoryDataProvider = ServiceLocator.Resolve<IRepositoryDataProvider>();
             this.PicturesDirectory = ParameterProvider.GetValue("PicturesDirectory", @"C:\SQLIMMO\Images");
-            AccountingPeriodHelper accountingPeriodHelper = new AccountingPeriodHelper(loadHistory: true);
-            MonthelyCalculator = new MonthelyCalculator(accountingPeriodHelper);
-            DailyCalculator = new DailyCalculator(accountingPeriodHelper);
+            this.monthelyCalculator = new MonthelyCalculator(null);
+            this.dailyCalculator = new DailyCalculator();
             this.MinAmount = ParameterProvider.GetValue("ItemInvestismentMinAmount", 30000);
             this.KeyLength = ParameterProvider.GetValue<int>("ItemKeyLength");
             this.AddNewGroup().AddCommand("Refresh", IconProvider.Refresh, this.BindFields);
             this.OldCodeCaption = this.ParameterProvider.TryGet("OldCodeCaption", "IMMO");
         }
+
+        public IRepositoryDataProvider RepositoryDataProvider { get; }
 
         protected IParameterProvider ParameterProvider { get; }
 
@@ -47,55 +52,26 @@
 
         internal void BindFields()
         {
-            IDataProvider<GeneralAccountType> generalAccountTypeService = ServiceLocator.Resolve<IDataProvider<GeneralAccountType>>();
-            IList<GeneralAccountType> Types = generalAccountTypeService.SelectAll();
-            RepositoryDataProvider = ServiceLocator.Resolve<IRepositoryDataProvider>();
             RepositoryDataProvider.Refresh();
             RepositoryDataProvider.BindItemFields(ConcernedItem);
-            foreach (GeneralAccount item in RepositoryDataProvider.AllGeneralAccounts)
-            {
-                item.GeneralAccountType = Types.FirstOrDefault(x => x.Id == item.GeneralAccountType.Id);
-            }
-
             SetAccoutToDisplay();
-            RaisePropertyChanged();
+            RaisePropertyChanged(string.Empty);
         }
 
         public virtual void SetAccoutToDisplay()
         {
-            IEnumerable<GeneralAccount> accounts;
-            if (this.Amount >= this.MinAmount)
-            {
-                accounts = RepositoryDataProvider?.AllGeneralAccounts.Where(x => x.GeneralAccountType.Type == EGeneralAccountType.Investment);
-            }
-            else
-            {
-                accounts = RepositoryDataProvider?.AllGeneralAccounts.Where(x => x.GeneralAccountType.Type == EGeneralAccountType.Charge);
-            }
-            this.ListOfGeneralAccount = new ObservableCollection<GeneralAccount>(accounts ?? Enumerable.Empty<GeneralAccount>());
+            var filter = this.Amount >= this.MinAmount ? EGeneralAccountType.Investment : EGeneralAccountType.Charge;
+            this.ListOfGeneralAccount = this.RepositoryDataProvider.AllGeneralAccounts
+                ?.Where(x => x.GeneralAccountType.Type == filter)
+                .ToObservable();
         }
-
-        protected Action ManageChargeAccount;
 
         public virtual void UpdateDescription(Reference reference)
         {
             this.SmallDescription = this.Description = reference?.Caption ?? string.Empty;
         }
 
-
-        public ICalculator MonthelyCalculator { get; set; }
-        public ICalculator DailyCalculator { get; set; }
-
-        public string OldCodeCaption
-        {
-            get => this.oldCodeCaption;
-            set
-            {
-                this.oldCodeCaption = value;
-                RaisePropertyChanged();
-            }
-        }
-
+        public string OldCodeCaption { get; set; }
 
         public string VehicleNumber
         {
@@ -106,8 +82,6 @@
                 RaisePropertyChanged();
             }
         }
-
-
 
         public Reference Reference
         {
@@ -137,18 +111,8 @@
             this.SetAccoutToDisplay();
         }
 
-        private IRepositoryDataProvider _RepositoryDataProvider;
-        public IRepositoryDataProvider RepositoryDataProvider
-        {
-            get => _RepositoryDataProvider;
-            set
-            {
-                _RepositoryDataProvider = value;
-                RaisePropertyChanged();
-            }
-        }
-
         #region Settings
+
         public Item ConcernedItem { get; set; }
         protected string PicturesDirectory { get; set; }
         public Item InitialItem { get; set; }
@@ -266,6 +230,7 @@
         }
 
         internal Action _SavePicture;
+
         public string ImagePath
         {
             get
@@ -275,7 +240,9 @@
                     return null;
                 }
                 else
+                {
                     return PicturesDirectory + ConcernedItem.ImagePath;
+                }
             }
             set
             {
@@ -490,7 +457,7 @@
 
         private void UpdateDepreciationBase()
         {
-            decimal depreciationBase = this.IsTvaDepreciatible ? this.Amount : this.AmountHT;
+            var depreciationBase = this.IsTvaDepreciatible ? this.Amount : this.AmountHT;
 
             this.DepreciationBase = depreciationBase > this.PreviousDepreciation ? (depreciationBase - this.PreviousDepreciation) : depreciationBase;
         }
@@ -519,11 +486,10 @@
         {
             if (ConcernedItem != null && AquisitionDate <= LimiteDate)
             {
-                this.ListOfMonthelyDepreciation = this.MonthelyCalculator.GetDepriciations(this.ConcernedItem, this.AquisitionDate, this.LimiteDate)
+                this.ListOfMonthelyDepreciation = this.monthelyCalculator.GetDepriciations(this.ConcernedItem, this.AquisitionDate, this.LimiteDate)
                     .ToObservable();
-
-                this.ListOfDailyDepreciation = this.DailyCalculator.GetDepriciations(this.ConcernedItem, this.AquisitionDate, this.LimiteDate)
-                    .ToObservable(); ;
+                this.ListOfDailyDepreciation = this.dailyCalculator.GetDepriciations(this.ConcernedItem, this.AquisitionDate, this.LimiteDate)
+                    .ToObservable();
             }
             else
             {

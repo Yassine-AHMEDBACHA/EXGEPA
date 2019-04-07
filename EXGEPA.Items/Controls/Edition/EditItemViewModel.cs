@@ -42,7 +42,6 @@
             }
 
             group.AddCommand("Sauver & Fermer", IconProvider.SaveAndClose, this.UpdateItem);
-            BindFields();
             IImmobilisationSheetProvider immoShtPdr = ServiceLocator.Resolve<IImmobilisationSheetProvider>();
             if (immoShtPdr != null)
             {
@@ -52,6 +51,7 @@
                 immoShtGrp.AddCommand("Fiche d'exploitation", () => immoShtPdr.PrintExploitationStartupSheet(new[] { item }));
             }
 
+            BindFields();
             this.UpdateDepreciations();
         }
 

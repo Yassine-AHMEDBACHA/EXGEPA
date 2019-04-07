@@ -88,7 +88,7 @@ namespace EXGEPA.Items.Controls
         {
             if (Reference != null && !this.IsOldItem)
             {
-                ManageChargeAccount?.Invoke();
+                manageChargeAccount?.Invoke();
 
                 this.Description = this.Reference.Caption;
                 this.SmallDescription = this.Description;
