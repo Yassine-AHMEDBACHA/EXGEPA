@@ -5,17 +5,23 @@ using EXGEPA.Model;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
+using CORESI.Data;
 
 namespace EXGEPA.Report.Inventory
 {
     public class InventorySheetProvider : IInventorySheetProvider
     {
+        private readonly IUIMessage uIMessage;
+
+        private readonly IParameterProvider parameterProvider;
+
         public InventorySheetProvider()
         {
             ServiceLocator.GetDefault(out this.uIMessage);
+            ServiceLocator.Resolve(out this.parameterProvider);
         }
 
-        public IUIMessage uIMessage;
+        
 
         public void PrintInventorySheet(IList<Item> items, bool isTheorical = true)
         {
@@ -27,12 +33,12 @@ namespace EXGEPA.Report.Inventory
             items = items.OrderBy(x => x.Key).ToList();
             CORESI.Data.IDataProvider<AccountingPeriod> AccountingPeriodsService = ServiceLocator.Resolve<CORESI.Data.IDataProvider<AccountingPeriod>>();
             AccountingPeriod currentPeriod = AccountingPeriodsService.SelectAll().FirstOrDefault(x => !x.Approved);
-            CORESI.Data.IParameterProvider parameterProvider = ServiceLocator.Resolve<CORESI.Data.IParameterProvider>();
-            InventorySheet report = new InventorySheet();
+            var report = new InventorySheet();
             report.SheetTitle.Text += isTheorical ? "Théorique" : "Physique";
-            report.SubHeader.Text = parameterProvider.GetValue("DirectionName", "");
+            report.SubHeader.Text = this.parameterProvider.GetValue("DirectionName", "");
             report.Header.Text = parameterProvider.GetStringValue("DepartmentName");
             report.CompanyName.Text = parameterProvider.GetStringValue("CompanyName");
+            report.oldCodeLabel.Text = this.parameterProvider.TryGet("OldCodeCaption", "IMMO");
             report.Logo.ImageUrl = Path.Combine(parameterProvider.GetValue("PicturesDirectory", @"C:\SQLIMMO\Images"), parameterProvider.GetValue("LogoFileName", "logo.jpg"));
             report.DataSource = items;
             report.Periode.Text = currentPeriod.Key;

@@ -233,7 +233,7 @@ namespace EXGEPA.Repository.Controls
         {
             if (newItem != null && this.OldValues == null)
             {
-                var count = this.ListOfRows.Count(x => x.ReferenceType.Id == newItem.Id);
+                var count = this.ListOfRows.Count(x => x.ReferenceType.Id == newItem.Id) + 1;
                 var length = this.KeyLength - this.referenceTypeKeyLength;
                 this.Key = $"{newItem.Key}{count.ToAlignedString(length, "0")}";
             }

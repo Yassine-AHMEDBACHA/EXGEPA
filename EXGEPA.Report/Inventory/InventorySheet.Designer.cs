@@ -49,7 +49,7 @@
             this.xrTable1 = new DevExpress.XtraReports.UI.XRTable();
             this.xrTableRow1 = new DevExpress.XtraReports.UI.XRTableRow();
             this.xrTableCell1 = new DevExpress.XtraReports.UI.XRTableCell();
-            this.xrTableCell7 = new DevExpress.XtraReports.UI.XRTableCell();
+            this.oldCodeLabel = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell2 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell3 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell24 = new DevExpress.XtraReports.UI.XRTableCell();
@@ -320,7 +320,7 @@
             // 
             this.xrTableRow1.Cells.AddRange(new DevExpress.XtraReports.UI.XRTableCell[] {
             this.xrTableCell1,
-            this.xrTableCell7,
+            this.oldCodeLabel,
             this.xrTableCell2,
             this.xrTableCell3,
             this.xrTableCell24,
@@ -337,13 +337,13 @@
             this.xrTableCell1.Text = "Code";
             this.xrTableCell1.Weight = 1.085222899383709D;
             // 
-            // xrTableCell7
+            // oldCodeLabel
             // 
-            this.xrTableCell7.CanGrow = false;
-            this.xrTableCell7.Dpi = 254F;
-            this.xrTableCell7.Name = "xrTableCell7";
-            this.xrTableCell7.Text = "Ancien code";
-            this.xrTableCell7.Weight = 0.92888309004053637D;
+            this.oldCodeLabel.CanGrow = false;
+            this.oldCodeLabel.Dpi = 254F;
+            this.oldCodeLabel.Name = "oldCodeLabel";
+            this.oldCodeLabel.Text = "Ancien code";
+            this.oldCodeLabel.Weight = 0.92888309004053637D;
             // 
             // xrTableCell2
             // 
@@ -665,7 +665,7 @@
             this.PaperKind = System.Drawing.Printing.PaperKind.A4;
             this.ReportUnit = DevExpress.XtraReports.UI.ReportUnit.TenthsOfAMillimeter;
             this.SnapGridSize = 25F;
-            this.Version = "17.2";
+            this.Version = "18.2";
             ((System.ComponentModel.ISupportInitialize)(this.xrTable2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable5)).EndInit();
@@ -727,6 +727,6 @@
         public DevExpress.XtraReports.UI.XRLabel SubHeader;
         public DevExpress.XtraReports.UI.XRLabel Header;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell8;
-        private DevExpress.XtraReports.UI.XRTableCell xrTableCell7;
+        public DevExpress.XtraReports.UI.XRTableCell oldCodeLabel;
     }
 }

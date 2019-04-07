@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Text;
 using CORESI.Data;
+using CORESI.Data.Tools;
 using CORESI.IoC;
 using EXGEPA.Model;
 
@@ -15,11 +16,6 @@ namespace EXGEPA.Items.Core
 
         public static string CheckItem(Item item)
         {
-            //if (item.AccountingPeriod == null)
-            //{
-            //    item.AccountingPeriod = AccountingPeriodService.SelectAll().FirstOrDefault(x => x?.Approved == false);
-            //}
-
             var stringBuilder = new StringBuilder();
             if (CheckGeneralAccounts(item))
             {
@@ -35,18 +31,13 @@ namespace EXGEPA.Items.Core
                 stringBuilder.AppendLine("La localisation ne doit pas etre vide");
             }
 
-            //if (item.AquisitionDate < item.AccountingPeriod.StartDate)
-            //{
-            //    stringBuilder.AppendLine("La date d'aquisition ne doit pas etre antrieure au debut d'exercice : " + item.AccountingPeriod.StartDate.ToShortDateString());
-            //}
-
             var result = stringBuilder.ToString();
-            if (result != null)
+            if (result.IsValidData())
             {
                 result = "Veuillez corriger les champs ci dessous avant de continuer \t\n" + result;
             }
 
-            return result;
+            return null;
 
         }
 
