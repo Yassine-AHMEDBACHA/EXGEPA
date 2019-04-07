@@ -9,7 +9,6 @@ namespace EXGEPA.Saidal.Core
     using System.Globalization;
     using System.IO;
     using System.Linq;
-    using System.Text;
     using CORESI.Data;
     using CORESI.IoC;
     using CORESI.Tools;
@@ -52,24 +51,25 @@ namespace EXGEPA.Saidal.Core
             };
         }
 
-        public void Serialize(IEnumerable<Item> items)
+        public List<Invoice> Serialize(IEnumerable<Item> items)
         {
+            var generatedInvoices = new List<Invoice>();
             if (!items.Any())
             {
                 this.uIMessage.Error("Veuillez selectionner des articles à envoyer");
-                return;
+                return generatedInvoices;
             }
 
-            IEnumerable<IGrouping<Invoice, Item>> itemGroupedByFacture = items.Where(x => x.Invoice != null).GroupBy(x => x.Invoice);
+            var itemGroupedByFacture = items.Where(x => x.Invoice != null).GroupBy(x => x.Invoice);
 
             if (!itemGroupedByFacture.Any())
             {
                 this.uIMessage.Error("La selection ne contient aucune facture !");
-                return;
+                return generatedInvoices;
             }
 
-            StringBuilder stringBuilder = new StringBuilder();
-            foreach (IGrouping<Invoice, Item> group in itemGroupedByFacture)
+            var rows = new List<string>();
+            foreach (var group in itemGroupedByFacture)
             {
                 Invoice invoice = group.Key;
                 int i = 1;
@@ -97,36 +97,45 @@ namespace EXGEPA.Saidal.Core
                     var totalAmount = subTotalInvestment + subTotalCharge;
                     totalInvestmentAccount += subTotalInvestment;
                     totalChargeAccount += subTotalCharge;
-                    stringBuilder.AppendLine(this.Align(string.Join(";", firstPart, i, invoice.Date.ToString("dd"), subGroup.Key.Key, " ", totalAmount.ToString(CultureInfo.InvariantCulture), "D", lastPart)));
+                    rows.Add(this.Align(string.Join(";", firstPart, i, invoice.Date.ToString("dd"), subGroup.Key.Key, " ", totalAmount.ToString(CultureInfo.InvariantCulture), "D", lastPart)));
                     i++;
                 }
 
                 var invoiceAmount = totalInvestmentAccount - invoice.Holdback;
                 var account = invoice.Provider.Country.ToLower().Contains("alger") ? "404000" : "404010";
-                stringBuilder.AppendLine(this.Align(string.Join(";", firstPart, i, invoice.Date.ToString("dd"), account, invoice.Provider.ThirdPartyAccount, invoiceAmount.ToString(CultureInfo.InvariantCulture), "C", lastPart)));
+                rows.Add(this.Align(string.Join(";", firstPart, i, invoice.Date.ToString("dd"), account, invoice.Provider.ThirdPartyAccount, invoiceAmount.ToString(CultureInfo.InvariantCulture), "C", lastPart)));
                 if (totalChargeAccount > 0)
                 {
                     i++;
-                    stringBuilder.AppendLine(this.Align(string.Join(";", firstPart, i, invoice.Date.ToString("dd"), "401010", invoice.Provider.ThirdPartyAccount, totalChargeAccount.ToString(CultureInfo.InvariantCulture), "C", lastPart)));
+                    rows.Add(this.Align(string.Join(";", firstPart, i, invoice.Date.ToString("dd"), "401010", invoice.Provider.ThirdPartyAccount, totalChargeAccount.ToString(CultureInfo.InvariantCulture), "C", lastPart)));
                 }
 
                 if (invoice.Holdback > 0)
                 {
                     i++;
-                    stringBuilder.AppendLine(this.Align(string.Join(";", firstPart, i, invoice.Date.ToString("dd"), "404020", invoice.Provider.ThirdPartyAccount, invoice.Holdback.ToString(CultureInfo.InvariantCulture), "C", lastPart)));
+                    rows.Add(this.Align(string.Join(";", firstPart, i, invoice.Date.ToString("dd"), "404020", invoice.Provider.ThirdPartyAccount, invoice.Holdback.ToString(CultureInfo.InvariantCulture), "C", lastPart)));
                 }
+
+                invoice.Tag = true;
+                generatedInvoices.Add(invoice);
             }
 
+            var fileName = this.GetFileName();
+            this.logger.Info($"FileName = {fileName}");
+            TextAppender.Append(fileName, rows, true);
+            return generatedInvoices;
+        }
+
+        private string GetFileName()
+        {
             var outputDirectory = this.parameterProvider.TryGet("InterfaceOutputDirectory", @"C:\SQLIMMO\");
             var fileNamePattern = this.parameterProvider.TryGet("InterfaceFileNamePattern", "Dump");
             var fileExtension = this.parameterProvider.TryGet("InterfaceFileExtension", ".csv");
             var fileName = Path.Combine(outputDirectory, $"{fileNamePattern}_{DateTime.Now.ToString("yyyyMMdd_HHmmssfff")}.{fileExtension.Replace(".", string.Empty)}");
-            this.logger.Info($"FileName = {fileName}");
-            TextAppender.Append(fileName, stringBuilder.ToString(), true);
-            this.uIMessage.Notify("Fichier généré avec succès");
+            return fileName;
         }
 
-        public string Align(string input)
+        private string Align(string input)
         {
             var data = input.Split(';');
             for (int i = 0; i < data.Length; i++)

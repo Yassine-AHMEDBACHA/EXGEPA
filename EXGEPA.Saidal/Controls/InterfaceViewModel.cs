@@ -4,10 +4,12 @@
 
 namespace EXGEPA.Saidal.Controls
 {
-    using System.Collections.ObjectModel;
+    using System.Linq;
     using System.Threading.Tasks;
+    using CORESI.Data;
     using CORESI.IoC;
     using CORESI.Tools;
+    using CORESI.Tools.Collections;
     using CORESI.WPF.Controls;
     using CORESI.WPF.Core.Interfaces;
     using EXGEPA.Core.Interfaces;
@@ -34,18 +36,40 @@ namespace EXGEPA.Saidal.Controls
             {
                 using (var scoopLogger = new ScoopLogger("Loading Data", this.Logger, true))
                 {
-                    var list = this.DBservice.SelectAll();
+                    var list = this.DBservice.All;
                     scoopLogger.Snap("Loading Data ");
-                    Parallel.ForEach(list, this.repositoryDataProvider.BindItemFields);
-                    this.ListOfRows = new ObservableCollection<Item>(list);
+                    this.repositoryDataProvider.BindItemFields(list);
+                    this.ListOfRows = list.Where(this.IsToDisplay).ToObservable();
                 }
             });
+        }
+
+        private bool IsToDisplay(Item item)
+        {
+            if (item.Invoice is null)
+            {
+                return false;
+            }
+
+            if (item.Invoice.Tag is bool value)
+            {
+                return !value;
+            }
+
+            return true;
         }
 
         private void LoadButtons()
         {
             var aquisitionSeriliazer = new AquisitionSerializer();
-            this.AddNewGroup().AddCommand("Aquisitions", () => aquisitionSeriliazer.Serialize(this.Selection));
+            ServiceLocator.Resolve(out IDataProvider<Invoice> invocieSevice);
+            this.AddNewGroup().AddCommand("Aquisitions", () =>
+            {
+                var invoices = aquisitionSeriliazer.Serialize(this.Selection);
+                invoices.ForEach(x => invocieSevice.Update(x));
+                this.InitData();
+                this.UIMessage.Notify("Fichier généré avec succès");
+            });
         }
     }
 }
