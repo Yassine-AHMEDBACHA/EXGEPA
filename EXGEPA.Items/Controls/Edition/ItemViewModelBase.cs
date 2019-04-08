@@ -17,7 +17,7 @@
 
     public abstract class ItemViewModelBase : PageViewModel
     {
-        public ItemExtendedProperties itemExtendedProperties;
+        //public ItemExtendedProperties itemExtendedProperties;
 
         protected Action manageChargeAccount;
 
@@ -80,10 +80,11 @@
 
         public string VehicleNumber
         {
-            get => this.itemExtendedProperties?.VehicleNumber;
+            get => ConcernedItem.ExtendedProperties?.VehicleNumber;
+
             set
             {
-                this.itemExtendedProperties.VehicleNumber = value;
+                ConcernedItem.ExtendedProperties.VehicleNumber = value;
                 RaisePropertyChanged();
             }
         }
@@ -501,7 +502,7 @@
                 this.ListOfMonthelyDepreciation?.Clear();
                 this.ListOfDailyDepreciation?.Clear();
             }
-                   
+
         }
 
         public string Key
@@ -540,15 +541,12 @@
 
         public DateTime PreviouseDepreciationDate
         {
-            get
-            {
-                return ConcernedItem.ExtendedProperties.PreviouseDepreciationDate;
-            }
+            get => ConcernedItem.ExtendedProperties.PreviouseDepreciationDate;
             set
             {
                 ConcernedItem.ExtendedProperties.PreviouseDepreciationDate = value;
                 UpdateDepreciations();
-                RaisePropertyChanged("PreviouseDepreciationDate");
+                RaisePropertyChanged();
             }
         }
 
@@ -725,6 +723,6 @@
 
         #endregion
 
-       
+
     }
 }

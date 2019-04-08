@@ -71,7 +71,7 @@ namespace EXGEPA.Repository.Controls
             this.uIItemService.DisplayItems(this.IsMatchingSelectedRowId, $"Contenu du bon de transfert {this.SelectedRow?.Key}", (items) =>
             {
                 var reports = ServiceLocator.Resolve<IImmobilisationSheetProvider>();
-                this.SetTotalDepreciationInTag(items);
+                this.UIMessage.TryDoAction(this.Logger, () => this.SetTotalDepreciationInTag(items));
                 reports.PrintOutputSheet(items, false, title);
             });
         }
@@ -89,6 +89,11 @@ namespace EXGEPA.Repository.Controls
             {
                 var startDate = Tools.GetStartComputationDate(x);
                 var endDate = Tools.GetEndComputationDate(x, x.TransferOrder.Date);
+                if (startDate > endDate)
+                {
+                    startDate = endDate;
+                }
+
                 var rows = calculator.GetDepriciations(x, startDate, endDate);
                 x.Tag = rows.LastOrDefault();
             });

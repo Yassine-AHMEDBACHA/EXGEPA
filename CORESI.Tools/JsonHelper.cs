@@ -10,7 +10,7 @@ namespace CORESI.Tools
 
     public static class JsonHelper
     {
-        public static void Deserialize<T>(this string json, out T deserializedObject) 
+        public static void Deserialize<T>(this string json, out T deserializedObject)
             where T : class
         {
             if (json.IsValidData())
@@ -21,7 +21,7 @@ namespace CORESI.Tools
             throw new ArgumentException("Invalid Input !");
         }
 
-        public static bool TryDeserialize<T>(this string json, out T deserializedObject) 
+        public static bool TryDeserialize<T>(this string json, out T deserializedObject)
             where T : class
         {
             deserializedObject = null;

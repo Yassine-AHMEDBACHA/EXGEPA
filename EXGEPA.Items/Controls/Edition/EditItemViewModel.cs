@@ -6,6 +6,7 @@
     using CORESI.WPF.Core;
     using CORESI.WPF.Model;
     using EXGEPA.Core.Interfaces;
+    using EXGEPA.Items.Core;
     using EXGEPA.Model;
     using Newtonsoft.Json;
 
@@ -35,11 +36,8 @@
             this.IsOldItem = true;
             this.Caption = Caption = "Article N°: " + item.Key;
             this.IsSelected = true;
+            base.ConcernedItem.SetExtendedProperties();
             Group group = this.AddNewGroup();
-            if (!JsonHelper.TryDeserialize(this.ConcernedItem.Json, out this.itemExtendedProperties))
-            {
-                this.itemExtendedProperties = new ItemExtendedProperties();
-            }
 
             group.AddCommand("Sauver & Fermer", IconProvider.SaveAndClose, this.UpdateItem);
             IImmobilisationSheetProvider immoShtPdr = ServiceLocator.Resolve<IImmobilisationSheetProvider>();
@@ -67,7 +65,7 @@
                 else
                 {
                     this._SavePicture?.Invoke();
-                    this.ConcernedItem.Json = JsonConvert.SerializeObject(this.itemExtendedProperties);
+                    base.ConcernedItem.SerializeExtendedProperties();
                     this.ItemService.Update(this.ConcernedItem);
                     this.ClosePage();
                     this.Notify(this.ConcernedItem);

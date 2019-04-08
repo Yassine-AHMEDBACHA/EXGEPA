@@ -25,7 +25,6 @@ namespace EXGEPA.Items.Controls
             : base()
         {
             this.Caption = "Nouvel Article";
-            this.itemExtendedProperties = new ItemExtendedProperties();
             this.IsKeyReadOnly = this.ParameterProvider.GetValue("IsItemKeyReadOnlyAtCreation", true);
             this.IsBaseDepreciationReadOnly = this.ParameterProvider.TryGet("IsBaseDepreciationReadOnlyAtCreation", false);
             this.Categorie = NewItemRibbonCategorie;
@@ -68,8 +67,7 @@ namespace EXGEPA.Items.Controls
             }
 
             this._SavePicture?.Invoke();
-
-            this.ConcernedItem.Json = JsonConvert.SerializeObject(this.itemExtendedProperties);
+            base.ConcernedItem.SerializeExtendedProperties();
             this.InsertItem(this.ConcernedItem);
             if (this.Quantity.EditValue > 1)
             {
