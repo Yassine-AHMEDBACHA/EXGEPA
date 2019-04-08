@@ -36,7 +36,7 @@ namespace CORESI.Tools
             Directory.CreateDirectory(directory);
             using (StreamWriter sr = File.AppendText(fileName))
             {
-                for (int i = 0; i < rows.Count - 2; i++)
+                for (int i = 0; i < rows.Count - 1; i++)
                 {
                     sr.WriteLine(rows[i]);
                 }
@@ -44,6 +44,5 @@ namespace CORESI.Tools
                 sr.Write(rows.Last());
             }
         }
-
     }
 }
