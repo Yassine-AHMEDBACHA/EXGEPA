@@ -7,8 +7,13 @@ namespace EXGEPA.Model
     using System.Collections.Generic;
     using CORESI.Data;
 
-    public class Reference : NamedKeyRow
+    public class Reference : NamedKeyRow , INamedKeyRepository
     {
+        public Reference()
+        {
+            this.Items = new Dictionary<int, Item>();
+        }
+
         public ReferenceType ReferenceType { get; set; }
 
         public virtual GeneralAccount InvestmentAccount { get; set; }
@@ -18,6 +23,6 @@ namespace EXGEPA.Model
         public string ImagePath { get; set; }
 
         [DataAttribute(IsList = true)]
-        public virtual List<Item> Items { get; set; }
+        public virtual Dictionary<int, Item> Items { get; set; }
     }
 }

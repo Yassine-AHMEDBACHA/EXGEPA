@@ -9,6 +9,6 @@ namespace EXGEPA.Model
 
     public interface INamedKeyRepository : INamedKey
     {
-        List<Item> Items { get; }
+        Dictionary<int, Item> Items { get; }
     }
 }

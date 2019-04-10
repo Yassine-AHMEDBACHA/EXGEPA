@@ -157,9 +157,9 @@ namespace EXGEPA.Repository.Controls
 
                     Parallel.ForEach(this.ListOfRows, x =>
                                          {
-                                             x.InvestmentAccount = this.InvestmentAccounts.Single(g => g.Id == x.InvestmentAccount?.Id);
-                                             x.ChargeAccount = this.ChargeAccounts.Single(g => g.Id == x.ChargeAccount.Id);
-                                             x.ReferenceType = this.ListOfReferenceType.Single(rt => rt.Id == x.ReferenceType?.Id);
+                                             x.InvestmentAccount = this.InvestmentAccounts.SingleOrDefault(g => g.Id == x.InvestmentAccount?.Id);
+                                             x.ChargeAccount = this.ChargeAccounts.SingleOrDefault(g => g.Id == x.ChargeAccount?.Id);
+                                             x.ReferenceType = this.ListOfReferenceType.SingleOrDefault(rt => rt.Id == x.ReferenceType?.Id);
                                          });
                 });
         }

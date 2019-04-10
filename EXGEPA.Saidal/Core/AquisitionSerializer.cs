@@ -39,7 +39,7 @@ namespace EXGEPA.Saidal.Core
             this.fieldAligner = new List<Func<string, string>>()
             {
                 (str) => "21",
-                (str) => "   1  ",
+                (str) => $"{str}  ".Align(5, " ", AdditionnalCharPosition.Left),
                 (str) => $"{this.additionalCharacter}{str.Align(2, "0")}",
                 (str) => str.Align(2, this.additionalCharacter, AdditionnalCharPosition.Right),
                 (str) => str.Align(10, this.additionalCharacter, AdditionnalCharPosition.Right),
@@ -51,53 +51,39 @@ namespace EXGEPA.Saidal.Core
             };
         }
 
-        public List<Invoice> Serialize(IEnumerable<Item> items)
+        public List<Invoice> Serialize(IEnumerable<Invoice> invoices)
         {
             var generatedInvoices = new List<Invoice>();
-            if (!items.Any())
+            if (!invoices.Any())
             {
-                this.uIMessage.Error("Veuillez selectionner des articles à envoyer");
-                return generatedInvoices;
-            }
-
-            var itemGroupedByFacture = items.Where(x => x.Invoice != null).GroupBy(x => x.Invoice);
-
-            if (!itemGroupedByFacture.Any())
-            {
-                this.uIMessage.Error("La selection ne contient aucune facture !");
+                this.uIMessage.Error("Veuillez selectionner des factures à envoyer");
                 return generatedInvoices;
             }
 
             var rows = new List<string>();
-            foreach (var group in itemGroupedByFacture)
+            int j = 0;
+            foreach (var invoice in invoices)
             {
-                Invoice invoice = group.Key;
+                j++;
                 int i = 1;
                 var lastPart = $"FACT {invoice.Key} {invoice.Date.ToString("dd/MM/yyyy")} {invoice.Provider.Caption};{invoice.Key}";
-                var firstPart = $"21;{invoice.InputSheet.Key}";
-                var itemGroupedByGenralAccount = group.OrderBy(x => x.GeneralAccount.Caption).GroupBy(x => x.GeneralAccount);
+                var firstPart = $"21;{j}";
+                var itemGroupedByGenralAccount = invoice.Items.Values.OrderBy(x => x.GeneralAccount.Caption).GroupBy(x => x.GeneralAccount);
                 var totalInvestmentAccount = 0.0M;
                 var totalChargeAccount = 0.0M;
                 foreach (var subGroup in itemGroupedByGenralAccount)
                 {
-                    var subTotalInvestment = 0.0M;
-                    var subTotalCharge = 0.0M;
-                    foreach (Item item in subGroup)
+                    var subTotal = subGroup.Sum(x => x.Amount);
+                    if (subGroup.Key.GeneralAccountType.Type == EGeneralAccountType.Investment)
                     {
-                        if (item.GeneralAccount.GeneralAccountType.Type == EGeneralAccountType.Investment)
-                        {
-                            subTotalInvestment += item.Amount;
-                        }
-                        else if (item.GeneralAccount.GeneralAccountType.Type == EGeneralAccountType.Charge)
-                        {
-                            subTotalCharge += item.Amount;
-                        }
+                        totalInvestmentAccount += subTotal;
+                    }
+                    else if (subGroup.Key.GeneralAccountType.Type == EGeneralAccountType.Charge)
+                    {
+                        totalChargeAccount += subTotal;
                     }
 
-                    var totalAmount = subTotalInvestment + subTotalCharge;
-                    totalInvestmentAccount += subTotalInvestment;
-                    totalChargeAccount += subTotalCharge;
-                    rows.Add(this.Align(string.Join(";", firstPart, i, invoice.Date.ToString("dd"), subGroup.Key.Key, " ", totalAmount.ToString(CultureInfo.InvariantCulture), "D", lastPart)));
+                    rows.Add(this.Align(string.Join(";", firstPart, i, invoice.Date.ToString("dd"), subGroup.Key.Key, " ", subTotal.ToString(CultureInfo.InvariantCulture), "D", lastPart)));
                     i++;
                 }
 

@@ -2,13 +2,11 @@
 {
     using System.Linq;
     using CORESI.IoC;
-    using CORESI.Tools;
     using CORESI.WPF.Core;
     using CORESI.WPF.Model;
+    using EXGEPA.Core;
     using EXGEPA.Core.Interfaces;
-    using EXGEPA.Items.Core;
     using EXGEPA.Model;
-    using Newtonsoft.Json;
 
     public class EditItemViewModel : ItemViewModelBase
     {

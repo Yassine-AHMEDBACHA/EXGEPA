@@ -10,8 +10,13 @@ namespace EXGEPA.Model
 
     public abstract class Certificate : NamedKeyRow, IDatable, INamedKeyRepository
     {
+        public Certificate()
+        {
+            this.Items = new Dictionary<int, Item>();
+        }
+
         public DateTime Date { get; set; }
 
-        public List<Item> Items { get; set; }
+        public Dictionary<int, Item> Items { get; set; }
     }
 }

@@ -30,7 +30,7 @@ namespace EXGEPA.Sonatrach.Core
         public void SerializeInvoice(Invoice invoice)
         {
             string header = this.GetCGFRA_FR30_BOD(invoice);
-            List<string> itemRows = this.GetCGFRA_FR32(invoice.Items);
+            List<string> itemRows = this.GetCGFRA_FR32(invoice.Items.Values);
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.AppendLine(header);
             foreach (string item in itemRows)
@@ -52,7 +52,7 @@ namespace EXGEPA.Sonatrach.Core
             throw new NotImplementedException();
         }
 
-        private List<string> GetCGFRA_FR32(List<Item> items)
+        private List<string> GetCGFRA_FR32(IEnumerable<Item> items)
         {
             throw new NotImplementedException();
         }

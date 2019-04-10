@@ -82,11 +82,11 @@ namespace EXGEPA.Report.Reference
                 return;
             }
             var items = ServiceLocator.Resolve<IDataProvider<Item>>().SelectAll().GroupBy(x => x.Reference.Id);
-            foreach (var item in items)
-            {
-                var group = data.FirstOrDefault(x => x.Id == item.Key);
-                    group.Items = item.ToList();
-            }
+            //foreach (var item in items)
+            //{
+            //    var group = data.FirstOrDefault(x => x.Id == item.Key);
+            //        group.Items = item.ToList();
+            //}
             
             var parameterProvider = ServiceLocator.Resolve<IParameterProvider>();
             var report = new NamedKeyRepositoryReport();

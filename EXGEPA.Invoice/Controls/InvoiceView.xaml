@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
-             xmlns:ViewModels="clr-namespace:EXGEPA.Repository.Controls"
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
              xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" 
              xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 

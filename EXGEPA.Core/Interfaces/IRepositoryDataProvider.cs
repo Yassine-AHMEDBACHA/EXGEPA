@@ -16,9 +16,13 @@ namespace EXGEPA.Core.Interfaces
 
         ObservableCollection<Item> AllItems { get; set; }
 
+        ObservableCollection<Invoice> AllInvoices { get; set; }
+
         void BindItemFields(Item item);
 
         void BindItemFields(IList<Item> Items);
+
+        void MapAllItems();
 
         void Refresh();
     }

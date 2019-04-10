@@ -115,7 +115,7 @@
 
         public ObservableCollection<ReferenceType> ListOfReferenceType { get; set; }
 
-        public ObservableCollection<Invoice> ListOfInvoice { get; set; }
+        public ObservableCollection<Invoice> AllInvoices { get; set; }
 
         public ObservableCollection<TransferOrder> ListOfTransferOrder { get; set; }
 
@@ -176,10 +176,12 @@
 
             References = ListOfReference.ToDictionary(x => x.Id);
             ListOfProvider = this.ProviderService.All.ToObservable();
-            ListOfInvoice = this.InvoiceService.All.ToObservable();
+            
             ListOfInputSheet = this.InputSheetService.All.ToObservable();
             ListOfReceiveOrder = this.ReceiveOrderService.All.ToObservable();
-            this.Invoices = ListOfInvoice.ApplyOnAll(invoice =>
+
+            this.AllInvoices = this.InvoiceService.All.ToObservable();
+            this.Invoices = AllInvoices.ApplyOnAll(invoice =>
             {
                 invoice.SetProperties(this.ListOfProvider);
                 invoice.SetProperties(this.ListOfInputSheet);
@@ -209,8 +211,8 @@
             item.SetProperties(this.ListOfProposeToReformCertificate);
             item.SetProperties(this.ListOfAnalyticalAccount);
             item.SetProperties(this.AllGeneralAccounts);
-            item.SetProperties(this.References);
-            item.SetProperties(this.Invoices);
+            item.Map(this.References);
+            item.Map(this.Invoices);
             item.SetProperties(this.AllItems);
             item.SetProperties(this.ListOfPerson);
             item.SetProperties(this.ListOfProvider);
@@ -222,6 +224,12 @@
             item.SetProperties(this.ListOfOutputCertificate);
             item.SetProperties(this.ListOfAccountingPeriod);
             item.SetProperties(this.AllStats);
+        }
+
+        public void MapAllItems()
+        {
+            manualResetEventSlim.Wait();
+            this.BindItemFields(this.AllItems);
         }
 
         public void BindItemFields(IList<Item> items)

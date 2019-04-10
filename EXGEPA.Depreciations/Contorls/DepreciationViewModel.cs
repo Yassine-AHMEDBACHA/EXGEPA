@@ -24,9 +24,7 @@ namespace EXGEPA.Depreciations.Contorls
 
         IDataProvider<Item> ItemService { get; set; }
 
-        public DateEditRibbon StartDateEditRibbon { get; set; }
-
-        public DateEditRibbon EndDateEditRibbon { get; set; }
+        
 
         public ComboBoxRibbon<string> ComboBoxRibbon { get; set; }
 
@@ -84,6 +82,9 @@ namespace EXGEPA.Depreciations.Contorls
 
         }
 
+        public DateEditRibbon StartDateEditRibbon { get; set; }
+
+        public DateEditRibbon EndDateEditRibbon { get; set; }
 
         public ICalculator Daily { get; set; }
         public ICalculator Monthely { get; set; }

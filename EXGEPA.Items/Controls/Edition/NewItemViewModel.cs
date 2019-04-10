@@ -3,9 +3,8 @@ using System.Linq;
 using CORESI.Tools.Collections;
 using CORESI.WPF.Core;
 using CORESI.WPF.Model;
-using EXGEPA.Items.Core;
+using EXGEPA.Core;
 using EXGEPA.Model;
-using Newtonsoft.Json;
 
 namespace EXGEPA.Items.Controls
 {

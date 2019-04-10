@@ -183,7 +183,6 @@
     </Compile>
     <Compile Include="Controls\Edition\ItemViewModelBase.cs" />
     <Compile Include="Controls\Edition\NewItemViewModel.cs" />
-    <Compile Include="Core\ItemExtensions.cs" />
     <Compile Include="Core\KeyGenerator.cs" />
     <Compile Include="Core\GeneralAccountBehaviour.cs" />
     <Compile Include="Core\GenericEditableWithItemAttributionViewModel.cs" />

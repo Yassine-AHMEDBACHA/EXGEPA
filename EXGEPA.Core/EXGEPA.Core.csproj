@@ -117,6 +117,7 @@
     <Compile Include="Security\LoginManager.cs" />
     <Compile Include="Security\OperatorsService.cs" />
     <Compile Include="Security\Services.cs" />
+    <Compile Include="Tools\ItemExtensions.cs" />
     <Compile Include="Tools\KeyLengthNormalizer.cs" />
     <Compile Include="Tools\LoacalizationTools.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -132,7 +133,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Tools\RepositoryDataProvider.cs" />
+    <Compile Include="RepositoryDataProvider.cs" />
     <Compile Include="Tools\FileLoader.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

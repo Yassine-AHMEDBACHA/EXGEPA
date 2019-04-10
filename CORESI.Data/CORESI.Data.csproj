@@ -96,6 +96,7 @@
     <Compile Include="IDatable.cs" />
     <Compile Include="IKey.cs" />
     <Compile Include="INamedKey.cs" />
+    <Compile Include="IRepository.cs" />
     <Compile Include="KeyRow.cs" />
     <Compile Include="FieldTools.cs" />
     <Compile Include="IDataFilter.cs" />
@@ -117,6 +118,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Row.cs" />
     <Compile Include="RowId.cs" />
+    <Compile Include="Tools\DateTimeExtensions.cs" />
     <Compile Include="Tools\StringExtension.cs" />
   </ItemGroup>
   <ItemGroup>

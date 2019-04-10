@@ -39,19 +39,39 @@ namespace CORESI.WPF.Core.Framework
 
         protected IUIService UIService => uIService;
 
-        public Group AddNewGroup(string caption = null, IList<RibbonButton> buttons = null)
+        public Group AddNewGroup(string caption = null, InsertPosition insertPosition = InsertPosition.Right)
         {
-            Group group = new Group(caption, buttons);
-            this.AddGroup(group);
+            var group = new Group(caption);
+            this.AddGroup(group, insertPosition);
             return group;
         }
 
-        public void AddGroup(Group group)
+        public Group AddNewGroup(string caption, IList<RibbonButton> buttons, InsertPosition insertPosition = InsertPosition.Right)
+        {
+            var group = new Group(caption, buttons);
+            this.AddGroup(group, insertPosition);
+            return group;
+        }
+
+        public void AddGroup(Group group, InsertPosition insertPosition = InsertPosition.Right)
         {
             if (group != null)
             {
-                this.Groups.Add(group);
+                if (insertPosition == InsertPosition.Right)
+                {
+                    this.Groups.Add(group);
+                }
+                else
+                {
+                    this.Groups.Insert(0, group);
+                }
             }
+        }
+
+        public enum InsertPosition
+        {
+            Right = 1,
+            Left
         }
     }
 }
