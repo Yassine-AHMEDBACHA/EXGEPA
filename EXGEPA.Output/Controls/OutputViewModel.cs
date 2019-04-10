@@ -72,6 +72,7 @@ namespace EXGEPA.Output.Controls
             set
             {
                 this.ConcernedRow.Tag = value.Key;
+                this.ConcernedRow.Json = value.Caption;
                 this.RaisePropertyChanged("Taker");
             }
         }

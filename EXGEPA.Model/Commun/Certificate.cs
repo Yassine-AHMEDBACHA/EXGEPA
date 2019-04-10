@@ -5,6 +5,7 @@
 namespace EXGEPA.Model
 {
     using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using CORESI.Data;
 
@@ -12,11 +13,11 @@ namespace EXGEPA.Model
     {
         public Certificate()
         {
-            this.Items = new Dictionary<int, Item>();
+            this.Items = new ConcurrentDictionary<int, Item>();
         }
 
         public DateTime Date { get; set; }
 
-        public Dictionary<int, Item> Items { get; set; }
+        public IDictionary<int, Item> Items { get; set; }
     }
 }

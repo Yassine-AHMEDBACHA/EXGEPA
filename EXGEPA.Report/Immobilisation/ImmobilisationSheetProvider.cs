@@ -97,7 +97,7 @@ namespace EXGEPA.Report.Immobilisation
                 rpt.NPV.ExpressionBindings[0].Expression = "Concat(\'N° du PV cession :\',[OutputCertificate].[Key])";
                 rpt.DatePV.ExpressionBindings[0].Expression = "Concat('Date du PV :',FormatString('{0:dd/MM/yyyy}',[OutputCertificate].[Date]))";
                 rpt.SenderUnit.ExpressionBindings[0].Expression = "Concat(\'Unité expéditrice :\',[Office].[Level].[Building].[Levels].[Building].[Site].[Region].[Caption])";
-                rpt.RecieverUnit.ExpressionBindings[0].Expression = "Concat(\'Unité réceptrice :\',[OutputCertificate].[Tag])";
+                rpt.RecieverUnit.ExpressionBindings[0].Expression = "Concat(\'Unité réceptrice :\',[Json])";
                 rpt.reportLabel.Text = this.ParameterProvider.TryGet("CessionCertificateReportLabel", "IMP(PR.G.DPMG/01)");
                 rpt.depreciationLabel.ExpressionBindings[0].Expression = "Concat('Cumul amortissement : ',FormatString('{0:n2}',[Tag].[PreviousDepreciation]+[Tag].[Annuity]))";
             }
@@ -105,7 +105,7 @@ namespace EXGEPA.Report.Immobilisation
             {
                 rpt.NPV.ExpressionBindings[0].Expression = "Concat('N° du PV de transfert :',[TransferOrder].[Key])";
                 rpt.DatePV.ExpressionBindings[0].Expression = "Concat('Date du PV :',FormatString('{0:dd/MM/yyyy}',[TransferOrder].[Date]))";
-                rpt.SenderUnit.ExpressionBindings[0].Expression = "Concat(\'Unité expéditrice :\',[TransferOrder].[Sender].[Key])";
+                rpt.SenderUnit.ExpressionBindings[0].Expression = "Concat(\'Unité expéditrice :\',[TransferOrder].[Sender].[Key],' - ',[TransferOrder].[Sender].[Caption])";
                 rpt.RecieverUnit.ExpressionBindings[0].Expression = "Concat(\'Unité réceptrice :\',[Office].[Level].[Building].[Levels].[Building].[Site].[Region].[Caption])";
                 rpt.reportLabel.Text = this.ParameterProvider.TryGet("TransferOrderReportLabel", "Transfert Order");
                 rpt.depreciationLabel.ExpressionBindings[0].Expression = "Concat('Amortissement antérieur : ',FormatString('{0:n2}',[Tag].[PreviousDepreciation]))";

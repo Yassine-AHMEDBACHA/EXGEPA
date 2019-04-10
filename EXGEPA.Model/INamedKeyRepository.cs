@@ -4,11 +4,12 @@
 
 namespace EXGEPA.Model
 {
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using CORESI.Data;
 
     public interface INamedKeyRepository : INamedKey
     {
-        Dictionary<int, Item> Items { get; }
+        IDictionary<int, Item> Items { get; }
     }
 }

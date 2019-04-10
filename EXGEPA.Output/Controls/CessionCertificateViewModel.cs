@@ -9,6 +9,7 @@ namespace EXGEPA.Output.Controls
     using System.Collections.ObjectModel;
     using System.Linq;
     using CORESI.Data;
+    using CORESI.Data.Tools;
     using CORESI.IoC;
     using CORESI.Tools.Collections;
     using CORESI.WPF.Core;
@@ -49,6 +50,11 @@ namespace EXGEPA.Output.Controls
             var title = this.ParameterProvider.TryGet("CessionCertificateReportTitle", "Fiche de cession");
             this.UIItemService.DisplayItems(this.IsMatchingSelectedRowId, $"Contenu du PV de cession {this.SelectedRow?.Key}", (items) =>
             {
+                items.ForEach(x =>
+                {
+                        x.Json = $"{x.Tag ?? string.Empty} - {x.Json ?? string.Empty}";
+                });
+
                 this.SetTotalDepreciationInTag(items);
                 var reports = ServiceLocator.Resolve<IImmobilisationSheetProvider>();
                 reports.PrintOutputSheet(items, true, title);

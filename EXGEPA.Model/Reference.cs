@@ -4,6 +4,7 @@
 
 namespace EXGEPA.Model
 {
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using CORESI.Data;
 
@@ -11,7 +12,7 @@ namespace EXGEPA.Model
     {
         public Reference()
         {
-            this.Items = new Dictionary<int, Item>();
+            this.Items = new ConcurrentDictionary<int, Item>();
         }
 
         public ReferenceType ReferenceType { get; set; }
@@ -23,6 +24,6 @@ namespace EXGEPA.Model
         public string ImagePath { get; set; }
 
         [DataAttribute(IsList = true)]
-        public virtual Dictionary<int, Item> Items { get; set; }
+        public virtual IDictionary<int, Item> Items { get; set; }
     }
 }
