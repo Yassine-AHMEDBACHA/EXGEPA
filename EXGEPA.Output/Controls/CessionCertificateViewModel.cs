@@ -4,12 +4,10 @@
 
 namespace EXGEPA.Output.Controls
 {
-    using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
     using CORESI.Data;
-    using CORESI.Data.Tools;
     using CORESI.IoC;
     using CORESI.Tools.Collections;
     using CORESI.WPF.Core;
@@ -33,9 +31,9 @@ namespace EXGEPA.Output.Controls
             this.TakerVisibility = System.Windows.Visibility.Visible;
             this.TakerFieldName = "Unité réceptrice";
             this.TakerOptionVisibilty = System.Windows.Visibility.Collapsed;
-            System.Collections.Generic.IList<AnalyticalAccountType> types = this.analyticalAccountTypeService.SelectAll();
-            AnalyticalAccountType internalType = types.FirstOrDefault(x => x.Key.ToLowerInvariant() == "external");
-            System.Collections.Generic.IList<AnalyticalAccount> list = this.analyticalAccountService.SelectAll(types);
+            var types = this.analyticalAccountTypeService.SelectAll();
+            var internalType = types.FirstOrDefault(x => x.Key.ToLowerInvariant() == "external");
+            var list = this.analyticalAccountService.SelectAll(types);
             this.ListOfTakers = new ObservableCollection<NamedKeyRow>(list.Where(x => x.AnalyticalAccountType == internalType));
             this.AddNewGroup().AddCommand("Contenu du PV", IconProvider.GreaterThan, this.DisplayPvContent);
         }
@@ -52,7 +50,7 @@ namespace EXGEPA.Output.Controls
             {
                 items.ForEach(x =>
                 {
-                        x.Json = $"{x.Tag ?? string.Empty} - {x.Json ?? string.Empty}";
+                        x.Json = $"{this.SelectedRow.Tag ?? string.Empty}, Libellé : {this.SelectedRow.Json ?? string.Empty}";
                 });
 
                 this.SetTotalDepreciationInTag(items);

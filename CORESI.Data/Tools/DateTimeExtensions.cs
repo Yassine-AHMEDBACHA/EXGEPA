@@ -6,7 +6,12 @@
     {
         public static bool IsBetween(this DateTime date, DateTime minDateTime, DateTime maxDateTime)
         {
-            return date >= minDateTime && date <= maxDateTime;
+            if (minDateTime < maxDateTime)
+            {
+                return date >= minDateTime && date <= maxDateTime;
+            }
+
+            return date >= maxDateTime && date <= minDateTime;
         }
     }
 }

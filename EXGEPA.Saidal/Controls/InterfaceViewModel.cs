@@ -34,8 +34,8 @@ namespace EXGEPA.Saidal.Controls
             this.Caption = "Module d'interface";
             this.LoadButtons();
             ServiceLocator.Resolve(out this.repositoryDataProvider);
-            this.StartDateEditRibbon.Date = DateTime.Today;
-            this.EndDateEditRibbon.Date = DateTime.Today.AddMonths(-1);
+            this.StartDateEditRibbon.Date = DateTime.Today.AddMonths(-1);
+            this.EndDateEditRibbon.Date = DateTime.Today;
             var sttingsGroup = this.AddNewGroup("Parametres", InsertPosition.Left);
             sttingsGroup.Commands.Add(this.EndDateEditRibbon);
             sttingsGroup.Commands.Add(this.StartDateEditRibbon);
@@ -74,7 +74,7 @@ namespace EXGEPA.Saidal.Controls
                 return false;
             }
 
-            if(this.displayOnlyValidatedInvoice && !invoice.IsValidated)
+            if (this.displayOnlyValidatedInvoice && !invoice.IsValidated)
             {
                 return false;
             }
