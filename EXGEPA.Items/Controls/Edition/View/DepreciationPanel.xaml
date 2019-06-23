@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
              xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol">
+    
     <dxlc:LayoutGroup View="Tabs" >
         <dxlc:LayoutGroup Header="Mensuel"  >
             <dxg:GridControl  ItemsSource="{Binding ListOfMonthelyDepreciation}" Margin="-12">

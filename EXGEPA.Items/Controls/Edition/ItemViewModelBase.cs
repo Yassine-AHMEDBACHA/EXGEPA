@@ -247,12 +247,12 @@
                 }
                 else
                 {
-                    return PicturesDirectory + ConcernedItem.ImagePath;
+                    return Path.Combine(PicturesDirectory, ConcernedItem.ImagePath);
                 }
             }
             set
             {
-                string target = "I" + this.ConcernedItem.Id.ToString() + Path.GetExtension(value);
+                var target = string.Empty;
                 if (string.IsNullOrEmpty(value))
                 {
                     string s = this.ImagePath;
@@ -261,9 +261,10 @@
                 }
                 else
                 {
-
+                    target = $"Item_{this.ConcernedItem.Key}{Path.GetExtension(value)}";
                     _SavePicture = () => { CopyPicture(value, target); };
                 }
+
                 ConcernedItem.ImagePath = target;
                 RaisePropertyChanged("ImagePath");
             }
@@ -285,12 +286,17 @@
         {
             if (!Directory.Exists(PicturesDirectory))
                 Directory.CreateDirectory(PicturesDirectory);
-            File.Copy(sourcePath, PicturesDirectory + target, true);
+
+            target = Path.Combine(this.PicturesDirectory, target);
+            File.Copy(sourcePath, target, true);
         }
 
         private void DeleteImage(string path)
         {
-            File.Delete(path);
+            if (this.RepositoryDataProvider.AllItems.All(x => !path.Contains(x.ImagePath)))
+            {
+                File.Delete(path);
+            }
         }
 
         public void UpdatePreviouseDepreciationDate(DateTime limiteDate)

@@ -117,7 +117,7 @@
 
         public ObservableCollection<Invoice> AllInvoices { get; set; }
 
-        public ObservableCollection<TransferOrder> ListOfTransferOrder { get; set; }
+        public ObservableCollection<TransferOrder> AllTransferOrders { get; set; }
 
         public ObservableCollection<Provider> ListOfProvider { get; set; }
 
@@ -158,7 +158,7 @@
             this.ListOfOutputCertificate = OutputCertificateService.All.ToObservable();
             this.ListOfPerson = PersonService.All.ToObservable();
             this.ListOfAnalyticalAccount = AnalyticalAccountService.All.ToObservable();
-            this.ListOfTransferOrder = TransferOrderService.All
+            this.AllTransferOrders = TransferOrderService.All
                 .ApplyOnAll(x => x.SetProperties(this.ListOfAnalyticalAccount))
                 .ToObservable();
 
@@ -218,7 +218,7 @@
             item.SetProperties(this.ListOfProvider);
             item.SetProperties(this.ListOfInputSheet);
             item.SetProperties(this.ListOfReceiveOrder);
-            item.SetProperties(this.ListOfTransferOrder);
+            item.SetProperties(this.AllTransferOrders);
             item.SetProperties(Offices);
             item.SetProperties(this.ListOfReformeCertificate);
             item.SetProperties(this.ListOfOutputCertificate);

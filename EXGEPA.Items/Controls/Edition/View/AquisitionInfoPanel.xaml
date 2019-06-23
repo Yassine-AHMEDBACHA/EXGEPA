@@ -23,7 +23,7 @@
                         <dxg:LookUpEdit 
                 					AssignNullValueOnClearingEditText="True" AutoComplete="True" InvalidValueBehavior="WaitForValidValue" ValidateOnEnterKeyPressed="True" 
                 			 IsReadOnly="{Binding IsAccountingInformationLocked}"
-                            PopupHeight="300 " PopupWidth="500" ItemsSource="{Binding RepositoryDataProvider.ListOfInvoice}" EditValue="{Binding Invoice}" DisplayMember="Key" AutoPopulateColumns="False"
+                            PopupHeight="300 " PopupWidth="500" ItemsSource="{Binding RepositoryDataProvider.AllInvoices}" EditValue="{Binding Invoice}" DisplayMember="Key" AutoPopulateColumns="False"
                             SelectedItem="{Binding Invoice}">
                             <dxg:LookUpEdit.PopupContentTemplate>
                                 <ControlTemplate>
@@ -50,7 +50,7 @@
                              IsReadOnly="{Binding IsAccountingInformationLocked}"
                                     InvalidValueBehavior="WaitForValidValue"
                         			ValidateOnEnterKeyPressed="True" 
-                                    PopupHeight="300 " PopupWidth="500" ItemsSource="{Binding RepositoryDataProvider.ListOfTransferOrder}" EditValue="{Binding TransferOrder}" SelectedItem="{Binding TransferOrder}" DisplayMember="Key" AutoPopulateColumns="False">
+                                    PopupHeight="300 " PopupWidth="500" ItemsSource="{Binding RepositoryDataProvider.AllTransferOrders}" EditValue="{Binding TransferOrder}" SelectedItem="{Binding TransferOrder}" DisplayMember="Key" AutoPopulateColumns="False">
                             <dxg:LookUpEdit.PopupContentTemplate    >
                                 <ControlTemplate    >
                                     <dxg:GridControl							x:Name="PART_GridControl">
