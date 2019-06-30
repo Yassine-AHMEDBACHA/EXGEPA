@@ -13,6 +13,8 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows.Input;
 using EXGEPA.Core;
+using CORESI.Tools.StringTools;
+using CORESI.Tools.Collections;
 
 namespace EXGEPA.Localization.Controls
 {
@@ -238,7 +240,8 @@ namespace EXGEPA.Localization.Controls
             {
                 _ConecernedLevel = value;
                 UpdateButtonVisibilities();
-                RaisePropertyChanged("ConecernedLevel");
+                RaisePropertyChanged(nameof(this.ConecernedLevel));
+                RaisePropertyChanged(nameof(this.Offices));
             }
         }
 
@@ -250,6 +253,7 @@ namespace EXGEPA.Localization.Controls
             {
                 _DisplayOfficeDetail = value;
                 RaisePropertyChanged("DisplayOfficeDetail");
+                RaisePropertyChanged(nameof(OfficeCode));
             }
         }
 
@@ -263,6 +267,24 @@ namespace EXGEPA.Localization.Controls
                 UpdateButtonVisibilities();
                 RaisePropertyChanged("ConecernedOffice");
             }
+        }
+
+        public string OfficeCode
+        {
+            get => this.ConecernedOffice?.Code;
+            set
+            {
+                var code = value.Align(4, "0");
+                this.ConecernedOffice.Code = code;
+                var key = $"{this.ConecernedOffice.Level.Key}{code}";
+                this.ConecernedOffice.Key = key;
+                this.RaisePropertyChanged(nameof(this.OfficeCode));
+            }
+        }
+
+        public ObservableCollection<Office> Offices
+        {
+            get => this.ConecernedLevel?.Offices.ToObservable();
         }
 
         #endregion
@@ -618,6 +640,7 @@ namespace EXGEPA.Localization.Controls
                             }
                             this.ConecernedLevel.Offices.Add(this.ConecernedOffice);
                             this.DisplayOfficeDetail = false;
+                            this.RaisePropertyChanged(nameof(this.Offices));
                             UpdateButtonVisibilities();
                         }
                     }, this.UpdateButtonVisibilities);
@@ -634,6 +657,7 @@ namespace EXGEPA.Localization.Controls
                 {
                     OfficeService.Delete(this.ConecernedOffice);
                     this.ConecernedLevel.Offices.Remove(this.ConecernedOffice);
+                    this.RaisePropertyChanged(nameof(this.Offices));
                 });
                 UpdateButtonVisibilities();
             }
@@ -649,6 +673,7 @@ namespace EXGEPA.Localization.Controls
                     this.UIMessage.TryDoAction(Logger, () =>
                     {
                         OfficeService.Update(this.ConecernedOffice);
+                        this.RaisePropertyChanged(nameof(this.Offices));
                         this.DisplayOfficeDetail = false;
                     });
                 });
@@ -698,19 +723,27 @@ namespace EXGEPA.Localization.Controls
         #region RibbonCommand
 
         public RibbonButton SiteAddNewRibbonButton { get; set; }
+
         public RibbonButton SiteEditRibbonButton { get; set; }
+
         public RibbonButton SiteDeleteRibbonButton { get; set; }
 
         public RibbonButton BuildingAddNewRibbonButton { get; set; }
+
         public RibbonButton BuildingEditRibbonButton { get; set; }
+
         public RibbonButton BuildingDeleteRibbonButton { get; set; }
 
         public RibbonButton LevelAddNewRibbonButton { get; set; }
+
         public RibbonButton LevelEditRibbonButton { get; set; }
+
         public RibbonButton LevelDeleteRibbonButton { get; set; }
 
         public RibbonButton OfficeAddNewRibbonButton { get; set; }
+
         public RibbonButton OfficeEditRibbonButton { get; set; }
+
         public RibbonButton OfficeDeleteRibbonButton { get; set; }
 
 

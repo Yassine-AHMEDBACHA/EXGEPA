@@ -163,6 +163,9 @@
       <DependentUpon>OfficeAttribution.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\OfficeAttributionViewModel.cs" />
+    <Compile Include="Controls\OfficeEditControl.xaml.cs">
+      <DependentUpon>OfficeEditControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Module.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -237,6 +240,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\OfficeAttribution.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\OfficeEditControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
