@@ -115,6 +115,10 @@
       <Project>{4542ee4d-6382-4318-b47f-b3adc47ef8aa}</Project>
       <Name>CORESI.IoC</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CORESI.Tools\CORESI.Tools.csproj">
+      <Project>{3D84E36E-574E-4F12-AD62-49578CB4D651}</Project>
+      <Name>CORESI.Tools</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

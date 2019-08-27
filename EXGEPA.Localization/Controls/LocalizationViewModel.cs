@@ -13,7 +13,7 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows.Input;
 using EXGEPA.Core;
-using CORESI.Tools.StringTools;
+using CORESI.Tools;
 using CORESI.Tools.Collections;
 
 namespace EXGEPA.Localization.Controls
@@ -643,6 +643,7 @@ namespace EXGEPA.Localization.Controls
                             this.RaisePropertyChanged(nameof(this.Offices));
                             UpdateButtonVisibilities();
                         }
+
                     }, this.UpdateButtonVisibilities);
 
             });
@@ -678,6 +679,7 @@ namespace EXGEPA.Localization.Controls
                     });
                 });
             }
+
             UpdateButtonVisibilities();
         }
 
@@ -745,8 +747,6 @@ namespace EXGEPA.Localization.Controls
         public RibbonButton OfficeEditRibbonButton { get; set; }
 
         public RibbonButton OfficeDeleteRibbonButton { get; set; }
-
-
 
         #endregion
     }

@@ -74,7 +74,7 @@ namespace EXGEPA.Security.Controls
 
         private void AddRole()
         {
-            if (!this.ConcernedRow.Key.IsValidData())
+            if (this.ConcernedRow.Key.IsNotValid())
             {
                 this.UIMessage.Error("Nom du role est invalide !");
                 return;

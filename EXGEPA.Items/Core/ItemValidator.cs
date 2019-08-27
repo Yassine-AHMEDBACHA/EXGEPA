@@ -32,13 +32,12 @@ namespace EXGEPA.Items.Core
             }
 
             var result = stringBuilder.ToString();
-            if (result.IsValidData())
+            if (result.IsValid())
             {
                 result = "Veuillez corriger les champs ci dessous avant de continuer \t\n" + result;
             }
 
             return null;
-
         }
 
         private static bool CheckGeneralAccounts(Item item)

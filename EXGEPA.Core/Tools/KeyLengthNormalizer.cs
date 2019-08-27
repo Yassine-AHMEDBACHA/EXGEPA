@@ -1,4 +1,4 @@
-﻿using CORESI.Tools.StringTools;
+﻿using CORESI.Tools;
 
 namespace EXGEPA.Core.Tools
 {

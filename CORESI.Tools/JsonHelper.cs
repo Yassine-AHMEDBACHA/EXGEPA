@@ -13,7 +13,7 @@ namespace CORESI.Tools
         public static void Deserialize<T>(this string json, out T deserializedObject)
             where T : class
         {
-            if (json.IsValidData())
+            if (json.IsValid())
             {
                 deserializedObject = JsonConvert.DeserializeObject<T>(json);
             }
@@ -25,7 +25,7 @@ namespace CORESI.Tools
             where T : class
         {
             deserializedObject = null;
-            if (json.IsValidData())
+            if (json.IsValid())
             {
                 deserializedObject = JsonConvert.DeserializeObject<T>(json);
                 if (deserializedObject != null)

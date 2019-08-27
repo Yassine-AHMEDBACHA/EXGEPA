@@ -6,6 +6,7 @@ using CORESI.WPF.Core;
 using CORESI.WPF.Model;
 using EXGEPA.Model;
 using System.Collections.ObjectModel;
+using CORESI.Tools;
 using System.Linq;
 using CORESI.WPF.Core.Interfaces;
 
@@ -39,7 +40,15 @@ namespace EXGEPA.Security.Controls
             this.RoleService = ServiceLocator.Resolve<IDataProvider<Role>>();
             //this.SetEditionGroup();
             //this.SetToolGroup();
-            this.AddNewGroup().AddCommand("Reinitialisé Mot de passe", IconProvider.BOPermission, this.ResetPassword);
+            var command = this.AddNewGroup().AddCommand("Reinitialisé Mot de passe", IconProvider.BOPermission, this.ResetPassword);
+               
+            var ability = this.Groups.SelectMany(x=>x.Commands)
+                .OfType<SimpleButton>()
+                .FirstOrDefault(x => x.Caption.ContainsString("modifier"))
+                ?.CommandAction
+                .Ability;
+
+            command.SetAbility(ability);
         }
 
         public override void InitData()

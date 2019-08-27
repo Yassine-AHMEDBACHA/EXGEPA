@@ -12,7 +12,7 @@ namespace EXGEPA.Repository.Controls
     using CORESI.Data;
     using CORESI.Data.Tools;
     using CORESI.IoC;
-    using CORESI.Tools.StringTools;
+    using CORESI.Tools;
     using CORESI.WPF.Controls;
     using CORESI.WPF.Core.Interfaces;
     using EXGEPA.Model;
@@ -172,13 +172,13 @@ namespace EXGEPA.Repository.Controls
                 return false;
             }
 
-            if (!this.ConcernedRow.Caption.IsValidData())
+            if (!this.ConcernedRow.Caption.IsValid())
             {
                 this.UIMessage.Error($"Vous devez saisir une libellé");
                 return false;
             }
 
-            if (!this.ConcernedRow.Key.IsValidData() || !this.ConcernedRow.Key.StartsWith(this.ConcernedRow.ReferenceType.Key))
+            if (!this.ConcernedRow.Key.IsValid() || !this.ConcernedRow.Key.StartsWith(this.ConcernedRow.ReferenceType.Key))
             {
                 this.UIMessage.Error($"Code non valide, le code doit commencer par {this.ConcernedRow.ReferenceType?.Key}");
                 return false;

@@ -143,6 +143,10 @@
       <Project>{3EF0B9B7-F6F9-4538-8496-FC870BE455AA}</Project>
       <Name>CORESI.Security</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CORESI.Tools\CORESI.Tools.csproj">
+      <Project>{3d84e36e-574e-4f12-ad62-49578cb4d651}</Project>
+      <Name>CORESI.Tools</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CORESI.WPF.Controls\CORESI.WPF.Controls.csproj">
       <Project>{33F2993C-F05C-45C1-827C-1CACA3B30734}</Project>
       <Name>CORESI.WPF.Controls</Name>

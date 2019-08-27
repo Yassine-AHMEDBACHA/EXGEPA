@@ -12,7 +12,6 @@ namespace EXGEPA.Saidal.Core
     using CORESI.Data;
     using CORESI.IoC;
     using CORESI.Tools;
-    using CORESI.Tools.StringTools;
     using CORESI.WPF;
     using EXGEPA.Model;
 

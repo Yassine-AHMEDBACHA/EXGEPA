@@ -13,6 +13,7 @@ namespace CORESI.WPF.Model
         private bool canExecuteAction;
 
         public string Ability { get; set; }
+
         bool FullAccess { get; set; }
         public Command(Action action, bool fullAccess)
         {

@@ -108,8 +108,8 @@
     <Compile Include="PropertyTools.cs" />
     <Compile Include="RunTimeHelper.cs" />
     <Compile Include="ScoopLogger.cs" />
-    <Compile Include="StringTools\AdditionnalCharPosition.cs" />
-    <Compile Include="StringTools\StringHelper.cs" />
+    <Compile Include="StringExtensions\AdditionnalCharPosition.cs" />
+    <Compile Include="StringExtensions\StringExtensions.cs" />
     <Compile Include="TextAppender.cs" />
   </ItemGroup>
   <ItemGroup>

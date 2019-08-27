@@ -44,7 +44,7 @@ namespace CORESI.WPF.Core.Login
 #endif
 
             BadInformations = false;
-            IOperator opertor = LoginManager.OpenSession(Login, Password);
+            var opertor = LoginManager.OpenSession(Login, Password);
             if (opertor == null)
             {
                 chanceCount--;

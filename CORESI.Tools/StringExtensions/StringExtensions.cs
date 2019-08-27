@@ -1,12 +1,12 @@
-﻿// <copyright file="StringHelper.cs" company="PlaceholderCompany">
+﻿// <copyright file="StringExtensions.cs" company="PlaceholderCompany">
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-namespace CORESI.Tools.StringTools
+namespace CORESI.Tools
 {
     using System;
 
-    public static class StringHelper
+    public static class StringExtensions
     {
         public static string Align(this string str, int lenght, string ch, AdditionnalCharPosition additionnalCharPosition = AdditionnalCharPosition.Left)
         {
@@ -36,6 +36,11 @@ namespace CORESI.Tools.StringTools
         public static string ToAlignedString(this object obj, int lenght, string ch, AdditionnalCharPosition additionnalCharPosition = AdditionnalCharPosition.Left)
         {
             return obj.ToString().Align(lenght, ch, additionnalCharPosition);
+        }
+
+        public static bool ContainsString(this string str, string value)
+        {
+            return str.IndexOf(value, StringComparison.InvariantCultureIgnoreCase) >= 0;
         }
     }
 }

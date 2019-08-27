@@ -127,7 +127,7 @@ namespace EXGEPA.Invoice.Controls
                     string message = "Veuillez completer les informations suivantes SVP : ";
                     bool error = false;
 
-                    if (!ConcernedRow.Key.IsValidData())
+                    if (ConcernedRow.Key.IsNotValid())
                     {
                         message += "\n\t-Numéro de facture";
                         error = true;

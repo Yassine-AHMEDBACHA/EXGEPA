@@ -62,7 +62,8 @@ namespace CORESI.DataAccess.Core.Database
 
                 list.ForEach(t =>
                 {
-                    string script = t.GetForeignKey(); if (script.IsValidData())
+                    string script = t.GetForeignKey();
+                    if (script.IsValid())
                     {
                         logger.InfoFormat("Adding foreign keys for table : {0}", t.TableName);
                         dbFacade.ExecuteNonQuery(script);

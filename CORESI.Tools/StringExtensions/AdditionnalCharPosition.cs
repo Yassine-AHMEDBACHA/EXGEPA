@@ -2,7 +2,7 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-namespace CORESI.Tools.StringTools
+namespace CORESI.Tools
 {
     public enum AdditionnalCharPosition
     {

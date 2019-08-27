@@ -1,18 +1,17 @@
-﻿using System;
-using System.Runtime.CompilerServices;
-
-namespace CORESI.Data.Tools
+﻿namespace CORESI.Data.Tools
 {
+    using System;
+    using System.Runtime.CompilerServices;
+
     public static class StringExtension
     {
-        public static bool IsValidData(this string data)
-        {
-            return !(string.IsNullOrEmpty(data) || string.IsNullOrWhiteSpace(data));
-        }
+        public static bool IsValid(this string data) => !data.IsNotValid();
+
+        public static bool IsNotValid(this string data) => string.IsNullOrEmpty(data) || string.IsNullOrWhiteSpace(data);
 
         public static void CheckData(this string data, [CallerMemberName] string variableName = "")
         {
-            if (!data.IsValidData())
+            if (!data.IsValid())
             {
                 throw new Exception(variableName + " is empty or not valide");
             }
