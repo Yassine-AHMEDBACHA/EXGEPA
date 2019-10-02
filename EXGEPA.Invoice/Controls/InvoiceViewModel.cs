@@ -182,7 +182,7 @@ namespace EXGEPA.Invoice.Controls
             if (invoice == null)
                 return;
 
-            ItemAttributionOptions options = new ItemAttributionOptions
+            var options = new ItemAttributionOptions
             {
                 PageCaption = "Facture N°:" + invoice.Key,
                 SetConfirmationMessage = "Etes vous sûr de vouloir affecter ces articles à la facture N° " + invoice.Key,

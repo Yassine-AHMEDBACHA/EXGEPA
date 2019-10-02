@@ -1,5 +1,10 @@
-﻿using CORESI.Data;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using CORESI.Data;
 using CORESI.IoC;
+using CORESI.Tools;
 using CORESI.WPF.Controls;
 using CORESI.WPF.Core;
 using CORESI.WPF.Model;
@@ -7,11 +12,6 @@ using EXGEPA.Core.Interfaces;
 using EXGEPA.Depreciations.Core;
 using EXGEPA.Depreciations.Model;
 using EXGEPA.Model;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using System;
-using CORESI.Tools;
 
 namespace EXGEPA.Depreciations.Contorls
 {
@@ -24,7 +24,7 @@ namespace EXGEPA.Depreciations.Contorls
 
         IDataProvider<Item> ItemService { get; set; }
 
-        
+
 
         public ComboBoxRibbon<string> ComboBoxRibbon { get; set; }
 
@@ -111,15 +111,15 @@ namespace EXGEPA.Depreciations.Contorls
                 this.ShowLoadingPanel = true;
                 ListOfRows = null;
 
-                Stopwatch stopwatcher = Stopwatch.StartNew();
-                System.Collections.Generic.List<Item> items = ItemService.SelectAll().ToList();
-                Parallel.ForEach(items, x => _RepositoryDataProvider.BindItemFields(x));
+                var stopwatcher = Stopwatch.StartNew();
+                var items = ItemService.SelectAll().ToList();
+                _RepositoryDataProvider.BindItemFields(items);
                 stopwatcher.Stop();
                 logger.Info("Loading Items done in : " + stopwatcher.Elapsed + " and " + items.Count + " item(s) retreived");
                 logger.Info("Computing and preparing Data ...");
                 stopwatcher.Restart();
-                System.Collections.Generic.Dictionary<Item, System.Collections.Generic.List<Depreciation>> result = calculator.GetDepriciation(items, StartDateEditRibbon.Date, EndDateEditRibbon.Date);
-                System.Collections.Generic.List<Wrapper> data = result.Where(v => v.Value.Any(d => d.StartDate >= StartDateEditRibbon.Date && d.EndDate <= EndDateEditRibbon.Date)).Select(x => new Wrapper()
+                var result = calculator.GetDepriciation(items, StartDateEditRibbon.Date, EndDateEditRibbon.Date);
+                var data = result.Where(v => v.Value.Any(d => d.StartDate >= StartDateEditRibbon.Date && d.EndDate <= EndDateEditRibbon.Date)).Select(x => new Wrapper()
                 {
                     Item = x.Key,
                     Depreciations = x.Value.OrderBy(d => d.StartDate).ToList(),
@@ -133,7 +133,10 @@ namespace EXGEPA.Depreciations.Contorls
                 {
                     if (this.ShouldSaveDepreciation())
                     {
-                        Simulation.SaveDepreciation(result.SelectMany(x => x.Value));
+                        var DepToSave = result.SelectMany(x => x.Value);
+                        var accountingPeriod = DepToSave.FirstOrDefault().AccountingPeriod;
+                        var oldItems = GetOldItems(items, accountingPeriod);
+                        Simulation.SaveDepreciation(DepToSave.Union(oldItems));
                     }
                     else
                     {
@@ -146,6 +149,25 @@ namespace EXGEPA.Depreciations.Contorls
                 stopwatcher.Stop();
                 logger.Info("Computing done in " + stopwatcher.Elapsed);
             }, () => this.ShowLoadingPanel = false);
+        }
+
+        private IEnumerable<Depreciation> GetOldItems(System.Collections.Generic.List<Item> items, AccountingPeriod accountingPeriod)
+        {
+            
+            var second = items.Where(x => x.LimiteDate < StartDateEditRibbon.Date).Select(x => new Depreciation
+            {
+                AccountingNetValue = 0,
+                AccountingPeriod = accountingPeriod,
+                Annuity = 0,
+                InitialValue = x.Amount,
+                PreviousDepreciation = x.Amount,
+                Item = x,
+                StartDate = StartDateEditRibbon.Date,
+                EndDate = EndDateEditRibbon.Date,
+                Rate = x.FiscalRate,
+                DepreciationType = DepreciationType.LinearDepreciation
+            });
+            return second;
         }
 
         private bool ShouldSaveDepreciation()

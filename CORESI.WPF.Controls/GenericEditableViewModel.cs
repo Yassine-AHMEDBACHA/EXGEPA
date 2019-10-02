@@ -40,7 +40,7 @@ namespace CORESI.WPF.Controls
             });
             this.ListOfRows = new ObservableCollection<T>();
             DoubleClicAction = EditItem;
-            Command command = new Command(() =>
+            var command = new Command(() =>
             {
                 if ((DoubleClicAction) != null)
                     DoubleClicAction();

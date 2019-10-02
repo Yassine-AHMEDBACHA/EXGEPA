@@ -15,6 +15,7 @@ namespace CORESI.WPF.Model
         public string Ability { get; set; }
 
         bool FullAccess { get; set; }
+
         public Command(Action action, bool fullAccess)
         {
             this.Action = action;
@@ -34,7 +35,7 @@ namespace CORESI.WPF.Model
         public bool CanExecute(object parameter)
         {
             if (FullAccess)
-                return false;
+                return true;
 
             if (this.canExecuteAction != ButtonRights.CanDoAction(Ability))
             {

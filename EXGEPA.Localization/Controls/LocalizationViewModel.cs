@@ -42,6 +42,7 @@ namespace EXGEPA.Localization.Controls
         OfficeService OfficeService { get; set; }
 
         IInventorySheetProvider OfficeInventoryReportProvider { get; set; }
+
         IRepositoryDataProvider RepositoryDataProvider { get; set; }
 
         IDataProvider<InventoryRow> InventoryRowService { get; set; }
@@ -82,7 +83,7 @@ namespace EXGEPA.Localization.Controls
                 IList<Office> allOffices = this.OfficeService.SelectAll();
                 IList<Level> allLevels = this.LevelService.SelectAll();
                 IList<Building> allBuildings = this.BuildingService.SelectAll();
-                Core.LoacalizationTools.BindLocalization(allOffices, allLevels, sites, allBuildings, allRegion);
+                LocalizationTools.BindLocalization(allOffices, allLevels, sites, allBuildings, allRegion);
                 CurrentRegion = sites.FirstOrDefault().Region;
                 ListOfAnalyticalAccount = new ObservableCollection<AnalyticalAccount>(AnalyticalAccountService.SelectAll());
                 foreach (Office office in allOffices)
@@ -390,7 +391,7 @@ namespace EXGEPA.Localization.Controls
             {
                 this.UIMessage.TryDoAction(Logger, () =>
                     {
-                        this.ConecernedSite.Code = LoacalizationTools.NormelizeCode(this.ConecernedSite.Code);
+                        this.ConecernedSite.Code = LocalizationTools.NormelizeCode(this.ConecernedSite.Code);
                         this.ConecernedSite.Key = this.CurrentRegion.Key + this.ConecernedSite.Code;
                         SiteService.Add(this.ConecernedSite);
                         this.ListOfRows.Add(this.ConecernedSite);
@@ -465,8 +466,8 @@ namespace EXGEPA.Localization.Controls
             {
                 this.UIMessage.TryDoAction(Logger, () =>
                 {
-                    this.ConecernedBuilding.Code = LoacalizationTools.NormelizeCode(this.ConecernedBuilding.Code);
-                    this.ConecernedBuilding.Key = this.ConecernedSite.Code + this.ConecernedBuilding.Code;
+                    this.ConecernedBuilding.Code = LocalizationTools.NormelizeCode(this.ConecernedBuilding.Code);
+                    this.ConecernedBuilding.Key = this.ConecernedSite.Key + this.ConecernedBuilding.Code;
                     BuildingService.Add(this.ConecernedBuilding);
                     if (ConecernedSite.Buildings == null)
                     {
@@ -474,7 +475,7 @@ namespace EXGEPA.Localization.Controls
                     }
                     else
                     {
-                        this.ConecernedSite.Buildings = new System.Collections.ObjectModel.ObservableCollection<Building>(ConecernedSite.Buildings);
+                        this.ConecernedSite.Buildings = ConecernedSite.Buildings.ToObservable();
                     }
                     this.ConecernedSite.Buildings.Add(this.ConecernedBuilding);
                     this.DisplayBuildingDetail = false;
@@ -533,8 +534,8 @@ namespace EXGEPA.Localization.Controls
                 this.UIMessage.TryDoAction(Logger, () =>
                     {
                         this.DisplayLevelDetail = false;
-                        this.ConecernedLevel.Code = LoacalizationTools.NormelizeCode(this.ConecernedLevel.Code);
-                        this.ConecernedLevel.Key = this.ConecernedBuilding.Code + this.ConecernedLevel.Code;
+                        this.ConecernedLevel.Code = LocalizationTools.NormelizeCode(this.ConecernedLevel.Code);
+                        this.ConecernedLevel.Key = this.ConecernedBuilding.Key + this.ConecernedLevel.Code;
                         LevelService.Add(this.ConecernedLevel);
                         if (this.ConecernedBuilding.Levels == null)
                         {
@@ -542,7 +543,7 @@ namespace EXGEPA.Localization.Controls
                         }
                         else
                         {
-                            this.ConecernedBuilding.Levels = new System.Collections.ObjectModel.ObservableCollection<Level>(this.ConecernedBuilding.Levels);
+                            this.ConecernedBuilding.Levels = this.ConecernedBuilding.Levels.ToObservable();
                         }
                         this.ConecernedBuilding.Levels.Add(this.ConecernedLevel);
                         RaisePropertyChanged("ConecernedBuilding");
@@ -608,7 +609,7 @@ namespace EXGEPA.Localization.Controls
                 result = (ConecernedLevel.Offices.Count() + 1).ToString();
             }
 
-            string code = LoacalizationTools.NormelizeOfficeCode(result);
+            string code = LocalizationTools.NormelizeOfficeCode(result);
 
             ConecernedOffice = new Office()
             {
@@ -627,17 +628,10 @@ namespace EXGEPA.Localization.Controls
                         }
                         else
                         {
-                            this.ConecernedOffice.Code = LoacalizationTools.NormelizeOfficeCode(this.ConecernedOffice.Code);
-                            this.ConecernedOffice.Key = $"{ConecernedLevel.Key}{this.ConecernedOffice.Code}";
+                            this.ConecernedOffice.Code = LocalizationTools.NormelizeOfficeCode(this.ConecernedOffice.Code);
+                            this.ConecernedOffice.Key = ConecernedLevel.Key + this.ConecernedOffice.Code;
                             OfficeService.Add(this.ConecernedOffice);
-                            if (this.ConecernedLevel.Offices == null)
-                            {
-                                this.ConecernedLevel.Offices = new ObservableCollection<Office>();
-                            }
-                            else
-                            {
-                                this.ConecernedLevel.Offices = new ObservableCollection<Office>(this.ConecernedLevel.Offices);
-                            }
+                            this.ConecernedLevel.Offices = this.ConecernedLevel.Offices?.ToObservable() ?? new ObservableCollection<Office>();
                             this.ConecernedLevel.Offices.Add(this.ConecernedOffice);
                             this.DisplayOfficeDetail = false;
                             this.RaisePropertyChanged(nameof(this.Offices));

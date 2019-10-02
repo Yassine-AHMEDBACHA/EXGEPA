@@ -4,7 +4,7 @@ using EXGEPA.Model;
 
 namespace EXGEPA.Core
 {
-    public class LoacalizationTools
+    public class LocalizationTools
     {
         public static void BindLocalization(IEnumerable<Office> allOffices, IEnumerable<Level> AllLevel, IEnumerable<Site> allSites, IEnumerable<Building> allbuildings, IEnumerable<Region> allRegions)
         {

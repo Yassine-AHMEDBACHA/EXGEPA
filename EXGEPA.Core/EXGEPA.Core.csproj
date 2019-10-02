@@ -119,7 +119,7 @@
     <Compile Include="Security\Services.cs" />
     <Compile Include="Tools\ItemExtensions.cs" />
     <Compile Include="Tools\KeyLengthNormalizer.cs" />
-    <Compile Include="Tools\LoacalizationTools.cs" />
+    <Compile Include="Tools\LocalizationTools.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

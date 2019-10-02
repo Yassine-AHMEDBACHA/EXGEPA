@@ -185,7 +185,7 @@
                     </dxr:RibbonStatusBarControl.RightItems>
 
                     <dxr:RibbonStatusBarControl.LeftItems>
-                        <dxb:BarStaticItem x:Name="barStaticItem1" Content="{Binding ClientInformation.Name, Mode=OneWay}"/>
+                        <dxb:BarStaticItem x:Name="barStaticItem1" Content="{Binding CurrentOperator}"/>
                     </dxr:RibbonStatusBarControl.LeftItems>
 
                 </dxr:RibbonStatusBarControl>

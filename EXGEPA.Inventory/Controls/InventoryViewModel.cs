@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using CORESI.Data;
+using CORESI.Data.Tools;
 using CORESI.DataAccess.Core;
 using CORESI.IoC;
 using CORESI.Tools;
@@ -227,7 +228,6 @@ namespace EXGEPA.Inventory.Controls
         {
             InventoryData inventory = new InventoryData()
             {
-
                 Id = inventoryRow.Id,
                 Key = inventoryRow.Key,
                 InventoryRow = inventoryRow,
@@ -238,12 +238,12 @@ namespace EXGEPA.Inventory.Controls
 
             AllOffices.TryGetValue(inventoryRow.Localization, out Office office);
             inventory.Office = office;
-            if (allItems.TryGetValue(inventoryRow.Key, out Item item))
+            if (inventoryRow.Key.IsValid() && allItems.TryGetValue(inventoryRow.Key, out Item item))
             {
                 allItems.Remove(inventoryRow.Key);
+                inventory.Item = item;
             }
 
-            inventory.Item = item;
             inventory.GapType = ComputeGap(inventory);
             return inventory;
         }

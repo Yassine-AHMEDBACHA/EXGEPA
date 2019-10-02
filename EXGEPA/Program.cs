@@ -40,16 +40,13 @@ namespace EXGEPA
             if (result != null)
             {
                 logger.Info("Loggin : " + result.Login + " ID : " + result.Id);
-                Application app = new Application
-                {
-                    //app.Startup += App_Startup;
-                    MainWindow = uIService.CreateShell()
-                };
+                var shell = uIService.CreateShell();
+                var app = new Application { MainWindow = shell };
                 uIService.InitShellInformation(result);
-                ISessionManager sessionManager = ServiceLocator.Resolve<ISessionManager>();
+                var sessionManager = ServiceLocator.Resolve<ISessionManager>();
                 if (sessionManager.CurrentSession != null)
                 {
-                    sessionManager.SetApplicationName("EXGEPA");
+                    sessionManager?.SetApplicationName("EXGEPA");
                 }
                 else
                 {
@@ -57,8 +54,8 @@ namespace EXGEPA
                 }
 
                 app.Exit += (s, e) => { sessionManager.CloseSession(); };
-                Role role = ServiceLocator.Resolve<IDataProvider<Role>>().SelectAll().First(x => x.Id == result.Role.Id);
-                ServiceLocator.Resolve<RightManager>().Initialize(role);
+                result.Role = ServiceLocator.Resolve<IDataProvider<Role>>().SelectAll().First(x => x.Id == result.Role.Id);
+                ServiceLocator.Resolve<RightManager>().Initialize(result.Role);
                 Task.Factory.StartNew(() =>
                 {
                     IDbFacade dbFacade = ServiceLocator.Resolve<IDbFacade>();

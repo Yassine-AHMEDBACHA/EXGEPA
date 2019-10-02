@@ -1,21 +1,24 @@
-﻿using CORESI.Data;
+﻿using System.Collections.ObjectModel;
+using System.Linq;
+using CORESI.Data;
 using CORESI.IoC;
 using CORESI.Security;
+using CORESI.Tools;
+using CORESI.Tools.Collections;
 using CORESI.WPF.Controls;
 using CORESI.WPF.Core;
+using CORESI.WPF.Core.Interfaces;
 using CORESI.WPF.Model;
 using EXGEPA.Model;
-using System.Collections.ObjectModel;
-using CORESI.Tools;
-using System.Linq;
-using CORESI.WPF.Core.Interfaces;
 
 namespace EXGEPA.Security.Controls
 {
     public class OperatorViewModel : GenericEditableViewModel<Operator>
     {
         ILoginManager<IOperator> LoginManager { get; set; }
+
         public IDataProvider<Person> PersonService { get; private set; }
+        
         public IDataProvider<Role> RoleService { get; private set; }
 
         private ObservableCollection<Role> _ListOfRoles;
@@ -32,7 +35,6 @@ namespace EXGEPA.Security.Controls
 
 
         public OperatorViewModel(IExportableGrid view) : base(view, false)
-
         {
             this.Caption = "List des utilisateurs";
             this.LoginManager = ServiceLocator.Resolve<ILoginManager<IOperator>>();
@@ -41,7 +43,7 @@ namespace EXGEPA.Security.Controls
             //this.SetEditionGroup();
             //this.SetToolGroup();
             var command = this.AddNewGroup().AddCommand("Reinitialisé Mot de passe", IconProvider.BOPermission, this.ResetPassword);
-               
+            command.SetAbility("modifier");
             var ability = this.Groups.SelectMany(x=>x.Commands)
                 .OfType<SimpleButton>()
                 .FirstOrDefault(x => x.Caption.ContainsString("modifier"))
@@ -53,8 +55,8 @@ namespace EXGEPA.Security.Controls
 
         public override void InitData()
         {
-            System.Collections.Generic.List<Operator> users = this.DBservice.SelectAll().ToList();
-            System.Collections.Generic.IList<Person> persons = PersonService.SelectAll();
+            var users = this.DBservice.SelectAll().ToList();
+            var persons = PersonService.SelectAll();
             this.ListOfRoles = new ObservableCollection<Role>(this.RoleService.SelectAll());
             users.ForEach(u =>
             {
@@ -67,8 +69,9 @@ namespace EXGEPA.Security.Controls
                     u.Role = ListOfRoles.FirstOrDefault(p => p.Id == u.Role.Id);
                 }
             });
-            ListOfPersons = new ObservableCollection<Person>(persons);
-            ListOfRows = new ObservableCollection<Operator>(users);
+
+            ListOfPersons = persons.ToObservable();
+            ListOfRows = users.ToObservable();
         }
 
         public override void AddItem()

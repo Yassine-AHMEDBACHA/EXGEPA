@@ -33,7 +33,7 @@ namespace EXGEPA.DataAccess
             List<Site> sites = SiteService.SelectAll().ToList();
             List<Building> buildings = BuildingService.SelectAll().ToList();
             List<Region> regions = RegionService.SelectAll().ToList();
-            LoacalizationTools.BindLocalization(offices, levels, sites, buildings, regions);
+            LocalizationTools.BindLocalization(offices, levels, sites, buildings, regions);
             return offices;
         }
 

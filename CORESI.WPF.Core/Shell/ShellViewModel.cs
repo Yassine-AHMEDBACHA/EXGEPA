@@ -1,6 +1,7 @@
 using CORESI.WPF.Model;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
 
@@ -44,6 +45,9 @@ namespace CORESI.WPF.Core.Shell
                 RaisePropertyChanged("ClientInformation");
             }
         }
+
+        public string CurrentOperator => $"{this.ClientInformation.Name} : {this.ClientInformation.Role.Key}";
+
         private string _WindowTitle;
 
         public string WindowTitle
@@ -95,7 +99,7 @@ namespace CORESI.WPF.Core.Shell
             DefaultCategory.Pages.Add(HomePage);
             Categories.Add(DefaultCategory);
             UpdateView = new DelegateCommand<Page>(SwitchView);
-            this.CopyRight = AssemblyInfo.AssemblyCopyright;
+            this.CopyRight = "Copyright © SARL CORESI 2019";
         }
 
         void SwitchView(Page page)

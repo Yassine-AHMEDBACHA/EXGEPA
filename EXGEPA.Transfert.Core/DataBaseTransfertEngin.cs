@@ -13,15 +13,17 @@ namespace EXGEPA.Transfert.Core
 {
     public class DataBaseTransfertEngin : IDataBaseTransfertEngin
     {
-        static string ConnectionString = DBConnectionFactory.GetConnectionStrings("SourceDataBase");
         static readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        IDbFacade DbFacade { get; set; }
+
+        static readonly string ConnectionString = DBConnectionFactory.GetConnectionStrings("SourceDataBase");
 
         public DataBaseTransfertEngin()
         {
             DbFacade = ServiceLocator.Resolve<IDbFacade>();
             PrepareSourceDataBase();
         }
+
+        public IDbFacade DbFacade { get; }
 
         private static void PrepareSourceDataBase()
         {
@@ -89,16 +91,18 @@ namespace EXGEPA.Transfert.Core
         public static int ExcuteNonQuery(string Command)
         {
             int count = 0;
-            using (SqlConnection sqlConnection = new SqlConnection(ConnectionString))
+            using (var sqlConnection = new SqlConnection(ConnectionString))
             {
-                SqlCommand sqlCommand = new SqlCommand
+                using (var sqlCommand = new SqlCommand())
                 {
-                    CommandText = Command,
-                    Connection = sqlConnection
-                };
-                sqlConnection.Open();
-                count = sqlCommand.ExecuteNonQuery();
+                    sqlCommand.CommandText = Command;
+                    sqlCommand.Connection = sqlConnection;
+
+                    sqlConnection.Open();
+                    count = sqlCommand.ExecuteNonQuery();
+                }
             }
+
             return count;
         }
         public List<InventoryRow> loadInventory()
@@ -237,7 +241,7 @@ namespace EXGEPA.Transfert.Core
             {
                 decimal.TryParse(sqlDataReader["Taux"].ToString(), out decimal rate);
                 GeneralAccount account = BuildGeneralAccountFromDataReader(sqlDataReader, "Compte_inv", "Lib_compte_inv", EGeneralAccountType.Charge);
-                if (sqlDataReader["Compte_amo"].ToString().IsValidData())
+                if (sqlDataReader["Compte_amo"].ToString().IsValid())
                 {
                     account.Rate = rate;
                     account.GeneralAccountType.Type = EGeneralAccountType.Investment;
@@ -437,7 +441,7 @@ namespace EXGEPA.Transfert.Core
                     Key = sqlDataReader["Etat_art"].ToString()
                 };
                 return itemState;
-            }).Where(x => x.Key.IsValidData()).ToList();
+            }).Where(x => x.Key.IsValid()).ToList();
             if (result.Count == 0)
             {
                 return states.Select(x => new ItemState { Key = x.ToUpperInvariant() }).ToList();
@@ -458,7 +462,7 @@ namespace EXGEPA.Transfert.Core
                     Description = sqlDataReader["DESIG"].ToString().ToUpperInvariant(),
                     SmallDescription = sqlDataReader["sous_desig"].ToString().ToUpperInvariant()
                 };
-                if (!item.SmallDescription.IsValidData())
+                if (!item.SmallDescription.IsValid())
                 {
                     item.SmallDescription = item.Description;
                 }
@@ -513,13 +517,16 @@ namespace EXGEPA.Transfert.Core
                 item.Provider = new Provider() { Key = sqlDataReader["COD_FOURN"].ToString().ToUpperInvariant() };
                 item.ElementCount = int.Parse(sqlDataReader["N_ELEM"].ToString().ToUpperInvariant());
                 item.ReformeCertificate = new ReformeCertificate() { Key = sqlDataReader["pv_reforme"].ToString().ToUpperInvariant() };
-                List<string> Certificates = new List<string>();
-                Certificates.Add(sqlDataReader["pv_cession"].ToString().ToUpperInvariant());
-                Certificates.Add(sqlDataReader["pv_disp"].ToString().ToUpperInvariant());
-                Certificates.Add(sqlDataReader["pv_distruction"].ToString().ToUpperInvariant());
+                List<string> Certificates = new List<string>
+                {
+                    sqlDataReader["pv_cession"].ToString().ToUpperInvariant(),
+                    sqlDataReader["pv_disp"].ToString().ToUpperInvariant(),
+                    sqlDataReader["pv_distruction"].ToString().ToUpperInvariant()
+                };
+
                 item.OutputCertificate = new OutputCertificate() { Key = Certificates.Max() };
                 item.ItemState = new ItemState() { Key = sqlDataReader["Etat_art"].ToString().ToUpperInvariant() };
-                if (!item.ItemState.Key.IsValidData())
+                if (!item.ItemState.Key.IsValid())
                 {
                     item.ItemState = null;
                 }
