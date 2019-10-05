@@ -18,7 +18,7 @@ namespace EXGEPA.Depreciations.Contorls
     public class DepreciationViewModel : BasicExportableViewModel<Wrapper>
     {
         static readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        IRepositoryDataProvider _RepositoryDataProvider;
+        private IRepositoryDataProvider repositoryDataProvider;
 
         protected readonly IParameterProvider parameterProvider;
 
@@ -42,7 +42,7 @@ namespace EXGEPA.Depreciations.Contorls
             ComboBoxRibbon.EditValue = ComboBoxRibbon.ItemsSource.FirstOrDefault();
             EndDateEditRibbon = new DateEditRibbon("Date Fin");
             StartDateEditRibbon = new DateEditRibbon("Date debut");
-            Group sttingsGroup = new Group("Parametres de calcul");
+            var sttingsGroup = new Group("Parametres de calcul");
             sttingsGroup.Commands.Add(StartDateEditRibbon);
             sttingsGroup.Commands.Add(EndDateEditRibbon);
             sttingsGroup.Commands.Add(ComboBoxRibbon);
@@ -63,7 +63,7 @@ namespace EXGEPA.Depreciations.Contorls
 
             this.UIMessage.TryDoAction(logger, () =>
                 {
-                    _RepositoryDataProvider = ServiceLocator.Resolve<IRepositoryDataProvider>();
+                    this.repositoryDataProvider = ServiceLocator.Resolve<IRepositoryDataProvider>();
                     ItemService = ServiceLocator.Resolve<IDataProvider<Item>>();
                     AccountingPeriod currentAccountingPeriod = accountingPeriodHelper.GetOpenPeriod();
                     StartDateEditRibbon.Date = currentAccountingPeriod.StartDate;
@@ -116,7 +116,7 @@ namespace EXGEPA.Depreciations.Contorls
 
                 var stopwatcher = Stopwatch.StartNew();
                 var items = ItemService.SelectAll().ToList();
-                _RepositoryDataProvider.BindProperties(items);
+                this.repositoryDataProvider.BindProperties(items);
                 stopwatcher.Stop();
                 logger.Info("Loading Items done in : " + stopwatcher.Elapsed + " and " + items.Count + " item(s) retreived");
                 logger.Info("Computing and preparing Data ...");
@@ -156,12 +156,11 @@ namespace EXGEPA.Depreciations.Contorls
 
         private IEnumerable<Depreciation> ExcludeCessions(IEnumerable<Depreciation> DepToSave)
         {
-            return DepToSave.Where(x => x.Item.OutputCertificate!=null && this.outputTypeToIgnore.Contains(x.Item.OutputCertificate.OutputType) && x.Item.OutputCertificate.Date <= EndDateEditRibbon.Date);
+            return DepToSave.Where(x => x.Item.OutputCertificate == null || this.outputTypeToIgnore.Contains(x.Item.OutputCertificate.OutputType) && x.Item.OutputCertificate.Date <= EndDateEditRibbon.Date);
         }
 
         private IEnumerable<Depreciation> GetOldItems(List<Item> items, AccountingPeriod accountingPeriod)
         {
-            
             var second = items.Where(x => x.LimiteDate < StartDateEditRibbon.Date).Select(x => new Depreciation
             {
                 AccountingNetValue = 0,
@@ -175,6 +174,7 @@ namespace EXGEPA.Depreciations.Contorls
                 Rate = x.FiscalRate,
                 DepreciationType = DepreciationType.LinearDepreciation
             });
+
             return second;
         }
 
@@ -183,7 +183,6 @@ namespace EXGEPA.Depreciations.Contorls
             return this.StartDateEditRibbon.Date.Day >= 1 && StartDateEditRibbon.Date.Month >= 1
                 && this.EndDateEditRibbon.Date.Day <= 31 && EndDateEditRibbon.Date.Month <= 12 &&
                 (this.StartDateEditRibbon.Date.Year - this.EndDateEditRibbon.Date.Year) == 0;
-
         }
     }
 }

@@ -13,13 +13,13 @@ namespace CORESI.WPF.Model
             Commands = new ObservableCollection<SimpleItem>();
         }
 
-        public Group(string caption, IList<RibbonButton> buttons = null)
+        public Group(string caption,  IEnumerable<RibbonButton> buttons = null)
             : this()
         {
             this.Caption = caption;
             if (buttons != null)
             {
-                foreach (RibbonButton button in buttons)
+                foreach (var button in buttons)
                 {
                     this.Commands.Add(button);
                 }
