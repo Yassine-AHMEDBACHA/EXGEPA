@@ -4,6 +4,7 @@ using CORESI.Data;
 using CORESI.Data.Tools;
 using CORESI.IoC;
 using CORESI.Security;
+using CORESI.Tools.Collections;
 using CORESI.WPF.Controls;
 using CORESI.WPF.Core.Interfaces;
 using CORESI.WPF.Model;
@@ -57,14 +58,11 @@ namespace EXGEPA.Security.Controls
 
         private void UpdateRole()
         {
-            Role oldRole = DBservice.GetById(ConcernedRow.Id);
-            IEnumerable<Ability> allAbilities = oldRole.Abilities.Union(this.ConcernedRow.Abilities);
-            IEnumerable<Ability> abilityToUpdate = allAbilities.GroupBy(x => x.Id).Where(g => g.Count() > 1 && g.First().HasAccess != g.Last().HasAccess).Select(g => this.ConcernedRow.Abilities.FirstOrDefault(x => x.Id == g.Key));
+            var storedAbilities = DBservice.GetById(ConcernedRow.Id).Abilities
+                .ToDictionary(x => x.Id);
 
-            foreach (Ability item in abilityToUpdate)
-            {
-                this.AbilityService.Update(item);
-            }
+            this.ConcernedRow.Abilities.Where(x => storedAbilities[x.Id].HasAccess != x.HasAccess)
+                .ForEach(x => this.AbilityService.Update(x));
 
             DBservice.Update(ConcernedRow);
             this.DisplayDetail = false;

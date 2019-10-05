@@ -32,9 +32,9 @@ namespace CORESI.DataAccess.Core
             ReferenceField = Fields.Where(f => f.IsReference).ToList();
             BasicField = Fields.Except(ReferenceField).ToList();
             LoadHistoCommand = QueryBuilder.GetAllHistoricalSelectQuery<T>(this.Fields);
-            SelectCommand = QueryBuilder.GetSelectQuery(typeof(T), Fields);
+            SelectCommand = QueryBuilder.GetSelectQuery(typeof(T), Fields, true);
             UpdateCommand = QueryBuilder.GetUpdateQuery(typeof(T), Fields);
-            LoadAllCommand = QueryBuilder.GetSelectQuery(typeof(T), Fields, false);
+            LoadAllCommand = QueryBuilder.GetSelectQuery(typeof(T), Fields);
             DeleteCommand = QueryBuilder.GetDeleteQuery(typeof(T));
             DeleteAllCommand = QueryBuilder.GetDeleteAllQuery(typeof(T));
             InsertCommand = QueryBuilder.GetInsertQuery(typeof(T), Fields);

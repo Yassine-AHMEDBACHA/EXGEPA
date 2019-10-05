@@ -56,10 +56,10 @@ namespace CORESI.DataAccess.Core
             return $"BEGIN TRANSACTION  {query}  COMMIT TRANSACTION";
         }
 
-        public static string GetSelectQuery(Type type, List<Field> fields, bool withoutId = false)
+        public static string GetSelectQuery(Type type, List<Field> fields, bool withId = false)
         {
             string tableName = GetTableName(type);
-            string filterCreteria = withoutId ? "WHERE  ([Id] = @Id OR @Id IS NULL)" : string.Empty;
+            string filterCreteria = withId ? "WHERE  ([Id] = @Id OR @Id IS NULL)" : string.Empty;
             string query = $"{GetSelectQuery(fields, tableName)} {filterCreteria}";
             return $"BEGIN TRANSACTION  {query}  COMMIT TRANSACTION";
         }
