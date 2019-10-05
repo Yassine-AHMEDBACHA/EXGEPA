@@ -36,15 +36,7 @@ namespace EXGEPA.Output.Controls
             }
         }
 
-        public Visibility TakerVisibility
-        {
-            get => this.takerVisibility;
-            set
-            {
-                this.takerVisibility = value;
-                this.RaisePropertyChanged("TakerVisibility");
-            }
-        }
+ 
 
         public string TakerFieldName
         {
@@ -56,15 +48,7 @@ namespace EXGEPA.Output.Controls
             }
         }
 
-        public Visibility TakerOptionVisibilty
-        {
-            get => this.takerOptionVisibilty;
-            set
-            {
-                this.takerOptionVisibilty = value;
-                this.RaisePropertyChanged("TakerOptionVisibilty");
-            }
-        }
+        
 
         public NamedKeyRow Taker
         {

@@ -4,6 +4,7 @@
 
 namespace EXGEPA.Output.Controls
 {
+    using System.Windows;
     using CORESI.WPF.Core.Interfaces;
     using EXGEPA.Model;
 

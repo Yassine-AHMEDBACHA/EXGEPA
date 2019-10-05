@@ -8,13 +8,12 @@ namespace EXGEPA.Output.Controls
     using System.Linq;
     using System.Windows.Media;
     using CORESI.IoC;
-    using CORESI.WPF.Controls;
     using CORESI.WPF.Core.Interfaces;
     using CORESI.WPF.Model;
     using EXGEPA.Core.Interfaces;
     using EXGEPA.Model;
 
-    public abstract class CommunOutputViewModel : GenericEditableViewModel<OutputCertificate>
+    public abstract class CommunOutputViewModel : FieldVisibilityBase<OutputCertificate>
     {
         public CommunOutputViewModel(OutputType outputType, IExportableGrid exportableView)
             : base(exportableView)
@@ -37,7 +36,7 @@ namespace EXGEPA.Output.Controls
                 return;
             }
 
-            ItemAttributionOptions options = this.GetItemAttributionOptions(outputCertificate);
+             ItemAttributionOptions options = this.GetItemAttributionOptions(outputCertificate);
             this.UIItemService.ShowItemAttribution(options);
         }
 

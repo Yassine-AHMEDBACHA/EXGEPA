@@ -13,7 +13,7 @@ namespace EXGEPA.Output.Controls
     using EXGEPA.Core.Interfaces;
     using EXGEPA.Model;
 
-    public class ProposeToReformViewModel : GenericEditableViewModel<ProposeToReformCertificate>
+    public class ProposeToReformViewModel : FieldVisibilityBase<ProposeToReformCertificate>
     {
         public ProposeToReformViewModel(IExportableGrid exportableView)
             : base(exportableView)

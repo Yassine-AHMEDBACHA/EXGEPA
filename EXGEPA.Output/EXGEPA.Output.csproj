@@ -148,6 +148,7 @@
     <Compile Include="Controls\ProposeToReformViewModel.cs" />
     <Compile Include="Controls\ReformeCertificateViewModel.cs" />
     <Compile Include="Controls\SaleCertificateViewModel.cs" />
+    <Compile Include="Controls\FieldVisibilityBase.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
