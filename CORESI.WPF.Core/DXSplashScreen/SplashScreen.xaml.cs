@@ -12,7 +12,7 @@ namespace CORESI.WPF.Core
         public SplashScreen()
         {
             InitializeComponent();
-
+            this.Copyright.Text = "CORESI  © 1996-2020";
             this.board.Completed += OnAnimationCompleted;
         }
 

@@ -1,12 +1,15 @@
-﻿using CORESI.WPF.Controls;
+﻿using CORESI.Tools.Collections;
+using CORESI.WPF.Controls;
 using CORESI.WPF.Core.Interfaces;
 using EXGEPA.Model;
+using System.Linq;
 
 namespace EXGEPA.Items.Controls
 {
     public class ItemHistoViewModel : GenericEditableViewModel<Item>
     {
         public int Id { get; set; }
+
         public ItemHistoViewModel(IExportableGrid view, int id)
         {
             this.Id = id;
@@ -23,7 +26,10 @@ namespace EXGEPA.Items.Controls
 
         public override void InitData()
         {
-            this.ListOfRows = new System.Collections.ObjectModel.ObservableCollection<Item>(this.DBservice.GetHistoric(this.Id));
+            this.ListOfRows = this.DBservice.GetHistoric(this.Id)
+                .GroupBy(x=>x.Office)
+                .FirstOrDefault()
+                .ToObservable();
         }
     }
 }

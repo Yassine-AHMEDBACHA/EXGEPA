@@ -11,7 +11,10 @@ namespace CORESI.WPF.Core.Shell
     public class ShellViewModel : UiNotifier
     {
 
+
         private bool _IsWaintingCursor;
+
+        internal const string Copyright = "Copyright © SARL CORESI 2020";
 
         public bool IsWaintingCursor
         {
@@ -99,7 +102,7 @@ namespace CORESI.WPF.Core.Shell
             DefaultCategory.Pages.Add(HomePage);
             Categories.Add(DefaultCategory);
             UpdateView = new DelegateCommand<Page>(SwitchView);
-            this.CopyRight = "Copyright © SARL CORESI 2019";
+            this.CopyRight = Copyright;
         }
 
         void SwitchView(Page page)

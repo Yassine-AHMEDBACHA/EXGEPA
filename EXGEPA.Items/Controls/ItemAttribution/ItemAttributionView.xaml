@@ -76,7 +76,6 @@
                         <dxg:GridColumn FieldName="Provider.Key" Header="Code Fournisseur" AllowBestFit="True" AllowEditing="False" />
                         <dxg:GridColumn FieldName="Provider.Caption" Header="Fournisseur" AllowBestFit="True" AllowEditing="False" />
                         <dxg:GridColumn FieldName="InputSheet.Key" Header="Fiche d'entree" AllowBestFit="True" AllowEditing="False"   />
-                        <dxg:GridColumn FieldName="Comment" Header="Commentaire" AllowBestFit="True" AllowEditing="False" Visible="True" />
                         <dxg:GridColumn FieldName="Owner.Key" Header="Article parent" AllowBestFit="True" AllowEditing="False" Visible="True" />
                         <dxg:GridColumn FieldName="Person.Key" Header="Identifiant Utilisateur"  AllowEditing="False" Visible="True"  />
                         <dxg:GridColumn FieldName="Person.Name" Header="Nom"  AllowEditing="False" Visible="True" />
@@ -89,6 +88,7 @@
                         <dxg:GridColumn FieldName="OutputCertificate.Key"  Header="Pv de sortie"  AllowEditing="False" Visible="True" />
                         <dxg:GridColumn FieldName="OutputCertificate.OutputType" Header="Type de sortie"  AllowEditing="False" Visible="True" />
                         <dxg:GridColumn FieldName="OutputCertificate.Date" Header="Date de sortie"  AllowEditing="False" Visible="True" />
+                        <dxg:GridColumn FieldName="AccountingPeriod.Key" Header="Exercice"  AllowEditing="False" Visible="True" />
                         <dxg:GridColumn FieldName="Comment" Header="Observation"  AllowEditing="False" />
                         <dxg:GridColumn FieldName="Id" Header="Sys Id" AllowEditing="False"  Visible="{Binding ShowSysIdColumn}" Fixed="Left" Width="55" />
                     </dxg:GridControl.Columns>
@@ -165,7 +165,6 @@
                     <dxg:GridColumn FieldName="Provider.Key" Header="Code Fournisseur" AllowBestFit="True" AllowEditing="False" />
                     <dxg:GridColumn FieldName="Provider.Caption" Header="Fournisseur" AllowBestFit="True" AllowEditing="False" />
                     <dxg:GridColumn FieldName="InputSheet.Key" Header="Fiche d'entree" AllowBestFit="True" AllowEditing="False"   />
-                    <dxg:GridColumn FieldName="Comment" Header="Commentaire" AllowBestFit="True" AllowEditing="False" Visible="True" />
                     <dxg:GridColumn FieldName="Owner.Key" Header="Article parent" AllowBestFit="True" AllowEditing="False" Visible="True" />
                     <dxg:GridColumn FieldName="Person.Key" Header="Identifiant Utilisateur"  AllowEditing="False" Visible="True"  />
                     <dxg:GridColumn FieldName="Person.Name" Header="Nom"  AllowEditing="False" Visible="True" />
@@ -178,6 +177,7 @@
                     <dxg:GridColumn FieldName="OutputCertificate.Key"  Header="Pv de sortie"  AllowEditing="False" Visible="True" />
                     <dxg:GridColumn FieldName="OutputCertificate.OutputType" Header="Type de sortie"  AllowEditing="False" Visible="True" />
                     <dxg:GridColumn FieldName="OutputCertificate.Date" Header="Date de sortie"  AllowEditing="False" Visible="True" />
+                    <dxg:GridColumn FieldName="AccountingPeriod.Key" Header="Exercice"  AllowEditing="False" Visible="True" />
                     <dxg:GridColumn FieldName="Comment" Header="Observation"  AllowEditing="False" />
                     <dxg:GridColumn FieldName="Id" Header="Sys Id" AllowEditing="False"  Visible="{Binding ShowSysIdColumn}" Fixed="Left" Width="55" />
                 </dxg:GridControl.Columns>

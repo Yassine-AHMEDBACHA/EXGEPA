@@ -37,7 +37,7 @@
                 <TextBlock x:Name="Info" TextWrapping="Wrap" Text="Démarrage en cours ..." Grid.Row="1" Margin="12,12,12,0" Foreground="#FF2D2D2D"/>
                 <ProgressBar x:Name="progressBar" Height="12" Grid.Row="2" Margin="12" />
                 <DockPanel x:Name="Footer" Grid.Row="3" Margin="12,20,12,4">
-                    <TextBlock x:Name="Footer_Text" TextWrapping="Wrap" Text="CORESI  © 1996-2019" Opacity="0.5" Foreground="#FF2D2D2D" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                    <TextBlock x:Name="Copyright" TextWrapping="Wrap" Opacity="0.5" Foreground="#FF2D2D2D" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                     <Image x:Name="Logotype" DockPanel.Dock="Right"  Stretch="None" HorizontalAlignment="Right"  />
                 </DockPanel>
             </Grid>
