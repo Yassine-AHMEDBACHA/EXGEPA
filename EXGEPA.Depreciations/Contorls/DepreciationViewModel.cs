@@ -136,7 +136,8 @@ namespace EXGEPA.Depreciations.Contorls
                         var DepToSave = result.SelectMany(x => x.Value);
                         var accountingPeriod = DepToSave.FirstOrDefault().AccountingPeriod;
                         var oldItems = GetOldItems(items, accountingPeriod);
-                        Simulation.SaveDepreciation(DepToSave.Union(oldItems));
+                        var OnlyActiveItems = ExcludeCessions(DepToSave.Union(oldItems));
+                        Simulation.SaveDepreciation(OnlyActiveItems);
                     }
                     else
                     {
@@ -144,11 +145,15 @@ namespace EXGEPA.Depreciations.Contorls
                     }
                 }
 
-
                 ListOfRows = new System.Collections.ObjectModel.ObservableCollection<Wrapper>(data);
                 stopwatcher.Stop();
                 logger.Info("Computing done in " + stopwatcher.Elapsed);
             }, () => this.ShowLoadingPanel = false);
+        }
+
+        private IEnumerable<Depreciation> ExcludeCessions(IEnumerable<Depreciation> DepToSave)
+        {
+            return DepToSave.Where(x => x.Item.OutputCertificate?.OutputType != OutputType.Cession || x.Item.OutputCertificate.Date <= EndDateEditRibbon.Date);
         }
 
         private IEnumerable<Depreciation> GetOldItems(System.Collections.Generic.List<Item> items, AccountingPeriod accountingPeriod)
