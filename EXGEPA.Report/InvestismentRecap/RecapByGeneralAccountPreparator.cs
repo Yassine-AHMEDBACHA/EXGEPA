@@ -37,7 +37,7 @@ namespace EXGEPA.Report.InvestismentRecap
 
                 MonthelyCalculator Calculator = new MonthelyCalculator(new AccountingPeriodHelper());
                 scooplogger.Snap("Loading Items");
-                RepositoryDataProvider.BindItemFields(Items);
+                RepositoryDataProvider.BindProperties(Items);
                 System.Collections.Generic.IEnumerable<IGrouping<GeneralAccount, Item>> groups = Items.Where(item => item.GeneralAccount.GeneralAccountType.Type == EGeneralAccountType.Investment).GroupBy(x => x.GeneralAccount);
                 Calculator.GetDepriciation(Items, currentPeriod.StartDate, currentPeriod.EndDate);
                 foreach (IGrouping<GeneralAccount, Item> group in groups)

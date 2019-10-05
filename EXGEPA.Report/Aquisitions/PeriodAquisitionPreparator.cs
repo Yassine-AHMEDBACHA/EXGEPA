@@ -48,7 +48,7 @@ namespace EXGEPA.Report.Aquisitions
             {
                 items = items.Where(x => x.GeneralAccount.GeneralAccountType.Type == EGeneralAccountType.Charge).ToList();
             }
-            this.RepositoryDataProvider.BindItemFields(items);
+            this.RepositoryDataProvider.BindProperties(items);
             return items;
         }
     }

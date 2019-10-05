@@ -119,20 +119,18 @@ namespace EXGEPA.Localization.Controls
                         }
                         return item;
                     }).Where(x => x != null).ToList();
-                     RepositoryDataProvider.BindItemFields(items);
+                     RepositoryDataProvider.BindProperties(items);
                  }
                  OfficeInventoryReportProvider.PrintInventorySheet(items, false);
              }, () => this.ShowLoadingPanel = false);
         }
-
-
 
         private void PrintTheoricalInventory()
         {
             RepositoryDataProvider.Refresh();
             List<int> officeIds = SelectedOffices.Select(x => x.Id).ToList();
             IList<Item> items = ItemService.SelectAll();
-            RepositoryDataProvider.BindItemFields(items);
+            RepositoryDataProvider.BindProperties(items);
             items = items.Where(x => x.OutputCertificate == null && officeIds.Contains(x.Office.Id)).ToList();
             OfficeInventoryReportProvider.PrintInventorySheet(items);
         }

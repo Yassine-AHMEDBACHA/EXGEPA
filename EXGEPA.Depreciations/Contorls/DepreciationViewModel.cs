@@ -24,6 +24,7 @@ namespace EXGEPA.Depreciations.Contorls
 
         IDataProvider<Item> ItemService { get; set; }
 
+        private readonly List<OutputType> outputTypeToIgnore;
 
 
         public ComboBoxRibbon<string> ComboBoxRibbon { get; set; }
@@ -80,6 +81,8 @@ namespace EXGEPA.Depreciations.Contorls
                  this.Reports.IsEnabled = Simulation.Any();
              });
 
+            this.outputTypeToIgnore = new List<OutputType> { OutputType.Cession, OutputType.Destruction, OutputType.Disparition, OutputType.Vente };
+
         }
 
         public DateEditRibbon StartDateEditRibbon { get; set; }
@@ -113,7 +116,7 @@ namespace EXGEPA.Depreciations.Contorls
 
                 var stopwatcher = Stopwatch.StartNew();
                 var items = ItemService.SelectAll().ToList();
-                _RepositoryDataProvider.BindItemFields(items);
+                _RepositoryDataProvider.BindProperties(items);
                 stopwatcher.Stop();
                 logger.Info("Loading Items done in : " + stopwatcher.Elapsed + " and " + items.Count + " item(s) retreived");
                 logger.Info("Computing and preparing Data ...");
@@ -153,10 +156,10 @@ namespace EXGEPA.Depreciations.Contorls
 
         private IEnumerable<Depreciation> ExcludeCessions(IEnumerable<Depreciation> DepToSave)
         {
-            return DepToSave.Where(x => x.Item.OutputCertificate?.OutputType != OutputType.Cession || x.Item.OutputCertificate.Date <= EndDateEditRibbon.Date);
+            return DepToSave.Where(x => x.Item.OutputCertificate!=null && this.outputTypeToIgnore.Contains(x.Item.OutputCertificate.OutputType) && x.Item.OutputCertificate.Date <= EndDateEditRibbon.Date);
         }
 
-        private IEnumerable<Depreciation> GetOldItems(System.Collections.Generic.List<Item> items, AccountingPeriod accountingPeriod)
+        private IEnumerable<Depreciation> GetOldItems(List<Item> items, AccountingPeriod accountingPeriod)
         {
             
             var second = items.Where(x => x.LimiteDate < StartDateEditRibbon.Date).Select(x => new Depreciation

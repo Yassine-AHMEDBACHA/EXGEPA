@@ -1,19 +1,19 @@
-﻿using CORESI.IoC;
-using CORESI.Tools;
-using CORESI.WPF.Controls;
-using CORESI.WPF.Core;
-using CORESI.WPF.Model;
-using CORESI.WPF.Core.Interfaces;
-using EXGEPA.Core.Interfaces;
-using EXGEPA.Model;
-using System;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Media;
-
-namespace EXGEPA.Items.Controls
+﻿namespace EXGEPA.Items.Controls
 {
+    using CORESI.IoC;
+    using CORESI.Tools;
+    using CORESI.WPF.Controls;
+    using CORESI.WPF.Core;
+    using CORESI.WPF.Model;
+    using CORESI.WPF.Core.Interfaces;
+    using EXGEPA.Core.Interfaces;
+    using EXGEPA.Model;
+    using System;
+    using System.Collections.ObjectModel;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using System.Windows.Media;
+
     public class ItemGridViewModel : GenericEditableViewModel<Item>
     {
         private string oldCodeCaption;
@@ -158,7 +158,7 @@ namespace EXGEPA.Items.Controls
                     scoopLogger.Snap("Loading Data ");
                     Parallel.ForEach(list, (item) =>
                     {
-                        RepositoryDataProvider.BindItemFields(item);
+                        RepositoryDataProvider.BindProperties(item);
                         if (JsonHelper.TryDeserialize(item.Json, out ItemExtendedProperties itemExtendedProperties))
                         {
                             item.ExtendedProperties = itemExtendedProperties;

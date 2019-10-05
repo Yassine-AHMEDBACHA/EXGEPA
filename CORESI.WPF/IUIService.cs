@@ -1,15 +1,18 @@
-﻿using System.Windows;
-using CORESI.WPF.Model;
-
-namespace CORESI.WPF
+﻿namespace CORESI.WPF
 {
+    using System.Windows;
+    using CORESI.WPF.Model;
+
     public interface IUIService
     {
         bool AddCategorie(Categorie categorie);
         bool AddGroupToHomePage(Group group);
         bool AddPage(Page page, bool includeCloseButton = true);
         Window CreateShell();
-        Group GetGroupPageByCaption(string Caption);
+        Group GetGroupPageByCaption(string name);
+
+        Group GetGroupPageByName(string name);
+
         void IncludeCloseButton(Page page);
         void InitShellInformation(ClientInformation clientInformation);
         bool IsWaintingCursor { get; set; }

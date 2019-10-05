@@ -30,7 +30,7 @@ namespace EXGEPA.Items
         public override void InitData()
         {
             var items = this.DBservice.SelectAll().Where(x => displayFilter(x)).ToList();
-            repositoryDataProvider.BindItemFields(items);
+            repositoryDataProvider.BindProperties(items);
             this.ListOfRows = items.ToObservable();
             this.Selection = this.ListOfRows.Take(1).ToObservable();
         }

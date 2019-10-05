@@ -6,14 +6,14 @@ namespace EXGEPA.Security
 {
     public sealed class Module : AModule
     {
-        public override int Priority
-        {
-            get { return 7; }
-        }
+        private const string settingGroupName = "settingGroup";
+
+        public override int Priority => 8;
+
 
         public override void AddGroups()
         {
-            Group setting = new Group();
+            Group setting = new Group { Name = settingGroupName };
             setting.AddCommand("Utilisateur", IconProvider.BOUserSmall, this.ShowApplicationUserPage, true);
             setting.AddCommand("Roles", IconProvider.BOUserSmall, this.ShowRolePage, true);
             UIService.AddGroupToHomePage(setting);

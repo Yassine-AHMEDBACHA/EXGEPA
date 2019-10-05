@@ -176,7 +176,7 @@ namespace EXGEPA.Inventory.Controls
                     scoopLogger.Snap("To load inventorys");
                     IList<Item> Items = this.itemService.SelectAll();
                     scoopLogger.Snap("To load Items");
-                    Parallel.ForEach(Items, (item) => this.repositoryDataProvider.BindItemFields(item));
+                    Parallel.ForEach(Items, (item) => this.repositoryDataProvider.BindProperties(item));
                     scoopLogger.Snap("To bind Items");
                     Dictionary<string, Item> allItems = Items.ToDictionary(x => x.Key);
                     this.AllOffices = this.repositoryDataProvider.ListOfOffice.ToDictionary(x => x.Key);

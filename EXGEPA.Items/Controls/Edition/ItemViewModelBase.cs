@@ -59,7 +59,7 @@
 
         protected void BindFields()
         {
-            RepositoryDataProvider.BindItemFields(ConcernedItem);
+            RepositoryDataProvider.BindProperties(ConcernedItem);
             SetAccoutToDisplay();
         }
 

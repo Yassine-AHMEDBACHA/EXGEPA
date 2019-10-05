@@ -43,14 +43,24 @@ namespace CORESI.WPF.Core
 
         public bool AddGroupToHomePage(Group group)
         {
-            _ = ShellViewModel.HomePage.Groups.LastOrDefault();
+            if (ShellViewModel.HomePage.Groups.Contains(group))
+            {
+                return false;
+            }
+            
             ShellViewModel.HomePage.Groups.Insert(0, group);
             return true;
         }
 
-        public Group GetGroupPageByCaption(string Caption)
+        public Group GetGroupPageByCaption(string caption)
         {
-            Group result = ShellViewModel.HomePage.Groups.FirstOrDefault(x => x.Caption == Caption);
+            var result = ShellViewModel.HomePage.Groups.FirstOrDefault(x => x.Caption == caption);
+            return result;
+        }
+
+        public Group GetGroupPageByName(string name)
+        {
+            var result = ShellViewModel.HomePage.Groups.FirstOrDefault(x => x.Name == name);
             return result;
         }
 

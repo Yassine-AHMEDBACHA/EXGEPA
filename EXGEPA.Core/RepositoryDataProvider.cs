@@ -8,6 +8,7 @@
     using CORESI.Data;
     using CORESI.DataAccess.Core.Tools;
     using CORESI.IoC;
+    using CORESI.Tools;
     using CORESI.Tools.Collections;
     using CORESI.WPF;
     using EXGEPA.Core.Interfaces;
@@ -176,7 +177,7 @@
 
             References = ListOfReference.ToDictionary(x => x.Id);
             ListOfProvider = this.ProviderService.All.ToObservable();
-            
+
             ListOfInputSheet = this.InputSheetService.All.ToObservable();
             ListOfReceiveOrder = this.ReceiveOrderService.All.ToObservable();
 
@@ -205,7 +206,13 @@
 
         public ObservableCollection<Item> AllItems { get; set; }
 
-        public void BindItemFields(Item item)
+        public void BindPropertyAndSetExtended(Item item)
+        {
+            item.SetExtendedProperties();
+            this.BindProperties(item);
+        }
+
+        public void BindProperties(Item item)
         {
             manualResetEventSlim.Wait();
             item.SetProperties(this.ListOfProposeToReformCertificate);
@@ -229,12 +236,17 @@
         public void MapAllItems()
         {
             manualResetEventSlim.Wait();
-            this.BindItemFields(this.AllItems);
+            this.BindProperties(this.AllItems);
         }
 
-        public void BindItemFields(IList<Item> items)
+        public void BindProperties(IList<Item> items)
         {
-            items.ParallelForEach(item => this.BindItemFields(item));
+            items.ParallelForEach(item => this.BindProperties(item));
+        }
+
+        public void BindPropertyAndSetExtended(IList<Item> items)
+        {
+            items.ParallelForEach(item => this.BindPropertyAndSetExtended(item));
         }
     }
 }

@@ -138,7 +138,7 @@ namespace EXGEPA.Items.Controls
                    IList<Item> allItems = this.DBservice.SelectAll();
                    RepositoryDataProvider.Refresh();
                    scoopLooger.Snap("Loading raw data");
-                   RepositoryDataProvider.BindItemFields(allItems);
+                   RepositoryDataProvider.BindPropertyAndSetExtended(allItems);
                    scoopLooger.Snap("Binding data");
                    List<Item> affectedRows = allItems.Where(item => this.Options.Tester(item)).ToList();
                    IEnumerable<Item> otherRows = allItems.Except(affectedRows).Where(x => x.OutputCertificate == null);
