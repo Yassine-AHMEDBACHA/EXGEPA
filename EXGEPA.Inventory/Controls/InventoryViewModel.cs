@@ -176,7 +176,7 @@ namespace EXGEPA.Inventory.Controls
                     scoopLogger.Snap("To load inventorys");
                     IList<Item> Items = this.itemService.SelectAll();
                     scoopLogger.Snap("To load Items");
-                    Parallel.ForEach(Items, (item) => this.repositoryDataProvider.BindProperties(item));
+                    Parallel.ForEach(Items, (item) => this.repositoryDataProvider.BindPropertyAndSetExtended(item));
                     scoopLogger.Snap("To bind Items");
                     Dictionary<string, Item> allItems = Items.ToDictionary(x => x.Key);
                     this.AllOffices = this.repositoryDataProvider.ListOfOffice.ToDictionary(x => x.Key);
@@ -357,8 +357,7 @@ namespace EXGEPA.Inventory.Controls
 
         private void DisplayArchive()
         {
-            this.UIMessage.TryDoAction(this.Logger, () =>
-             ExternalProcess.StartProcess("ArchiveINV.exe"));
+            this.UIMessage.TryDoAction(this.Logger, () => ExternalProcess.StartProcess("ArchiveINV.exe"));
         }
 
         private void LoadFileFromPDA()
@@ -390,16 +389,14 @@ namespace EXGEPA.Inventory.Controls
         {
             this.UIMessage.TryDoUIActionAsync(this.Logger, () =>
             {
-                Wind1VM vm = new Wind1VM();
-
-                Window1 v = new Window1
+                var vm = new Wind1VM();
+                var v = new Window1 { DataContext = vm };
+                if (v.ShowDialog() == true)
                 {
-                    DataContext = vm
-                };
-                v.ShowDialog();
-                this.SaveAll(vm.Comment ?? $"Inventaire du : {DateTime.Today.ToShortDateString()}");
-                this.inventoryService.DeleteAll();
-                this.InitData();
+                    this.SaveAll(vm.Comment ?? $"Inventaire du : {DateTime.Today.ToShortDateString()}");
+                    this.inventoryService.DeleteAll();
+                    this.InitData();
+                }
             });
 
         }

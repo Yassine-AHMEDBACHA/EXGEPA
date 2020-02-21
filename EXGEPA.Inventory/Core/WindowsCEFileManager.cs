@@ -14,7 +14,7 @@
         {
             try
             {
-                this.RemoteAPI = default;
+                this.RemoteAPI = new RAPI();
             }
             catch (Exception ex)
             {
@@ -26,8 +26,6 @@
 
         bool CheckConnexionWithDevice()
         {
-            System.Reflection.Assembly[] s = AppDomain.CurrentDomain.GetAssemblies();
-
             bool connexionStatus = false;
             while (!RemoteAPI.DevicePresent)
             {
@@ -43,7 +41,6 @@
 
         public override bool DownloadFile(string destinationPath = tempFile)
         {
-
             bool result = false;
             if (CheckConnexionWithDevice())
             {

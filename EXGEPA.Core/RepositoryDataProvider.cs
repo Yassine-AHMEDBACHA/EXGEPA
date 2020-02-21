@@ -96,6 +96,12 @@
             this.UIMessage.TryDoActionAsync(logger, loadData, manualResetEventSlim.Set);
         }
 
+        public void WaitTillDataReady()
+        {
+            this.manualResetEventSlim.Wait();
+        }
+            
+
         #region Data Providers
 
         public ObservableCollection<ItemState> AllStats { get; set; }

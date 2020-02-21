@@ -29,5 +29,7 @@ namespace EXGEPA.Core.Interfaces
         void MapAllItems();
 
         void Refresh();
+
+        void WaitTillDataReady();
     }
 }

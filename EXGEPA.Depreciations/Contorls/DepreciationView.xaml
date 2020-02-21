@@ -23,6 +23,8 @@
                 <dxg:GridColumn FieldName="Item.Reference.Key" Header="Reference" AllowEditing="False"  />
                 <dxg:GridColumn FieldName="Item.Reference.Caption" Header="Designation reference"  AllowEditing="False" Visible="False"/>
                 <dxg:GridColumn FieldName="Item.Description" Header="Designation"  AllowEditing="False" />
+                <dxg:GridColumn FieldName="Item.Office.Key" Header="Localisation"  AllowEditing="False" />
+                <dxg:GridColumn FieldName="Item.ItemState.Key" Header="Etat"  AllowEditing="False" />
                 <dxg:GridColumn FieldName="Item.AquisitionDate" Header="date acquisition"  AllowEditing="False" />
                 <dxg:GridColumn FieldName="Item.LimiteDate" Header="Date fin de vie"  AllowEditing="False" />
                 <dxg:GridColumn FieldName="Duration" Header="Duree"  AllowEditing="False" />
@@ -57,6 +59,11 @@
                 <dxg:GridColumn FieldName="Item.GeneralAccount.Children.Children.Key" Header="Compte amortissement" AllowEditing="False"  />
                 <dxg:GridColumn FieldName="Item.GeneralAccount.Children.Children.Caption" Header="Libelle compte amortissement"  AllowEditing="False" />
                 <dxg:GridColumn FieldName="Item.OldCode" Header="Ancien code" AllowEditing="False"/>
+                <dxg:GridColumn FieldName="Item.OutputCertificate.Key"  Header="Pv de sortie"  AllowEditing="False" Visible="True" />
+                <dxg:GridColumn FieldName="Item.OutputCertificate.OutputType" Header="Type de sortie"  AllowEditing="False" Visible="True" />
+                <dxg:GridColumn FieldName="Item.OutputCertificate.Date" Header="Date de sortie"  AllowEditing="False" Visible="True" />
+                <dxg:GridColumn FieldName="Item.AnalyticalAccount.Key" Header="Compte analytique" AllowEditing="False"  />
+                <dxg:GridColumn FieldName="Item.AnalyticalAccount.Caption" Header="libelle compte analytique"  AllowEditing="False" />
                 <dxg:GridColumn FieldName="Item.Id" Header="Sys Id" AllowEditing="False"  Visible="{Binding ShowSysIdColumn}" Fixed="Left" Width="55" />
             </dxg:GridControl.Columns>
             <dxg:GridControl.View>

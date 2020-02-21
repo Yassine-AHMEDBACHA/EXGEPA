@@ -52,9 +52,9 @@
 
         private void RefreshView()
         {
-            RepositoryDataProvider.Refresh();
+            this.RepositoryDataProvider.Refresh();
             this.BindFields();
-            RaisePropertyChanged(string.Empty);
+            this.RaisePropertyChanged(string.Empty);
         }
 
         protected void BindFields()
@@ -66,9 +66,17 @@
         public virtual void SetAccoutToDisplay()
         {
             var filter = this.Amount >= this.MinAmount ? EGeneralAccountType.Investment : EGeneralAccountType.Charge;
-            this.ListOfGeneralAccount = this.RepositoryDataProvider.AllGeneralAccounts
-                ?.Where(x => x.GeneralAccountType.Type == filter)
-                .ToObservable();
+            this.RepositoryDataProvider.WaitTillDataReady();
+            var list = this.RepositoryDataProvider.AllGeneralAccounts
+                ?.Where(x => x.GeneralAccountType.Type == filter).ToList();
+
+            if (this.GeneralAccount != null && !list.Contains(this.GeneralAccount))
+            {
+                list.Add(this.GeneralAccount);
+            }
+            var account = this.GeneralAccount;
+            this.ListOfGeneralAccount = list.ToObservable();
+            this.GeneralAccount = account;
         }
 
         public virtual void UpdateDescription(Reference reference)
@@ -143,7 +151,9 @@
                 RaisePropertyChanged();
             }
         }
+
         private ObservableCollection<Depreciation> _ListOfMonthelyDepreciation;
+
         public ObservableCollection<Depreciation> ListOfMonthelyDepreciation
         {
             get => _ListOfMonthelyDepreciation;
@@ -184,7 +194,6 @@
             }
         }
 
-
         public ItemState ItemState
         {
             get => ConcernedItem.ItemState;
@@ -195,7 +204,9 @@
             }
 
         }
+
         private ComboBoxRibbon<int> _Quantity;
+
         public ComboBoxRibbon<int> Quantity
         {
             get => _Quantity;
@@ -204,14 +215,10 @@
                 _Quantity = value;
                 RaisePropertyChanged();
             }
-
         }
-
-
 
         public Office Office
         {
-
             get => ConcernedItem.Office;
             set
             {

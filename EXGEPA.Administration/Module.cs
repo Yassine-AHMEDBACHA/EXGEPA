@@ -15,7 +15,7 @@ namespace EXGEPA.Administration
 
         public override void AddGroups()
         {
-            Group reportGroup = new Group("CORESI");
+            //Group reportGroup = new Group("CORESI");
             //reportGroup.AddCommand("", IconProvider.Article, () =>
             //{
             //    var editionViewModel = new Controls.EditionViewModel("Editions charges");
@@ -23,7 +23,7 @@ namespace EXGEPA.Administration
             //    var page = new Page(editionViewModel, editionView, true);
             //    UIService.AddPage(page);
             //});
-            UIService.AddGroupToHomePage(reportGroup);
+            //UIService.AddGroupToHomePage(reportGroup);
         }
     }
 }

@@ -139,7 +139,7 @@ namespace EXGEPA.Depreciations.Contorls
                         var DepToSave = result.SelectMany(x => x.Value);
                         var accountingPeriod = DepToSave.FirstOrDefault().AccountingPeriod;
                         var oldItems = GetOldItems(items, accountingPeriod);
-                        var OnlyActiveItems = ExcludeCessions(DepToSave.Union(oldItems));
+                        var OnlyActiveItems = DepToSave.Union(oldItems).Where(ShouldBeSaved);
                         Simulation.SaveDepreciation(OnlyActiveItems);
                     }
                     else
@@ -154,20 +154,29 @@ namespace EXGEPA.Depreciations.Contorls
             }, () => this.ShowLoadingPanel = false);
         }
 
-        private IEnumerable<Depreciation> ExcludeCessions(IEnumerable<Depreciation> DepToSave)
+        private bool ShouldBeSaved(Depreciation depreciation)
         {
-            return DepToSave.Where(x => x.Item.OutputCertificate == null || this.outputTypeToIgnore.Contains(x.Item.OutputCertificate.OutputType) && x.Item.OutputCertificate.Date <= EndDateEditRibbon.Date);
+            if (depreciation.Item.OutputCertificate != null)
+            {
+                var outputCertificate = depreciation.Item.OutputCertificate;
+                if (this.outputTypeToIgnore.Contains(outputCertificate.OutputType) && outputCertificate.Date < StartDateEditRibbon.Date)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         private IEnumerable<Depreciation> GetOldItems(List<Item> items, AccountingPeriod accountingPeriod)
         {
             var second = items.Where(x => x.LimiteDate < StartDateEditRibbon.Date).Select(x => new Depreciation
             {
-                AccountingNetValue = 0,
+                AccountingNetValue = x.FiscalRate == 0 ? x.Amount : 0,
                 AccountingPeriod = accountingPeriod,
                 Annuity = 0,
                 InitialValue = x.Amount,
-                PreviousDepreciation = x.Amount,
+                PreviousDepreciation = x.FiscalRate == 0 ? 0 : x.Amount,
                 Item = x,
                 StartDate = StartDateEditRibbon.Date,
                 EndDate = EndDateEditRibbon.Date,

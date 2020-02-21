@@ -16,11 +16,12 @@
         <dxg:GridControl ItemsSource="{Binding ListOfRows}" ShowLoadingPanel="{Binding ShowLoadingPanel}" FilterString="{Binding Filter,Mode=TwoWay}" Grid.Column="1">
             <dxg:GridControl.Columns>
                 <dxg:GridColumn FieldName="Key" Header="Code" AllowBestFit="True" AllowEditing="False" Visible="True" />
-                <dxg:GridColumn FieldName="OldCode" Header="{Binding OldCodeCaption}" AllowBestFit="True" AllowEditing="False" Visible="True" />
+                <dxg:GridColumn FieldName="Item.OldCode" Header="{Binding OldCodeCaption}" AllowBestFit="True" AllowEditing="False" Visible="True" />
                 <dxg:GridColumn FieldName="GapType" Header="Type d'ecart" AllowBestFit="True" AllowEditing="False" Visible="True" />
                 <dxg:GridColumn FieldName="Item.Reference.Key" Header="Reference" AllowEditing="False"  />
                 <dxg:GridColumn FieldName="Item.Reference.Caption" Header="Désignation référence"  AllowEditing="False" />
                 <dxg:GridColumn FieldName="Item.Description" Header="Désignation article"  AllowEditing="False" />
+                <dxg:GridColumn FieldName="Item.ExtendedProperties.VehicleNumber" Header="Matricule vehicule"  AllowEditing="False" />
                 <dxg:GridColumn FieldName="ImportDate" Header="date d'import"  AllowEditing="False" />
                 <dxg:GridColumn FieldName="Item.Office.Key" Header="Localisation theorique"  AllowEditing="False" />
                 <dxg:GridColumn FieldName="Localization" Header="Localisation physique"  AllowEditing="False" />
