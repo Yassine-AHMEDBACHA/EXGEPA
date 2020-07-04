@@ -6,7 +6,7 @@
              xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
              xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
              xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
-             xmlns:Serialization="clr-namespace:DevExpress.Xpf.LayoutControl.Serialization;assembly=DevExpress.Xpf.LayoutControl.v18.2" 
+             xmlns:Serialization="clr-namespace:DevExpress.Xpf.LayoutControl.Serialization;assembly=DevExpress.Xpf.LayoutControl.v20.1" 
              x:Class="EXGEPA.Invoice.Controls.InvoiceEditorView">
     <Grid Background="WhiteSmoke" Width="800">
         <dxlc:LayoutControl Grid.ColumnSpan="2" Orientation="Vertical">

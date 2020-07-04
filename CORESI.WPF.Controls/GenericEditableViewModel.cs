@@ -238,7 +238,13 @@ namespace CORESI.WPF.Controls
         }
 
         public virtual void DeleteItem()
-        {
+        { 
+            if (!this.CanBeDeleted(this.SelectedRow, out var message))
+            {
+                this.UIMessage.Information(message);
+                return;
+            }
+
             ConfirmeAndStartBackGroundAction("Etes vous sûr de vouloir supprimer cette ligne ? ",
             () =>
             {
@@ -247,6 +253,12 @@ namespace CORESI.WPF.Controls
                 DBservice.Delete(SelectedRow);
                 this.ListOfRows.Remove(SelectedRow);
             });
+        }
+
+        protected virtual bool CanBeDeleted(T item, out string message)
+        {
+            message = string.Empty;
+            return true;
         }
 
         protected virtual void InitilizeRibbonGroup(IExportableGrid view = null)

@@ -13,6 +13,7 @@
     using System.Linq;
     using System.Threading.Tasks;
     using System.Windows.Media;
+    using CORESI.Data;
 
     public class ItemGridViewModel : GenericEditableViewModel<Item>
     {
@@ -94,7 +95,23 @@
             }
         }
 
+        protected override bool CanBeDeleted(Item item, out string message)
+        {
+            item = this.DBservice.GetById(item.Id);
 
+            if (item.Invoice != null)
+            {
+                var invoiceService = ServiceLocator.Resolve<IDataProvider<Invoice>>();
+                var invoice = invoiceService.GetById(item.Invoice.Id);
+                if (invoice.IsValidated == true)
+                {
+                    message = "Impossible de supprimer un article appartenant à une facture validée.";
+                    return false;
+                }
+            }
+
+            return base.CanBeDeleted(item, out message);
+        }
 
         private Group GetReportGroup(IItemByCompteProvider itemByCompteProvider)
         {

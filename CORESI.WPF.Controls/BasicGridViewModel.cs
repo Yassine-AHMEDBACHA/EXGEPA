@@ -47,6 +47,9 @@ namespace CORESI.WPF.Controls
                 RaisePropertyChanged("SelectedRow");
             }
         }
+
+
+
         private bool _ShowLoadingPanel;
 
         public bool ShowLoadingPanel

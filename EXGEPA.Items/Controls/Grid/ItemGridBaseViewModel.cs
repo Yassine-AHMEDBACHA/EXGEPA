@@ -34,5 +34,7 @@ namespace EXGEPA.Items
             this.ListOfRows = items.ToObservable();
             this.Selection = this.ListOfRows.Take(1).ToObservable();
         }
+
+       
     }
 }

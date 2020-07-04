@@ -30,8 +30,8 @@
                 <dxg:GridColumn FieldName="Item.ItemState.Key" Header="Etat theorique"  AllowEditing="False" />
                 <dxg:GridColumn FieldName="ItemState.Key" Header="Etat physique"  AllowEditing="False" />
                 <dxg:GridColumn FieldName="Item.AquisitionDate" Header="Date aquisition"  AllowEditing="False" />
-                <dxg:GridColumn FieldName="Item.GeneralAccount.Key" Header="Libelle compte investissement" AllowEditing="False"  />
-                <dxg:GridColumn FieldName="Item.GeneralAccount.Caption" Header="Compte investissement"  AllowEditing="False" />
+                <dxg:GridColumn FieldName="Item.GeneralAccount.Key" Header="Compte investissement" AllowEditing="False"  />
+                <dxg:GridColumn FieldName="Item.GeneralAccount.Caption" Header="Libelle compte investissement"  AllowEditing="False" />
                 <dxg:GridColumn FieldName="Item.Person.Key" Header="Identifiant Utilisateur"  AllowEditing="False" Visible="True"  />
                 <dxg:GridColumn FieldName="Item.Person.Name" Header="Nom"  AllowEditing="False" Visible="True" />
                 <dxg:GridColumn FieldName="Item.Person.FirstName" Header="Prénom"  AllowEditing="False" Visible="True"  />

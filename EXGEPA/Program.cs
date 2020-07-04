@@ -94,7 +94,7 @@ namespace EXGEPA
                 return assembly;
             }
 
-            logger.Error("Failed to resolve : " + args.Name + "Requested by" + args.RequestingAssembly.FullName);
+            logger.Error("Failed to resolve : " + args.Name + "Requested by" + args.RequestingAssembly?.FullName);
             return null;
         }
 

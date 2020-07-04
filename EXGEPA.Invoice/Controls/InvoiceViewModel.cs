@@ -18,6 +18,7 @@ namespace EXGEPA.Invoice.Controls
     public class InvoiceViewModel : GenericEditableViewModel<Model.Invoice>
     {
         private readonly bool shouldIncludeInputSheetInInvoice;
+        private CheckedRibbonButton validationButton;
 
         public InvoiceViewModel(IExportableGrid view) : base(view)
         {
@@ -26,21 +27,65 @@ namespace EXGEPA.Invoice.Controls
             this.UIItemService = ServiceLocator.Resolve<IUIItemService>();
             DoubleClicAction = ItemAttribution;
             this.AddNewGroup().AddCommand("Items", IconProvider.GreaterThan, ItemAttribution);
-            CheckedRibbonButton button = this.AddNewGroup().AddCommand<CheckedRibbonButton>("Validée", IconProvider.Task);
-            button.Action = () =>
-            {
-                if (this.SelectedRow != null)
-                {
-                    this.UIMessage.ConfirmeAndTryDoAction(Logger,
-                        $"Etes vous sûr de vouloir valider la facture N°{this.SelectedRow.Key}",
-                        () => this.ValidateInvoice(this.SelectedRow),
-                        false, () => button.IsChecked = this.SelectedRow?.IsValidated ?? false);
-                }
-            };
+            this.validationButton = this.AddNewGroup().AddCommand<CheckedRibbonButton>("Validée", IconProvider.Task);
+            validationButton.Action = ValidateInvoice;
             this.shouldIncludeInputSheetInInvoice = this.ParameterProvider.TryGet("ShouldIncludeInputSheetInInvoice", true);
             this.AddNewGroup().AddCommand("Borecep", IconProvider.Reading, () => this.StartBackGroundAction(() => ExternalProcess.StartProcess("borecep.exe")));
-
+            this.Selection.CollectionChanged += InvoiceViewModel_SelectionChanged;
         }
+
+        private void InvoiceViewModel_SelectionChanged(object sender, EventArgs e)
+        {
+            this.InitValidationButton();
+        }
+
+        private void InitValidationButton()
+        {
+            if (this.SelectedRow == null)
+            {
+                this.validationButton.IsEnabled = false;
+                return;
+            }
+            this.validationButton.IsEnabled = true;
+            if (this.SelectedRow.IsValidated)
+            {
+                this.validationButton.Action = DevalidateInvoice;
+                this.validationButton.IsChecked = true;
+            }
+            else
+            {
+                this.validationButton.Action = ValidateInvoice ;
+                this.validationButton.IsChecked = false;
+            }
+        }
+
+        private void ValidateInvoice()
+        {
+            if (this.SelectedRow != null)
+            {
+                this.UIMessage.ConfirmeAndTryDoAction(Logger,
+                    $"Etes vous sûr de vouloir valider la facture N°{this.SelectedRow.Key}",
+                    () => this.ValidateInvoice(this.SelectedRow),
+                    false, this.InitValidationButton);
+            }
+        }
+
+        private void DevalidateInvoice()
+        {
+            if (this.SelectedRow != null)
+            {
+                this.UIMessage.ConfirmeAndTryDoAction(Logger,
+                    $"Etes vous sûr de vouloir dévalider la facture N°{this.SelectedRow.Key}",
+                    () =>
+                    {
+                        this.SelectedRow.IsValidated = false;
+                        this.DBservice.Update(this.SelectedRow);
+                        this.RefreshView(this.SelectedRow);
+                    },
+                    false, this.InitValidationButton);
+            }
+        }
+
         protected IParameterProvider ParametreProvider { get; }
 
         protected IUIItemService UIItemService { get; }
@@ -193,18 +238,18 @@ namespace EXGEPA.Invoice.Controls
                 Resetter = (item) => item.Invoice = null,
                 Categorie = new Categorie("Contenu Facture", Colors.AliceBlue)
             };
-            Group Group = new Group();
-            CheckedRibbonButton button = Group.AddCommand<CheckedRibbonButton>("Validée", IconProvider.Task);
-            button.Action = () =>
-            {
-                //this.ValidateInvoice(invoice);
-                //button.IsChecked = invoice.IsValidated;
-                this.UIMessage.ConfirmeAndTryDoAction(Logger,
-                        $"Etes vous sûr de vouloir valider la facture N°{invoice.Key}",
-                        () => this.ValidateInvoice(invoice),
-                        false, () => button.IsChecked = invoice?.IsValidated ?? false);
-            };
-            options.Groups.Add(Group);
+            //Group Group = new Group();
+            //CheckedRibbonButton button = Group.AddCommand<CheckedRibbonButton>("Validée", IconProvider.Task);
+            //button.Action = () =>
+            //{
+            //    //this.ValidateInvoice(invoice);
+            //    //button.IsChecked = invoice.IsValidated;
+            //    this.UIMessage.ConfirmeAndTryDoAction(Logger,
+            //            $"Etes vous sûr de vouloir valider la facture N°{invoice.Key}",
+            //            () => this.ValidateInvoice(invoice),
+            //            false, () => button.IsChecked = invoice?.IsValidated ?? false);
+            //};
+            //options.Groups.Add(Group);
             UIItemService.ShowItemAttribution(options);
         }
 

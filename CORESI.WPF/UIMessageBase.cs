@@ -23,7 +23,7 @@ namespace CORESI.WPF
 
         public void Error(string message)
         {
-            ShowMessage(message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            ShowMessage(message, "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
         #endregion
@@ -36,7 +36,7 @@ namespace CORESI.WPF
 
         public MessageBoxResult Warning(string message, MessageBoxButton button)
         {
-            return ShowMessage(message, "Warning", button, MessageBoxImage.Warning);
+            return ShowMessage(message, "Attention", button, MessageBoxImage.Warning);
         }
         #endregion
 

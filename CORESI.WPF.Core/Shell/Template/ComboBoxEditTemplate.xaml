@@ -7,7 +7,7 @@
         <ContentControl>
             <dxb:BarEditItem
                     RibbonStyle="Large"
-                    Content="{Binding Caption}"
+                    Content="{Binding Caption, Mode=TwoWay}"
                     EditWidth="{Binding Width}"
                     Glyph="{Binding Glyph}"
                     GlyphSize="Large"

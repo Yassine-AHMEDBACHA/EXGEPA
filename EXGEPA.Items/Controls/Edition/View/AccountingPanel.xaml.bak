@@ -4,7 +4,7 @@
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
              xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:Serialization="clr-namespace:DevExpress.Xpf.LayoutControl.Serialization;assembly=DevExpress.Xpf.LayoutControl.v20.1"
+             xmlns:Serialization="clr-namespace:DevExpress.Xpf.LayoutControl.Serialization;assembly=DevExpress.Xpf.LayoutControl.v19.2"
              x:Class="EXGEPA.Items.Controls.AccountingPanel">
 
     <dxlc:LayoutControl Orientation="Vertical" Margin="-13" IsEnabled="{Binding IsAccountingPanelLocked}">
