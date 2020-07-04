@@ -14,6 +14,7 @@
     using System.Threading.Tasks;
     using System.Windows.Media;
     using CORESI.Data;
+    using CORESI.Tools.Collections;
 
     public class ItemGridViewModel : GenericEditableViewModel<Item>
     {
@@ -169,19 +170,21 @@
         {
             StartBackGroundAction(() =>
             {
-                using (ScoopLogger scoopLogger = new ScoopLogger("Loading Data", this.Logger, true))
+                using (ScoopLogger scoopLogger = new ScoopLogger("Loading items", this.Logger, true))
                 {
-                    System.Collections.Generic.IList<Item> list = DBservice.SelectAll();
+                    var list = DBservice.SelectAll();
                     scoopLogger.Snap("Loading Data ");
-                    Parallel.ForEach(list, (item) =>
-                    {
-                        RepositoryDataProvider.BindProperties(item);
-                        if (JsonHelper.TryDeserialize(item.Json, out ItemExtendedProperties itemExtendedProperties))
+                    list.ParallelForEach(item =>
                         {
-                            item.ExtendedProperties = itemExtendedProperties;
-                        }
+                            RepositoryDataProvider.BindProperties(item);
+                        //if (JsonHelper.TryDeserialize(item.Json, out ItemExtendedProperties itemExtendedProperties))
+                        //{
+                        //    item.ExtendedProperties = itemExtendedProperties;
+                        //}
                     });
-                    ListOfRows = new ObservableCollection<Item>(list);
+                    scoopLogger.Snap("Binding properties !");
+                    ListOfRows = list.ToObservable();
+                    scoopLogger.Snap("converting");
                 }
             });
         }

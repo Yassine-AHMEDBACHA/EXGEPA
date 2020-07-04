@@ -155,7 +155,9 @@
         public void FillRepositories()
         {
             this.manualResetEventSlim.Reset();
-            this.AllItems = this.ItemService.All.ToObservable();
+            var items = this.ItemService.All;
+            this.AllItems = items.ToObservable();
+            this.ItemById = items.ToDictionary(x => x.Id);
             this.AllGeneralAccountTypes = this.GeneralAccountTypeService.All
                 .ToObservable();
             this.AllStats = this.ItemStateService.All.ToObservable();
@@ -212,6 +214,8 @@
 
         public ObservableCollection<Item> AllItems { get; set; }
 
+        public Dictionary<int, Item> ItemById { get; set; }
+
         public void BindPropertyAndSetExtended(Item item)
         {
             item.SetExtendedProperties();
@@ -226,7 +230,7 @@
             item.SetProperties(this.AllGeneralAccounts);
             item.Map(this.References);
             item.Map(this.Invoices);
-            item.SetProperties(this.AllItems);
+            item.SetProperties(this.ItemById);
             item.SetProperties(this.ListOfPerson);
             item.SetProperties(this.ListOfProvider);
             item.SetProperties(this.ListOfInputSheet);

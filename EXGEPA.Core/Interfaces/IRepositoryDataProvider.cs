@@ -16,6 +16,8 @@ namespace EXGEPA.Core.Interfaces
 
         ObservableCollection<Item> AllItems { get; set; }
 
+        Dictionary<int, Item> ItemById { get; set; }
+
         ObservableCollection<Invoice> AllInvoices { get; set; }
 
         void BindProperties(Item item);

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using CORESI.IoC;
+using CORESI.Tools;
 using CORESI.Tools.Collections;
 using CORESI.WPF.Controls;
 using CORESI.WPF.Core.Interfaces;
@@ -29,12 +30,17 @@ namespace EXGEPA.Items
 
         public override void InitData()
         {
-            var items = this.DBservice.SelectAll().Where(x => displayFilter(x)).ToList();
-            repositoryDataProvider.BindProperties(items);
-            this.ListOfRows = items.ToObservable();
-            this.Selection = this.ListOfRows.Take(1).ToObservable();
+            using (var scoopLogger = new ScoopLogger("Loading items", this.Logger))
+            {
+                var items = this.DBservice.SelectAll().Where(x => displayFilter(x)).ToList();
+                scoopLogger.Snap("Loading data :");
+                repositoryDataProvider.BindProperties(items);
+                scoopLogger.Snap("Binding properties !");
+                this.ListOfRows = items.ToObservable();
+                scoopLogger.Snap("Convreting to observable");
+                this.Selection = this.ListOfRows.Take(1).ToObservable();
+            }
         }
-
        
     }
 }
