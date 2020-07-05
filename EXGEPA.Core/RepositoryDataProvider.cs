@@ -100,7 +100,7 @@
         {
             this.manualResetEventSlim.Wait();
         }
-            
+
 
         #region Data Providers
 
@@ -155,9 +155,7 @@
         public void FillRepositories()
         {
             this.manualResetEventSlim.Reset();
-            var items = this.ItemService.All;
-            this.AllItems = items.ToObservable();
-            this.ItemById = items.ToDictionary(x => x.Id);
+            this.FillItems();
             this.AllGeneralAccountTypes = this.GeneralAccountTypeService.All
                 .ToObservable();
             this.AllStats = this.ItemStateService.All.ToObservable();
@@ -165,43 +163,102 @@
             this.ListOfAccountingPeriod = this.AccountingPeriodService.All.ToObservable();
             this.ListOfReformeCertificate = ReformeCertificateService.All.ToObservable();
             this.ListOfOutputCertificate = OutputCertificateService.All.ToObservable();
-            this.ListOfPerson = PersonService.All.ToObservable();
-            this.ListOfAnalyticalAccount = AnalyticalAccountService.All.ToObservable();
+            this.FillPersons();
+            this.FillAnalyticalAccounts();
             this.AllTransferOrders = TransferOrderService.All
                 .ApplyOnAll(x => x.SetProperties(this.ListOfAnalyticalAccount))
                 .ToObservable();
 
-            this.AllGeneralAccounts = GeneralAccountService.All
-                .ApplyOnAll(x => x.SetProperties(this.AllGeneralAccountTypes))
-                .ToObservable();
+            this.FillGeneralAccounts();
 
             this.ListOfReferenceType = ReferenceTypeService.All.ToObservable();
-            OrderDocuments = OrderDocumentService.All.ToObservable();
+            this.FillOrderDocuments();
 
             this.ListOfReference = ReferenceService.All
-                .ApplyOnAll(x => x.SetProperties(this.AllGeneralAccounts))
-                .ApplyOnAll(x => x.SetProperties(this.ListOfReferenceType))
-                .ToObservable();
+                .ApplyOnAll(x =>
+                {
+                    x.SetProperties(this.GeneralAccountById);
+                    x.SetProperties(this.ListOfReferenceType);
+                }).ToObservable();
 
-            References = ListOfReference.ToDictionary(x => x.Id);
-            ListOfProvider = this.ProviderService.All.ToObservable();
+            this.References = ListOfReference.ToDictionary(x => x.Id);
+            this.FillProvider();
 
-            ListOfInputSheet = this.InputSheetService.All.ToObservable();
-            ListOfReceiveOrder = this.ReceiveOrderService.All.ToObservable();
+            this.FillInputSheets();
+            this.ListOfReceiveOrder = this.ReceiveOrderService.All.ToObservable();
 
             this.AllInvoices = this.InvoiceService.All.ToObservable();
             this.Invoices = AllInvoices.ApplyOnAll(invoice =>
             {
-                invoice.SetProperties(this.ListOfProvider);
-                invoice.SetProperties(this.ListOfInputSheet);
-                invoice.SetProperties(this.AllGeneralAccounts);
-                invoice.SetProperties(this.OrderDocuments);
+                invoice.SetProperties(this.ProviderById);
+                invoice.SetProperties(this.InputSheetById);
+                invoice.SetProperties(this.GeneralAccountById);
+                invoice.SetProperties(this.OrderDocumentById);
             }).ToDictionary(x => x.Id);
 
             ListOfTva = this.TvaService.All.ToObservable();
-            ListOfOffice = OfficeService.All.ToObservable();
-            ListOfOffice.ParallelForEach(office => office.SetProperties(this.ListOfAnalyticalAccount));
-            Offices = ListOfOffice.ToDictionary(x => x.Id);
+            this.FillOffices();
+        }
+
+        private void FillOrderDocuments()
+        {
+            var orderDocuments = OrderDocumentService.All;
+            this.OrderDocuments = orderDocuments.ToObservable();
+            this.OrderDocumentById = orderDocuments.ToDictionary(x => x.Id);
+        }
+
+        private void FillInputSheets()
+        {
+            var inputSheets = this.InputSheetService.All;
+            this.ListOfInputSheet = inputSheets.ToObservable();
+            this.InputSheetById = inputSheets.ToDictionary(x => x.Id);
+        }
+
+        private void FillProvider()
+        {
+            var providers = this.ProviderService.All;
+
+            this.ListOfProvider = providers.ToObservable();
+            this.ProviderById = providers.ToDictionary(x => x.Id);
+        }
+
+        private void FillOffices()
+        {
+            this.ListOfOffice = OfficeService.All
+                .ApplyOnAll(x => x.SetProperties(this.AnalyticalAccountById))
+                .ToObservable();
+
+            this.Offices = ListOfOffice.ToDictionary(x => x.Id);
+        }
+
+        private void FillAnalyticalAccounts()
+        {
+            var analyticalAccounts = AnalyticalAccountService.All;
+            this.ListOfAnalyticalAccount = analyticalAccounts.ToObservable();
+            this.AnalyticalAccountById = analyticalAccounts.ToDictionary(x => x.Id);
+        }
+
+        private void FillGeneralAccounts()
+        {
+            this.AllGeneralAccounts = GeneralAccountService.SelectAll()
+                            .ApplyOnAll(x => x.SetProperties(this.AllGeneralAccountTypes))
+                            .ToObservable();
+
+            this.GeneralAccountById = this.AllGeneralAccounts.ToDictionary(x => x.Id);
+        }
+
+        private void FillItems()
+        {
+            var items = this.ItemService.All;
+            this.AllItems = items.ToObservable();
+            this.ItemById = items.ToDictionary(x => x.Id);
+        }
+
+        private void FillPersons()
+        {
+            var persons = this.PersonService.All;
+            this.ListOfPerson = persons.ToObservable();
+            this.PersonById = persons.ToDictionary(x => x.Id);
         }
 
         public Dictionary<int, Invoice> Invoices { get; set; }
@@ -216,6 +273,18 @@
 
         public Dictionary<int, Item> ItemById { get; set; }
 
+        public Dictionary<int, Provider> ProviderById { get; set; }
+
+        public Dictionary<int, GeneralAccount> GeneralAccountById { get; set; }
+
+        public Dictionary<int, AnalyticalAccount> AnalyticalAccountById { get; set; }
+
+        public Dictionary<int, Person> PersonById { get; set; }
+
+        public Dictionary<int, InputSheet> InputSheetById { get; set; }
+
+        public Dictionary<int, OrderDocument> OrderDocumentById { get; set; }
+
         public void BindPropertyAndSetExtended(Item item)
         {
             item.SetExtendedProperties();
@@ -226,17 +295,17 @@
         {
             manualResetEventSlim.Wait();
             item.SetProperties(this.ListOfProposeToReformCertificate);
-            item.SetProperties(this.ListOfAnalyticalAccount);
-            item.SetProperties(this.AllGeneralAccounts);
+            item.SetProperties(this.AnalyticalAccountById);
+            item.SetProperties(this.GeneralAccountById);
             item.Map(this.References);
             item.Map(this.Invoices);
             item.SetProperties(this.ItemById);
-            item.SetProperties(this.ListOfPerson);
-            item.SetProperties(this.ListOfProvider);
-            item.SetProperties(this.ListOfInputSheet);
+            item.SetProperties(this.PersonById);
+            item.SetProperties(this.ProviderById);
+            item.SetProperties(this.InputSheetById);
             item.SetProperties(this.ListOfReceiveOrder);
             item.SetProperties(this.AllTransferOrders);
-            item.SetProperties(Offices);
+            item.SetProperties(this.Offices);
             item.SetProperties(this.ListOfReformeCertificate);
             item.SetProperties(this.ListOfOutputCertificate);
             item.SetProperties(this.ListOfAccountingPeriod);

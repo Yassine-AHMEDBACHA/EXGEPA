@@ -35,10 +35,10 @@
             this.Caption = Caption = "Article N°: " + item.Key;
             this.IsSelected = true;
             base.ConcernedItem.SetExtendedProperties();
-            Group group = this.AddNewGroup();
+            var group = this.AddNewGroup();
 
             group.AddCommand("Sauver & Fermer", IconProvider.SaveAndClose, this.UpdateItem);
-            IImmobilisationSheetProvider immoShtPdr = ServiceLocator.Resolve<IImmobilisationSheetProvider>();
+            var immoShtPdr = ServiceLocator.Resolve<IImmobilisationSheetProvider>();
             if (immoShtPdr != null)
             {
                 Group immoShtGrp = this.AddNewGroup("Fiche immobilisation");

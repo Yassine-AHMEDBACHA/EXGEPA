@@ -1,20 +1,17 @@
 ﻿namespace EXGEPA.Items.Controls
 {
+    using CORESI.Data;
     using CORESI.IoC;
     using CORESI.Tools;
+    using CORESI.Tools.Collections;
     using CORESI.WPF.Controls;
     using CORESI.WPF.Core;
-    using CORESI.WPF.Model;
     using CORESI.WPF.Core.Interfaces;
+    using CORESI.WPF.Model;
     using EXGEPA.Core.Interfaces;
     using EXGEPA.Model;
     using System;
-    using System.Collections.ObjectModel;
     using System.Linq;
-    using System.Threading.Tasks;
-    using System.Windows.Media;
-    using CORESI.Data;
-    using CORESI.Tools.Collections;
 
     public class ItemGridViewModel : GenericEditableViewModel<Item>
     {
@@ -34,8 +31,9 @@
             RepositoryDataProvider = ServiceLocator.Resolve<IRepositoryDataProvider>();
             UIItemService = ServiceLocator.Resolve<IUIItemService>();
             this.Logger.Debug("ItemGridViewModel Composition Done");
-            Depreciations.Core.MonthelyCalculator MenthlyCalculator = new Depreciations.Core.MonthelyCalculator(new Depreciations.Core.AccountingPeriodHelper());
-            Group immoSheetGroup = this.AddNewGroup("Fiches immo");
+            var MenthlyCalculator = new Depreciations.Core.MonthelyCalculator(new Depreciations.Core.AccountingPeriodHelper());
+            var immoSheetGroup = this.AddNewGroup("Fiches immo");
+
             immoSheetGroup.AddCommand("Mensuelle", () => this.StartUIBackGroundAction(() =>
             {
                 System.Collections.Generic.List<Item> result = this.Selection.ToList();
@@ -43,7 +41,7 @@
                 ServiceLocator.Resolve<IImmobilisationSheetProvider>().PrintImmobilisationSheet(result.SelectMany(x => x.Depreciations).ToList(), "Fiche immo mensuelle");
             }), true);
 
-            Depreciations.Core.DailyCalculator dailyCalculator = new Depreciations.Core.DailyCalculator(new Depreciations.Core.AccountingPeriodHelper());
+            var dailyCalculator = new Depreciations.Core.DailyCalculator(new Depreciations.Core.AccountingPeriodHelper());
             immoSheetGroup.AddCommand("Journaliere", () => this.StartUIBackGroundAction(
                  () =>
                  {
@@ -59,7 +57,7 @@
                     ServiceLocator.Resolve<IImmobilisationSheetProvider>().PrintExploitationStartupSheet(result, "Fiche de mise en exploitation");
                 }), true);
 
-            Group viewGroup = this.AddNewGroup("Filtres");
+            var viewGroup = this.AddNewGroup("Filtres");
             this.Filter = "[OutputCertificate.OutputType] is null";
             viewGroup.AddCommand("Tous", () => this.Filter = string.Empty, true);
             viewGroup.AddCommand("Actifs", () => this.Filter = "[OutputCertificate.OutputType] is null", true);
@@ -69,8 +67,8 @@
             viewGroup.AddCommand("Déstruction", () => this.Filter = "[OutputCertificate.OutputType] ='Destruction'", true);
             this.AddNewGroup().AddCommand("Etiquettes", IconProvider.BarCode, this.UIItemService.ShowPrintLabelPanel);
 
-            IItemByCompteProvider itemByCompteProvider = ServiceLocator.Resolve<IItemByCompteProvider>();
-            Group group = GetReportGroup(itemByCompteProvider);
+            var itemByCompteProvider = ServiceLocator.Resolve<IItemByCompteProvider>();
+            var group = GetReportGroup(itemByCompteProvider);
             this.AddGroup(group);
             this.AddNewGroup().AddCommand("Historique des mouvements", () =>
             {
@@ -150,7 +148,6 @@
 
 
                 group.AddCommand("Details", () => this.UIMessage.TryDoAction(this.Logger, () => ExternalProcess.StartProcess("EQUIPCOMPTE.exe")));
-
                 return group;
             }
 
@@ -166,6 +163,7 @@
         {
             UIItemService.AddNewItem();
         }
+
         public override void InitData()
         {
             StartBackGroundAction(() =>
@@ -173,18 +171,10 @@
                 using (ScoopLogger scoopLogger = new ScoopLogger("Loading items", this.Logger, true))
                 {
                     var list = DBservice.SelectAll();
-                    scoopLogger.Snap("Loading Data ");
-                    list.ParallelForEach(item =>
-                        {
-                            RepositoryDataProvider.BindProperties(item);
-                        //if (JsonHelper.TryDeserialize(item.Json, out ItemExtendedProperties itemExtendedProperties))
-                        //{
-                        //    item.ExtendedProperties = itemExtendedProperties;
-                        //}
-                    });
-                    scoopLogger.Snap("Binding properties !");
+                    scoopLogger.Snap("Loading");
+                    RepositoryDataProvider.BindPropertyAndSetExtended(list);
+                    scoopLogger.Snap("Binding");
                     ListOfRows = list.ToObservable();
-                    scoopLogger.Snap("converting");
                 }
             });
         }

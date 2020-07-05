@@ -1,7 +1,6 @@
 using CORESI.WPF.Model;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
 
@@ -14,7 +13,7 @@ namespace CORESI.WPF.Core.Shell
 
         private bool _IsWaintingCursor;
 
-        internal const string Copyright = "Copyright © SARL CORESI 2020";
+        internal const string Copyright = "Copyright © CORESI 2020";
 
         public bool IsWaintingCursor
         {
@@ -56,7 +55,11 @@ namespace CORESI.WPF.Core.Shell
         public string WindowTitle
         {
             get => _WindowTitle;
-            set { _WindowTitle = value; RaisePropertyChanged("WindowTitle"); }
+            set
+            {
+                _WindowTitle = value;
+                RaisePropertyChanged();
+            }
         }
 
         public ICommand GotFocus { get; set; }
@@ -68,10 +71,8 @@ namespace CORESI.WPF.Core.Shell
             get => _CurrentPage;
             set
             {
-
                 _CurrentPage = value;
-
-                RaisePropertyChanged("CurrentPage");
+                RaisePropertyChanged();
             }
         }
 

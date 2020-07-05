@@ -1,4 +1,4 @@
-﻿// <copyright file="JsonHelper.cs" company="PlaceholderCompany">
+﻿// <copyright file="JsonHelper.cs" company="CORESI">
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
@@ -24,7 +24,6 @@ namespace CORESI.Tools
         public static bool TryDeserialize<T>(this string json, out T deserializedObject)
             where T : class
         {
-            deserializedObject = null;
             if (json.IsValid())
             {
                 deserializedObject = JsonConvert.DeserializeObject<T>(json);
@@ -34,6 +33,7 @@ namespace CORESI.Tools
                 }
             }
 
+            deserializedObject = null;
             return false;
         }
 
