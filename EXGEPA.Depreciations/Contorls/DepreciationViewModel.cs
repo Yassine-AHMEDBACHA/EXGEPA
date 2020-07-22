@@ -64,15 +64,13 @@ namespace EXGEPA.Depreciations.Contorls
             this.UIMessage.TryDoAction(logger, () =>
                 {
                     this.repositoryDataProvider = ServiceLocator.Resolve<IRepositoryDataProvider>();
-                    ItemService = ServiceLocator.Resolve<IDataProvider<Item>>();
-                    AccountingPeriod currentAccountingPeriod = accountingPeriodHelper.GetOpenPeriod();
-                    StartDateEditRibbon.Date = currentAccountingPeriod.StartDate;
-                    EndDateEditRibbon.Date = currentAccountingPeriod.EndDate;
-
+                    this.ItemService = ServiceLocator.Resolve<IDataProvider<Item>>();
+                    var currentAccountingPeriod = accountingPeriodHelper.GetOpenPeriod();
+                    this.StartDateEditRibbon.Date = currentAccountingPeriod.StartDate;
+                    this.EndDateEditRibbon.Date = currentAccountingPeriod.EndDate;
                     view.DataContext = this;
-
-
                 });
+
             string processName = parameterProvider.TryGet("DepreciationReport", "simulation.exe");
 
             this.Reports = this.AddNewGroup().AddCommand("Etats", () => this.UIMessage.TryDoAction(logger, () => ExternalProcess.StartProcess(processName)));
@@ -82,7 +80,6 @@ namespace EXGEPA.Depreciations.Contorls
              });
 
             this.outputTypeToIgnore = new List<OutputType> { OutputType.Cession, OutputType.Destruction, OutputType.Disparition, OutputType.Vente };
-
         }
 
         public DateEditRibbon StartDateEditRibbon { get; set; }
@@ -99,24 +96,16 @@ namespace EXGEPA.Depreciations.Contorls
                 logger.Info("Starting computing depreciation for periode between : " + StartDateEditRibbon.Date.ToShortDateString() + " and " + EndDateEditRibbon.Date.ToShortDateString());
                 if (EndDateEditRibbon.Date <= this.StartDateEditRibbon.Date)
                 {
-                    throw new Exception("Parametres de caclul invalides, la date de fin de calcul doit etre antérieur par rapport au date du debut de calcul !");
-                }
-                ICalculator calculator;
-                if (ComboBoxRibbon.EditValue == "Mensuel")
-                {
-                    calculator = Monthely;
-                }
-                else
-                {
-                    calculator = Daily;
+                    throw new Exception("Parametres de caclul invalides, la date de fin de calcul doit etre antérieur à la date de debut du calcul !");
                 }
 
                 this.ShowLoadingPanel = true;
+                ICalculator calculator = ComboBoxRibbon.EditValue == "Mensuel" ? Monthely : Daily;
                 ListOfRows = null;
 
                 var stopwatcher = Stopwatch.StartNew();
                 var items = ItemService.SelectAll().ToList();
-                this.repositoryDataProvider.BindProperties(items);
+                this.repositoryDataProvider.BindPropertyAndSetExtended(items);
                 stopwatcher.Stop();
                 logger.Info("Loading Items done in : " + stopwatcher.Elapsed + " and " + items.Count + " item(s) retreived");
                 logger.Info("Computing and preparing Data ...");

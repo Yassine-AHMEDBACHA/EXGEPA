@@ -34,7 +34,7 @@ namespace EXGEPA.Items
             {
                 var items = this.DBservice.SelectAll().Where(x => displayFilter(x)).ToList();
                 scoopLogger.Snap("Loading data :");
-                repositoryDataProvider.BindProperties(items);
+                repositoryDataProvider.BindPropertyAndSetExtended(items);
                 scoopLogger.Snap("Binding properties !");
                 this.ListOfRows = items.ToObservable();
                 scoopLogger.Snap("Convreting to observable");
