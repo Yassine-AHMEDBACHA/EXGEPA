@@ -93,6 +93,7 @@ namespace EXGEPA.Depreciations.Core
         private void SetStartingComputeParameters(Item item, DateTime startComputationDate, Depreciation firstPeriod)
         {
             var defaultStartDate = Tools.GetDefaultStartDate(item);
+
             if (defaultStartDate < startComputationDate && item.PreviousDepreciation == decimal.Zero)
             {
                 var depreciation = LoadPrevieousDepriciation(item, startComputationDate.AddDays(-1.0)).LastOrDefault();
@@ -109,9 +110,26 @@ namespace EXGEPA.Depreciations.Core
             }
             else
             {
-                var prev = LoadPrevieousDepriciation(item, startComputationDate.AddDays(-1)).LastOrDefault();
-                firstPeriod.InitialValue = GetInitialValue(item);
-                firstPeriod.PreviousDepreciation = item.PreviousDepreciation;
+                var previouseDepDate = item.ExtendedProperties?.PreviouseDepreciationDate;
+                if (previouseDepDate != null && previouseDepDate > startComputationDate)
+                {
+                    var dep = GetDepriciations(item, previouseDepDate.Value, firstPeriod.StartDate.AddDays(-1)).LastOrDefault();
+                    if (dep != null)
+                    {
+                        firstPeriod.InitialValue = dep.AccountingNetValue;
+                        firstPeriod.PreviousDepreciation = dep.PreviousDepreciation + dep.Annuity;
+                    }
+                    else
+                    {
+                        firstPeriod.InitialValue = GetInitialValue(item);
+                        firstPeriod.PreviousDepreciation = item.PreviousDepreciation;
+                    }
+                }
+                else
+                {
+                    firstPeriod.InitialValue = GetInitialValue(item);
+                    firstPeriod.PreviousDepreciation = item.PreviousDepreciation;
+                }
             }
         }
 

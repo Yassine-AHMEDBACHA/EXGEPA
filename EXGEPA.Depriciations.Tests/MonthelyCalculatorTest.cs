@@ -128,5 +128,25 @@ namespace EXGEPA.Depriciations.Tests
             System.Collections.Generic.List<Depreciation> result = calculator.GetDepriciations(item, new DateTime(2010, 01, 01), new DateTime(2019, 12, 31));
             Assert.AreEqual(10, result.Count);
         }
+
+        [Test]
+        public void ShouldComputeDepreciationForOldItems()
+        {
+            Item item = new Item()
+            {
+                Amount = 10000,
+                AquisitionDate = new DateTime(2015, 01, 01),
+                LimiteDate = new DateTime(2024, 12, 31),
+                TransferOrder = new TransferOrder { Date = new DateTime(2019, 06, 01) },
+                FiscalRate = 10,
+                StartDepreciationDate = StartDepreciationDate.AqusitionDate,
+                PreviousDepreciation = 1000,
+                ExtendedProperties = new ItemExtendedProperties { PreviouseDepreciationDate = new DateTime(2018, 01, 01) }
+            };
+
+            var calculator = new MonthelyCalculator(new AccountingPeriodHelper(loadHistory: false));
+            var result = calculator.GetDepriciations(item, new DateTime(2020, 01, 01), new DateTime(2020, 12, 31));
+            Assert.AreEqual(10, result.Count);
+        }
     }
 }
