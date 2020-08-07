@@ -23,7 +23,7 @@ namespace EXGEPA.Report.Aquisitions
             using (ScoopLogger scooplogger = new ScoopLogger("Loading Data", this.logger, false))
             {
                 AccountingPeriod currentPeriod = AccountingPeriodsService.SelectAll().FirstOrDefault(x => !x.Approved);
-                List<Item> items = this.LoadItem(onlyInvestissment).Where(x => x.AquisitionDate.Between(currentPeriod.StartDate, currentPeriod.EndDate, true)).ToList();
+                List<Item> items = this.LoadItem(onlyInvestissment).Where(x => x.AquisitionDate.Between(currentPeriod.StartDate, currentPeriod.EndDate)).ToList();
                 PeriodAquisition report = new PeriodAquisition();
                 report.Periode.Text = currentPeriod.Key;
                 string companyName = ParameterProvider.GetValue<string>("CompanyName");

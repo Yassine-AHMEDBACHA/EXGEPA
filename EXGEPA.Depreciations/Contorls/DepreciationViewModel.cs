@@ -126,7 +126,7 @@ namespace EXGEPA.Depreciations.Contorls
                     if (this.ShouldSaveDepreciation())
                     {
                         var DepToSave = result.SelectMany(x => x.Value);
-                        var accountingPeriod = DepToSave.FirstOrDefault().AccountingPeriod;
+                        var accountingPeriod = DepToSave.FirstOrDefault()?.AccountingPeriod;
                         var oldItems = GetOldItems(items, accountingPeriod);
                         var OnlyActiveItems = DepToSave.Union(oldItems).Where(ShouldBeSaved);
                         Simulation.SaveDepreciation(OnlyActiveItems);

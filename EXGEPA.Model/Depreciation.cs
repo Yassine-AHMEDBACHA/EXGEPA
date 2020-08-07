@@ -23,12 +23,21 @@ namespace EXGEPA.Model
 
         public decimal InitialValue { get; set; }
 
-        public decimal PreviousDepreciation { get; set; }
-
         public decimal Annuity { get; set; }
 
         public decimal AccountingNetValue { get; set; }
 
         public DepreciationType DepreciationType { get; set; }
+
+        public decimal PreviousDepreciation { get; set; }
+
+        public Depreciation Previous { get;set;}
+
+        public decimal CumulativeDepreciation => this.Annuity + this.PreviousDepreciation;
+
+        public override string ToString()
+        {
+            return $"Periode :{this.AccountingPeriod.Key}|-StartDate :{StartDate.ToShortDateString()}|-End Date :{EndDate.ToShortDateString()}";
+        }
     }
 }

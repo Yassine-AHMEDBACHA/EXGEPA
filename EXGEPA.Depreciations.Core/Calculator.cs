@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using CORESI.Data;
 using CORESI.IoC;
+using CORESI.Tools.Collections;
+using CORESI.Tools.DateTimeTools;
 using EXGEPA.Core.Interfaces;
 using EXGEPA.Model;
 
@@ -24,17 +26,6 @@ namespace EXGEPA.Depreciations.Core
         {
             ServiceLocator.Resolve(out this.parameterProvider);
             Stock = new Dictionary<Item, List<Depreciation>>();
-            //this.UsePreviouseDepreciation = this.parameterProvider.GetAndSetIfMissing("UsePreviouseDepreciation", false);
-        }
-
-        protected List<Item> GetConcernedItem(IEnumerable<Item> source, DateTime startDate, DateTime EndDate)
-        {
-            List<Item> result = source.Where(x => Tools.GetEndComputationDate(x) >= startDate).ToList();
-            logger.Debug("Filtring Items that limite date is after " + startDate.ToShortDateString() + "  =  " + result.Count);
-            result = result.Where(x => Tools.GetStartComputationDate(x) <= EndDate).ToList();
-            Parallel.ForEach(source.Except(result), item => item.Depreciations = new List<Depreciation>());
-            logger.Debug("Filtring Items that start date is befor " + EndDate.ToShortDateString() + "  =  " + result.Count);
-            return result;
         }
 
         protected Calculator(IAccountingPeriodHelper accountingPeriodHelper)
@@ -74,94 +65,139 @@ namespace EXGEPA.Depreciations.Core
             }
         }
 
-        public List<Depreciation> GetDepriciations(Item item, DateTime startDate, DateTime endDate)
+        public List<Depreciation> GetDepriciations(Item item, DateTime periodeStartDate, DateTime periodeEndDate)
         {
-            logger.Debug($"Starting computing depreciation for :{item.Key}|-Start Date :{startDate.ToString("yyyy/MM/dd")}|-End date :{endDate.ToString("yyyy/MM/dd")}");
+            var startDate = Tools.GetDefaultStartDate(item);
+            var defaultEndDate = Tools.GetEndComputationDate(item);
+            var endDate = periodeEndDate > defaultEndDate ? defaultEndDate : periodeEndDate;
+            var periods = this.AccountingPeriodHelper.GetAccountingPeriodToDate(startDate, endDate);
+            var depreciations = periods.Select(p => new Depreciation()
+            {
+                Item = item,
+                Rate = item.FiscalRate,
+                StartDate = p.StartDate > startDate ? p.StartDate : startDate,
+                EndDate = (p.EndDate > endDate) ? endDate : p.EndDate,
+                AccountingPeriod = p
+            }).ToLinkedList();
 
-            DateTime startComputationDate = Tools.GetStartComputationDate(item, startDate);
-            DateTime endComputationDate = Tools.GetEndComputationDate(item, endDate);
-
-            List<AccountingPeriod> periods = AccountingPeriodHelper.GetAccountingPeriodToDate(startComputationDate, endComputationDate);
-            List<Depreciation> result = GenerateDepriciationFromAccountingPeriod(item, startComputationDate, endComputationDate, periods);
-            Depreciation firstPeriod = result.FirstOrDefault();
-            SetStartingComputeParameters(item, startComputationDate, firstPeriod);
-            ComputeDep(result, firstPeriod);
-            item.Depreciations = result;
+            this.SetAskedDepreciations(depreciations, periodeStartDate, periodeEndDate);
+            this.SetUserPreviousDepreciation(item, depreciations);
+            this.ComputeDepreciations(depreciations.ToQueue());
+            var result = depreciations.Where(d => periodeStartDate <= d.StartDate && endDate >= d.EndDate).ToList();
             return result;
         }
 
-        private void SetStartingComputeParameters(Item item, DateTime startComputationDate, Depreciation firstPeriod)
+        private void SetAskedDepreciations(LinkedList<Depreciation> depreciations, DateTime periodeStartDate, DateTime periodeEndDate)
         {
-            var defaultStartDate = Tools.GetDefaultStartDate(item);
-
-            if (defaultStartDate < startComputationDate && item.PreviousDepreciation == decimal.Zero)
+            Depreciation next = null;
+            Depreciation befor = null;
+            var first = depreciations.FirstOrDefault(x => periodeStartDate.Between(x.StartDate, x.EndDate));
+            if (first != null)
             {
-                var depreciation = LoadPrevieousDepriciation(item, startComputationDate.AddDays(-1.0)).LastOrDefault();
-                if (depreciation != null)
+                if (first.StartDate != periodeStartDate)
                 {
-                    firstPeriod.InitialValue = depreciation.AccountingNetValue;
-                    firstPeriod.PreviousDepreciation = depreciation.PreviousDepreciation + depreciation.Annuity;
+                    next = new Depreciation
+                    {
+                        Item = first.Item,
+                        PreviousDepreciation = first.PreviousDepreciation,
+                        StartDate = periodeStartDate,
+                        EndDate = first.EndDate,
+                        AccountingPeriod = first.AccountingPeriod
+                    };
+
+                    depreciations.AddAfter(depreciations.Find(first), next);
+                    first.EndDate = periodeStartDate.AddDays(-1);
                 }
                 else
                 {
-                    firstPeriod.InitialValue = GetInitialValue(item);
-                    firstPeriod.PreviousDepreciation = item.PreviousDepreciation;
+                    next = first;
                 }
             }
-            else
+
+            var last = depreciations.FirstOrDefault(x => periodeEndDate.Between(x.StartDate, x.EndDate));
+            if (last != null)
             {
-                var previouseDepDate = item.ExtendedProperties?.PreviouseDepreciationDate;
-                if (previouseDepDate != null && previouseDepDate > startComputationDate)
+                if (last.EndDate != periodeEndDate)
                 {
-                    var dep = GetDepriciations(item, previouseDepDate.Value, firstPeriod.StartDate.AddDays(-1)).LastOrDefault();
-                    if (dep != null)
+                    befor = new Depreciation
                     {
-                        firstPeriod.InitialValue = dep.AccountingNetValue;
-                        firstPeriod.PreviousDepreciation = dep.PreviousDepreciation + dep.Annuity;
-                    }
-                    else
-                    {
-                        firstPeriod.InitialValue = GetInitialValue(item);
-                        firstPeriod.PreviousDepreciation = item.PreviousDepreciation;
-                    }
+                        Item = first.Item,
+                        PreviousDepreciation = first.PreviousDepreciation,
+                        StartDate = periodeEndDate.AddDays(1),
+                        EndDate = last.EndDate,
+                        AccountingPeriod = last.AccountingPeriod
+                    };
+
+                    depreciations.AddAfter(depreciations.Find(last), befor);
+                    befor.EndDate = periodeEndDate;
                 }
                 else
                 {
-                    firstPeriod.InitialValue = GetInitialValue(item);
-                    firstPeriod.PreviousDepreciation = item.PreviousDepreciation;
+                    befor = last;
                 }
             }
         }
 
-        private List<Depreciation> LoadPrevieousDepriciation(Item item, DateTime targetDate)
+        protected List<Item> GetConcernedItem(IEnumerable<Item> source, DateTime startDate, DateTime EndDate)
         {
-            DateTime startDate = Tools.GetDefaultStartDate(item);
-            if (startDate > targetDate)
-                return new List<Depreciation>();
-            List<AccountingPeriod> periods = AccountingPeriodHelper.GetAccountingPeriodToDate(startDate, targetDate);
-            List<Depreciation> result = GenerateDepriciationFromAccountingPeriod(item, startDate, targetDate, periods);
-
-            result.First().InitialValue = this.GetInitialValue(item);
-            ComputeDep(result, result.First());
+            List<Item> result = source.Where(x => Tools.GetEndComputationDate(x) >= startDate).ToList();
+            logger.Debug("Filtring Items that limite date is after " + startDate.ToShortDateString() + "  =  " + result.Count);
+            result = result.Where(x => Tools.GetStartComputationDate(x) <= EndDate).ToList();
+            Parallel.ForEach(source.Except(result), item => item.Depreciations = new List<Depreciation>());
+            logger.Debug("Filtring Items that start date is befor " + EndDate.ToShortDateString() + "  =  " + result.Count);
             return result;
         }
 
-        private decimal GetInitialValue(Item item)
+
+
+        private void SetUserPreviousDepreciation(Item item, LinkedList<Depreciation> depreciations)
         {
-            if (item.DepreciationBase == decimal.Zero && item.Amount != decimal.Zero && item.PreviousDepreciation == decimal.Zero)
+            if (item.ExtendedProperties?.PreviouseDepreciationDate > DateTime.MinValue && item.PreviousDepreciation > 0)
             {
-                return item.Amount;
+                var previouseDepreciationDate = item.ExtendedProperties.PreviouseDepreciationDate;
+                var current = depreciations.FirstOrDefault(x => previouseDepreciationDate.Between(x.StartDate, x.EndDate));
+                if (current != null)
+                {
+                    if (current.StartDate == previouseDepreciationDate)
+                    {
+                        current.PreviousDepreciation = item.PreviousDepreciation;
+                        return;
+                    }
+
+                    var next = new Depreciation
+                    {
+                        Item = current.Item,
+                        PreviousDepreciation = item.PreviousDepreciation,
+                        StartDate = previouseDepreciationDate,
+                        EndDate = current.EndDate,
+                        AccountingPeriod = current.AccountingPeriod
+                    };
+                    depreciations.AddAfter(depreciations.Find(current), next);
+                    current.EndDate = previouseDepreciationDate.AddDays(-1);
+                }
             }
-            if (item.DepreciationBase == decimal.Zero && item.Amount != decimal.Zero && item.PreviousDepreciation != decimal.Zero)
+        }
+
+        private void ComputeDepreciations(Queue<Depreciation> depreciations)
+        {
+            Depreciation last = null;
+
+            while (depreciations.Count > 0)
             {
-                item.DepreciationBase = item.Amount - item.PreviousDepreciation;
-                return item.DepreciationBase;
+                var current = depreciations.Dequeue();
+                if (last != null && last.PreviousDepreciation != 0)
+                {
+                    current.PreviousDepreciation = last.CumulativeDepreciation;
+                    current.InitialValue = last.AccountingNetValue;
+                }
+                else
+                {
+                    current.InitialValue = current.Item.Amount - current.PreviousDepreciation;
+                }
+
+                SetDepriciationValues(current);
+                last = current;
             }
-            if (item.DepreciationBase != decimal.Zero)
-            {
-                return item.DepreciationBase;
-            }
-            return item.Amount;
         }
 
         protected abstract void SetDepriciationValues(Depreciation depreciation);

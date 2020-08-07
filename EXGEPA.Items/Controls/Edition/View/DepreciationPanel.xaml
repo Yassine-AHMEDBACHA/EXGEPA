@@ -13,6 +13,7 @@
                     <dxg:GridColumn FieldName="StartDate" Visible="False" Header="Date Debut"/>
                     <dxg:GridColumn FieldName="EndDate" Visible="False" Header="Date Fin"/>
                     <dxg:GridColumn FieldName="AccountingPeriod.Key" Header="Exercice" />
+                    <dxg:GridColumn FieldName="InitialValue" Header="Base" Visible="False"/>
                     <dxg:GridColumn FieldName="Rate" Visible="False"/>
                     <dxg:GridColumn FieldName="Annuity" Header="Dotation" />
                     <dxg:GridColumn FieldName="PreviousDepreciation"  Header="Amort ant"/>

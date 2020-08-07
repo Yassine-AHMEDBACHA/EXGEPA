@@ -34,12 +34,12 @@ namespace EXGEPA.Depreciations.Core
                 }
                 else
                 {
-                    decimal monthelyAnnuity = (depreciation.InitialValue / monthCount);
+                    var monthelyAnnuity = (depreciation.InitialValue / monthCount);
                     depreciation.Period = GetMonthCount(depreciation.StartDate, depreciation.EndDate);
                     depreciation.Annuity = Math.Round(monthelyAnnuity * depreciation.Period, 2);
                 }
+
                 depreciation.AccountingNetValue = depreciation.InitialValue - depreciation.Annuity;
-                //logger.Info($"Article:{depreciation.Item?.Key}| Exercice = {depreciation.AccountingPeriod?.Key}| Date Debut de calcul:{depreciation.StartDate}| EndLife:{depreciation.Item.LimiteDate}| Debut de periode:{depreciation.StartDate}| fin de periode:{depreciation.EndDate}| Duree de vie restante pour l'article:{monthCount}| Periode en mois :{depreciation.Period}");
             }
             catch (Exception ex)
             {
