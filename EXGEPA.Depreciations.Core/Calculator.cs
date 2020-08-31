@@ -161,6 +161,7 @@ namespace EXGEPA.Depreciations.Core
                     if (current.StartDate == previouseDepreciationDate)
                     {
                         current.PreviousDepreciation = item.PreviousDepreciation;
+                        current.IsPreviouseDepreciationOverided = true;
                         return;
                     }
 
@@ -170,7 +171,9 @@ namespace EXGEPA.Depreciations.Core
                         PreviousDepreciation = item.PreviousDepreciation,
                         StartDate = previouseDepreciationDate,
                         EndDate = current.EndDate,
-                        AccountingPeriod = current.AccountingPeriod
+                        AccountingPeriod = current.AccountingPeriod,
+                        IsPreviouseDepreciationOverided = true
+
                     };
                     depreciations.AddAfter(depreciations.Find(current), next);
                     current.EndDate = previouseDepreciationDate.AddDays(-1);
@@ -185,14 +188,16 @@ namespace EXGEPA.Depreciations.Core
             while (depreciations.Count > 0)
             {
                 var current = depreciations.Dequeue();
-                if (last != null && last.PreviousDepreciation != 0)
+                if (current.IsPreviouseDepreciationOverided == true)
                 {
-                    current.PreviousDepreciation = last.CumulativeDepreciation;
-                    current.InitialValue = last.AccountingNetValue;
+                    current.InitialValue = current.Item.Amount - current.PreviousDepreciation;
                 }
                 else
                 {
-                    current.InitialValue = current.Item.Amount - current.PreviousDepreciation;
+                    current.PreviousDepreciation = last?.CumulativeDepreciation ?? 0;
+
+
+                    current.InitialValue = last?.AccountingNetValue ?? current.Item.Amount;
                 }
 
                 SetDepriciationValues(current);

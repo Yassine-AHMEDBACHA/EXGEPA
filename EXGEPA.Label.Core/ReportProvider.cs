@@ -10,6 +10,8 @@ using CORESI.WPF.Model;
 using EXGEPA.Core;
 using EXGEPA.Label.Core.Model;
 using EXGEPA.Model;
+using CORESI.Report.Controls;
+using DevExpress.XtraReports.UI;
 
 namespace EXGEPA.Label.Core
 {
@@ -17,10 +19,22 @@ namespace EXGEPA.Label.Core
     {
         private static IUIMessage uIMessage;
         private static IParameterProvider parameterProvider;
+        private static bool useMatrixBarCode;
+        private static string shortCompanyName;
+        private static string companyName;
+        private static string officeLevelSeparator;
+
+
         static ReportProvider()
         {
             uIMessage = ServiceLocator.GetPriorizedInstance<IUIMessage>();
             ServiceLocator.Resolve(out parameterProvider);
+            useMatrixBarCode = parameterProvider.TryGet("UseMatrixBarCode", false);
+
+            shortCompanyName = parameterProvider.TryGet("ShortCompanyName", string.Empty);
+            companyName = parameterProvider.GetValue<string>("CompanyName");
+            officeLevelSeparator = parameterProvider.TryGet("*", string.Empty);
+
         }
 
         public static Group GetOfficeLabelDialog()
@@ -33,13 +47,13 @@ namespace EXGEPA.Label.Core
                 Action =
                 () =>
                 {
-                    List<OfficeLabel> dataSource = new List<OfficeLabel>();
+                    var dataSource = new List<OfficeLabel>();
 
-                    IDataProvider<Office> officeServices = ServiceLocator.Resolve<IDataProvider<Office>>();
-                    IList<Office> listOfOffice = officeServices.SelectAll();
+                    var officeServices = ServiceLocator.Resolve<IDataProvider<Office>>();
+                    var listOfOffice = officeServices.SelectAll();
                     listOfOffice.Where(x => x.PrintLabel).ForEach(x =>
                         {
-                            OfficeLabel label = new OfficeLabel
+                            var label = new OfficeLabel
                             {
                                 CodeBare = x.Key,
                                 OfficeCaption = x.Caption,
@@ -47,22 +61,19 @@ namespace EXGEPA.Label.Core
                                 CodeLevel = x.Level.Code,
                                 CodeBuilding = x.Level.Building.Code,
                                 CodeSite = x.Level.Building.Site.Code,
-                                CodeRegion = x.Level.Building.Site.Region.Key
+                                CodeRegion = x.Level.Building.Site.Region.Key,
+                                Caption = $"{x.Level.Code}{officeLevelSeparator}{x.Code}"
                             };
                             dataSource.Add(label);
                         });
                     if (dataSource.Count > 0)
                     {
-                        IParameterProvider parameterProvider = ServiceLocator.Resolve<IParameterProvider>();
-                        string companyName = parameterProvider.GetValue<string>("CompanyName");
-                        string logo = Path.Combine(parameterProvider.GetValue("PicturesDirectory", @"C:\SQLIMMO\Images"), parameterProvider.GetValue("LogoFileName", "logo.jpg"));
-                        Reports.LabelOffice6030 etiquete = new Label.Core.Reports.LabelOffice6030(companyName, logo)
-                        {
-                            DataSource = dataSource
-                        };
-                        etiquete.CreateDocument();
-                        Page page = CORESI.Report.Controls.ReportViewModel.GetModulePage("Etiquettes Locaux", etiquete);
-                        IUIService uIService = ServiceLocator.Resolve<IUIService>();
+                        var parameterProvider = ServiceLocator.Resolve<IParameterProvider>();
+                        var logo = Path.Combine(parameterProvider.GetValue("PicturesDirectory", @"C:\SQLIMMO\Images"), parameterProvider.GetValue("LogoFileName", "logo.jpg"));
+                        var ettiquete = GetOfficeLabel(dataSource, logo);
+                        ettiquete.CreateDocument();
+                        var page = ReportViewModel.GetModulePage("Etiquettes Locaux", ettiquete);
+                        var uIService = ServiceLocator.Resolve<IUIService>();
                         uIService.AddPage(page);
                     }
                     else
@@ -85,16 +96,12 @@ namespace EXGEPA.Label.Core
                   List<ItemLabel> result = labelItemGenerator.LoadLabels();
                   if (result.Count > 0)
                   {
-                      IParameterProvider parameterProvider = ServiceLocator.Resolve<IParameterProvider>();
-                      string companyName = parameterProvider.GetValue<string>("CompanyName");
-                      string logo = Path.Combine(parameterProvider.GetValue("PicturesDirectory", @"C:\SQLIMMO\Images"), parameterProvider.GetValue("LogoFileName", "logo.jpg"));
-                      Reports.LabelItem5025 etiquete = new Label.Core.Reports.LabelItem5025(companyName, logo)
-                      {
-                          DataSource = result
-                      };
+                      var parameterProvider = ServiceLocator.Resolve<IParameterProvider>();
+                      var logo = Path.Combine(parameterProvider.GetValue("PicturesDirectory", @"C:\SQLIMMO\Images"), parameterProvider.GetValue("LogoFileName", "logo.jpg"));
+                      XtraReport etiquete = GetItemLabel(result, companyName, logo);
                       etiquete.CreateDocument();
-                      Page page = CORESI.Report.Controls.ReportViewModel.GetModulePage("Etiquettes Articles", etiquete);
-                      IUIService uIService = ServiceLocator.Resolve<IUIService>();
+                      var page = ReportViewModel.GetModulePage("Etiquettes Articles", etiquete);
+                      var uIService = ServiceLocator.Resolve<IUIService>();
                       uIService.AddPage(page);
                   }
                   else
@@ -103,6 +110,38 @@ namespace EXGEPA.Label.Core
                   }
               });
             return group;
+        }
+
+        private static XtraReport GetItemLabel(List<ItemLabel> dataSource, string companyName, string logo)
+        {
+            if (useMatrixBarCode)
+            {
+                return new Reports.Label2D(shortCompanyName)
+                {
+                    DataSource = dataSource.ApplyOnAll(x => x.Caption = x.Code)
+                };
+            }
+
+            return new Reports.LabelItem5025(companyName, logo)
+            {
+                DataSource = dataSource
+            };
+        }
+
+        private static XtraReport GetOfficeLabel(List<OfficeLabel> dataSource, string logo)
+        {
+            if (useMatrixBarCode)
+            {
+                return new Reports.Label2D(shortCompanyName)
+                {
+                    DataSource = dataSource
+                };
+            }
+
+            return new Label.Core.Reports.LabelOffice6030(companyName, logo)
+            {
+                DataSource = dataSource
+            };
         }
     }
 }

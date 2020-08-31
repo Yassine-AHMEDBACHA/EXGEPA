@@ -1,6 +1,6 @@
 ﻿namespace EXGEPA.Label.Core.Reports
 {
-    partial class LabelItem5025
+    partial class Label2D
     {
         /// <summary>
         /// Required designer variable.
@@ -29,16 +29,12 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            DevExpress.XtraPrinting.BarCode.Code128Generator code128Generator1 = new DevExpress.XtraPrinting.BarCode.Code128Generator();
+            DevExpress.XtraPrinting.BarCode.QRCodeGenerator qrCodeGenerator1 = new DevExpress.XtraPrinting.BarCode.QRCodeGenerator();
             this.Detail = new DevExpress.XtraReports.UI.DetailBand();
             this.xrPanel1 = new DevExpress.XtraReports.UI.XRPanel();
-            this.PrefixCode = new DevExpress.XtraReports.UI.XRLabel();
-            this.Logo = new DevExpress.XtraReports.UI.XRPictureBox();
-            this.SuffixCode = new DevExpress.XtraReports.UI.XRLabel();
             this.companyNameLabel = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel3 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrBarCode1 = new DevExpress.XtraReports.UI.XRBarCode();
-            this.Code = new DevExpress.XtraReports.UI.XRLabel();
             this.TopMargin = new DevExpress.XtraReports.UI.TopMarginBand();
             this.BottomMargin = new DevExpress.XtraReports.UI.BottomMarginBand();
             this.objectDataSource1 = new DevExpress.DataAccess.ObjectBinding.ObjectDataSource(this.components);
@@ -50,7 +46,7 @@
             this.Detail.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
             this.xrPanel1});
             this.Detail.Dpi = 254F;
-            this.Detail.HeightF = 249F;
+            this.Detail.HeightF = 199F;
             this.Detail.Name = "Detail";
             this.Detail.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 0, 0, 0, 254F);
             this.Detail.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
@@ -59,75 +55,27 @@
             // 
             this.xrPanel1.CanGrow = false;
             this.xrPanel1.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
-            this.PrefixCode,
-            this.Logo,
-            this.SuffixCode,
             this.companyNameLabel,
             this.xrLabel3,
-            this.xrBarCode1,
-            this.Code});
+            this.xrBarCode1});
             this.xrPanel1.Dpi = 254F;
             this.xrPanel1.LocationFloat = new DevExpress.Utils.PointFloat(4.000004F, 6.000004F);
             this.xrPanel1.Name = "xrPanel1";
-            this.xrPanel1.SizeF = new System.Drawing.SizeF(491F, 240F);
-            // 
-            // PrefixCode
-            // 
-            this.PrefixCode.BackColor = System.Drawing.Color.Transparent;
-            this.PrefixCode.CanGrow = false;
-            this.PrefixCode.Dpi = 254F;
-            this.PrefixCode.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[PrefixCode]")});
-            this.PrefixCode.Font = new System.Drawing.Font("Times New Roman", 8F, System.Drawing.FontStyle.Bold);
-            this.PrefixCode.LocationFloat = new DevExpress.Utils.PointFloat(13.00001F, 195.8154F);
-            this.PrefixCode.Name = "PrefixCode";
-            this.PrefixCode.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 5, 0, 0, 254F);
-            this.PrefixCode.SizeF = new System.Drawing.SizeF(85.66196F, 40.18465F);
-            this.PrefixCode.StylePriority.UseBackColor = false;
-            this.PrefixCode.StylePriority.UseFont = false;
-            this.PrefixCode.StylePriority.UseTextAlignment = false;
-            this.PrefixCode.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopCenter;
-            this.PrefixCode.WordWrap = false;
-            // 
-            // Logo
-            // 
-            this.Logo.Dpi = 254F;
-            this.Logo.LocationFloat = new DevExpress.Utils.PointFloat(5F, 5F);
-            this.Logo.Name = "Logo";
-            this.Logo.SizeF = new System.Drawing.SizeF(100F, 100F);
-            this.Logo.Sizing = DevExpress.XtraPrinting.ImageSizeMode.StretchImage;
-            // 
-            // SuffixCode
-            // 
-            this.SuffixCode.BackColor = System.Drawing.Color.Transparent;
-            this.SuffixCode.CanGrow = false;
-            this.SuffixCode.Dpi = 254F;
-            this.SuffixCode.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[SuffixCode]")});
-            this.SuffixCode.Font = new System.Drawing.Font("Times New Roman", 8F, System.Drawing.FontStyle.Bold);
-            this.SuffixCode.LocationFloat = new DevExpress.Utils.PointFloat(400.338F, 195.8154F);
-            this.SuffixCode.Name = "SuffixCode";
-            this.SuffixCode.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 5, 0, 0, 254F);
-            this.SuffixCode.SizeF = new System.Drawing.SizeF(85.66196F, 40.18465F);
-            this.SuffixCode.StylePriority.UseBackColor = false;
-            this.SuffixCode.StylePriority.UseFont = false;
-            this.SuffixCode.StylePriority.UseTextAlignment = false;
-            this.SuffixCode.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopCenter;
-            this.SuffixCode.WordWrap = false;
+            this.xrPanel1.SizeF = new System.Drawing.SizeF(190F, 190F);
             // 
             // companyNameLabel
             // 
             this.companyNameLabel.CanGrow = false;
             this.companyNameLabel.Dpi = 254F;
-            this.companyNameLabel.Font = new System.Drawing.Font("Times New Roman", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.companyNameLabel.LocationFloat = new DevExpress.Utils.PointFloat(112.7112F, 4.658444F);
+            this.companyNameLabel.Font = new System.Drawing.Font("Times New Roman", 8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.companyNameLabel.LocationFloat = new DevExpress.Utils.PointFloat(6.67572E-06F, 0F);
             this.companyNameLabel.Name = "companyNameLabel";
             this.companyNameLabel.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 5, 0, 0, 254F);
-            this.companyNameLabel.SizeF = new System.Drawing.SizeF(376.2888F, 56.8638F);
+            this.companyNameLabel.SizeF = new System.Drawing.SizeF(190F, 33.85384F);
             this.companyNameLabel.StylePriority.UseFont = false;
             this.companyNameLabel.StylePriority.UseTextAlignment = false;
-            this.companyNameLabel.Text = "SARL CORESI";
-            this.companyNameLabel.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+            this.companyNameLabel.Text = "SH groupe";
+            this.companyNameLabel.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopCenter;
             // 
             // xrLabel3
             // 
@@ -136,10 +84,10 @@
             this.xrLabel3.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[Caption]")});
             this.xrLabel3.Font = new System.Drawing.Font("Times New Roman", 8F, System.Drawing.FontStyle.Bold);
-            this.xrLabel3.LocationFloat = new DevExpress.Utils.PointFloat(112.7112F, 66.52224F);
+            this.xrLabel3.LocationFloat = new DevExpress.Utils.PointFloat(6.67572E-06F, 160.8638F);
             this.xrLabel3.Name = "xrLabel3";
             this.xrLabel3.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 5, 0, 0, 254F);
-            this.xrLabel3.SizeF = new System.Drawing.SizeF(376.2888F, 42.13621F);
+            this.xrLabel3.SizeF = new System.Drawing.SizeF(190F, 26.13622F);
             this.xrLabel3.StylePriority.UseFont = false;
             this.xrLabel3.StylePriority.UseTextAlignment = false;
             this.xrLabel3.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopCenter;
@@ -151,30 +99,15 @@
             this.xrBarCode1.Dpi = 254F;
             this.xrBarCode1.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[CodeBare]")});
-            this.xrBarCode1.LocationFloat = new DevExpress.Utils.PointFloat(25.00001F, 110.6584F);
+            this.xrBarCode1.LocationFloat = new DevExpress.Utils.PointFloat(10F, 38.24104F);
             this.xrBarCode1.Module = 3F;
             this.xrBarCode1.Name = "xrBarCode1";
             this.xrBarCode1.Padding = new DevExpress.XtraPrinting.PaddingInfo(25, 25, 0, 0, 254F);
             this.xrBarCode1.ShowText = false;
-            this.xrBarCode1.SizeF = new System.Drawing.SizeF(446F, 85.15695F);
+            this.xrBarCode1.SizeF = new System.Drawing.SizeF(169F, 120.759F);
             this.xrBarCode1.StylePriority.UseTextAlignment = false;
-            this.xrBarCode1.Symbology = code128Generator1;
+            this.xrBarCode1.Symbology = qrCodeGenerator1;
             this.xrBarCode1.TextAlignment = DevExpress.XtraPrinting.TextAlignment.BottomCenter;
-            // 
-            // Code
-            // 
-            this.Code.CanGrow = false;
-            this.Code.Dpi = 254F;
-            this.Code.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[Code]")});
-            this.Code.Font = new System.Drawing.Font("Times New Roman", 8F, System.Drawing.FontStyle.Bold);
-            this.Code.LocationFloat = new DevExpress.Utils.PointFloat(108.6866F, 195.8154F);
-            this.Code.Name = "Code";
-            this.Code.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 5, 0, 0, 254F);
-            this.Code.SizeF = new System.Drawing.SizeF(281.6268F, 40.18462F);
-            this.Code.StylePriority.UseFont = false;
-            this.Code.StylePriority.UseTextAlignment = false;
-            this.Code.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopCenter;
             // 
             // TopMargin
             // 
@@ -197,7 +130,7 @@
             this.objectDataSource1.DataSource = typeof(EXGEPA.Label.Core.Model.ItemLabel);
             this.objectDataSource1.Name = "objectDataSource1";
             // 
-            // LabelItem5025
+            // Label2D
             // 
             this.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
             this.Detail,
@@ -208,8 +141,8 @@
             this.DataSource = this.objectDataSource1;
             this.Dpi = 254F;
             this.Margins = new System.Drawing.Printing.Margins(0, 0, 0, 0);
-            this.PageHeight = 250;
-            this.PageWidth = 500;
+            this.PageHeight = 200;
+            this.PageWidth = 200;
             this.PaperKind = System.Drawing.Printing.PaperKind.Custom;
             this.PaperName = "Label5025";
             this.ReportUnit = DevExpress.XtraReports.UI.ReportUnit.TenthsOfAMillimeter;
@@ -230,10 +163,9 @@
         private DevExpress.XtraReports.UI.XRLabel companyNameLabel;
         private DevExpress.XtraReports.UI.XRLabel xrLabel3;
         private DevExpress.XtraReports.UI.XRBarCode xrBarCode1;
-        private DevExpress.XtraReports.UI.XRLabel Code;
         private DevExpress.DataAccess.ObjectBinding.ObjectDataSource objectDataSource1;
-        private DevExpress.XtraReports.UI.XRLabel SuffixCode;
-        public DevExpress.XtraReports.UI.XRPictureBox Logo;
-        private DevExpress.XtraReports.UI.XRLabel PrefixCode;
+        private DevExpress.XtraReports.UI.TopMarginBand topMarginBand1;
+        private DevExpress.XtraReports.UI.DetailBand detailBand1;
+        private DevExpress.XtraReports.UI.BottomMarginBand bottomMarginBand1;
     }
 }

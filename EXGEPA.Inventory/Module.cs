@@ -45,19 +45,6 @@ namespace EXGEPA.Inventory
                 }
             });
 
-            //InventoryGroup.Commands.Add(new RibbonButton()
-            //{
-            //    LargeGlyph = IconProvider.Inventory,
-            //    Caption = "Statistique",
-            //    Action = () =>
-            //    {
-            //        var view = new InventoryStatisticsView();
-            //        var inventoryViewModel = new InventoryStatisticsViewModel();
-            //        var page = new Page(inventoryViewModel, view, true);
-            //        uIService.AddPage(page, true);
-            //    }
-            //});
-
             InventoryGroup.Commands.Add(new RibbonButton()
             {
                 IsSmall = true,
@@ -76,9 +63,9 @@ namespace EXGEPA.Inventory
                 Glyph = IconProvider.BarCodeSmall,
                 Action = () =>
                     {
-                        System.Collections.Generic.List<CORESI.Data.Field> fields = CORESI.DataAccess.Core.PropertiesExtractor.ExtractFields(typeof(Office));
-                        System.Reflection.PropertyInfo labelPropertyInfo = fields.First(x => x.Name == "PrintLabel").PropertyInfo;
-                        Group group = Label.Core.ReportProvider.GetOfficeLabelDialog();
+                        var fields = CORESI.DataAccess.Core.PropertiesExtractor.ExtractFields(typeof(Office));
+                        var labelPropertyInfo = fields.First(x => x.Name == "PrintLabel").PropertyInfo;
+                        var group = Label.Core.ReportProvider.GetOfficeLabelDialog();
                         officeLabel.ShowOfficeAttribution(labelPropertyInfo, true, false, group);
                     }
             });

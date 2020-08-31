@@ -35,6 +35,8 @@ namespace EXGEPA.Model
 
         public decimal CumulativeDepreciation => this.Annuity + this.PreviousDepreciation;
 
+        public bool IsPreviouseDepreciationOverided { get; set; }
+
         public override string ToString()
         {
             return $"Periode :{this.AccountingPeriod.Key}|-StartDate :{StartDate.ToShortDateString()}|-End Date :{EndDate.ToShortDateString()}";

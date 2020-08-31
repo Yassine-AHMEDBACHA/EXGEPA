@@ -9,5 +9,6 @@
         public string CodeLevel { get; set; }
         public string CodeOffice { get; set; }
         public string OfficeCaption { get; set; }
+        public string Caption { get; set; }
     }
 }
