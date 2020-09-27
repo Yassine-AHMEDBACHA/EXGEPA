@@ -3,15 +3,15 @@ using System.IO;
 using System.Linq;
 using CORESI.Data;
 using CORESI.IoC;
+using CORESI.Report.Controls;
 using CORESI.Tools.Collections;
 using CORESI.WPF;
 using CORESI.WPF.Core;
 using CORESI.WPF.Model;
+using DevExpress.XtraReports.UI;
 using EXGEPA.Core;
 using EXGEPA.Label.Core.Model;
 using EXGEPA.Model;
-using CORESI.Report.Controls;
-using DevExpress.XtraReports.UI;
 
 namespace EXGEPA.Label.Core
 {
@@ -24,7 +24,6 @@ namespace EXGEPA.Label.Core
         private static string companyName;
         private static string officeLevelSeparator;
 
-
         static ReportProvider()
         {
             uIMessage = ServiceLocator.GetPriorizedInstance<IUIMessage>();
@@ -33,7 +32,7 @@ namespace EXGEPA.Label.Core
 
             shortCompanyName = parameterProvider.TryGet("ShortCompanyName", string.Empty);
             companyName = parameterProvider.GetValue<string>("CompanyName");
-            officeLevelSeparator = parameterProvider.TryGet("*", string.Empty);
+            officeLevelSeparator = parameterProvider.TryGet("OfficeLevelSeparator", "*");
 
         }
 
@@ -62,7 +61,7 @@ namespace EXGEPA.Label.Core
                                 CodeBuilding = x.Level.Building.Code,
                                 CodeSite = x.Level.Building.Site.Code,
                                 CodeRegion = x.Level.Building.Site.Region.Key,
-                                Caption = $"{x.Level.Code}{officeLevelSeparator}{x.Code}"
+                                Code = $"{x.Level.Code}{officeLevelSeparator}{x.Code}"
                             };
                             dataSource.Add(label);
                         });
@@ -78,7 +77,7 @@ namespace EXGEPA.Label.Core
                     }
                     else
                     {
-                        uIMessage.Information("Acune Etiquette à imprimer !");
+                        uIMessage.Information("Aucune Etiquette à imprimer !");
                     }
                 }
             });
@@ -118,7 +117,7 @@ namespace EXGEPA.Label.Core
             {
                 return new Reports.Label2D(shortCompanyName)
                 {
-                    DataSource = dataSource.ApplyOnAll(x => x.Caption = x.Code)
+                    DataSource = dataSource
                 };
             }
 

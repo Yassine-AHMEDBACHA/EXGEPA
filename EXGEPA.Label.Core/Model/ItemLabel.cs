@@ -2,6 +2,8 @@
 {
     public class ItemLabel
     {
+        public string CompanyName { get; set; }
+
         public string CodeBare { get; set; }
 
         public string Code { get; set; }

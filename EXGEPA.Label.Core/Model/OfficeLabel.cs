@@ -2,6 +2,8 @@
 {
     class OfficeLabel
     {
+        public string CompanyName { get; set; }
+
         public string CodeBare { get; set; }
         public string CodeRegion { get; set; }
         public string CodeSite { get; set; }
@@ -10,5 +12,6 @@
         public string CodeOffice { get; set; }
         public string OfficeCaption { get; set; }
         public string Caption { get; set; }
+        public string Code { get; set; }
     }
 }
