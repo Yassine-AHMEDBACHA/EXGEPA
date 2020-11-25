@@ -7,7 +7,7 @@ namespace CORESI.WPF.Controls
 {
     public abstract class ExportableView : UserControl, IExportableGrid
     {
-        public TableView TableView => this.FindName("mainTableView") as TableView;
+        public virtual TableView TableView => this.FindName("mainTableView") as TableView;
 
         public string DisplayedFilter => this.TableView.FilterPanelText;
 

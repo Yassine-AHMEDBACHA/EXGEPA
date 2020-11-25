@@ -10,6 +10,7 @@ using CORESI.Data.Tools;
 using CORESI.DataAccess.Core;
 using CORESI.IoC;
 using CORESI.Tools;
+using CORESI.Tools.Collections;
 using CORESI.WPF.Controls;
 using CORESI.WPF.Core;
 using CORESI.WPF.Core.Interfaces;
@@ -93,7 +94,7 @@ namespace EXGEPA.Inventory.Controls
 
                 group.AddCommand("Non scannés", () =>
                 {
-                    List<Item> select = this.ExcludItemAccordingToExcludedAccountingPersiods(this.ListOfRows)
+                    var select = this.ExcludItemAccordingToExcludedAccountingPersiods(this.ListOfRows)
                     .Where(x => x.Item != null && x.Office == null)
                     .Select(x => x.Item)
                     .Where(x => x.OutputCertificate == null && x.GeneralAccount.GeneralAccountType.Type == EGeneralAccountType.Investment)
@@ -103,10 +104,10 @@ namespace EXGEPA.Inventory.Controls
 
                 group.AddCommand("Negatif par compte", () =>
                 {
-                    IEnumerable<IGrouping<Office, Item>> allItems = this.itemService.SelectAll().GroupBy(x => x.Office);
-                    IEnumerable<Item> scannedItem = this.ListOfRows.Select(x => x.Item);
-                    List<int> scannedOffices = this.ListOfRows.Where(x => x.Office != null).GroupBy(c => c.Office.Id).Select(g => g.Key).ToList();
-                    List<Item> select = this.ExcludItemAccordingToExcludedAccountingPersiods(this.ListOfRows)
+                    var allItems = this.itemService.SelectAll().GroupBy(x => x.Office);
+                    var scannedItem = this.ListOfRows.Select(x => x.Item);
+                    var scannedOffices = this.ListOfRows.Where(x => x.Office != null).GroupBy(c => c.Office.Id).Select(g => g.Key).ToList();
+                    var select = this.ExcludItemAccordingToExcludedAccountingPersiods(this.ListOfRows)
                     .Where(x => x.Item != null && x.Office == null && scannedOffices.Contains(x.Item.Office.Id))
                     .Select(x => x.Item)
                     .ToList();
@@ -170,17 +171,17 @@ namespace EXGEPA.Inventory.Controls
         {
             StartBackGroundAction(() =>
             {
-                using (ScoopLogger scoopLogger = new ScoopLogger("Initializing inventory module", this.Logger))
+                using (var scoopLogger = new ScoopLogger("Initializing inventory module", this.Logger))
                 {
-                    IList<InventoryRow> inventoryRows = this.inventoryService.SelectAll();
+                    var inventoryRows = this.inventoryService.SelectAll();
                     scoopLogger.Snap("To load inventorys");
-                    IList<Item> Items = this.itemService.SelectAll();
+                    var items = this.itemService.SelectAll();
                     scoopLogger.Snap("To load Items");
-                    Parallel.ForEach(Items, (item) => this.repositoryDataProvider.BindPropertyAndSetExtended(item));
+                    this.repositoryDataProvider.BindPropertyAndSetExtended(items);
                     scoopLogger.Snap("To bind Items");
-                    Dictionary<string, Item> allItems = Items.ToDictionary(x => x.Key);
+                    var allItems = items.ToDictionary(x => x.Key);
                     this.AllOffices = this.repositoryDataProvider.ListOfOffice.ToDictionary(x => x.Key);
-                    ConcurrentBag<InventoryData> result = new ConcurrentBag<InventoryData>();
+                    var result = new ConcurrentBag<InventoryData>();
                     Parallel.ForEach(inventoryRows, row => result.Add(this.ConvertToInventoryDataAndKeepOnlyNotScanned(row, allItems)));
                     List<Item> NotscannedItem = allItems.Values.Where(x => x.OutputCertificate == null).ToList();
                     Parallel.ForEach(result, x => x.GapType = this.ComputeGap(x));
@@ -258,7 +259,7 @@ namespace EXGEPA.Inventory.Controls
                     Item = x,
                     Office = x.Office,
                     Key = x.Key,
-                    Localization = x.Office.Code
+                    Localization = x.Office.Key
                 });
             }
             else
@@ -335,7 +336,7 @@ namespace EXGEPA.Inventory.Controls
 
         private void DisplayScannedItemOnly()
         {
-            Filter = "[gaptype] = 'Déplacement' Or [gaptype] = 'Aucun' Or [gaptype] = 'Positif'";
+            Filter = "[gaptype] = 'Déplacement' Or [gaptype] = 'Aucun' Or [gaptype] = 'Positif' Or [gaptype] = 'Inventorié par defaut'";
         }
 
         private void SetInventToolGroup()

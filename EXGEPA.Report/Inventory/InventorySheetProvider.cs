@@ -21,18 +21,17 @@ namespace EXGEPA.Report.Inventory
             ServiceLocator.Resolve(out this.parameterProvider);
         }
 
-        
-
         public void PrintInventorySheet(IList<Item> items, bool isTheorical = true)
         {
             if (items == null || items.Count == 0)
             {
-                this.uIMessage.Information("Acune fiche à imprimer !");
+                this.uIMessage.Information("Aucune fiche à imprimer !");
                 return;
             }
+
             items = items.OrderBy(x => x.Key).ToList();
-            CORESI.Data.IDataProvider<AccountingPeriod> AccountingPeriodsService = ServiceLocator.Resolve<CORESI.Data.IDataProvider<AccountingPeriod>>();
-            AccountingPeriod currentPeriod = AccountingPeriodsService.SelectAll().FirstOrDefault(x => !x.Approved);
+            var AccountingPeriodsService = ServiceLocator.Resolve<CORESI.Data.IDataProvider<AccountingPeriod>>();
+            var currentPeriod = AccountingPeriodsService.SelectAll().FirstOrDefault(x => !x.Approved);
             var report = new InventorySheet();
             report.SheetTitle.Text += isTheorical ? "Théorique" : "Physique";
             report.SubHeader.Text = this.parameterProvider.GetValue("DirectionName", "");
@@ -43,7 +42,7 @@ namespace EXGEPA.Report.Inventory
             report.DataSource = items;
             report.Periode.Text = currentPeriod.Key;
             report.CreateDocument();
-            CORESI.WPF.Model.Page page = CORESI.Report.Controls.ReportViewModel.GetModulePage(report.SheetTitle.Text, report);
+            var page = CORESI.Report.Controls.ReportViewModel.GetModulePage(report.SheetTitle.Text, report);
             IUIService uIService = ServiceLocator.Resolve<IUIService>();
             uIService.AddPage(page);
         }

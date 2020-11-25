@@ -27,7 +27,7 @@ namespace EXGEPA.Items
             logger.Debug("Starting composing UIItemService...");
             this.UIMessage = ServiceLocator.GetPriorizedInstance<IUIMessage>();
             this.UIService = ServiceLocator.Resolve<IUIService>();
-           ServiceLocator.Resolve(out this.itemService);
+            ServiceLocator.Resolve(out this.itemService);
             logger.Info("UIItemService is ready for use");
         }
 
@@ -101,8 +101,8 @@ namespace EXGEPA.Items
 
         public void ShowItemAttribution(ItemAttributionOptions itemAttributionOptions)
         {
-            ItemAttributionView view = new ItemAttributionView();
-            ItemAttributionVM viewModel = new ItemAttributionVM(itemAttributionOptions);
+            var view = new ItemAttributionView();
+            var viewModel = new ItemAttributionVM(itemAttributionOptions, view);
             Page page = new Page(viewModel, view, true);
             UIService.AddPage(page);
             viewModel.InitData();

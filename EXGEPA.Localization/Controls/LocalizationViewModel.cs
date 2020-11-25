@@ -102,13 +102,14 @@ namespace EXGEPA.Localization.Controls
             this.ShowLoadingPanel = true;
             this.UIMessage.TryDoUIActionAsync(Logger, () =>
              {
-                 IList<Item> items = null;
-                 Dictionary<string, Office> offices = SelectedOffices.ToDictionary(x => x.Key);
-                 List<InventoryRow> inventoryRows = InventoryRowService.SelectAll().Where(x => offices.ContainsKey(x.Localization)).ToList();
+                 var items = ItemService.SelectAll().Where(x => x.OutputCertificate == null).ToList();
+                 var allItems = items.ToDictionary(x => x.Key, x => x);
+                 var offices = SelectedOffices.ToDictionary(x => x.Key);
+                 var inventoryRows = InventoryRowService.SelectAll().Where(x => offices.ContainsKey(x.Localization)).ToList();
+                 var defaultItems = items.Where(x => x.ExcludedFromInventory && offices.Values.Any(o => x.Office.Id == o.Id) && inventoryRows.All(y => !y.Key.Equals(x.Key))).ToList();
+                 this.RepositoryDataProvider.BindProperties(defaultItems);
                  if (inventoryRows.Count > 0)
                  {
-                     items = ItemService.SelectAll();
-                     Dictionary<string, Item> allItems = items.Where(x => x.OutputCertificate == null).ToDictionary(x => x.Key, x => x);
                      items = inventoryRows.Select(x =>
                     {
                         if (allItems.TryGetValue(x.Key, out Item item))
@@ -121,7 +122,12 @@ namespace EXGEPA.Localization.Controls
                     }).Where(x => x != null).ToList();
                      RepositoryDataProvider.BindProperties(items);
                  }
-                 OfficeInventoryReportProvider.PrintInventorySheet(items, false);
+                 else
+                 {
+                     items.Clear();
+                 }
+
+                 OfficeInventoryReportProvider.PrintInventorySheet(items.Union(defaultItems).ToList(), false);
              }, () => this.ShowLoadingPanel = false);
         }
 

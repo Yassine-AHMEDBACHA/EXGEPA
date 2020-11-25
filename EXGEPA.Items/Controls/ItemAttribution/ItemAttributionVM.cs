@@ -7,6 +7,7 @@ using EXGEPA.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Forms;
 using System.Windows.Input;
 
 namespace EXGEPA.Items.Controls
@@ -34,14 +35,16 @@ namespace EXGEPA.Items.Controls
             this.ResetCommand = new Command(this.MoveSelectionToLeft);
             this.ResetAllCommand = new Command(this.MoveAllToLeft);
             SetToolGroup();
+            
         }
 
 
-        public ItemAttributionVM(ItemAttributionOptions options) : this()
+        public ItemAttributionVM(ItemAttributionOptions options, ItemAttributionView view) : this()
         {
             this.Options = options;
             this.Caption = options.PageCaption;
             this.Categorie = options.Categorie;
+            this.SetExportGroup(view);
             if (options.Groups != null)
             {
                 options.Groups.ForEach(group => this.Groups.Add(group));

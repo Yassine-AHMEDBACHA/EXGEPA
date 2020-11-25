@@ -104,10 +104,17 @@
             {
                 this.UpdateKey(value);
                 this.UpdateDescription(value);
+                this.UpdateImage(value);
                 this.UpdateGeneralAccount(value);
                 this.ConcernedItem.Reference = value;
                 RaisePropertyChanged("Reference");
             }
+        }
+
+        private void UpdateImage(Reference value)
+        {
+            
+            this.ImagePath = Path.Combine(this.PicturesDirectory, value.ImagePath);
         }
 
         private void UpdateKey(Reference value)
