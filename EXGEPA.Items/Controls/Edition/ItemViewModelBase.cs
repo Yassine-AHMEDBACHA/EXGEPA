@@ -5,6 +5,7 @@
     using System.IO;
     using System.Linq;
     using CORESI.Data;
+    using CORESI.Data.Tools;
     using CORESI.IoC;
     using CORESI.Tools.Collections;
     using CORESI.WPF.Controls;
@@ -113,8 +114,10 @@
 
         private void UpdateImage(Reference value)
         {
-            
-            this.ImagePath = Path.Combine(this.PicturesDirectory, value.ImagePath);
+            if (value.ImagePath.IsValid())
+            {
+                this.ImagePath = Path.Combine(this.PicturesDirectory, value.ImagePath);
+            }
         }
 
         private void UpdateKey(Reference value)
