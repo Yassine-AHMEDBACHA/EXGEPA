@@ -19,7 +19,6 @@ namespace EXGEPA.Label.Core
     {
         private static IUIMessage uIMessage;
         private static IParameterProvider parameterProvider;
-        private static bool useMatrixBarCode;
         private static string shortCompanyName;
         private static string companyName;
         private static string officeLevelSeparator;
@@ -28,8 +27,6 @@ namespace EXGEPA.Label.Core
         {
             uIMessage = ServiceLocator.GetPriorizedInstance<IUIMessage>();
             ServiceLocator.Resolve(out parameterProvider);
-            useMatrixBarCode = parameterProvider.TryGet("UseMatrixBarCode", false);
-
             shortCompanyName = parameterProvider.TryGet("ShortCompanyName", string.Empty);
             companyName = parameterProvider.GetValue<string>("CompanyName");
             officeLevelSeparator = parameterProvider.TryGet("OfficeLevelSeparator", "*");
@@ -43,75 +40,93 @@ namespace EXGEPA.Label.Core
             {
                 Caption = "Imprimer",
                 LargeGlyph = IconProvider.PrintDialog,
-                Action =
-                () =>
-                {
-                    var dataSource = new List<OfficeLabel>();
+                Action = () => PrintOfficeLabel(false)
+            });
 
-                    var officeServices = ServiceLocator.Resolve<IDataProvider<Office>>();
-                    var listOfOffice = officeServices.SelectAll();
-                    listOfOffice.Where(x => x.PrintLabel).ForEach(x =>
-                        {
-                            var label = new OfficeLabel
-                            {
-                                CodeBare = x.Key,
-                                OfficeCaption = x.Caption,
-                                CodeOffice = x.Code,
-                                CodeLevel = x.Level.Code,
-                                CodeBuilding = x.Level.Building.Code,
-                                CodeSite = x.Level.Building.Site.Code,
-                                CodeRegion = x.Level.Building.Site.Region.Key,
-                                Code = $"{x.Level.Code}{officeLevelSeparator}{x.Code}"
-                            };
-                            dataSource.Add(label);
-                        });
-                    if (dataSource.Count > 0)
-                    {
-                        var parameterProvider = ServiceLocator.Resolve<IParameterProvider>();
-                        var logo = Path.Combine(parameterProvider.GetValue("PicturesDirectory", @"C:\SQLIMMO\Images"), parameterProvider.GetValue("LogoFileName", "logo.jpg"));
-                        var ettiquete = GetOfficeLabel(dataSource, logo);
-                        ettiquete.CreateDocument();
-                        var page = ReportViewModel.GetModulePage("Etiquettes Locaux", ettiquete);
-                        var uIService = ServiceLocator.Resolve<IUIService>();
-                        uIService.AddPage(page);
-                    }
-                    else
-                    {
-                        uIMessage.Information("Aucune Etiquette à imprimer !");
-                    }
-                }
+            group.Commands.Add(new RibbonButton()
+            {
+                Caption = "Imprimer 2D",
+                LargeGlyph = IconProvider.PrintDialog,
+                Action = () => PrintOfficeLabel(true)
             });
 
             return group;
 
         }
 
+        private static void PrintOfficeLabel(bool useMatrixBarCode)
+        {
+            var dataSource = new List<OfficeLabel>();
+
+            var officeServices = ServiceLocator.Resolve<IDataProvider<Office>>();
+            var listOfOffice = officeServices.SelectAll();
+            listOfOffice.Where(x => x.PrintLabel).ForEach(x =>
+            {
+                var label = new OfficeLabel
+                {
+                    CodeBare = x.Key,
+                    OfficeCaption = x.Caption,
+                    CodeOffice = x.Code,
+                    CodeLevel = x.Level.Code,
+                    CodeBuilding = x.Level.Building.Code,
+                    CodeSite = x.Level.Building.Site.Code,
+                    CodeRegion = x.Level.Building.Site.Region.Key,
+                    Code = $"{x.Level.Code}{officeLevelSeparator}{x.Code}"
+                };
+                dataSource.Add(label);
+            });
+            if (dataSource.Count > 0)
+            {
+                var parameterProvider = ServiceLocator.Resolve<IParameterProvider>();
+                var logo = Path.Combine(parameterProvider.GetValue("PicturesDirectory", @"C:\SQLIMMO\Images"), parameterProvider.GetValue("LogoFileName", "logo.jpg"));
+                var ettiquete = GetOfficeLabel(dataSource, logo, useMatrixBarCode);
+                ettiquete.CreateDocument();
+                var page = ReportViewModel.GetModulePage("Etiquettes Locaux", ettiquete);
+                var uIService = ServiceLocator.Resolve<IUIService>();
+                uIService.AddPage(page);
+            }
+            else
+            {
+                uIMessage.Information("Aucune Etiquette à imprimer !");
+            }
+        }
+
         public static Group GetItemLabelDialog()
         {
             Group group = new Group();
             group.AddCommand("Imprimer", IconProvider.BarCode, () =>
-              {
-                  ILabelItemGenerator labelItemGenerator = LabelGeneratorFactoy.GetGeneraor();
-                  List<ItemLabel> result = labelItemGenerator.LoadLabels();
-                  if (result.Count > 0)
-                  {
-                      var parameterProvider = ServiceLocator.Resolve<IParameterProvider>();
-                      var logo = Path.Combine(parameterProvider.GetValue("PicturesDirectory", @"C:\SQLIMMO\Images"), parameterProvider.GetValue("LogoFileName", "logo.jpg"));
-                      XtraReport etiquete = GetItemLabel(result, companyName, logo);
-                      etiquete.CreateDocument();
-                      var page = ReportViewModel.GetModulePage("Etiquettes Articles", etiquete);
-                      var uIService = ServiceLocator.Resolve<IUIService>();
-                      uIService.AddPage(page);
-                  }
-                  else
-                  {
-                      uIMessage.Information("Acune Etiquette à imprimer !");
-                  }
-              });
+            {
+                PrintItemLabel(false);
+            });
+
+            group.AddCommand("Imprimer 2D", IconProvider.BarCode, () =>
+            {
+                PrintItemLabel(true);
+            });
             return group;
         }
 
-        private static XtraReport GetItemLabel(List<ItemLabel> dataSource, string companyName, string logo)
+        private static void PrintItemLabel(bool useMatrixBarCode)
+        {
+            ILabelItemGenerator labelItemGenerator = LabelGeneratorFactoy.GetGeneraor();
+            List<ItemLabel> result = labelItemGenerator.LoadLabels();
+            if (result.Count > 0)
+            {
+                var parameterProvider = ServiceLocator.Resolve<IParameterProvider>();
+                var logo = Path.Combine(parameterProvider.GetValue("PicturesDirectory", @"C:\SQLIMMO\Images"), parameterProvider.GetValue("LogoFileName", "logo.jpg"));
+                XtraReport etiquete = GetItemLabel(result, companyName, logo, useMatrixBarCode);
+                etiquete.CreateDocument();
+                var page = ReportViewModel.GetModulePage("Etiquettes Articles", etiquete);
+                var uIService = ServiceLocator.Resolve<IUIService>();
+                uIService.AddPage(page);
+            }
+            else
+            {
+                uIMessage.Information("Acune Etiquette à imprimer !");
+            }
+        }
+
+        private static XtraReport GetItemLabel(List<ItemLabel> dataSource, string companyName, string logo, bool useMatrixBarCode)
         {
             if (useMatrixBarCode)
             {
@@ -127,7 +142,7 @@ namespace EXGEPA.Label.Core
             };
         }
 
-        private static XtraReport GetOfficeLabel(List<OfficeLabel> dataSource, string logo)
+        private static XtraReport GetOfficeLabel(List<OfficeLabel> dataSource, string logo, bool useMatrixBarCode)
         {
             if (useMatrixBarCode)
             {

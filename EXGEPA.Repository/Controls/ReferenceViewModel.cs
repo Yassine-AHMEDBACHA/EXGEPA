@@ -109,7 +109,7 @@ namespace EXGEPA.Repository.Controls
                     return null;
                 }
 
-                return this.PicturesDirectory + this.ConcernedRow.ImagePath;
+                return Path.Combine(this.PicturesDirectory + this.ConcernedRow.ImagePath);
             }
 
             set
@@ -246,7 +246,7 @@ namespace EXGEPA.Repository.Controls
                 Directory.CreateDirectory(this.PicturesDirectory);
             }
 
-            File.Copy(sourcePath, this.PicturesDirectory + target, true);
+            File.Copy(sourcePath, Path.Combine(this.PicturesDirectory , target), true);
         }
 
         private void DeleteImage(string path)

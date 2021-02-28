@@ -260,12 +260,16 @@
             {
                 if (string.IsNullOrEmpty(ConcernedItem?.ImagePath))
                 {
-                    return null;
+                    if (string.IsNullOrEmpty(this.Reference.ImagePath))
+                    {
+                        return null;
+                    }
+
+                    return Path.Combine(PicturesDirectory, this.Reference.ImagePath);
+
                 }
-                else
-                {
-                    return Path.Combine(PicturesDirectory, ConcernedItem.ImagePath);
-                }
+
+                return Path.Combine(PicturesDirectory, ConcernedItem.ImagePath);
             }
             set
             {
