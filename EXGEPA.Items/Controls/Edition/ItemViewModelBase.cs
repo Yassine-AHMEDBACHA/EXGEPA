@@ -260,7 +260,7 @@
             {
                 if (string.IsNullOrEmpty(ConcernedItem?.ImagePath))
                 {
-                    if (string.IsNullOrEmpty(this.Reference.ImagePath))
+                    if (string.IsNullOrEmpty(this.Reference?.ImagePath))
                     {
                         return null;
                     }
@@ -593,9 +593,14 @@
             {
                 ConcernedItem.TransferOrder = value;
                 if (value != null)
-                    ConcernedItem.Invoice = null;
+                {
+                    this.ConcernedItem.Invoice = null;
+                    this.ConcernedItem.InputSheet = null;
+                }
+
                 RaisePropertyChanged("Invoice");
                 RaisePropertyChanged("TransferOrder");
+                RaisePropertyChanged("InputSheet");
             }
         }
         public InputSheet InputSheet
