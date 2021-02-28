@@ -1,4 +1,5 @@
 using CORESI.WPF.Model;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Windows;
@@ -9,11 +10,21 @@ namespace CORESI.WPF.Core.Shell
     [Export(typeof(ShellViewModel)), PartCreationPolicy(CreationPolicy.Shared)]
     public class ShellViewModel : UiNotifier
     {
-
-
         private bool _IsWaintingCursor;
 
-        internal const string Copyright = "Copyright © CORESI 2020";
+        public ShellViewModel()
+        {
+            this.CopyRight = $"Copyright © CORESI {DateTime.Now.Year}";
+            HomePage = new Page("Acceuil");
+            Group exitGroup = HomePage.AddNewGroup();
+            exitGroup.AddCommand("Quitter", IconProvider.Close, () => Application.Current.Shutdown());
+            Categories = new ObservableCollection<Categorie>();
+            DefaultCategory = new Categorie();
+            DefaultCategory.Pages.Add(HomePage);
+            Categories.Add(DefaultCategory);
+            UpdateView = new DelegateCommand<Page>(SwitchView);
+            
+        }
 
         public bool IsWaintingCursor
         {
@@ -93,18 +104,7 @@ namespace CORESI.WPF.Core.Shell
         public Categorie DefaultCategory { get; set; }
         public ObservableCollection<Categorie> Categories { get; set; }
         public Page HomePage { get; set; }
-        public ShellViewModel()
-        {
-            HomePage = new Page("Acceuil");
-            Group exitGroup = HomePage.AddNewGroup();
-            exitGroup.AddCommand("Quitter", IconProvider.Close, () => Application.Current.Shutdown());
-            Categories = new ObservableCollection<Categorie>();
-            DefaultCategory = new Categorie();
-            DefaultCategory.Pages.Add(HomePage);
-            Categories.Add(DefaultCategory);
-            UpdateView = new DelegateCommand<Page>(SwitchView);
-            this.CopyRight = Copyright;
-        }
+        
 
         void SwitchView(Page page)
         {

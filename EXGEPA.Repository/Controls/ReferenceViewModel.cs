@@ -246,7 +246,7 @@ namespace EXGEPA.Repository.Controls
                 Directory.CreateDirectory(this.PicturesDirectory);
             }
 
-            File.Copy(sourcePath, Path.Combine(this.PicturesDirectory , target), true);
+            File.Copy(sourcePath, Path.Combine(this.PicturesDirectory, target), true);
         }
 
         private void DeleteImage(string path)
