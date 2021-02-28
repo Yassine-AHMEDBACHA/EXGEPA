@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Text;
+﻿using System.Text;
 using CORESI.Data;
 using CORESI.Data.Tools;
 using CORESI.IoC;
@@ -8,41 +7,46 @@ using EXGEPA.Model;
 namespace EXGEPA.Items.Core
 {
     public static class ItemValidator
-    {   
+    {
+
         static ItemValidator()
         {
-            // AccountingPeriodService = ServiceLocator.Resolve<IDataProvider<AccountingPeriod>>();
+
         }
 
         public static string CheckItem(Item item)
         {
+            ServiceLocator.Resolve(out IParameterProvider parameterProvider);
+            var requireInvoice = parameterProvider.TryGet("requireInvoice", false);
+
             var stringBuilder = new StringBuilder();
-            if (CheckGeneralAccounts(item))
+            if (requireInvoice && item.Invoice == null && item.TransferOrder == null)
             {
-                stringBuilder.AppendLine("Le cpt general ne doit pas etre vide");
+                stringBuilder.AppendLine(@"La facture / bon de transfert ne doit pas étre vide");
+            }
+
+            if (item.GeneralAccount == null)
+            {
+                stringBuilder.AppendLine("Le compte general ne doit pas étre vide");
             }
 
             if (item.Reference == null)
             {
-                stringBuilder.AppendLine("La reference ne doit pas etre vide");
+                stringBuilder.AppendLine("La reference ne doit pas étre vide");
             }
             if (item.Office == null)
             {
-                stringBuilder.AppendLine("La localisation ne doit pas etre vide");
+                stringBuilder.AppendLine("La localisation ne doit pas étre vide");
             }
 
             var result = stringBuilder.ToString();
             if (result.IsValid())
             {
                 result = "Veuillez corriger les champs ci dessous avant de continuer \t\n" + result;
+                return result;
             }
 
             return null;
-        }
-
-        private static bool CheckGeneralAccounts(Item item)
-        {
-            return item.GeneralAccount != null;
         }
     }
 }

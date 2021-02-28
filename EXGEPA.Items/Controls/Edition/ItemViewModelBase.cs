@@ -39,6 +39,7 @@
             this.KeyLength = ParameterProvider.GetValue<int>("ItemKeyLength");
             this.AddNewGroup().AddCommand("Refresh", IconProvider.Refresh, this.RefreshView);
             this.OldCodeCaption = this.ParameterProvider.TryGet("OldCodeCaption", "IMMO");
+            
         }
 
         public IRepositoryDataProvider RepositoryDataProvider { get; }
