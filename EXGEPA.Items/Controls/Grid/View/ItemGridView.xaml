@@ -105,8 +105,8 @@ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                             <dxg:FormatCondition  ApplyToRow="True" Expression="[OutputCertificate]  Is not  null" >
                                 <dx:Format Foreground="Red"/>
                             </dxg:FormatCondition>
-                            <dxg:FormatCondition  ApplyToRow="True" Expression="[IsLocked]  == true" >
-                                <dx:Format Background="LightGreen"/>
+                            <dxg:FormatCondition  ApplyToRow="True" Expression="[IsLocked] == true" >
+                                <dx:Format Foreground="Green"/>
                             </dxg:FormatCondition>
 
                         </dxg:TableView.FormatConditions>
