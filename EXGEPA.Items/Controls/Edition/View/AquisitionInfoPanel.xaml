@@ -1,7 +1,7 @@
 ﻿<UserControl x:Class="EXGEPA.Items.Controls.AquisitionInfoPanel"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
               xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
              xmlns:local="clr-namespace:EXGEPA.Items.Controls"
@@ -152,16 +152,24 @@
             </dxlc:LayoutGroup>
 
             <dxlc:LayoutGroup View="Group"  Orientation="Vertical">
-                <dxlc:LayoutItem Label="{Binding OldCodeCaption}">
-                    <dxe:TextEdit CharacterCasing="Upper" Text="{Binding OldCode, UpdateSourceTrigger=PropertyChanged}"  IsReadOnly="{Binding IsAccountingInformationLocked}"/>
-                </dxlc:LayoutItem>
+                <dxlc:LayoutGroup>
+                    <dxlc:LayoutItem Label="{Binding OldCodeCaption}">
+                        <dxe:TextEdit CharacterCasing="Upper" Text="{Binding OldCode, UpdateSourceTrigger=PropertyChanged}"  IsReadOnly="{Binding IsAccountingInformationLocked}"/>
+                    </dxlc:LayoutItem>
+                    <dxlc:LayoutItem>
+                    <dxe:CheckEdit IsChecked="{Binding ConcernedItem.IsLocked}" Content="Données comptable validées" IsEnabled="{Binding IsLockActivated}"/>
+                    </dxlc:LayoutItem>
+                </dxlc:LayoutGroup>
             </dxlc:LayoutGroup>
-            <dxlc:LayoutGroup Header="Code à bar" View="GroupBox">
-                <dxe:BarCodeEdit EditValue="{Binding Key}" Margin="15,0">
-                    <dxe:BarCodeEdit.StyleSettings>
-                        <dxe:Code128StyleSettings CharacterSet="CharsetAuto"/>
-                    </dxe:BarCodeEdit.StyleSettings>
-                </dxe:BarCodeEdit>
+            <dxlc:LayoutGroup>
+                <dxlc:LayoutGroup Header="Code à bar" View="GroupBox">
+                    <dxe:BarCodeEdit EditValue="{Binding Key}" Margin="15,0">
+                        <dxe:BarCodeEdit.StyleSettings>
+                            <dxe:Code128StyleSettings CharacterSet="CharsetAuto"/>
+                        </dxe:BarCodeEdit.StyleSettings>
+                    </dxe:BarCodeEdit>
+                </dxlc:LayoutGroup>
+                <dxlc:LayoutGroup Header="LayoutGroup" View="Group"/>
             </dxlc:LayoutGroup>
         </dxlc:LayoutGroup>
     </dxlc:LayoutControl>

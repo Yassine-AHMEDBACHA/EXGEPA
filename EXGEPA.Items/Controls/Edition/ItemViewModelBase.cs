@@ -7,6 +7,7 @@
     using CORESI.Data;
     using CORESI.Data.Tools;
     using CORESI.IoC;
+    using CORESI.Security;
     using CORESI.Tools.Collections;
     using CORESI.WPF.Controls;
     using CORESI.WPF.Core;
@@ -25,9 +26,12 @@
         private readonly ICalculator monthelyCalculator;
 
         private readonly ICalculator dailyCalculator;
+        protected readonly RightManager rightManager;
 
         public ItemViewModelBase()
         {
+            ServiceLocator.Resolve(out this.rightManager);
+            this.IsLockActivated = this.rightManager.HasAccess($"{nameof(Item)}-FullUpdate");
             this.ParameterProvider = ServiceLocator.Resolve<IParameterProvider>();
             this.ItemService = ServiceLocator.Resolve<IDataProvider<Item>>();
             this.KeyGenerator = ServiceLocator.GetDefault<IKeyGenerator<Item>>();
@@ -39,10 +43,11 @@
             this.KeyLength = ParameterProvider.GetValue<int>("ItemKeyLength");
             this.AddNewGroup().AddCommand("Refresh", IconProvider.Refresh, this.RefreshView);
             this.OldCodeCaption = this.ParameterProvider.TryGet("OldCodeCaption", "IMMO");
-            
         }
 
         public IRepositoryDataProvider RepositoryDataProvider { get; }
+
+        public bool IsLockActivated { get; set; }
 
         protected IParameterProvider ParameterProvider { get; }
 
@@ -51,6 +56,8 @@
         protected IKeyGenerator<Item> KeyGenerator { get; }
 
         protected int KeyLength { get; }
+
+
 
         private void RefreshView()
         {

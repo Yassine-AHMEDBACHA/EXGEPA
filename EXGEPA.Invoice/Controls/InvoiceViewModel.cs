@@ -1,11 +1,13 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Media;
 using CORESI.Data;
 using CORESI.Data.Tools;
 using CORESI.IoC;
 using CORESI.Tools;
+using CORESI.Tools.Collections;
 using CORESI.WPF.Controls;
 using CORESI.WPF.Core;
 using CORESI.WPF.Core.Interfaces;
@@ -54,7 +56,7 @@ namespace EXGEPA.Invoice.Controls
             }
             else
             {
-                this.validationButton.Action = ValidateInvoice ;
+                this.validationButton.Action = ValidateInvoice;
                 this.validationButton.IsChecked = false;
             }
         }
@@ -80,6 +82,13 @@ namespace EXGEPA.Invoice.Controls
                     {
                         this.SelectedRow.IsValidated = false;
                         this.DBservice.Update(this.SelectedRow);
+                        var itemDBService = ServiceLocator.Resolve<IDataProvider<Item>>();
+                        Parallel.ForEach(itemDBService.All.Where(x => x?.Invoice.EqualsTo(this.SelectedRow) == true && x.IsLocked), item =>
+                          {
+                              item.IsLocked = false;
+                              itemDBService.Update(item);
+                          });
+
                         this.RefreshView(this.SelectedRow);
                     },
                     false, this.InitValidationButton);
@@ -262,18 +271,19 @@ namespace EXGEPA.Invoice.Controls
 
         public void ValidateInvoice(Model.Invoice invoice)
         {
-            decimal totalItemAmount = ServiceLocator.Resolve<IDataProvider<Item>>().SelectAll().Where(x => x.Invoice?.Id == invoice.Id).Sum(x => x.Amount);
-
-            bool isValidated = totalItemAmount == invoice.Amount;
+            var invoiceItems = ServiceLocator.Resolve<IDataProvider<Item>>().SelectAll().Where(x => x.Invoice?.Id == invoice.Id).ToList();
+            var totalItemAmount = invoiceItems.Sum(x => x.Amount);
+            bool isValidated = totalItemAmount == invoice.Amount && invoiceItems.All(x => x.IsLocked);
             if (invoice.IsValidated != isValidated)
             {
                 invoice.IsValidated = isValidated;
                 this.DBservice.Update(invoice);
                 this.RefreshView(invoice);
             }
+
             if (!invoice.IsValidated)
             {
-                this.UIMessage.Error("Le montant de la facture est différent du total du montant des articles");
+                this.UIMessage.Error("Le montant de la facture est différent du total du montant des articles ou tous les articles ne sont pas validés");
             }
         }
 

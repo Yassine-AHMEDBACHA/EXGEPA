@@ -266,6 +266,10 @@
       <Project>{64e9f215-bf65-4533-822e-eb09181401f8}</Project>
       <Name>CORESI.Report</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CORESI.Security\CORESI.Security.csproj">
+      <Project>{3ef0b9b7-f6f9-4538-8496-fc870be455aa}</Project>
+      <Name>CORESI.Security</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CORESI.Tools\CORESI.Tools.csproj">
       <Project>{3d84e36e-574e-4f12-ad62-49578cb4d651}</Project>
       <Name>CORESI.Tools</Name>
@@ -312,7 +316,6 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-
   <ItemGroup>
     <None Include="app.config" />
   </ItemGroup>

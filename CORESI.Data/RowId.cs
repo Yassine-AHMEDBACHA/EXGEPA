@@ -12,6 +12,9 @@
                IsList = false)]
         public int Id { get; set; }
 
-
+        public bool EqualsTo(IRowId instance)
+        {
+            return this.Id == instance?.Id;
+        }
     }
 }

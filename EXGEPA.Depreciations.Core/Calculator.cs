@@ -34,7 +34,7 @@ namespace EXGEPA.Depreciations.Core
             this.AccountingPeriodHelper = accountingPeriodHelper ?? new AccountingPeriodHelper();
         }
 
-        public Dictionary<Item, List<Depreciation>> GetDepriciation(List<Item> source, DateTime startDate, DateTime endDate)
+        public Dictionary<Item, List<Depreciation>> GetDepriciation(IList<Item> source, DateTime startDate, DateTime endDate)
         {
             logger.Debug("Start computing for : " + source.Count() + "Item(s) and period between  " + startDate.ToShortDateString() + " and " + endDate.ToShortDateString());
             List<Item> target = GetConcernedItem(source, startDate, endDate);

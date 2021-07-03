@@ -14,15 +14,19 @@ namespace EXGEPA.Items.Core
 
         }
 
-        public static string CheckItem(Item item)
+        public static string CheckItem(Item item, bool requireInvoice)
         {
-            ServiceLocator.Resolve(out IParameterProvider parameterProvider);
-            var requireInvoice = parameterProvider.TryGet("requireInvoice", false);
-
             var stringBuilder = new StringBuilder();
-            if (requireInvoice && item.Invoice == null && item.TransferOrder == null)
+            if (requireInvoice)
             {
-                stringBuilder.AppendLine(@"La facture / bon de transfert ne doit pas étre vide");
+                ServiceLocator.Resolve(out IParameterProvider parameterProvider);
+                requireInvoice = parameterProvider.TryGet("requireInvoice", false);
+
+
+                if (requireInvoice && item.Invoice == null && item.TransferOrder == null)
+                {
+                    stringBuilder.AppendLine(@"La facture / bon de transfert ne doit pas étre vide");
+                }
             }
 
             if (item.GeneralAccount == null)

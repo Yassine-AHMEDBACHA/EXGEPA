@@ -21,7 +21,8 @@ namespace CORESI.Security
             Transcoder["Modifier"] = "Update";
         }
 
-        public static Dictionary<string, string> Transcoder { get; set; }
+        public static Dictionary<string, string> Transcoder { get;  }
+
         public Dictionary<string, bool> Rights { get; set; }
 
 

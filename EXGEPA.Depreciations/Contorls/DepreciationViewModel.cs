@@ -104,8 +104,13 @@ namespace EXGEPA.Depreciations.Contorls
                 ListOfRows = null;
 
                 var stopwatcher = Stopwatch.StartNew();
-                var items = ItemService.SelectAll().ToList();
+                var items = ItemService.All;
                 this.repositoryDataProvider.BindPropertyAndSetExtended(items);
+                if (items.Select(x => x.Invoice).Any(i => i != null && i.Date <= StartDateEditRibbon.Date))
+                {
+                    this.UIMessage.Warning("Des factures non validées font partie de votre simulation !");
+                }
+
                 stopwatcher.Stop();
                 logger.Info("Loading Items done in : " + stopwatcher.Elapsed + " and " + items.Count + " item(s) retreived");
                 logger.Info("Computing and preparing Data ...");
@@ -157,7 +162,7 @@ namespace EXGEPA.Depreciations.Contorls
             return true;
         }
 
-        private IEnumerable<Depreciation> GetOldItems(List<Item> items, AccountingPeriod accountingPeriod)
+        private IEnumerable<Depreciation> GetOldItems(IList<Item> items, AccountingPeriod accountingPeriod)
         {
             var second = items.Where(x => x.LimiteDate < StartDateEditRibbon.Date).Select(x => new Depreciation
             {

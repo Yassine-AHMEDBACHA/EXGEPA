@@ -15,12 +15,15 @@ using System.Windows.Input;
 using EXGEPA.Core;
 using CORESI.Tools;
 using CORESI.Tools.Collections;
+using System.Threading.Tasks;
 
 namespace EXGEPA.Localization.Controls
 {
     public class LocalizationViewModel : BasicGridViewModel<Site>
     {
         #region Properties
+
+        private readonly IDataProvider<Item> itemDbService;
 
         IDataProvider<AnalyticalAccount> AnalyticalAccountService { get; set; }
 
@@ -49,8 +52,10 @@ namespace EXGEPA.Localization.Controls
         IDataProvider<Item> ItemService { get; set; }
         public LocalizationViewModel()
         {
+
             SelectedOffices = new ObservableCollection<Office>();
             ServiceLocator.ComposeParts(this);
+            ServiceLocator.Resolve(out this.itemDbService);
             CancelSiteCommand = new Command(() => { this.DisplaySiteDetail = false; });
             CancelBuildingCommand = new Command(() => { this.DisplayBuildingDetail = false; });
             CancelLevelCommand = new Command(() => { this.DisplayLevelDetail = false; });
@@ -672,6 +677,12 @@ namespace EXGEPA.Localization.Controls
                     this.UIMessage.TryDoAction(Logger, () =>
                     {
                         OfficeService.Update(this.ConecernedOffice);
+                        Parallel.ForEach(this.itemDbService.All.Where(x => x.Office?.EqualsTo(this.ConecernedOffice) == true && x.AnalyticalAccount?.EqualsTo(this.ConecernedOffice.AnalyticalAccount) == false), item =>
+                              {
+                                  item.AnalyticalAccount = this.ConecernedOffice.AnalyticalAccount;
+                                  this.itemDbService.Update(item);
+                              });
+
                         this.RaisePropertyChanged(nameof(this.Offices));
                         this.DisplayOfficeDetail = false;
                     });

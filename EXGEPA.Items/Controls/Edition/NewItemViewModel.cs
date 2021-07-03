@@ -58,7 +58,7 @@ namespace EXGEPA.Items.Controls
 
         private void AddNewItem()
         {
-            string result = Core.ItemValidator.CheckItem(this.ConcernedItem);
+            string result = Core.ItemValidator.CheckItem(this.ConcernedItem, true);
             if (result != null)
             {
                 this.UIMessage.Error(result);
@@ -77,6 +77,7 @@ namespace EXGEPA.Items.Controls
                      this.InsertItem(item);
                  }));
             }
+
             this.ClosePage();
         }
 
@@ -97,7 +98,25 @@ namespace EXGEPA.Items.Controls
                   .ListOfAccountingPeriod
                   .FirstOrDefault(x => this.AccountingPeriods.EditValue == x.Key);
 
-            this.ItemService.Add(item);
+            var retry = true;
+            while (retry)
+            {
+                try
+                {
+                    this.ItemService.Add(item);
+                    retry = false;
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex);
+                    if (ex.Message.Contains("UK_Items_Key"))
+                    {
+                        retry = true;
+                       item.Key = this.KeyGenerator.GenerateKey(this.Reference, this.KeyLength);
+                    }
+                }
+            }
+            
             this.Notify(item);
         }
 

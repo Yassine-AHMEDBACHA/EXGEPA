@@ -2,6 +2,7 @@
 {
     using System.Linq;
     using CORESI.IoC;
+    using CORESI.Security;
     using CORESI.WPF.Core;
     using CORESI.WPF.Model;
     using EXGEPA.Core;
@@ -14,6 +15,8 @@
 
         public CheckedRibbonButton ProposeToReform { get; set; }
 
+        public bool AccountingPanelActivated { get; set; }
+
         static EditItemViewModel()
         {
             OldItemRibbonCategorie = new Categorie()
@@ -25,6 +28,7 @@
 
         public EditItemViewModel(Item item) : base()
         {
+            this.AccountingPanelActivated = (!item.IsLocked) || this.IsLockActivated;
             this.IsKeyReadOnly = true;
             this.IsBaseDepreciationReadOnly = this.ParameterProvider.TryGet("IsBaseDepreciationReadOnlyInEdition", true);
             this.Categorie = OldItemRibbonCategorie;
@@ -51,11 +55,14 @@
             this.UpdateDepreciations();
         }
 
+        private bool HasAccess(string opertation) => this.rightManager.HasAccess($"{nameof(Item)}-{opertation}");
+
+
         public void UpdateItem()
         {
             this.UIMessage.TryDoAction(Logger, () =>
             {
-                string result = Core.ItemValidator.CheckItem(this.ConcernedItem);
+                string result = Core.ItemValidator.CheckItem(this.ConcernedItem, false);
                 if (result != null)
                 {
                     this.UIMessage.Error(result);
