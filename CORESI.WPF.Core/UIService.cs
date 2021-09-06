@@ -16,6 +16,8 @@ namespace CORESI.WPF.Core
 
         internal ShellViewModel ShellViewModel { get; set; }
 
+        public ClientInformation ClientInformation => this.ShellViewModel.ClientInformation;
+
         [Obsolete]
         public UIService()
         {

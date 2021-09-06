@@ -19,7 +19,7 @@ namespace CORESI.WPF.Controls
 
         private static void ImagePathPropertyChnaged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ImageEdit sender = (ImageEdit)d;
+            var sender = (ImageEdit)d;
             sender.SetImage((string)e.NewValue);
         }
 
@@ -33,18 +33,20 @@ namespace CORESI.WPF.Controls
         {
             get
             {
-                string result = GetValue(ImagePathProperty).ToString();
-
+                var result = GetValue(ImagePathProperty).ToString();
                 return result;
             }
+
             set => SetValue(ImagePathProperty, value);
         }
 
         private void SetImage(string fileName)
         {
-            ImageSource image = GetImage(fileName);
+            var image = GetImage(fileName);
             if (image != null)
+            {
                 EditStrategy.SetImage(image);
+            }
         }
 
         protected override void LoadCore()
@@ -54,7 +56,7 @@ namespace CORESI.WPF.Controls
                 return;
             }
 
-            OpenFileDialog dlg = new OpenFileDialog
+            var dlg = new OpenFileDialog
             {
                 Filter = EditorLocalizer.GetString(EditorStringId.ImageEdit_OpenFileFilter)
             };
@@ -79,7 +81,7 @@ namespace CORESI.WPF.Controls
                 return null;
             }
 
-            using (Stream stream = File.Open(path, FileMode.Open))
+            using (var stream = File.Open(path, FileMode.Open))
             {
                 MemoryStream ms = new MemoryStream(stream.GetDataFromStream());
                 return ImageHelper.CreateImageFromStream(ms);

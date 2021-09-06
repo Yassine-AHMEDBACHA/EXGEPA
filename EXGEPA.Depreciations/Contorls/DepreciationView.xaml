@@ -3,8 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" xmlns:ViewModels="clr-namespace:EXGEPA.Depreciations.Contorls"
-             xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" x:Class="EXGEPA.Depreciations.Contorls.DepreciationView"
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
+             xmlns:ViewModels="clr-namespace:EXGEPA.Depreciations.Contorls"
+             xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
+             x:Class="EXGEPA.Depreciations.Contorls.DepreciationView"
              mc:Ignorable="d"
              d:DesignHeight="800" d:DesignWidth="1200">
     <Grid>
@@ -53,6 +56,7 @@
                         <dxe:TextEditSettings Mask="n2" MaskType="Numeric" MaskUseAsDisplayFormat="True"/>
                     </dxg:GridColumn.EditSettings>
                 </dxg:GridColumn>
+                <dxg:GridColumn FieldName="Item.Invoice.Key" Header="Facture"/>
                 <dxg:GridColumn FieldName="Item.GeneralAccount.Caption" Header="Libelle compte investissement"  AllowEditing="False" />
                 <dxg:GridColumn FieldName="Item.GeneralAccount.Children.Key" Header="Compte dotation" AllowEditing="False"  />
                 <dxg:GridColumn FieldName="Item.GeneralAccount.Children.Caption" Header="Libelle compte dotation"  AllowEditing="False" />
@@ -81,6 +85,11 @@
                               ShowGroupedColumns="True" 
                                SelectedRowsSource="{Binding Selection}"  
                                UseEvenRowBackground="True">
+                    <dxg:TableView.FormatConditions>
+                        <dxg:FormatCondition ApplyToRow="True" Expression="[Item.Invoice.IsValidated] == false">
+                            <dxg:Format Foreground="Red"/>
+                        </dxg:FormatCondition>
+                    </dxg:TableView.FormatConditions>
                 </dxg:TableView>
             </dxg:GridControl.View>
             <dxg:GridControl.DetailDescriptor>
@@ -113,7 +122,9 @@
                             </dxg:GridColumn>
                         </dxg:GridControl.Columns>
                         <dxg:GridControl.View>
-                            <dxg:TableView AllowPerPixelScrolling="True" ShowTotalSummary="False" AutoWidth="True" ShowGroupPanel="False"/>
+                            <dxg:TableView AllowPerPixelScrolling="True" ShowTotalSummary="False" AutoWidth="True" ShowGroupPanel="False">
+                               
+                            </dxg:TableView>
                         </dxg:GridControl.View>
                     </dxg:GridControl>
                 </dxg:DataControlDetailDescriptor>

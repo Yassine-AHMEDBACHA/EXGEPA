@@ -10,7 +10,6 @@ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:Controls="clr-namespace:EXGEPA.Items.Controls"
              xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
               xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
-             
              xmlns:dxprg="http://schemas.devexpress.com/winfx/2008/xaml/propertygrid" 
              >
     <Grid>

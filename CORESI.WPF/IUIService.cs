@@ -5,6 +5,8 @@
 
     public interface IUIService
     {
+        ClientInformation ClientInformation { get; }
+
         bool AddCategorie(Categorie categorie);
         bool AddGroupToHomePage(Group group);
         bool AddPage(Page page, bool includeCloseButton = true);

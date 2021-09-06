@@ -109,6 +109,11 @@
                             <dxmvvm:Interaction.Behaviors>
                                 <dxmvvm:EventToCommand EventName="RowDoubleClick" Command="{Binding RowDoubleClickCommand}" />
                             </dxmvvm:Interaction.Behaviors>
+                            <dxg:TableView.FormatConditions>
+                                <dxg:FormatCondition  ApplyToRow="True" Expression="[IsLocked] == true" >
+                                    <dx:Format Foreground="Green"/>
+                                </dxg:FormatCondition>
+                            </dxg:TableView.FormatConditions>
                         </dxg:TableView>
                     </dxg:GridControl.View>
                     <dxg:GridControl.TotalSummary>
@@ -196,8 +201,13 @@
                                UseEvenRowBackground="True"
                                SelectedRowsSource="{Binding AffectedRowsSelection}"  >
                         <dxmvvm:Interaction.Behaviors>
-                            <dxmvvm:EventToCommand EventName="RowDoubleClick" Command="{Binding RowDoubleClickCommand}" />
+                            <dxmvvm:EventToCommand EventName="RowDoubleClick" Command="{Binding AffectedRowDoubleClick}" />
                         </dxmvvm:Interaction.Behaviors>
+                        <dxg:TableView.FormatConditions>
+                            <dxg:FormatCondition  ApplyToRow="True" Expression="[IsLocked] == true" >
+                                <dx:Format Foreground="Green"/>
+                            </dxg:FormatCondition>
+                        </dxg:TableView.FormatConditions>
                     </dxg:TableView>
                 </dxg:GridControl.View>
                 <dxg:GridControl.TotalSummary>

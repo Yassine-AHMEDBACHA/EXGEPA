@@ -10,7 +10,6 @@ namespace EXGEPA.Depreciations.Contorls
         public DepreciationView()
         {
             InitializeComponent();
-
         }
     }
 }

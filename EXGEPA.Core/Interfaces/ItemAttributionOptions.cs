@@ -16,6 +16,9 @@ namespace EXGEPA.Core.Interfaces
         }
 
         public Predicate<Item> Tester { get; set; }
+
+        public Predicate<Item> RowFilter { get; set; }
+
         public Action<Item> Setter { get; set; }
         public Action<Item> Resetter { get; set; }
         public string PageCaption { get; set; }

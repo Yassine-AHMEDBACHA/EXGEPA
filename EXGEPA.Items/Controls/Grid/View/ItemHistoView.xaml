@@ -41,9 +41,8 @@
 					AllowPerPixelScrolling="False"  
                     ShowCriteriaInAutoFilterRow="True"
 					AutoWidth="{Binding AutoWidth}"  
-					SelectedRowsSource="{Binding Selection}"  
-				
-                                   AllowBestFit="True"
+					SelectedRowsSource="{Binding Selection}"
+                    AllowBestFit="True"
 					UseEvenRowBackground="True">
                         <dxmvvm:Interaction.Behaviors>
                             <dxmvvm:EventToCommand EventName="RowDoubleClick" Command="{Binding RowDoubleClickCommand}" />

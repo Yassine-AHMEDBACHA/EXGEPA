@@ -43,6 +43,7 @@
                 <dxg:GridColumn FieldName="TvaGeneralAccount.Caption" Header="Libelle compte TVA"  AllowEditing="False" />
 
                 <dxg:GridColumn FieldName="IsValidated" Header="Activee" AllowBestFit="True" AllowEditing="False" Visible="True" Fixed="Right" />
+                <dxg:GridColumn FieldName="Tag" Header="Validateur" AllowBestFit="True" AllowEditing="False" Visible="True" Fixed="Right" />
                 <dxg:GridColumn FieldName="Id" Header="Sys Id" AllowEditing="False"  Visible="{Binding ShowSysIdColumn}" Fixed="Left" Width="55" />
             </dxg:GridControl.Columns>
             <dxg:GridControl.View>
@@ -62,7 +63,7 @@
                     </dxmvvm:Interaction.Behaviors>
                     <dxg:TableView.FormatConditions>
                         <dxg:FormatCondition  ApplyToRow="True" Expression="[IsValidated]  = True" >
-                            <dx:Format Foreground="Blue"/>
+                            <dx:Format Foreground="Green"/>
                         </dxg:FormatCondition>
                     </dxg:TableView.FormatConditions>
                 </dxg:TableView>

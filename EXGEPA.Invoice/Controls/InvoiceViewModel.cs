@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Media;
 using CORESI.Data;
 using CORESI.Data.Tools;
+using CORESI.DataAccess.Core;
 using CORESI.IoC;
 using CORESI.Tools;
 using CORESI.Tools.Collections;
@@ -29,7 +30,8 @@ namespace EXGEPA.Invoice.Controls
             this.UIItemService = ServiceLocator.Resolve<IUIItemService>();
             DoubleClicAction = ItemAttribution;
             this.AddNewGroup().AddCommand("Items", IconProvider.GreaterThan, ItemAttribution);
-            this.validationButton = this.AddNewGroup().AddCommand<CheckedRibbonButton>("Validée", IconProvider.Task);
+            var validationGroup = this.AddNewGroup("Validation");
+            this.validationButton = validationGroup.AddCommand<CheckedRibbonButton>("Validée", IconProvider.Task);
             validationButton.Action = ValidateInvoice;
             this.shouldIncludeInputSheetInInvoice = this.ParameterProvider.TryGet("ShouldIncludeInputSheetInInvoice", true);
             this.AddNewGroup().AddCommand("Borecep", IconProvider.Reading, () => this.StartBackGroundAction(() => ExternalProcess.StartProcess("borecep.exe")));
@@ -81,9 +83,10 @@ namespace EXGEPA.Invoice.Controls
                     () =>
                     {
                         this.SelectedRow.IsValidated = false;
+                        this.SelectedRow.Tag = string.Empty;
                         this.DBservice.Update(this.SelectedRow);
                         var itemDBService = ServiceLocator.Resolve<IDataProvider<Item>>();
-                        Parallel.ForEach(itemDBService.All.Where(x => x?.Invoice.EqualsTo(this.SelectedRow) == true && x.IsLocked), item =>
+                        Parallel.ForEach(itemDBService.All.Where(x => x.Invoice?.EqualsTo(this.SelectedRow) == true && x.IsLocked), item =>
                           {
                               item.IsLocked = false;
                               itemDBService.Update(item);
@@ -170,6 +173,8 @@ namespace EXGEPA.Invoice.Controls
             }
         }
 
+        public object GenericDal { get; private set; }
+
         public override void AddItem()
         {
             Currency localCurrency = ListOfCurrencies.FirstOrDefault(x => x.Key == ParametreProvider.GetValue("LocalCurrency", "DZD"));
@@ -232,7 +237,7 @@ namespace EXGEPA.Invoice.Controls
 
         public void ItemAttribution()
         {
-            Model.Invoice invoice = this.SelectedRow;
+            var invoice = this.SelectedRow;
             if (invoice == null)
                 return;
 
@@ -245,20 +250,10 @@ namespace EXGEPA.Invoice.Controls
                 Tester = (item) => item.Invoice?.Id == invoice.Id,
                 Setter = (item) => Setter(item, invoice),
                 Resetter = (item) => item.Invoice = null,
+                RowFilter = (item) => (item.Invoice == null && item.TransferOrder == null) || item.Invoice?.EqualsTo(invoice) == true,
                 Categorie = new Categorie("Contenu Facture", Colors.AliceBlue)
             };
-            //Group Group = new Group();
-            //CheckedRibbonButton button = Group.AddCommand<CheckedRibbonButton>("Validée", IconProvider.Task);
-            //button.Action = () =>
-            //{
-            //    //this.ValidateInvoice(invoice);
-            //    //button.IsChecked = invoice.IsValidated;
-            //    this.UIMessage.ConfirmeAndTryDoAction(Logger,
-            //            $"Etes vous sûr de vouloir valider la facture N°{invoice.Key}",
-            //            () => this.ValidateInvoice(invoice),
-            //            false, () => button.IsChecked = invoice?.IsValidated ?? false);
-            //};
-            //options.Groups.Add(Group);
+
             UIItemService.ShowItemAttribution(options);
         }
 
@@ -277,6 +272,7 @@ namespace EXGEPA.Invoice.Controls
             if (invoice.IsValidated != isValidated)
             {
                 invoice.IsValidated = isValidated;
+                invoice.Tag = this.UIService.ClientInformation.Login;
                 this.DBservice.Update(invoice);
                 this.RefreshView(invoice);
             }

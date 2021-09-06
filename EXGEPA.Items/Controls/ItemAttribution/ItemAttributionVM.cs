@@ -21,6 +21,9 @@ namespace EXGEPA.Items.Controls
         public ICommand SetAllCommand { get; set; }
         public ICommand ResetCommand { get; set; }
         public ICommand ResetAllCommand { get; set; }
+
+        public ICommand AffectedRowDoubleClick { get; set; }
+
         public ItemAttributionOptions Options { get; private set; }
 
         private ItemAttributionVM() : base()
@@ -35,7 +38,23 @@ namespace EXGEPA.Items.Controls
             this.ResetCommand = new Command(this.MoveSelectionToLeft);
             this.ResetAllCommand = new Command(this.MoveAllToLeft);
             SetToolGroup();
-            
+
+            var command = new Command(() =>
+            {
+                this.UIItemService.EditItem(this.SelectedRow);
+            });
+
+            command.SetAbility<Item>("Modifier");
+            RowDoubleClickCommand = command;
+
+            var command2 = new Command(() =>
+            {
+                this.UIItemService.EditItem(this.AffectedRowsSelection?.FirstOrDefault());
+            });
+
+            command.SetAbility<Item>("Modifier");
+            AffectedRowDoubleClick = command2;
+
         }
 
 
@@ -138,7 +157,13 @@ namespace EXGEPA.Items.Controls
            {
                using (ScoopLogger scoopLooger = new ScoopLogger("Loading items", logger))
                {
-                   IList<Item> allItems = this.DBservice.SelectAll();
+                   var allItems = this.DBservice.All;
+
+                   if (this.Options.RowFilter != null)
+                   {
+                       allItems = allItems.Where(item => this.Options.RowFilter(item)).ToList();
+                   }
+
                    RepositoryDataProvider.Refresh();
                    scoopLooger.Snap("Loading raw data");
                    RepositoryDataProvider.BindPropertyAndSetExtended(allItems);

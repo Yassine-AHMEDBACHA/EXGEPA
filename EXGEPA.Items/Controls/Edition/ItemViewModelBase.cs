@@ -122,7 +122,7 @@
 
         private void UpdateImage(Reference value)
         {
-            if (value.ImagePath.IsValid())
+            if (value?.ImagePath.IsValid() == true)
             {
                 this.ImagePath = Path.Combine(this.PicturesDirectory, value.ImagePath);
             }
