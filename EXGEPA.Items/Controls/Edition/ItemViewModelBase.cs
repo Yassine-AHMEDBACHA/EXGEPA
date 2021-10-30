@@ -1,6 +1,7 @@
 ﻿namespace EXGEPA.Items.Controls
 {
     using System;
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.IO;
     using System.Linq;
@@ -26,6 +27,8 @@
 
         private readonly ICalculator dailyCalculator;
 
+        private readonly bool allowFilter;
+
         public ItemViewModelBase()
         {
             this.ParameterProvider = ServiceLocator.Resolve<IParameterProvider>();
@@ -39,7 +42,7 @@
             this.KeyLength = ParameterProvider.GetValue<int>("ItemKeyLength");
             this.AddNewGroup().AddCommand("Refresh", IconProvider.Refresh, this.RefreshView);
             this.OldCodeCaption = this.ParameterProvider.TryGet("OldCodeCaption", "IMMO");
-            
+            this.allowFilter = this.ParameterProvider.TryGet("AllowGeneralAccountFiltering", true);
         }
 
         public IRepositoryDataProvider RepositoryDataProvider { get; }
@@ -67,15 +70,27 @@
 
         public virtual void SetAccoutToDisplay()
         {
-            var filter = this.Amount >= this.MinAmount ? EGeneralAccountType.Investment : EGeneralAccountType.Charge;
+            
             this.RepositoryDataProvider.WaitTillDataReady();
-            var list = this.RepositoryDataProvider.AllGeneralAccounts
-                ?.Where(x => x.GeneralAccountType.Type == filter).ToList();
+            IList<GeneralAccount> list = this.RepositoryDataProvider.AllGeneralAccounts;
+
+            if (this.allowFilter)
+            {
+                var filter = this.Amount >= this.MinAmount ? EGeneralAccountType.Investment : EGeneralAccountType.Charge;
+                list = list?.Where(x => x.GeneralAccountType.Type == filter)
+                    .ToList();
+            }
+            else
+            {
+                list = list?.Where(x => x.GeneralAccountType.Type == EGeneralAccountType.Charge || x.GeneralAccountType.Type == EGeneralAccountType.Investment)
+                    .ToList();
+            }
 
             if (this.GeneralAccount != null && !list.Contains(this.GeneralAccount))
             {
                 list.Add(this.GeneralAccount);
             }
+
             var account = this.GeneralAccount;
             this.ListOfGeneralAccount = list.ToObservable();
             this.GeneralAccount = account;
@@ -87,7 +102,7 @@
         }
 
         public string OldCodeCaption { get; set; }
-
+        
         public string VehicleNumber
         {
             get => ConcernedItem.ExtendedProperties?.VehicleNumber;

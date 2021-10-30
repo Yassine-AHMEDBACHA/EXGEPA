@@ -82,6 +82,13 @@
             });
 
             this.OldCodeCaption = this.ParameterProvider.TryGet("OldCodeCaption", "IMMO");
+
+            var processName = this.ParameterProvider.TryGet("Dmr_DrkAppPath", "dmr_drk.exe");
+            if (ExternalProcess.Exists(processName))
+            {
+                var buttonCaption = this.ParameterProvider.TryGet("Dmr_DrkAppButtonPath", "DMR");
+                this.AddNewGroup().AddCommand(buttonCaption, () => this.UIMessage.TryDoAction(this.Logger, () => ExternalProcess.StartProcess(processName)));
+            }
         }
 
         public string OldCodeCaption

@@ -7,7 +7,7 @@ namespace EXGEPA.Output.Controls
     using System;
     using System.Windows.Media;
     using CORESI.IoC;
-    using CORESI.WPF.Controls;
+    using CORESI.Tools;
     using CORESI.WPF.Core.Interfaces;
     using CORESI.WPF.Model;
     using EXGEPA.Core.Interfaces;
@@ -15,13 +15,20 @@ namespace EXGEPA.Output.Controls
 
     public class ReformeCertificateViewModel : FieldVisibilityBase<ReformeCertificate>
     {
+
         public ReformeCertificateViewModel(IExportableGrid exportableView)
             : base(exportableView)
         {
             this.UIItemService = ServiceLocator.Resolve<IUIItemService>();
             this.DoubleClicAction = this.SetItemAttribute;
             this.Caption = "Liste de PV de Reforme";
-            base.EnableTotalSumary = true;
+            this.EnableTotalSumary = true;
+            var processName = this.ParameterProvider.TryGet("ReformReportingTool", "mise_rfm.exe");
+            if (ExternalProcess.Exists(processName))
+            {
+                var buttonCaption = this.ParameterProvider.TryGet("ReformReportingToolButtonCaption", "Mise en reforme");
+                this.AddNewGroup().AddCommand(buttonCaption, () => this.UIMessage.TryDoAction(this.Logger, () => ExternalProcess.StartProcess(processName)));
+            }
         }
 
         protected IUIItemService UIItemService { get; set; }

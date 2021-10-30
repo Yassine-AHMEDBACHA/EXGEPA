@@ -25,5 +25,11 @@ namespace CORESI.Tools
 
             throw new FileNotFoundException($"impossible de trouver le fichier : {path}");
         }
+
+        public static bool Exists(string appName)
+        {
+            string path = Path.Combine(Environment.CurrentDirectory, appName);
+            return File.Exists(path);
+        }
     }
 }

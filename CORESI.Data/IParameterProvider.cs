@@ -9,7 +9,7 @@ namespace CORESI.Data
 
         T GetValue<T>(string key);
 
-        [Obsolete]
+        [Obsolete("Use tryGet instead")]
         T GetAndSetIfMissing<T>(string key, T value);
 
         T TryGet<T>(string key, T defaultValue);
