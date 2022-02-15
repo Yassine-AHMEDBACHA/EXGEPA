@@ -26,6 +26,7 @@ namespace EXGEPA.Inventory.Core
             Dictionary<string, InventoryRow> rowsToUpdate = new Dictionary<string, InventoryRow>();
             List<string> textRows = FileLoader.LoadTextRows(filePath);
 
+            var now = DateTime.Now;
             foreach (string textRow in textRows.Where(x => x.Length >= 13 + codeLength))
             {
                 string code = textRow.Substring(13, codeLength).ToUpper();
@@ -52,7 +53,7 @@ namespace EXGEPA.Inventory.Core
                             Key = code,
                             Localization = localization,
                             Data = textRow,
-                            OpertationDate = DateTime.Now,
+                            OpertationDate = now,
                             // ItemState = ItemStates
                         };
                         rowsToInsert.Add(code, inventory);
@@ -61,6 +62,7 @@ namespace EXGEPA.Inventory.Core
             }
             Parallel.ForEach(rowsToUpdate.Values.ToList(), row =>
             {
+                row.OpertationDate = now;
                 inventoryService.Update(row);
             });
             List<InventoryRow> rows = rowsToInsert.Values.ToList();

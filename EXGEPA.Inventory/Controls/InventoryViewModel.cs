@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using CORESI.Data;
+﻿using CORESI.Data;
 using CORESI.Data.Tools;
 using CORESI.DataAccess.Core;
 using CORESI.IoC;
 using CORESI.Tools;
-using CORESI.Tools.Collections;
 using CORESI.WPF.Controls;
 using CORESI.WPF.Core;
 using CORESI.WPF.Core.Interfaces;
@@ -18,6 +10,13 @@ using CORESI.WPF.Model;
 using EXGEPA.Core.Interfaces;
 using EXGEPA.Inventory.Core;
 using EXGEPA.Model;
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace EXGEPA.Inventory.Controls
 {
@@ -37,8 +36,6 @@ namespace EXGEPA.Inventory.Controls
 
         Dictionary<string, Office> AllOffices { get; set; }
 
-        private ADeviceFileManager DeviceFileManager { get; set; }
-
         public InventoryViewModel(IExportableGrid view)
         {
             ServiceLocator.Resolve(out this.repositoryDataProvider);
@@ -50,8 +47,6 @@ namespace EXGEPA.Inventory.Controls
             ServiceLocator.Resolve(out uIItemService);
 
             ServiceLocator.Resolve(out this.parameterProvider);
-
-            SetDeviceManager();
 
             this.AutoWidth = false;
             HideAddButton = true;
@@ -136,24 +131,6 @@ namespace EXGEPA.Inventory.Controls
 
             return null;
         }
-
-
-
-        private void SetDeviceManager()
-        {
-
-            if (this.parameterProvider.GetValue<bool>("UseAndroidDevice", false))
-            {
-                this.Logger.Info("Loading android device manager");
-                this.DeviceFileManager = new AndroidFileManager();
-            }
-            else
-            {
-                this.Logger.Info("Loading WinCE device manager");
-                this.DeviceFileManager = new WindowsCEFileManager();
-            }
-        }
-
         private new void EditItem()
         {
             if (this.SelectedRow != null)
@@ -349,7 +326,9 @@ namespace EXGEPA.Inventory.Controls
 
             inventToolsGroup.AddCommand("Archives inventaire", IconProvider.DownloadSmall, this.DisplayArchive, true);
 
-            inventToolsGroup.AddCommand("Recolter", IconProvider.DownloadSmall, this.LoadFileFromPDA, true);
+            inventToolsGroup.AddCommand("Recolter (Android)", IconProvider.DownloadSmall, () => this.LoadFileFromPDA(true), true);
+
+            inventToolsGroup.AddCommand("Recolter (Win CE)", IconProvider.DownloadSmall, () => this.LoadFileFromPDA(false), true);
 
             inventToolsGroup.AddCommand("Supprimer", IconProvider.DeleteSmall, this.DeleteItem, true);
 
@@ -361,13 +340,23 @@ namespace EXGEPA.Inventory.Controls
             this.UIMessage.TryDoAction(this.Logger, () => ExternalProcess.StartProcess("ArchiveINV.exe"));
         }
 
-        private void LoadFileFromPDA()
+        private void LoadFileFromPDA(bool useAndroid)
         {
+            ADeviceFileManager deviceFileManager;
+            if (useAndroid)
+            {
+                deviceFileManager = new AndroidFileManager();
+            }
+            else
+            {
+                deviceFileManager = new WindowsCEFileManager();
+            }
+
             StartBackGroundAction(() =>
             {
-                if (this.DeviceFileManager.UpdateInventFile())
+                if (deviceFileManager.UpdateInventFile())
                 {
-                    DataImporter.LoadFile(this.DeviceFileManager.TargetPath);
+                    DataImporter.LoadFile(deviceFileManager.TargetPath);
                     this.InitData();
                 }
             });
