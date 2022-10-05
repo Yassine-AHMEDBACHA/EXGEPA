@@ -1,8 +1,6 @@
 ﻿<CORESI:ExportableView 
-             xmlns:CORESI="clr-namespace:CORESI.WPF.Controls;assembly=CORESI.WPF.Controls"
-             x:Class="EXGEPA.Saidal.Controls.InterfaceView"
-             xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"  
-             xmlns:dxprg="http://schemas.devexpress.com/winfx/2008/xaml/propertygrid" 
+    xmlns:CORESI="clr-namespace:CORESI.WPF.Controls;assembly=CORESI.WPF.Controls"
+    x:Class="EXGEPA.Saidal.Controls.TransferOrderView"
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"  
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -11,42 +9,15 @@
              xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
              mc:Ignorable="d"
              xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
-             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
-    
-    >
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors">
     <Grid>
         <dxg:GridControl x:Name="grid" x:FieldModifier="public" ItemsSource="{Binding ListOfRows}" ShowLoadingPanel="{Binding ShowLoadingPanel}" SelectionMode="Row">
             <dxg:GridControl.Columns>
                 <dxg:GridColumn FieldName="Key" Header="Code" AllowBestFit="True" AllowEditing="False" Visible="True" />
                 <dxg:GridColumn FieldName="Date" Header="Date" AllowBestFit="True" AllowEditing="False" Visible="True" />
-                <dxg:GridColumn FieldName="Provider.Key" Header="Fournisseur" AllowBestFit="True" AllowEditing="False" Visible="True" />
-                <dxg:GridColumn FieldName="Provider.Caption" Header="Libelle fournisseur" AllowBestFit="True" AllowEditing="False" Visible="True"  GroupIndex="1"/>
-                <dxg:GridColumn FieldName="InputSheet.Key" Header="Fiche d'entree" AllowBestFit="True" AllowEditing="False" Visible="True" />
-                <dxg:GridColumn FieldName="Project.Key" Header="Projet" AllowBestFit="True" AllowEditing="False" Visible="True" />
-                <dxg:GridColumn FieldName="Amount" Header="Montant" AllowBestFit="True" AllowEditing="False" Visible="True"  >
-                    <dxg:GridColumn.EditSettings>
-                        <dxe:TextEditSettings Mask="n2" MaskType="Numeric" MaskUseAsDisplayFormat="True"/>
-                    </dxg:GridColumn.EditSettings>
-                </dxg:GridColumn>
-                <dxg:GridColumn FieldName="Currency.Key" Header="Devise" AllowBestFit="True" AllowEditing="False" Visible="True" />
-                <dxg:GridColumn FieldName="Forex" Header="Taux de change" AllowBestFit="True" AllowEditing="False" Visible="True"  >
-                    <dxg:GridColumn.EditSettings>
-                        <dxe:TextEditSettings Mask="n2" MaskType="Numeric" MaskUseAsDisplayFormat="True"/>
-                    </dxg:GridColumn.EditSettings>
-                </dxg:GridColumn>
-                <dxg:GridColumn FieldName="Holdback" Header="Retenu de garantie" AllowBestFit="True" AllowEditing="False" Visible="True"  >
-                    <dxg:GridColumn.EditSettings>
-                        <dxe:TextEditSettings Mask="n2" MaskType="Numeric" MaskUseAsDisplayFormat="True"/>
-                    </dxg:GridColumn.EditSettings>
-                </dxg:GridColumn>
-
-                <dxg:GridColumn FieldName="HoldbackGeneralAccount.Key" Header="Compte retenu de garantie" AllowEditing="False"  />
-                <dxg:GridColumn FieldName="HoldbackGeneralAccount.Caption" Header="Libelle compte retenu de garantie"  AllowEditing="False" />
-
-                <dxg:GridColumn FieldName="TvaGeneralAccount.Key" Header="Compte TVA" AllowEditing="False"  />
-                <dxg:GridColumn FieldName="TvaGeneralAccount.Caption" Header="Libelle compte TVA"  AllowEditing="False" />
-
-                <dxg:GridColumn FieldName="IsValidated" Header="Validée" AllowBestFit="True" AllowEditing="False" Visible="True" Fixed="Right" />
+                <dxg:GridColumn FieldName="Sender.Key" Header="Code société" AllowBestFit="True" AllowEditing="False" Visible="True" />
+                <dxg:GridColumn FieldName="Sender.Caption" Header="Libelle société" AllowBestFit="True" AllowEditing="False" Visible="True" />
+                <dxg:GridColumn FieldName="Sender.ThirdPartyAccount" Header="Compte" AllowBestFit="True" AllowEditing="False" Visible="True" />
                 <dxg:GridColumn FieldName="Id" Header="Sys Id" AllowEditing="False"  Visible="{Binding ShowSysIdColumn}" Fixed="Left" Width="55" />
             </dxg:GridControl.Columns>
             <dxg:GridControl.View>
@@ -108,5 +79,4 @@
             </dxg:GridControl.DetailDescriptor>
         </dxg:GridControl>
     </Grid>
-
 </CORESI:ExportableView>

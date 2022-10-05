@@ -10,8 +10,8 @@ namespace CORESI.WPF.Controls
     public class GenericExportableViewModel<T> : BasicGridViewModel<T>
     {
         internal protected IExportableGrid exportableView;
-        
-        public GenericExportableViewModel(IExportableGrid view = null) 
+
+        public GenericExportableViewModel(IExportableGrid view = null)
             : base()
         {
             this.exportableView = view;

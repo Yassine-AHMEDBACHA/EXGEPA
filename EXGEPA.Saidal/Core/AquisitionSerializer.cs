@@ -65,7 +65,7 @@ namespace EXGEPA.Saidal.Core
             {
                 j++;
                 int i = 1;
-                var lastPart = $"FACT {invoice.Key} {invoice.Date.ToString("dd/MM/yyyy")} {invoice.Provider.Caption};{invoice.Key}";
+                var lastPart = $"FACT {invoice.Key} {invoice.Date:dd/MM/yyyy} {invoice.Provider.Caption};{invoice.Key}";
                 var firstPart = $"21;{j}";
                 var itemGroupedByGenralAccount = invoice.Items.Values.OrderBy(x => x.GeneralAccount.Caption).GroupBy(x => x.GeneralAccount);
                 var totalInvestmentAccount = 0.0M;

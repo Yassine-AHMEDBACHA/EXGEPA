@@ -87,8 +87,8 @@ namespace EXGEPA.Repository.Controls
         {
             this.StartBackGroundAction(() =>
             {
-                System.Collections.Generic.IList<GeneralAccount> allAccount = this.DBservice.SelectAll(true);
-                System.Collections.Generic.IList<GeneralAccountType> list = ServiceLocator.Resolve<IDataProvider<GeneralAccountType>>().SelectAll();
+                var allAccount = this.DBservice.SelectAll(true);
+                var list = ServiceLocator.Resolve<IDataProvider<GeneralAccountType>>().SelectAll();
                 foreach (GeneralAccount item in allAccount)
                 {
                     item.GeneralAccountType = list.FirstOrDefault(x => x.Id == item.GeneralAccountType?.Id);

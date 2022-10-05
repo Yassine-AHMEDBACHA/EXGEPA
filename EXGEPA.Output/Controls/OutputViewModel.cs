@@ -36,8 +36,6 @@ namespace EXGEPA.Output.Controls
             }
         }
 
- 
-
         public string TakerFieldName
         {
             get => this.takerFieldName;
@@ -47,8 +45,6 @@ namespace EXGEPA.Output.Controls
                 this.RaisePropertyChanged("TakerFieldName");
             }
         }
-
-        
 
         public NamedKeyRow Taker
         {

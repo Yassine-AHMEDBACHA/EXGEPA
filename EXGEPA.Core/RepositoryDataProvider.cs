@@ -304,10 +304,10 @@
             item.SetProperties(this.ProviderById);
             item.SetProperties(this.InputSheetById);
             item.SetProperties(this.ListOfReceiveOrder);
-            item.SetProperties(this.AllTransferOrders);
+            item.Map(this.AllTransferOrders);
             item.SetProperties(this.Offices);
             item.SetProperties(this.ListOfReformeCertificate);
-            item.SetProperties(this.ListOfOutputCertificate);
+            item.Map(this.ListOfOutputCertificate);
             item.SetProperties(this.ListOfAccountingPeriod);
             item.SetProperties(this.AllStats);
         }

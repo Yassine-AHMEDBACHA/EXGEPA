@@ -1,0 +1,77 @@
+﻿namespace EXGEPA.Saidal.Core
+{
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+    using EXGEPA.Model;
+
+    public class TransferOrderSerializer : Serializer<TransferOrder>
+    {
+        public override string OperationHeader => "18";
+
+        public override string GetLastPart(TransferOrder instance)
+        {
+            return $"Transfert {instance.Key} {instance.Date:dd/MM/yyyy} {instance.Sender?.Caption};{instance.Key}";
+        }
+
+        public override List<TransferOrder> Serialize(IEnumerable<TransferOrder> instances)
+        {
+            var result = new List<TransferOrder>();
+            if (!instances.Any())
+            {
+                this.uIMessage.Error("Veuillez selectionner des lignes à envoyer !");
+                return result;
+            }
+
+            var rows = new List<string>();
+            int j = 0;
+            foreach (var instance in instances)
+            {
+                j++;
+                int i = 1;
+                string lastPart = this.GetLastPart(instance);
+                var firstPart = $"{this.OperationHeader};{j}";
+                var groups = instance.Items.Values.OrderBy(x => x.GeneralAccount.Key).GroupBy(x => x.GeneralAccount)
+                    .Select(g => new
+                    {
+                        GeneralAccount = g.Key,
+                        TotalAmount = g.Sum(x => x.Amount),
+                        TotalPreviousDepreciations = g.Sum(x => x.PreviousDepreciation)
+                    })
+                    .ToList();
+
+                foreach (var item in groups)
+                {
+                    rows.Add(this.Align(string.Join(";", firstPart, i, instance.Date.ToString("dd"), item.GeneralAccount.Key, " ", item.TotalAmount.ToString(CultureInfo.InvariantCulture), "D", lastPart)));
+                    i++;
+                }
+
+                foreach (var item in groups)
+                {
+                    rows.Add(this.Align(string.Join(";", firstPart, i, instance.Date.ToString("dd"), instance.Sender.ThirdPartyAccount, " ", item.TotalAmount.ToString(CultureInfo.InvariantCulture), "C", lastPart)));
+                    i++;
+                }
+
+                foreach (var item in groups)
+                {
+                    rows.Add(this.Align(string.Join(";", firstPart, i, instance.Date.ToString("dd"), instance.Sender.ThirdPartyAccount, " ", item.TotalPreviousDepreciations.ToString(CultureInfo.InvariantCulture), "D", lastPart)));
+                    i++;
+                }
+
+                foreach (var item in groups.Where(x => x.GeneralAccount.Children != null))
+                {
+                    rows.Add(this.Align(string.Join(";", firstPart, i, instance.Date.ToString("dd"), item.GeneralAccount.Children.Key, " ", item.TotalPreviousDepreciations.ToString(CultureInfo.InvariantCulture), "C", lastPart)));
+                    i++;
+                }
+            }
+
+            this.SaveFile(rows);
+            return result;
+        }
+
+        protected override string GetFileNamePattern()
+        {
+            return this.parameterProvider.TryGet("InterfaceFileNamePatternForTransferOrder", "TransfertDump");
+        }
+    }
+}

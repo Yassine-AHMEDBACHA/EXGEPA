@@ -58,6 +58,8 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -67,11 +69,29 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\InterfaceView.xaml.cs">
-      <DependentUpon>InterfaceView.xaml</DependentUpon>
+    <Compile Include="Controls\DestructionVM.cs" />
+    <Compile Include="Controls\OutputView.xaml.cs">
+      <DependentUpon>OutputView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\InterfaceViewModel.cs" />
+    <Compile Include="Controls\SaleVM.cs" />
+    <Compile Include="Controls\CessionVM.cs" />
+    <Compile Include="Controls\InterfaceVMBase.cs" />
+    <Compile Include="Controls\InvoiceView.xaml.cs">
+      <DependentUpon>InvoiceView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\InvoiceVM.cs" />
+    <Compile Include="Controls\OutputVMBase.cs" />
+    <Compile Include="Controls\TransferOrderView.xaml.cs">
+      <DependentUpon>TransferOrderView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TransferOrderVM.cs" />
     <Compile Include="Core\AquisitionSerializer.cs" />
+    <Compile Include="Core\CessionSerializer.cs" />
+    <Compile Include="Core\DestructionSerializer.cs" />
+    <Compile Include="Core\InvoiceSerializer.cs" />
+    <Compile Include="Core\SaleSerializer.cs" />
+    <Compile Include="Core\Serializer.cs" />
+    <Compile Include="Core\TransferOrderSerializer.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -118,7 +138,15 @@
     <None Include="..\stylecop.json" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Controls\InterfaceView.xaml">
+    <Page Include="Controls\InvoiceView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\OutputView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TransferOrderView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -136,7 +164,6 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-
   <ItemGroup>
     <None Include="app.config" />
   </ItemGroup>

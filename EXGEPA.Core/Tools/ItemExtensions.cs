@@ -58,8 +58,11 @@
                 {
                     var prop = (T)field.GetValue(item);
                     var value = source.FirstOrDefault(x => x.Id == prop?.Id);
-                    field.SetValue(item, value);
-                    value.Items[item.Id] = item;
+                    if (value != null)
+                    {
+                        field.SetValue(item, value);
+                        value.Items[item.Id] = item;
+                    }
                 }
             }
         }

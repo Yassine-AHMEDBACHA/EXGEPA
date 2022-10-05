@@ -20,6 +20,12 @@ namespace EXGEPA.Core.Interfaces
 
         ObservableCollection<Invoice> AllInvoices { get; set; }
 
+        ObservableCollection<TransferOrder> AllTransferOrders { get; set; }
+
+        ObservableCollection<OutputCertificate> ListOfOutputCertificate { get; set; }
+
+        ObservableCollection<AnalyticalAccount> ListOfAnalyticalAccount { get; }
+
         void BindProperties(Item item);
 
         void BindProperties(IList<Item> Items);
