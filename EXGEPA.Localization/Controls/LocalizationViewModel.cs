@@ -116,7 +116,7 @@ namespace EXGEPA.Localization.Controls
                         {
                             offices.TryGetValue(x.Localization, out Office office);
                             item.Office = office;
-                            item.ItemState = x.ItemState;
+                            //item.ItemState = x.ItemState;
                         }
                         return item;
                     }).Where(x => x != null).ToList();
