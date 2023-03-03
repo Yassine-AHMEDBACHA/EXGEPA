@@ -16,7 +16,6 @@
             : base(exportableView, "Factures")
         {
             this.displayOnlyValidatedInvoice = this.ParameterProvider.TryGet("InterfaceDisplayOnlyValidatedInvoice", true);
-            this.AddRibbonButtons();
         }
 
         public override Serializer<Invoice> Serializer => new InvoiceSerializer();
@@ -50,16 +49,6 @@
             }
 
             if (this.displayOnlyValidatedInvoice && !invoice.IsValidated)
-            {
-                return false;
-            }
-
-            if (invoice.Tag is bool value)
-            {
-                return !value;
-            }
-
-            if (invoice.Tag?.ToString().EqualsTo("1") == true)
             {
                 return false;
             }

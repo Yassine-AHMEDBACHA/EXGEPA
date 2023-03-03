@@ -88,6 +88,8 @@
     <Compile Include="Core\AquisitionSerializer.cs" />
     <Compile Include="Core\CessionSerializer.cs" />
     <Compile Include="Core\DestructionSerializer.cs" />
+    <Compile Include="Core\Dotations\DotationSerializer.cs" />
+    <Compile Include="Core\Dotations\Wrapper.cs" />
     <Compile Include="Core\InvoiceSerializer.cs" />
     <Compile Include="Core\SaleSerializer.cs" />
     <Compile Include="Core\Serializer.cs" />

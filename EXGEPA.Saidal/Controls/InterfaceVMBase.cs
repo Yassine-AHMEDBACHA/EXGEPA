@@ -2,6 +2,7 @@
 {
     using System;
     using System.Linq;
+    using CORESI.Data.Tools;
     using CORESI.IoC;
     using CORESI.WPF.Controls;
     using CORESI.WPF.Core;
@@ -43,11 +44,31 @@
 
         protected IRepositoryDataProvider RepositoryDataProvider { get; }
 
+        protected static bool CanBeSent(T instance)
+        {
+            if(instance.Tag is null)
+            {
+                return true;
+            }
+
+            if (instance.Tag is bool value)
+            {
+                return !value;
+            }
+
+            if (instance.Tag.ToString().EqualsTo("1") || instance.Tag.ToString().EqualsTo("true"))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         protected void AddRibbonButtons()
         {
             this.AddNewGroup().AddCommand(ButtonCaption, IconProvider.Download, () =>
             {
-                var result = this.Serializer.Serialize(this.Selection);
+                var result = this.Serializer.Serialize(this.Selection.Where(CanBeSent));
                 if (result?.Count > 0)
                 {
                     result.ForEach(x => this.DBservice.Update(x));

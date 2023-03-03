@@ -56,7 +56,7 @@
             var result = new List<T>();
             if (!instances.Any())
             {
-                this.uIMessage.Error("Veuillez selectionner des lignes à envoyer !");
+                this.uIMessage.Error("Selection vide ou deja traitée, Veuillez selectionner des lignes à envoyer !");
                 return result;
             }
 
@@ -117,7 +117,7 @@
         {
             var fileName = this.GetFileName();
             this.logger.Info($"FileName = {fileName}");
-            TextAppender.Append(fileName, rows, true);
+            TextAppender.Append(fileName, rows);
         }
 
         protected string GetFileName()
@@ -125,7 +125,7 @@
             var outputDirectory = this.parameterProvider.TryGet("InterfaceOutputDirectory", @"C:\SQLIMMO\");
             string fileNamePattern = this.GetFileNamePattern();
             var fileExtension = this.parameterProvider.TryGet("InterfaceFileExtension", ".csv");
-            var fileName = Path.Combine(outputDirectory, $"{fileNamePattern}_{DateTime.Now:yyyyMMdd_HHmmssfff}.{fileExtension.Replace(".", string.Empty)}");
+            var fileName = Path.Combine(outputDirectory, $"{fileNamePattern}.{fileExtension.Replace(".", string.Empty)}");
             return fileName;
         }
 
