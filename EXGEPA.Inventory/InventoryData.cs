@@ -12,6 +12,6 @@ namespace EXGEPA.Inventory
         public Item Item { get; set; }
         public Office Office { get; set; }
         public string GapType { get; set; }
-        public DateTime ImportDate { get; set; }
+        public DateTime? ImportDate { get; set; }
     }
 }

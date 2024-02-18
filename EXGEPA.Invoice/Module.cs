@@ -33,7 +33,7 @@ namespace EXGEPA.Invoice
         public override void AddGroups()
         {
             Logger.Info("Start loading Invoice Module...");
-            Group invoiceGroup = new Group();
+            var invoiceGroup = new Group();
             invoiceGroup.Commands.Add(this.GetHomePageRibbonButton());
             Logger.Info("Adding Invoice Home buttons to Ribbon");
             UIService.AddGroupToHomePage(invoiceGroup);

@@ -19,7 +19,7 @@
             var result = new List<TransferOrder>();
             if (!instances.Any())
             {
-                this.uIMessage.Error("Veuillez selectionner des lignes à envoyer !");
+                this.uIMessage.Error("Selection vide ou deja traitée, Veuillez selectionner des lignes à envoyer !");
                 return result;
             }
 
@@ -63,6 +63,9 @@
                     rows.Add(this.Align(string.Join(";", firstPart, i, instance.Date.ToString("dd"), item.GeneralAccount.Children.Key, " ", item.TotalPreviousDepreciations.ToString(CultureInfo.InvariantCulture), "C", lastPart)));
                     i++;
                 }
+
+                instance.Caption = true.ToString();
+                result.Add(instance);
             }
 
             this.SaveFile(rows);

@@ -27,11 +27,11 @@
             var result = new List<OutputCertificate>();
             if (!instances.Any())
             {
-                this.uIMessage.Error("Veuillez selectionner des lignes à envoyer !");
+                this.uIMessage.Error("Selection vide ou deja traitée, Veuillez selectionner des lignes à envoyer !");
                 return result;
             }
 
-            var analyticalAccounts = this.repositoryDataProvider.ListOfAnalyticalAccount.ToDictionary(x => x.Key);
+            var providers = this.repositoryDataProvider.ListOfProvider.ToDictionary(x => x.Key);
 
             var rows = new List<string>();
             int j = 0;
@@ -56,16 +56,16 @@
                     i++;
                 }
 
-                var analyticalAccount = analyticalAccounts[instance.Tag.ToString()];
+                var provider = providers[instance.Tag.ToString()];
                 foreach (var item in groups)
                 {
-                    rows.Add(this.Align(string.Join(";", firstPart, i, instance.Date.ToString("dd"), analyticalAccount.ThirdPartyAccount, " ", item.TotalAmount.ToString(CultureInfo.InvariantCulture), "C", lastPart)));
+                    rows.Add(this.Align(string.Join(";", firstPart, i, instance.Date.ToString("dd"), provider.ThirdPartyAccount, " ", item.TotalAmount.ToString(CultureInfo.InvariantCulture), "C", lastPart)));
                     i++;
                 }
 
                 foreach (var item in groups)
                 {
-                    rows.Add(this.Align(string.Join(";", firstPart, i, instance.Date.ToString("dd"), analyticalAccount.ThirdPartyAccount, " ", item.TotalPreviousDepreciations.ToString(CultureInfo.InvariantCulture), "D", lastPart)));
+                    rows.Add(this.Align(string.Join(";", firstPart, i, instance.Date.ToString("dd"), provider.ThirdPartyAccount, " ", item.TotalPreviousDepreciations.ToString(CultureInfo.InvariantCulture), "D", lastPart)));
                     i++;
                 }
 
@@ -74,6 +74,9 @@
                     rows.Add(this.Align(string.Join(";", firstPart, i, instance.Date.ToString("dd"), item.GeneralAccount.Children.Key, " ", item.TotalPreviousDepreciations.ToString(CultureInfo.InvariantCulture), "C", lastPart)));
                     i++;
                 }
+
+                instance.Caption = true.ToString();
+                result.Add(instance);
             }
 
             this.SaveFile(rows);

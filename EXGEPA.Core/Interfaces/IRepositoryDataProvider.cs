@@ -26,6 +26,8 @@ namespace EXGEPA.Core.Interfaces
 
         ObservableCollection<AnalyticalAccount> ListOfAnalyticalAccount { get; }
 
+        ObservableCollection<Provider> ListOfProvider { get; set; }
+
         void BindProperties(Item item);
 
         void BindProperties(IList<Item> Items);

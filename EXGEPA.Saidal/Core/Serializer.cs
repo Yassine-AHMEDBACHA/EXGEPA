@@ -105,7 +105,7 @@
                     }
                 }
 
-                instance.Tag = true;
+                instance.Caption = true.ToString();
                 result.Add(instance);
             }
 

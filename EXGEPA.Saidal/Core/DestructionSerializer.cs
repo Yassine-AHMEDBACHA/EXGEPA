@@ -27,7 +27,7 @@
             var result = new List<OutputCertificate>();
             if (!instances.Any())
             {
-                this.uIMessage.Error("Veuillez selectionner de lignes à envoyer !");
+                this.uIMessage.Error("Selection vide ou deja traitée, Veuillez selectionner des lignes à envoyer !");
                 return result;
             }
 
@@ -46,34 +46,31 @@
                     {
                         GeneralAccount = g.Key,
                         TotalAmount = g.Sum(x => x.Amount),
-                        TotalPreviousDepreciations = g.Sum(x => x.PreviousDepreciation)
+                        TotalPreviousDepreciations = g.Sum(x => x.PreviousDepreciation),
+                        VNC = g.Sum(x => x.Amount - x.PreviousDepreciation)
                     })
                     .ToList();
 
                 foreach (var item in groups)
                 {
-                    rows.Add(this.Align(string.Join(";", firstPart, i, instance.Date.ToString("dd"), item.GeneralAccount.Key, " ", item.TotalAmount.ToString(CultureInfo.InvariantCulture), "D", lastPart)));
-                    i++;
-                }
-
-                var analyticalAccount = analyticalAccounts[instance.Tag.ToString()];
-                foreach (var item in groups)
-                {
-                    rows.Add(this.Align(string.Join(";", firstPart, i, instance.Date.ToString("dd"), analyticalAccount.ThirdPartyAccount, " ", item.TotalAmount.ToString(CultureInfo.InvariantCulture), "C", lastPart)));
-                    i++;
-                }
-
-                foreach (var item in groups)
-                {
-                    rows.Add(this.Align(string.Join(";", firstPart, i, instance.Date.ToString("dd"), analyticalAccount.ThirdPartyAccount, " ", item.TotalPreviousDepreciations.ToString(CultureInfo.InvariantCulture), "D", lastPart)));
+                    rows.Add(this.Align(string.Join(";", firstPart, i, instance.Date.ToString("dd"), item.GeneralAccount.Key, " ", item.TotalAmount.ToString(CultureInfo.InvariantCulture), "C", lastPart)));
                     i++;
                 }
 
                 foreach (var item in groups.Where(x => x.GeneralAccount.Children != null))
                 {
-                    rows.Add(this.Align(string.Join(";", firstPart, i, instance.Date.ToString("dd"), item.GeneralAccount.Children.Key, " ", item.TotalPreviousDepreciations.ToString(CultureInfo.InvariantCulture), "C", lastPart)));
+                    rows.Add(this.Align(string.Join(";", firstPart, i, instance.Date.ToString("dd"), item.GeneralAccount.Children.Key, " ", item.TotalPreviousDepreciations.ToString(CultureInfo.InvariantCulture), "D", lastPart)));
                     i++;
                 }
+
+                foreach (var item in groups)
+                {
+                    rows.Add(this.Align(string.Join(";", firstPart, i, instance.Date.ToString("dd"), item.GeneralAccount.Key, " ", item.VNC.ToString(CultureInfo.InvariantCulture), "D", lastPart)));
+                    i++;
+                }
+
+                instance.Caption = true.ToString();
+                result.Add(instance);
             }
 
             this.SaveFile(rows);

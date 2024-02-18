@@ -48,7 +48,7 @@ namespace EXGEPA.Output.Controls
 
         public NamedKeyRow Taker
         {
-            get => this.GetTacker(this.ConcernedRow?.Tag.ToString());
+            get => this.GetTacker(this.ConcernedRow?.Tag?.ToString());
             set
             {
                 this.ConcernedRow.Tag = value.Key;

@@ -67,7 +67,7 @@
                             <dx:Format Foreground="Blue"/>
                         </dxg:FormatCondition>
 
-                        <dxg:FormatCondition  ApplyToRow="True" Expression="[Tag] == true Or [Tag] == 1" >
+                        <dxg:FormatCondition  ApplyToRow="True" Expression="[Caption] == true Or [Tag] == 1" >
                             <dx:Format Foreground="Red"/>
                         </dxg:FormatCondition>
                     </dxg:TableView.FormatConditions>

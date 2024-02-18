@@ -1,14 +1,14 @@
-﻿using CORESI.IoC;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows;
+using System.Windows.Input;
+using CORESI.IoC;
 using CORESI.Tools;
 using CORESI.WPF.Controls;
 using CORESI.WPF.Model;
 using EXGEPA.Core.Interfaces;
 using EXGEPA.Model;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows.Forms;
-using System.Windows.Input;
 
 namespace EXGEPA.Items.Controls
 {
@@ -21,6 +21,8 @@ namespace EXGEPA.Items.Controls
         public ICommand SetAllCommand { get; set; }
         public ICommand ResetCommand { get; set; }
         public ICommand ResetAllCommand { get; set; }
+
+
 
         public ICommand AffectedRowDoubleClick { get; set; }
 
@@ -55,6 +57,7 @@ namespace EXGEPA.Items.Controls
             command.SetAbility<Item>("Modifier");
             AffectedRowDoubleClick = command2;
 
+            this.MoveAllToLeftButtonVisibility = this.ParameterProvider.TryGet(nameof(this.MoveAllToLeftButtonVisibility), false) ? Visibility.Visible : Visibility.Collapsed;
         }
 
 
@@ -80,6 +83,19 @@ namespace EXGEPA.Items.Controls
                 RaisePropertyChanged("LeftPanelCaption");
             }
         }
+
+        private Visibility _MoveAllToleftButtonVisibility;
+
+        public Visibility MoveAllToLeftButtonVisibility
+        {
+            get { return _MoveAllToleftButtonVisibility; }
+            set
+            {
+                RaisePropertyChanged(nameof(this.MoveAllToLeftButtonVisibility));
+                _MoveAllToleftButtonVisibility = value;
+            }
+        }
+
 
         private string _RightPanelCaption;
         public string RightPanelCaption
@@ -116,12 +132,12 @@ namespace EXGEPA.Items.Controls
 
         void MoveSelectionToRight()
         {
-            this.MoveItemToRight(this.Selection.ToList());
+            this.MoveItemToRight(this.Selection.Take(1).ToList());
         }
 
         void MoveSelectionToLeft()
         {
-            this.MoveItemToLeft(this.AffectedRowsSelection.ToList());
+            this.MoveItemToLeft(this.AffectedRowsSelection.Take(1).ToList());
         }
 
         void MoveAllToLeft()
@@ -131,24 +147,38 @@ namespace EXGEPA.Items.Controls
 
         void MoveItemToRight(List<Item> items)
         {
-            ConfirmeAndStartBackGroundAction(Options.SetConfirmationMessage, () => items.ForEach(item =>
-             {
-                 this.Options.Setter(item);
-                 this.DBservice.Update(item);
-                 ListOfRows.Remove(item);
-                 AffectedRows.Add(item);
-             }));
+            if (items.Count > 0)
+            {
+                ConfirmeAndStartBackGroundAction(Options.SetConfirmationMessage, () => items.ForEach(item =>
+                 {
+                     this.Options.Setter(item);
+                     this.DBservice.Update(item);
+                     ListOfRows.Remove(item);
+                     AffectedRows.Add(item);
+                 }));
+            }
+            else
+            {
+                this.UIMessage.Warning("la selection est vide !");
+            }
         }
 
         void MoveItemToLeft(List<Item> items)
         {
-            ConfirmeAndStartBackGroundAction(Options.ResetConfirmationMessage, () => items.ForEach(item =>
+            if (items.Count > 0)
+            {
+                ConfirmeAndStartBackGroundAction(Options.ResetConfirmationMessage, () => items.ForEach(item =>
               {
                   this.Options.Resetter(item);
                   this.DBservice.Update(item);
                   AffectedRows.Remove(item);
                   ListOfRows.Add(item);
               }));
+            }
+            else
+            {
+                this.UIMessage.Warning("la selection est vide !");
+            }
         }
 
         public override void InitData()

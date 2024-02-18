@@ -233,9 +233,17 @@ namespace EXGEPA.Inventory.Controls
                 Key = inventoryRow.Key,
                 InventoryRow = inventoryRow,
                 Localization = inventoryRow.Localization,
-                ImportDate = inventoryRow.OpertationDate,
                 ItemState = repositoryDataProvider.AllStats.FirstOrDefault(x => x.Id == inventoryRow.ItemState?.Id)
             };
+
+            if (inventoryRow.OpertationDate > DateTime.MinValue)
+            {
+                inventory.ImportDate = inventoryRow.OpertationDate;
+            }
+            else
+            {
+                inventory.ImportDate = null;
+            }
 
             AllOffices.TryGetValue(inventoryRow.Localization, out Office office);
             inventory.Office = office;

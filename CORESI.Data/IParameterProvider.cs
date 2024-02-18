@@ -18,6 +18,8 @@ namespace CORESI.Data
 
         bool TrySetOrAdd(string key, object value);
 
+        void TryAdd<T>(string key, T value);
+
         IDictionary GetAllParameters();
     }
 }

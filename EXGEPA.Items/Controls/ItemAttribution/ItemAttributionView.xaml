@@ -26,7 +26,7 @@
             <Button Content="&gt;" Margin="2" Command="{Binding SetCommand}" Height="40"/>
             <Button Content="&gt;&gt;" Margin="2" Visibility="Hidden" />
             <Button Content="&lt;"  Margin="2" Command="{Binding ResetCommand}" Height="40"/>
-            <Button Content="&lt;&lt;"  Margin="2" Visibility="Visible"  Command="{Binding ResetAllCommand}" Height="40"/>
+            <Button Content="&lt;&lt;"  Margin="2" Visibility="{Binding MoveAllToLeftButtonVisibility}"  Command="{Binding ResetAllCommand}" Height="40"/>
         </StackPanel>
 
         <dx:DXExpander IsExpanded="{Binding ShowSourcePanel}" Grid.RowSpan="3"  Grid.Column="0" >

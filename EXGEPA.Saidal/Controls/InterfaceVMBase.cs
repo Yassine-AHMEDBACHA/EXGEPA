@@ -46,17 +46,17 @@
 
         protected static bool CanBeSent(T instance)
         {
-            if(instance.Tag is null)
+            if (instance.Items == null || instance.Items.Count == 0)
+            {
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(instance.Caption))
             {
                 return true;
             }
 
-            if (instance.Tag is bool value)
-            {
-                return !value;
-            }
-
-            if (instance.Tag.ToString().EqualsTo("1") || instance.Tag.ToString().EqualsTo("true"))
+            if (instance.Caption.EqualsTo("1") || instance.Caption.EqualsTo("true"))
             {
                 return false;
             }

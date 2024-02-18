@@ -161,5 +161,21 @@ namespace CORESI.DataAccess.Core
             return Add(parameter) > 0;
         }
 
+        public void TryAdd<T>(string key, T value)
+        {
+            var parameter = this.Get(key);
+            if (parameter == null)
+            {
+                var stringValue = value.ToString();
+                parameter = new Parameter()
+                {
+                    Key = key,
+                    Value = stringValue,
+                };
+
+                this. Add(parameter);
+            }
+        }
+
     }
 }

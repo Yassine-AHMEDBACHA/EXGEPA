@@ -55,7 +55,7 @@ namespace EXGEPA.Saidal.Core
             var generatedInvoices = new List<Invoice>();
             if (!invoices.Any())
             {
-                this.uIMessage.Error("Veuillez selectionner des factures à envoyer");
+                this.uIMessage.Error("Selection vide ou deja traitée, Veuillez selectionner des lignes à envoyer !");
                 return generatedInvoices;
             }
 
@@ -101,7 +101,7 @@ namespace EXGEPA.Saidal.Core
                     rows.Add(this.Align(string.Join(";", firstPart, i, invoice.Date.ToString("dd"), "404020", invoice.Provider.ThirdPartyAccount, invoice.Holdback.ToString(CultureInfo.InvariantCulture), "C", lastPart)));
                 }
 
-                invoice.Tag = true;
+                invoice.Caption = true.ToString();
                 generatedInvoices.Add(invoice);
             }
 
